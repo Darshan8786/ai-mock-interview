@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "../config/config";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import toast from "react-hot-toast";
 import type {
@@ -334,11 +334,21 @@ export function ResumeBuilder() {
 
   /* ── PDF export / download ── */
   const downloadPDF = async () => {
-    const element = document.getElementById("resume-preview");
-    if (!element) return;
+    const source = document.getElementById("resume-preview");
+    if (!source) return;
     setDownloading(true);
+    const cloneHost = document.createElement("div");
     try {
-      const canvas = await html2canvas(element, {
+      if (document.fonts?.ready) await document.fonts.ready;
+      const clone = source.cloneNode(true) as HTMLElement;
+      clone.style.cssText = "position:static; width:794px; max-width:none; height:auto; overflow:visible;";
+      cloneHost.style.cssText =
+        "position:absolute; left:0; top:0; width:794px; background:#ffffff; z-index:-1000; pointer-events:none;";
+      cloneHost.appendChild(clone);
+      document.body.appendChild(cloneHost);
+      await new Promise((r) => setTimeout(r, 50));
+
+      const canvas = await html2canvas(clone, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
@@ -365,6 +375,7 @@ export function ResumeBuilder() {
       console.error("PDF download failed:", err);
       alert("Could not generate PDF. Please try again.");
     } finally {
+      if (cloneHost.parentNode) cloneHost.parentNode.removeChild(cloneHost);
       setDownloading(false);
     }
   };
