@@ -1,0 +1,23 @@
+# Web Framework
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+websockets==14.1
+
+# Legacy Flask (keep for backward compatibility)
+flask==3.1.0
+flask-cors==5.0.1
+gunicorn==23.0.0
+
+# Image Processing
+opencv-python==4.11.0.86
+numpy==2.2.4
+
+# AI/ML
+mediapipe==0.9.3.1
+ultralytics==8.3.55
+insightface==0.7.3
+onnxruntime==1.20.1
+
+# Utilities
+requests==2.32.3
+python-dotenv==1.1.0

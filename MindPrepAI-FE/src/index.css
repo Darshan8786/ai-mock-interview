@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: "Poppins", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+
+/* Swiper navigation: responsive, rounded, modern */
+.swiper-button-prev,
+.swiper-button-next {
+  width: clamp(28px, 3.2vw, 48px);
+  height: clamp(28px, 3.2vw, 48px);
+  border-radius: 9999px;
+  background: rgba(17, 24, 39, 0.8); /* gray-900 with opacity */
+  color: #fff !important;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: clamp(12px, 1.6vw, 18px);
+  font-weight: 700;
+}
+
+/* Better touch targets on very small screens */
+@media (max-width: 480px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Positioning tweaks so buttons hug the carousel nicely */
+.swiper-button-prev { left: -6px; }
+.swiper-button-next { right: -6px; }
+
+/* Print styles for Resume Builder */
+@media print {
+  body {
+    background-color: white !important;
+  }
+  
+  #resume-preview {
+    width: 210mm !important;
+    height: auto !important;
+    min-height: 297mm !important;
+    padding: 10mm !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}

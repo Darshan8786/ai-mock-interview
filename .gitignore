@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+.env.backup
+*.local
+*.pem
+*.key
+imp.txt
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.pkl
+*.pt
+*.pth
+*.onnx
+
+# ML model weights
+ai-services/models/
+ai-services/weights/
+
+# Editor & OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Test & coverage
+coverage/
+.nyc_output/
+
+# TypeScript
+*.tsbuildinfo
