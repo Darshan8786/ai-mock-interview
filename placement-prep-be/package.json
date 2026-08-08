@@ -8,6 +8,7 @@
     "dev": "nodemon --exec \"tsx src/index.ts\" --watch src --ext ts",
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
+    "seed:aptitude": "tsx src/seed/seedAptitude.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

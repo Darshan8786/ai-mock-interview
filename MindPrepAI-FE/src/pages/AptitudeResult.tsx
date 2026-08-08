@@ -1,96 +1,54 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { saveAptitudeResult } from "../services/profileApi";
+import type { ScoredResult } from "../services/profileApi";
 
-interface ResultData {
-  answers: Record<number, number>;
-  questions: any[];
-  timeTaken: number;
-  tabWarnings: number;
-}
+const CATEGORY_ICONS: Record<string, string> = {
+  Quantitative: "📊",
+  "Logical Reasoning": "🧩",
+  "Verbal Ability": "📝",
+  "Data Interpretation": "📈",
+};
 
 export function AptitudeResult() {
   const location = useLocation();
   const navigate = useNavigate();
-  const data = location.state as ResultData | null;
+  const data = location.state as { result: ScoredResult | null } | null;
+  const result = data?.result ?? null;
   const [expanded, setExpanded] = useState<number | null>(null);
-  const [saveState, setSaveState] = useState<"saving" | "saved" | "error">("saving");
 
-  useEffect(() => {
-    if (!data) return;
-    let cancelled = false;
-
-    const total = data.questions.length;
-    let correct = 0;
-    const wrong = data.questions.reduce((acc: number, q: any, idx: number) => {
-      if (data.answers[idx] === undefined) return acc;
-      if (data.answers[idx] === q.correct) { correct++; return acc; }
-      return acc + 1;
-    }, 0);
-
-    const score = Math.round((correct / total) * 100);
-    const categories = ["Quantitative", "Logical", "Verbal"];
-    const catScores = categories.map((cat) => {
-      const qs = data.questions.filter((q: any) => q.category === cat);
-      const done = qs.filter((q: any) => data.answers[q.id - 1] === q.correct).length;
-      return {
-        category: cat,
-        score: qs.length ? Math.round((done / qs.length) * 100) : 0,
-        correct: done,
-        total: qs.length,
-      };
-    });
-
-    const answers = data.questions.map((q: any, idx: number) => ({
-      question: q.question,
-      selected: data.answers[idx],
-      correct: q.correct,
-      isCorrect: data.answers[idx] === q.correct,
-      category: q.category,
-    }));
-
-    saveAptitudeResult({
-      totalQuestions: total,
-      correctAnswers: correct,
-      wrongAnswers: wrong,
-      unattempted: total - Object.keys(data.answers).length,
-      score,
-      marks: correct,
-      timeTaken: data.timeTaken,
-      tabWarnings: data.tabWarnings,
-      categoryScores: catScores,
-      answers,
-    })
-      .then(() => { if (!cancelled) setSaveState("saved"); })
-      .catch(() => { if (!cancelled) setSaveState("error"); });
-
-    return () => { cancelled = true; };
-  }, [data]);
-
-  if (!data) {
+  if (!result) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-400 text-lg">No results found</p>
-          <button onClick={() => navigate("/aptitude")} className="mt-4 px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium">
-            Take Test
+          <p className="text-red-400 text-lg mb-2">We could not compute your result.</p>
+          <p className="text-gray-400 text-sm mb-6">Your answers may not have been submitted. Please try again.</p>
+          <button
+            onClick={() => navigate("/aptitude")}
+            className="mt-4 px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium"
+          >
+            Back to Aptitude
           </button>
         </div>
       </div>
     );
   }
 
-  const { answers, questions, timeTaken, tabWarnings } = data;
-  let correct = 0;
-  const results = questions.map((q: any, idx: number) => {
-    const isCorrect = answers[idx] === q.correct;
-    if (isCorrect) correct++;
-    return { ...q, selected: answers[idx], isCorrect };
-  });
+  const {
+    score,
+    correctAnswers,
+    wrongAnswers,
+    unattempted,
+    totalQuestions,
+    marks,
+    passed,
+    passingScore,
+    timeTaken,
+    tabWarnings,
+    categoryScores,
+    questions,
+  } = result;
 
-  const total = questions.length;
-  const score = Math.round((correct / total) * 100);
   const minutes = Math.floor(timeTaken / 60);
   const seconds = timeTaken % 60;
 
@@ -103,46 +61,57 @@ export function AptitudeResult() {
 
   const grade = getGrade(score);
 
-  const quantQs = questions.filter((q: any) => q.category === "Quantitative");
-  const logicalQs = questions.filter((q: any) => q.category === "Logical");
-  const verbalQs = questions.filter((q: any) => q.category === "Verbal");
-
-  const catScore = (qs: any[]) => {
-    const done = qs.filter((q: any) => answers[q.id - 1] === q.correct).length;
-    return qs.length > 0 ? Math.round((done / qs.length) * 100) : 0;
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-8 px-4">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <motion.div
-            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200 }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 200 }}
             className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 mb-4"
           >
             <span className="text-4xl font-bold text-white">{score}</span>
           </motion.div>
           <h1 className="text-3xl font-bold text-white mb-1">{grade.label}</h1>
-          <p className="text-gray-400">You scored {correct}/{total} correctly</p>
+          <p className="text-gray-400">
+            You scored {correctAnswers}/{totalQuestions} correctly
+            {passingScore !== undefined && passed !== undefined && (
+              <span className={passed ? " text-emerald-400" : " text-red-400"}>
+                {" "}· {passed ? "PASSED" : "BELOW PASS MARK"} ({passingScore}%)
+              </span>
+            )}
+          </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <StatBox label="Correct" value={correct} color="emerald" />
-          <StatBox label="Wrong" value={total - correct - Object.values(answers).filter((a) => a === undefined).length} color="red" />
-          <StatBox label="Unattempted" value={total - Object.keys(answers).length} color="gray" />
+          <StatBox label="Correct" value={correctAnswers} color="emerald" />
+          <StatBox label="Wrong" value={wrongAnswers} color="red" />
+          <StatBox label="Unattempted" value={unattempted} color="gray" />
           <StatBox label="Tab Warnings" value={tabWarnings} color={tabWarnings > 0 ? "red" : "emerald"} />
         </div>
 
-        <div className="mb-8 text-center">
-          {saveState === "saving" && <p className="text-xs text-gray-400">Saving result to your record...</p>}
-          {saveState === "saved" && <p className="text-xs text-emerald-400">✓ Result saved — visible to the Training & Placement Office</p>}
-          {saveState === "error" && <p className="text-xs text-red-400">Could not save result. Please check your connection.</p>}
+        <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-4 mb-8 text-center">
+          <p className="text-sm text-gray-400">
+            Final marks: <span className="text-white font-bold">{marks}</span>{" "}
+            <span className="text-gray-500">
+              (+{result.marksPerQuestion} per correct
+              {result.negativeMarksPerQuestion > 0 ? `, −${result.negativeMarksPerQuestion} per wrong` : ""})
+            </span>
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <CategoryCard label="Quantitative" score={catScore(quantQs)} icon="📊" />
-          <CategoryCard label="Logical" score={catScore(logicalQs)} icon="🧩" />
-          <CategoryCard label="Verbal" score={catScore(verbalQs)} icon="📝" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {categoryScores.map((c) => (
+            <CategoryCard
+              key={c.category}
+              label={c.category}
+              icon={CATEGORY_ICONS[c.category] || "📘"}
+              score={c.score}
+              correct={c.correct}
+              total={c.total}
+            />
+          ))}
         </div>
 
         <div className="flex gap-2 text-sm text-gray-400 mb-4">
@@ -151,12 +120,12 @@ export function AptitudeResult() {
 
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-white">Question Review</h2>
-          {results.map((r: any, idx: number) => (
+          {questions.map((r, idx) => (
             <motion.div
-              key={idx}
+              key={r.id || idx}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.05 }}
+              transition={{ delay: idx * 0.03 }}
               className={`bg-gray-800/50 rounded-xl border ${
                 r.isCorrect ? "border-emerald-500/30" : r.selected === undefined ? "border-gray-700" : "border-red-500/30"
               } overflow-hidden`}
@@ -170,15 +139,15 @@ export function AptitudeResult() {
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-white font-medium">{r.question}</p>
-                  <p className="text-[10px] text-gray-500 mt-1">Your answer: {r.selected !== undefined ? r.options[r.selected] : "Not answered"}</p>
+                  <p className="text-[10px] text-gray-500 mt-1">
+                    {r.topic} · {r.difficulty} · Your answer: {r.selected !== undefined ? r.options[r.selected] : "Not answered"}
+                  </p>
                 </div>
                 <span className="text-gray-500 text-xs">{expanded === idx ? "▲" : "▼"}</span>
               </button>
               {expanded === idx && (
                 <div className="px-4 pb-4 pt-0 border-t border-gray-700/50 ml-9">
-                  <p className="text-xs text-emerald-400 mb-1">
-                    Correct: {r.options[r.correct]}
-                  </p>
+                  <p className="text-xs text-emerald-400 mb-1">Correct: {r.options[r.correct]}</p>
                   <p className="text-xs text-gray-400">{r.explanation}</p>
                 </div>
               )}
@@ -219,13 +188,16 @@ function StatBox({ label, value, color }: { label: string; value: number; color:
   );
 }
 
-function CategoryCard({ label, score, icon }: { label: string; score: number; icon: string }) {
+function CategoryCard({ label, score, icon, correct, total }: { label: string; score: number; icon: string; correct: number; total: number }) {
   const color = score >= 70 ? "bg-emerald-500" : score >= 50 ? "bg-yellow-500" : "bg-red-500";
   return (
     <div className="bg-gray-800/50 rounded-2xl p-5 border border-gray-700">
       <div className="flex items-center gap-2 mb-3">
         <span className="text-xl">{icon}</span>
         <span className="text-sm font-medium text-white">{label}</span>
+        <span className="ml-auto text-xs text-gray-500">
+          {correct}/{total}
+        </span>
       </div>
       <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
         <motion.div

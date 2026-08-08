@@ -156,6 +156,49 @@ export interface Announcement {
   priority: "normal" | "important" | "urgent";
 }
 
+export interface AptitudeQuestion {
+  _id: string;
+  category: "Quantitative" | "Logical Reasoning" | "Verbal Ability" | "Data Interpretation";
+  topic: string;
+  subtopic: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  companyTags: { name: string; style: string }[];
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+  estimatedTime: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface AptitudeTopic {
+  _id: string;
+  category: string;
+  name: string;
+  description: string;
+  order: number;
+  questionCount: number;
+  isActive: boolean;
+}
+
+export interface AptitudeTestConfig {
+  _id: string;
+  title: string;
+  description: string;
+  category: string;
+  topics: string[];
+  difficulty: string;
+  questionCount: number;
+  durationMinutes: number;
+  marksPerQuestion: number;
+  negativeMarksPerQuestion: number;
+  passingScore: number;
+  shuffle: boolean;
+  isActive: boolean;
+  createdAt: string;
+}
+
 export interface AdminNotification {
   email: boolean;
   push: boolean;

@@ -17,6 +17,7 @@ import { InterviewSetup } from "./pages/InterviewSetup";
 import { InterviewRoom } from "./pages/InterviewRoom";
 import { InterviewResult } from "./pages/InterviewResult";
 import { MockDashboard } from "./pages/MockDashboard";
+import { AptitudeDashboard } from "./pages/AptitudeDashboard";
 import { AptitudeTest } from "./pages/AptitudeTest";
 import { AptitudeResult } from "./pages/AptitudeResult";
 import { Profile } from "./pages/Profile";
@@ -27,6 +28,7 @@ import { StudentManagement } from "./pages/admin/StudentManagement";
 import { ResumeManagement } from "./pages/admin/ResumeManagement";
 import { InterviewManagement } from "./pages/admin/InterviewManagement";
 import { QuizManagement } from "./pages/admin/QuizManagement";
+import { AptitudeManagement } from "./pages/admin/AptitudeManagement";
 import { JobManagement } from "./pages/admin/JobManagement";
 import { ReportsAnalytics } from "./pages/admin/ReportsAnalytics";
 import { ProctoringLogs } from "./pages/admin/ProctoringLogs";
@@ -57,7 +59,9 @@ function App() {
             <Route path="/mock-interview/room" element={<InterviewRoom />} />
             <Route path="/mock-interview/result/:id" element={<InterviewResult />} />
             <Route path="/mock-interview/dashboard" element={<MockDashboard />} />
-            <Route path="/aptitude" element={<AptitudeTest />} />
+            <Route path="/aptitude" element={<AptitudeDashboard />} />
+            <Route path="/aptitude/test/:testId" element={<AptitudeTest />} />
+            <Route path="/aptitude/practice" element={<AptitudeTest />} />
             <Route path="/aptitude/result" element={<AptitudeResult />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
@@ -68,6 +72,7 @@ function App() {
               <Route path="resumes" element={<ResumeManagement />} />
               <Route path="interviews" element={<InterviewManagement />} />
               <Route path="quizzes" element={<QuizManagement />} />
+              <Route path="aptitude" element={<AptitudeManagement />} />
               <Route path="jobs" element={<JobManagement />} />
               <Route path="reports" element={<ReportsAnalytics />} />
               <Route path="proctoring" element={<ProctoringLogs />} />

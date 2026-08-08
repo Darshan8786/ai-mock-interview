@@ -43,6 +43,21 @@ import {
   updateAnnouncement,
   deleteAnnouncement,
 } from "../controllers/admin/announcementsController";
+import {
+  getQuestions,
+  getQuestion,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion,
+  getAdminTopics,
+  createTopic,
+  updateTopic,
+  deleteTopic,
+  getAdminTests,
+  createAdminTest,
+  updateAdminTest,
+  deleteAdminTest,
+} from "../controllers/admin/aptitudeBankController";
 
 const router = Router();
 
@@ -70,6 +85,25 @@ router.get("/interviews/:id", getInterviewDetail);
 router.get("/aptitude", getAptitudeResults);
 router.get("/aptitude/stats", getAptitudeStats);
 router.get("/aptitude/:id", getAptitudeResultDetail);
+
+// Aptitude Question Bank
+router.get("/aptitude-questions", getQuestions);
+router.post("/aptitude-questions", createQuestion);
+router.get("/aptitude-questions/:id", getQuestion);
+router.patch("/aptitude-questions/:id", updateQuestion);
+router.delete("/aptitude-questions/:id", deleteQuestion);
+
+// Aptitude Topics
+router.get("/aptitude-topics", getAdminTopics);
+router.post("/aptitude-topics", createTopic);
+router.patch("/aptitude-topics/:id", updateTopic);
+router.delete("/aptitude-topics/:id", deleteTopic);
+
+// Aptitude Test Configs
+router.get("/aptitude-tests", getAdminTests);
+router.post("/aptitude-tests", createAdminTest);
+router.patch("/aptitude-tests/:id", updateAdminTest);
+router.delete("/aptitude-tests/:id", deleteAdminTest);
 
 // Quiz
 router.get("/quizzes/attempts", getQuizAttempts);

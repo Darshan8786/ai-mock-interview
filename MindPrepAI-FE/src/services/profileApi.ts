@@ -97,3 +97,114 @@ export const getMyAptitudeResults = async (): Promise<any[]> => {
   const res = await api.get("/aptitude/my-results");
   return res.data.data;
 };
+
+// ── Question bank / practice / tests ──────────────────────
+
+export interface AptitudeQuestionDTO {
+  id: string;
+  category: string;
+  topic: string;
+  subtopic?: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  question: string;
+  options: string[];
+  estimatedTime: number;
+  companyTags?: { name: string; style: string }[];
+}
+
+export interface AptitudeTestSummary {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  topics: string[];
+  difficulty: string;
+  questionCount: number;
+  durationMinutes: number;
+  marksPerQuestion: number;
+  negativeMarksPerQuestion: number;
+  passingScore: number;
+}
+
+export interface TopicInfo {
+  id: string;
+  name: string;
+  description: string;
+  questionCount: number;
+}
+
+export interface ScoredResult {
+  attemptId: string;
+  totalQuestions: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+  unattempted: number;
+  score: number;
+  marks: number;
+  marksPerQuestion: number;
+  negativeMarksPerQuestion: number;
+  passed?: boolean;
+  passingScore?: number;
+  timeTaken: number;
+  tabWarnings: number;
+  categoryScores: { category: string; score: number; correct: number; total: number }[];
+  questions: {
+    id: string;
+    question: string;
+    category: string;
+    topic: string;
+    difficulty: string;
+    options: string[];
+    selected: number | undefined;
+    correct: number;
+    isCorrect: boolean;
+    explanation: string;
+  }[];
+}
+
+export const getAptitudeTopics = async (): Promise<Record<string, TopicInfo[]>> => {
+  const res = await api.get("/aptitude/topics");
+  return res.data.data;
+};
+
+export const getAptitudeTests = async (): Promise<AptitudeTestSummary[]> => {
+  const res = await api.get("/aptitude/tests");
+  return res.data.data;
+};
+
+export const getTestQuestions = async (
+  testId: string
+): Promise<{ test: Partial<AptitudeTestSummary>; questions: AptitudeQuestionDTO[] }> => {
+  const res = await api.get(`/aptitude/tests/${testId}/questions`);
+  return res.data.data;
+};
+
+export const submitAptitudeTest = async (
+  testId: string,
+  payload: { answers: Record<string, number>; timeTaken: number; tabWarnings: number }
+): Promise<ScoredResult> => {
+  const res = await api.post(`/aptitude/tests/${testId}/submit`, payload);
+  return res.data.data;
+};
+
+export const getPracticeQuestions = async (params: {
+  category?: string;
+  topic?: string;
+  difficulty?: string;
+  count?: number;
+  tag?: string;
+}): Promise<{ config: any; questions: AptitudeQuestionDTO[] }> => {
+  const res = await api.get("/aptitude/practice", { params });
+  return res.data.data;
+};
+
+export const submitPractice = async (payload: {
+  answers: Record<string, number>;
+  timeTaken: number;
+  tabWarnings: number;
+  marksPerQuestion?: number;
+  negativeMarksPerQuestion?: number;
+}): Promise<ScoredResult> => {
+  const res = await api.post("/aptitude/practice/submit", payload);
+  return res.data.data;
+};

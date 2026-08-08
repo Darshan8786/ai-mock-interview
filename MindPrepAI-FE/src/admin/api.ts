@@ -18,6 +18,9 @@ import type {
   AdminSettings,
   AdminStats,
   DashboardCharts,
+  AptitudeQuestion,
+  AptitudeTopic,
+  AptitudeTestConfig,
 } from "./types";
 
 const API = `${BACKEND_URL}/api/v1/admin`;
@@ -356,6 +359,53 @@ export const adminApi = {
   },
   async deleteNotification(id: string): Promise<void> {
     await adminFetch(`/notifications/${id}`, { method: "DELETE" });
+  },
+
+  // ── Aptitude Question Bank ───────────────────────────────
+  async getAptitudeQuestions(): Promise<AptitudeQuestion[]> {
+    const r = await adminFetch("/aptitude-questions?limit=100");
+    return r.data || [];
+  },
+  async createAptitudeQuestion(q: Partial<AptitudeQuestion>): Promise<AptitudeQuestion> {
+    const r = await adminFetch("/aptitude-questions", { method: "POST", body: JSON.stringify(q) });
+    return r.data;
+  },
+  async updateAptitudeQuestion(id: string, patch: Partial<AptitudeQuestion>): Promise<AptitudeQuestion> {
+    const r = await adminFetch(`/aptitude-questions/${id}`, { method: "PATCH", body: JSON.stringify(patch) });
+    return r.data;
+  },
+  async deleteAptitudeQuestion(id: string): Promise<void> {
+    await adminFetch(`/aptitude-questions/${id}`, { method: "DELETE" });
+  },
+
+  // ── Aptitude Topics ──────────────────────────────────────
+  async getAptitudeTopics(): Promise<AptitudeTopic[]> {
+    const r = await adminFetch("/aptitude-topics");
+    return r.data || [];
+  },
+  async createAptitudeTopic(t: Partial<AptitudeTopic>): Promise<AptitudeTopic> {
+    const r = await adminFetch("/aptitude-topics", { method: "POST", body: JSON.stringify(t) });
+    return r.data;
+  },
+  async deleteAptitudeTopic(id: string): Promise<void> {
+    await adminFetch(`/aptitude-topics/${id}`, { method: "DELETE" });
+  },
+
+  // ── Aptitude Test Configs ────────────────────────────────
+  async getAptitudeTests(): Promise<AptitudeTestConfig[]> {
+    const r = await adminFetch("/aptitude-tests?limit=100");
+    return r.data || [];
+  },
+  async createAptitudeTest(t: Partial<AptitudeTestConfig>): Promise<AptitudeTestConfig> {
+    const r = await adminFetch("/aptitude-tests", { method: "POST", body: JSON.stringify(t) });
+    return r.data;
+  },
+  async updateAptitudeTest(id: string, patch: Partial<AptitudeTestConfig>): Promise<AptitudeTestConfig> {
+    const r = await adminFetch(`/aptitude-tests/${id}`, { method: "PATCH", body: JSON.stringify(patch) });
+    return r.data;
+  },
+  async deleteAptitudeTest(id: string): Promise<void> {
+    await adminFetch(`/aptitude-tests/${id}`, { method: "DELETE" });
   },
 
   // ── Settings ─────────────────────────────────────────────
