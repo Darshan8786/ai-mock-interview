@@ -9,6 +9,7 @@
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "seed:aptitude": "tsx src/seed/seedAptitude.ts",
+    "gen:aptitude": "tsx src/scripts/generateAptitudeQuestions.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

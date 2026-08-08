@@ -65,6 +65,14 @@ const userSchema = new mongoose.Schema(
     },
     isActive: { type: Boolean, default: true },
     lastLoginAt: { type: Date },
+
+    // ── Aptitude no-repeat tracking ──────────────────────
+    // Question ids this user has already been served, so draws avoid repeats.
+    // Reset automatically when the matching pool is exhausted.
+    aptitudeSeen: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "AptitudeQuestion" }],
+      default: [],
+    },
   },
   { timestamps: true }
 );

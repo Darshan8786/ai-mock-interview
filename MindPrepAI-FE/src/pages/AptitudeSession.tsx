@@ -1,13 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  getTestQuestions,
-  getPracticeQuestions,
-  submitAptitudeTest,
-  submitPractice,
-} from "../services/profileApi";
-import type { AptitudeQuestionDTO } from "../services/profileApi";
+import { getActiveAttempt, submitAttempt } from "../services/profileApi";
+import type { AptitudeQuestionDTO, StartedAttempt } from "../services/profileApi";
 
 const TAB_WARNING_LIMIT = 2;
 
@@ -24,16 +19,12 @@ const DIFFICULTY_COLORS: Record<string, string> = {
   advanced: "bg-red-500/15 text-red-400",
 };
 
-export function AptitudeTest() {
+export function AptitudeSession() {
   const navigate = useNavigate();
-  const { testId } = useParams<{ testId: string }>();
-  const [searchParams] = useSearchParams();
+  const { attemptId } = useParams<{ attemptId: string }>();
 
-  const isPractice = !testId;
-
+  const [attempt, setAttempt] = useState<StartedAttempt | null>(null);
   const [questions, setQuestions] = useState<AptitudeQuestionDTO[]>([]);
-  const [drawnQuestionIds, setDrawnQuestionIds] = useState<string[]>([]);
-  const [testMeta, setTestMeta] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
 
@@ -50,24 +41,13 @@ export function AptitudeTest() {
   answersRef.current = answers;
 
   useEffect(() => {
+    if (!attemptId) return;
     let cancelled = false;
-    setLoading(true);
-
-    const load = isPractice
-      ? getPracticeQuestions({
-          category: searchParams.get("category") || undefined,
-          topic: searchParams.get("topic") || undefined,
-          difficulty: searchParams.get("difficulty") || undefined,
-          count: Number(searchParams.get("count")) || 10,
-        })
-      : getTestQuestions(testId!);
-
-    load
-      .then((data: any) => {
+    getActiveAttempt(attemptId)
+      .then((data) => {
         if (cancelled) return;
+        setAttempt(data);
         setQuestions(data.questions || []);
-        setDrawnQuestionIds(data.drawnQuestionIds || []);
-        setTestMeta(data.test || {});
         if (data.test?.durationMinutes) {
           setTimeLeft(data.test.durationMinutes * 60);
         }
@@ -76,15 +56,14 @@ export function AptitudeTest() {
       .catch(() => {
         if (cancelled) return;
         setLoadError(
-          "Could not load questions. Please ensure you are logged in and the backend is running."
+          "Could not load your test session. It may have already been submitted or the backend is unavailable."
         );
         setLoading(false);
       });
-
     return () => {
       cancelled = true;
     };
-  }, [testId, isPractice, searchParams]);
+  }, [attemptId]);
 
   useEffect(() => {
     if (isSubmitted || questions.length === 0) return;
@@ -119,29 +98,18 @@ export function AptitudeTest() {
   }, [isSubmitted]);
 
   const handleSubmit = useCallback(async () => {
-    if (isSubmitted || questions.length === 0) return;
+    if (isSubmitted || questions.length === 0 || !attemptId) return;
     setIsSubmitted(true);
     setSubmitting(true);
 
     const timeTaken = Math.floor((Date.now() - startTime.current) / 1000);
 
     try {
-      const result = isPractice
-        ? await submitPractice({
-            answers: answersRef.current,
-            timeTaken,
-            tabWarnings: tabWarningRef.current,
-            drawnQuestionIds,
-            marksPerQuestion: 1,
-            negativeMarksPerQuestion: 0,
-          })
-        : await submitAptitudeTest(testId!, {
-            answers: answersRef.current,
-            timeTaken,
-            tabWarnings: tabWarningRef.current,
-            drawnQuestionIds,
-          });
-
+      const result = await submitAttempt(attemptId, {
+        answers: answersRef.current,
+        timeTaken,
+        tabWarnings: tabWarningRef.current,
+      });
       navigate("/aptitude/result", { state: { result } });
     } catch {
       navigate("/aptitude/result", {
@@ -149,7 +117,7 @@ export function AptitudeTest() {
         replace: true,
       });
     }
-  }, [isSubmitted, isPractice, testId, questions.length, drawnQuestionIds, navigate]);
+  }, [isSubmitted, questions.length, attemptId, navigate]);
 
   const selectAnswer = (optIdx: number) => {
     setAnswers((prev) => ({ ...prev, [questions[currentQ].id]: optIdx }));
@@ -166,7 +134,7 @@ export function AptitudeTest() {
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-gray-400 text-sm">Preparing your questions…</p>
+          <p className="text-gray-400 text-sm">Resuming your session…</p>
         </div>
       </div>
     );
@@ -178,7 +146,7 @@ export function AptitudeTest() {
         <div className="text-center">
           <p className="text-red-400 text-sm mb-4">{loadError}</p>
           <button
-            onClick={() => navigate(isPractice ? "/aptitude" : "/aptitude")}
+            onClick={() => navigate("/aptitude")}
             className="px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
           >
             Back to Aptitude
@@ -192,7 +160,7 @@ export function AptitudeTest() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 flex items-center justify-center px-4">
         <div className="text-center">
-          <p className="text-gray-400 text-sm mb-4">No questions match this selection. Try widening your filters.</p>
+          <p className="text-gray-400 text-sm mb-4">No questions in this session.</p>
           <button
             onClick={() => navigate("/aptitude")}
             className="px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
@@ -205,6 +173,7 @@ export function AptitudeTest() {
   }
 
   const currentQuestion = questions[currentQ];
+  const meta = attempt?.test;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800">
@@ -225,15 +194,14 @@ export function AptitudeTest() {
       <div className="max-w-7xl mx-auto p-4">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-white">
-              {isPractice ? "Practice Session" : testMeta.title || "Aptitude Test"}
-            </h1>
-            {!isPractice && (
-              <p className="text-xs text-gray-400 mt-0.5">
-                +{testMeta.marksPerQuestion} per correct · −{testMeta.negativeMarksPerQuestion} per wrong · pass{" "}
-                {testMeta.passingScore}%
-              </p>
-            )}
+            <h1 className="text-2xl font-bold text-white">{meta?.title || "Aptitude Session"}</h1>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {meta?.testType || "mixed"} mode · pool size {attempt?.poolSize ?? questions.length}
+              {meta?.marksPerQuestion !== undefined && meta?.negativeMarksPerQuestion !== undefined && (
+                <> · +{meta.marksPerQuestion} per correct · −{meta.negativeMarksPerQuestion} per wrong</>
+              )}
+              {meta?.passingScore !== undefined && <> · pass {meta.passingScore}%</>}
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div

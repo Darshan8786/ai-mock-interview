@@ -4,11 +4,16 @@ import { connectDB } from "../config/db.js";
 import { AptitudeQuestion } from "../models/AptitudeQuestion.js";
 import { AptitudeTopic } from "../models/AptitudeTopic.js";
 import { AptitudeTestConfig } from "../models/AptitudeTestConfig.js";
+import { AptitudeAttempt } from "../models/AptitudeAttempt.js";
+import { AptitudeQuestionHistory } from "../models/AptitudeQuestionHistory.js";
 import { aptitudeTopics } from "../data/aptitudeTopics.js";
-import { quantSeed } from "../data/quantSeed.js";
-import { logicalSeed } from "../data/logicalSeed.js";
-import { verbalSeed } from "../data/verbalSeed.js";
-import { diSeed } from "../data/diSeed.js";
+import { quantSeed1 } from "../data/quantSeed1.js";
+import { quantSeed2 } from "../data/quantSeed2.js";
+import { logicalSeed1 } from "../data/logicalSeed1.js";
+import { logicalSeed2 } from "../data/logicalSeed2.js";
+import { verbalSeed1 } from "../data/verbalSeed1.js";
+import { verbalSeed2 } from "../data/verbalSeed2.js";
+import { diSeed2 } from "../data/diSeed2.js";
 import { SeedQuestion } from "../data/seedTypes.js";
 
 const COMPANY_STYLES: Record<string, string> = {
@@ -38,8 +43,19 @@ const toMongoDoc = (s: SeedQuestion) => ({
   isActive: true,
 });
 
+const ALL_SEEDS: SeedQuestion[] = [
+  ...quantSeed1,
+  ...quantSeed2,
+  ...logicalSeed1,
+  ...logicalSeed2,
+  ...verbalSeed1,
+  ...verbalSeed2,
+  ...diSeed2,
+];
+
 async function seedTopics() {
   let created = 0;
+  const catalogKeys = new Set(aptitudeTopics.map((t) => `${t.category}::${t.name}`));
   for (let i = 0; i < aptitudeTopics.length; i++) {
     const t = aptitudeTopics[i];
     const existing = await AptitudeTopic.findOne({
@@ -55,27 +71,29 @@ async function seedTopics() {
       await existing.save();
     }
   }
+  const stale = await AptitudeTopic.find({ isActive: true });
+  for (const t of stale) {
+    if (!catalogKeys.has(`${t.category}::${t.name}`)) {
+      t.isActive = false;
+      t.questionCount = 0;
+      await t.save();
+    }
+  }
   return created;
 }
 
-async function seedQuestions(seed: SeedQuestion[]) {
-  let inserted = 0;
-  let updated = 0;
-  for (const s of seed) {
-    const existing = await AptitudeQuestion.findOne({
-      category: s.cat,
-      question: s.q,
-    });
-    if (existing) {
-      existing.set(toMongoDoc(s));
-      await existing.save();
-      updated++;
-    } else {
-      await AptitudeQuestion.create(toMongoDoc(s));
-      inserted++;
-    }
-  }
-  return { inserted, updated };
+/** Wipe questions + student history/attempts, then insert the full 1,000-question bank. */
+async function seedQuestions() {
+  const wipedQ = await AptitudeQuestion.deleteMany({});
+  const wipedH = await AptitudeQuestionHistory.deleteMany({});
+  const wipedA = await AptitudeAttempt.deleteMany({});
+  const inserted = await AptitudeQuestion.insertMany(ALL_SEEDS.map(toMongoDoc));
+  return {
+    inserted: inserted.length,
+    wipedQ: wipedQ.deletedCount,
+    wipedH: wipedH.deletedCount,
+    wipedA: wipedA.deletedCount,
+  };
 }
 
 async function syncTopicCounts() {
@@ -95,9 +113,8 @@ async function syncTopicCounts() {
 }
 
 async function seedDefaults() {
-  const existing = await AptitudeTestConfig.findOne({ title: "Full Mock Aptitude Test" });
-  if (!existing) {
-    await AptitudeTestConfig.create({
+  const defaults: any[] = [
+    {
       title: "Full Mock Aptitude Test",
       description:
         "Timed full-length aptitude mock drawn from all four categories. Perfect for placement practice.",
@@ -111,26 +128,88 @@ async function seedDefaults() {
       passingScore: 50,
       shuffle: true,
       isActive: true,
-    });
-    console.log("📋 Created default test config: Full Mock Aptitude Test");
+    },
+    {
+      title: "Quantitative Aptitude Test",
+      description: "Mock drawn only from Quantitative Aptitude topics.",
+      category: "Quantitative",
+      topics: [],
+      difficulty: "",
+      questionCount: 15,
+      durationMinutes: 15,
+      marksPerQuestion: 1,
+      negativeMarksPerQuestion: 0.25,
+      passingScore: 50,
+      shuffle: true,
+      isActive: true,
+    },
+    {
+      title: "Logical Reasoning Test",
+      description: "Mock drawn only from Logical Reasoning topics.",
+      category: "Logical Reasoning",
+      topics: [],
+      difficulty: "",
+      questionCount: 15,
+      durationMinutes: 15,
+      marksPerQuestion: 1,
+      negativeMarksPerQuestion: 0.25,
+      passingScore: 50,
+      shuffle: true,
+      isActive: true,
+    },
+    {
+      title: "Verbal Ability Test",
+      description: "Mock drawn only from Verbal Ability topics.",
+      category: "Verbal Ability",
+      topics: [],
+      difficulty: "",
+      questionCount: 15,
+      durationMinutes: 15,
+      marksPerQuestion: 1,
+      negativeMarksPerQuestion: 0.25,
+      passingScore: 50,
+      shuffle: true,
+      isActive: true,
+    },
+    {
+      title: "Data Interpretation Test",
+      description: "Mock drawn only from Data Interpretation topics.",
+      category: "Data Interpretation",
+      topics: [],
+      difficulty: "",
+      questionCount: 10,
+      durationMinutes: 15,
+      marksPerQuestion: 1,
+      negativeMarksPerQuestion: 0.25,
+      passingScore: 50,
+      shuffle: true,
+      isActive: true,
+    },
+  ];
+  let created = 0;
+  for (const d of defaults) {
+    const existing = await AptitudeTestConfig.findOne({ title: d.title });
+    if (!existing) {
+      await AptitudeTestConfig.create(d);
+      created++;
+    }
   }
+  if (created) console.log(`📋 Created ${created} default test configs`);
 }
 
 export async function seedAptitude() {
   await connectDB();
 
   const topicCount = await seedTopics();
-  const quant = await seedQuestions(quantSeed);
-  const logical = await seedQuestions(logicalSeed);
-  const verbal = await seedQuestions(verbalSeed);
-  const di = await seedQuestions(diSeed);
+  const result = await seedQuestions();
   const touched = await syncTopicCounts();
   await seedDefaults();
 
   const total = await AptitudeQuestion.countDocuments({ isActive: true });
   console.log("\n✅ Aptitude seed complete");
   console.log(`   Topics: ${aptitudeTopics.length} (${topicCount} new, ${touched} counts synced)`);
-  console.log(`   Questions inserted/updated → Quantitative ${quant.inserted}/${quant.updated}, Logical ${logical.inserted}/${logical.updated}, Verbal ${verbal.inserted}/${verbal.updated}, DI ${di.inserted}/${di.updated}`);
+  console.log(`   Wiped questions: ${result.wipedQ}, history: ${result.wipedH}, attempts: ${result.wipedA}`);
+  console.log(`   Inserted: ${result.inserted}`);
   console.log(`   Total active questions: ${total}`);
 
   await mongoose.disconnect();

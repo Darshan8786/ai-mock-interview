@@ -19,7 +19,10 @@ import { InterviewResult } from "./pages/InterviewResult";
 import { MockDashboard } from "./pages/MockDashboard";
 import { AptitudeDashboard } from "./pages/AptitudeDashboard";
 import { AptitudeTest } from "./pages/AptitudeTest";
+import { AptitudeSession } from "./pages/AptitudeSession";
 import { AptitudeResult } from "./pages/AptitudeResult";
+import { AptitudeProgress } from "./pages/AptitudeProgress";
+import { AptitudeHistory } from "./pages/AptitudeHistory";
 import { Profile } from "./pages/Profile";
 import { ResumeBuilder } from "./pages/ResumeBuilder";
 import { AdminLayout } from "./components/admin/AdminLayout";
@@ -62,6 +65,9 @@ function App() {
             <Route path="/aptitude" element={<AptitudeDashboard />} />
             <Route path="/aptitude/test/:testId" element={<AptitudeTest />} />
             <Route path="/aptitude/practice" element={<AptitudeTest />} />
+            <Route path="/aptitude/session/:attemptId" element={<AptitudeSession />} />
+            <Route path="/aptitude/progress" element={<AptitudeProgress />} />
+            <Route path="/aptitude/history" element={<AptitudeHistory />} />
             <Route path="/aptitude/result" element={<AptitudeResult />} />
             <Route path="/profile" element={<Profile />} />
           </Route>

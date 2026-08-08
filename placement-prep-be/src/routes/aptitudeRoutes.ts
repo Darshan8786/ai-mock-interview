@@ -10,6 +10,13 @@ import {
   submitTest,
   getPracticeQuestions,
   submitPractice,
+  startAptitudeTest,
+  getActiveAttempt,
+  submitAptitudeTest,
+  getAptitudeProgress,
+  getAptitudeHistory,
+  getAptitudeHistoryDetail,
+  getAptitudeQuestions,
 } from "../controllers/aptitudeController";
 import { protect } from "../middleware/auth";
 
@@ -32,5 +39,18 @@ router.post("/tests/:id/submit", submitTest);
 // Practice mode
 router.get("/practice", getPracticeQuestions);
 router.post("/practice/submit", submitPractice);
+
+// Unified session flow (start / active attempt / submit)
+router.post("/test/start", startAptitudeTest);
+router.get("/test/:attemptId", getActiveAttempt);
+router.post("/test/:attemptId/submit", submitAptitudeTest);
+
+// Progress & history
+router.get("/progress", getAptitudeProgress);
+router.get("/history", getAptitudeHistory);
+router.get("/history/:attemptId", getAptitudeHistoryDetail);
+
+// Public question bank (no answers)
+router.get("/questions", getAptitudeQuestions);
 
 export default router;

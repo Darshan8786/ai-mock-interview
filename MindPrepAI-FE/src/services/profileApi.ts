@@ -181,7 +181,7 @@ export const getTestQuestions = async (
 
 export const submitAptitudeTest = async (
   testId: string,
-  payload: { answers: Record<string, number>; timeTaken: number; tabWarnings: number }
+  payload: { answers: Record<string, number>; timeTaken: number; tabWarnings: number; drawnQuestionIds?: string[] }
 ): Promise<ScoredResult> => {
   const res = await api.post(`/aptitude/tests/${testId}/submit`, payload);
   return res.data.data;
@@ -204,7 +204,122 @@ export const submitPractice = async (payload: {
   tabWarnings: number;
   marksPerQuestion?: number;
   negativeMarksPerQuestion?: number;
+  drawnQuestionIds?: string[];
 }): Promise<ScoredResult> => {
   const res = await api.post("/aptitude/practice/submit", payload);
+  return res.data.data;
+};
+
+// ── Unified session flow (start / active / submit) ──────────
+
+export interface StartedAttempt {
+  attemptId: string;
+  test: {
+    title: string;
+    testType: string;
+    difficulty: string;
+    durationMinutes: number;
+    marksPerQuestion: number;
+    negativeMarksPerQuestion: number;
+    passingScore: number;
+    count: number;
+  };
+  poolSize: number;
+  repeatedIds: string[];
+  questions: AptitudeQuestionDTO[];
+}
+
+export const startAptitudeTest = async (payload: {
+  mode?: string;
+  testId?: string;
+  category?: string;
+  topic?: string;
+  difficulty?: string;
+  tag?: string;
+  count?: number;
+  distribution?: Record<string, number>;
+}): Promise<StartedAttempt> => {
+  const res = await api.post("/aptitude/test/start", payload);
+  return res.data.data;
+};
+
+export const getActiveAttempt = async (attemptId: string): Promise<StartedAttempt> => {
+  const res = await api.get(`/aptitude/test/${attemptId}`);
+  return res.data.data;
+};
+
+export const submitAttempt = async (
+  attemptId: string,
+  payload: { answers: Record<string, number>; timeTaken: number; tabWarnings: number }
+): Promise<ScoredResult> => {
+  const res = await api.post(`/aptitude/test/${attemptId}/submit`, payload);
+  return res.data.data;
+};
+
+// ── Progress & history ──────────────────────────────────────
+
+export interface AptitudeProgress {
+  totalSeen: number;
+  totalAnswered: number;
+  totalCorrect: number;
+  totalIncorrect: number;
+  accuracy: number;
+  completedTests: number;
+  questionsRemaining: number;
+  questionsCompleted: number;
+  weakTopics: string[];
+  strongTopics: string[];
+  topicWise: { topic: string; answered: number; correct: number; accuracy: number; weak: boolean }[];
+  difficultyWise: { difficulty: string; answered: number; correct: number; accuracy: number }[];
+}
+
+export const getAptitudeProgress = async (): Promise<AptitudeProgress> => {
+  const res = await api.get("/aptitude/progress");
+  return res.data.data;
+};
+
+export interface AttemptSummary {
+  attemptId: string;
+  title: string;
+  testType: string;
+  difficulty: string;
+  status: string;
+  totalQuestions: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+  unattempted: number;
+  score: number;
+  accuracy: number;
+  marks: number;
+  timeTaken: number;
+  startedAt: string;
+  completedAt: string | null;
+  createdAt: string;
+}
+
+export const getAptitudeHistory = async (): Promise<AttemptSummary[]> => {
+  const res = await api.get("/aptitude/history");
+  return res.data.data;
+};
+
+export interface AttemptDetail extends AttemptSummary {
+  questions: {
+    id: string;
+    question: string;
+    category: string;
+    topic: string;
+    difficulty: string;
+    options: string[];
+    repeated: boolean;
+    selected: number | undefined;
+    correct: number;
+    answered: boolean;
+    isCorrect: boolean;
+    explanation: string;
+  }[];
+}
+
+export const getAptitudeHistoryDetail = async (attemptId: string): Promise<AttemptDetail> => {
+  const res = await api.get(`/aptitude/history/${attemptId}`);
   return res.data.data;
 };
