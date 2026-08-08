@@ -177,7 +177,7 @@ async function fetchLiveJobsFromAdzuna(what: string, where = "Bengaluru", limit 
   }));
 }
 
-async function analyzeJobSkillGaps(resumeText: string, resumeSkills: string[], jobs: any[]): Promise<any[]> {
+export async function analyzeJobSkillGaps(resumeText: string, resumeSkills: string[], jobs: any[]): Promise<any[]> {
   if (jobs.length === 0) return [];
 
   const jobBlock = jobs

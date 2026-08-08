@@ -7,6 +7,8 @@ import aiRoutes from "./aiRoutes";
 import reportRoutes from "./reportRoutes";
 import pineconeRoutes from "./pineconeRoutes";
 import jobRoutes from "./jobRoutes";
+import aptitudeRoutes from "./aptitudeRoutes";
+import adminRoutes from "./adminRoutes";
 
 const router = Router();
 
@@ -18,5 +20,7 @@ router.use("/ai", aiRoutes);
 router.use("/reports", reportRoutes);
 router.use("/pinecone", pineconeRoutes);
 router.use("/jobs", jobRoutes);
+router.use("/aptitude", aptitudeRoutes);
+router.use("/admin", adminRoutes);
 
 export default router;

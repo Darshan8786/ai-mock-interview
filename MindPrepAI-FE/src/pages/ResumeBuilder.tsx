@@ -74,9 +74,7 @@ export function ResumeBuilder() {
     if (location.state?.importedData) {
       const imported = location.state.importedData;
       setData(imported);
-      if (!location.state?.atsAnalysis) {
-        evaluateData(imported);
-      }
+      evaluateData(imported);
     }
   }, [location.state?.importedData]);
 
@@ -251,7 +249,7 @@ export function ResumeBuilder() {
 
       // Check if the server responded at all
       if (!res.ok && res.status === 0) {
-        throw new Error("Cannot reach the server. Make sure the backend is running on port 3000.");
+        throw new Error("Cannot reach the server. Make sure the backend is running.");
       }
 
       let json: any;

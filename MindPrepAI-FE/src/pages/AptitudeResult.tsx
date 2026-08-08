@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { saveAptitudeResult } from "../services/profileApi";
 
 interface ResultData {
   answers: Record<number, number>;
@@ -14,6 +15,58 @@ export function AptitudeResult() {
   const navigate = useNavigate();
   const data = location.state as ResultData | null;
   const [expanded, setExpanded] = useState<number | null>(null);
+  const [saveState, setSaveState] = useState<"saving" | "saved" | "error">("saving");
+
+  useEffect(() => {
+    if (!data) return;
+    let cancelled = false;
+
+    const total = data.questions.length;
+    let correct = 0;
+    const wrong = data.questions.reduce((acc: number, q: any, idx: number) => {
+      if (data.answers[idx] === undefined) return acc;
+      if (data.answers[idx] === q.correct) { correct++; return acc; }
+      return acc + 1;
+    }, 0);
+
+    const score = Math.round((correct / total) * 100);
+    const categories = ["Quantitative", "Logical", "Verbal"];
+    const catScores = categories.map((cat) => {
+      const qs = data.questions.filter((q: any) => q.category === cat);
+      const done = qs.filter((q: any) => data.answers[q.id - 1] === q.correct).length;
+      return {
+        category: cat,
+        score: qs.length ? Math.round((done / qs.length) * 100) : 0,
+        correct: done,
+        total: qs.length,
+      };
+    });
+
+    const answers = data.questions.map((q: any, idx: number) => ({
+      question: q.question,
+      selected: data.answers[idx],
+      correct: q.correct,
+      isCorrect: data.answers[idx] === q.correct,
+      category: q.category,
+    }));
+
+    saveAptitudeResult({
+      totalQuestions: total,
+      correctAnswers: correct,
+      wrongAnswers: wrong,
+      unattempted: total - Object.keys(data.answers).length,
+      score,
+      marks: correct,
+      timeTaken: data.timeTaken,
+      tabWarnings: data.tabWarnings,
+      categoryScores: catScores,
+      answers,
+    })
+      .then(() => { if (!cancelled) setSaveState("saved"); })
+      .catch(() => { if (!cancelled) setSaveState("error"); });
+
+    return () => { cancelled = true; };
+  }, [data]);
 
   if (!data) {
     return (
@@ -78,6 +131,12 @@ export function AptitudeResult() {
           <StatBox label="Wrong" value={total - correct - Object.values(answers).filter((a) => a === undefined).length} color="red" />
           <StatBox label="Unattempted" value={total - Object.keys(answers).length} color="gray" />
           <StatBox label="Tab Warnings" value={tabWarnings} color={tabWarnings > 0 ? "red" : "emerald"} />
+        </div>
+
+        <div className="mb-8 text-center">
+          {saveState === "saving" && <p className="text-xs text-gray-400">Saving result to your record...</p>}
+          {saveState === "saved" && <p className="text-xs text-emerald-400">✓ Result saved — visible to the Training & Placement Office</p>}
+          {saveState === "error" && <p className="text-xs text-red-400">Could not save result. Please check your connection.</p>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

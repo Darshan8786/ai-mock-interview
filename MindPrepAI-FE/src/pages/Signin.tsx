@@ -32,9 +32,11 @@ export function Signin() {
       }
 
       const jwt = response.data.token;
+      const role = response.data?.data?.user?.role || "user";
       localStorage.setItem("token", jwt);
+      localStorage.setItem("role", role);
       toast.success("Signed in Successfully");
-      navigate("/dashboard");
+      navigate(role === "admin" ? "/admin" : "/dashboard");
     } catch (err: any) {
       const message = err?.response?.data?.message || "Something went wrong. Try again.";
       toast.error(message);

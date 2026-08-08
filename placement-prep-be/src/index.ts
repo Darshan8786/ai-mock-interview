@@ -3,6 +3,7 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { env } from "./config/env.js";
 import { connectDB } from "./config/db.js";
+import { seedAdmin } from "./seed/seedAdmin.js";
 import routes from "./routes/index.js";
 import { globalErrorHandler } from "./middleware/error.js";
 import { AppError } from "./utils/AppError.js";
@@ -31,27 +32,48 @@ app.use(globalErrorHandler);
 const startServer = async () => {
   try {
     await connectDB();
-    const port = Number(process.env.PORT || env.PORT || 5000);
-    const server = app.listen(port, () => {
-      console.log(`🚀 Server listening on port: ${port} mode: ${env.NODE_ENV}`);
-    });
+    await seedAdmin();
 
-    server.on("error", (error: NodeJS.ErrnoException) => {
-      if (error.code === "EADDRINUSE") {
-        console.warn(`Port ${port} is busy, trying ${port + 1}...`);
-        server.close();
-        app.listen(port + 1, () => {
-          console.log(`🚀 Server listening on port: ${port + 1} mode: ${env.NODE_ENV}`);
-        });
-      } else {
-        throw error;
-      }
-    });
+    const preferredPort = Number(process.env.PORT || env.PORT || 5000);
+    const maxPortAttempts = 20;
+
+    const tryListen = (port: number, attempt = 1) => {
+      const server = app.listen(port, () => {
+        console.log(`🚀 Server listening on port: ${port} mode: ${env.NODE_ENV}`);
+      });
+
+      server.on("error", (error: NodeJS.ErrnoException) => {
+        if (error.code === "EADDRINUSE") {
+          if (attempt >= maxPortAttempts) {
+            console.error(`No available port found after ${maxPortAttempts} attempts.`);
+            process.exit(1);
+            return;
+          }
+
+          const nextPort = port + 1;
+          console.warn(`Port ${port} is busy, trying ${nextPort}...`);
+          if (server.listening) {
+            server.close(() => tryListen(nextPort, attempt + 1));
+          } else {
+            tryListen(nextPort, attempt + 1);
+          }
+        } else {
+          console.error("Server error:", error);
+          if (server.listening) {
+            server.close(() => process.exit(1));
+          } else {
+            process.exit(1);
+          }
+        }
+      });
+    };
 
     process.on("unhandledRejection", (err: Error) => {
       console.log("UNHANDLED REJECTION! 💥 Shutting down...");
-      server.close(() => process.exit(1));
+      process.exit(1);
     });
+
+    tryListen(preferredPort);
   } catch (error) {
     console.error("Failed to start server:", error);
     process.exit(1);

@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { BACKEND_URL } from "../config/config";
 import type { ProctorFrameResult, ProctorStatus, ProctorEvent } from "../types/proctor";
 
 const AI_SERVICE_URL = "http://localhost:8000";
@@ -208,7 +209,7 @@ export function useProctoring(interviewId?: string) {
     try {
       const token = localStorage.getItem("token");
       await fetch(
-        `http://localhost:3000/api/v1/mock-interview/${interviewId}/cheating`,
+        `${BACKEND_URL}/api/v1/mock-interview/${interviewId}/cheating`,
         {
           method: "POST",
           headers: {

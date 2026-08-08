@@ -8,11 +8,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isAuthenticated = !!localStorage.getItem("token");
-  const isAuthPage = location.pathname === "/signin" || location.pathname === "/signup";
+  const isAuthPage =
+    location.pathname === "/signin" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/admin/signin" ||
+    location.pathname.startsWith("/admin");
   const isResumeAnalyzer = location.pathname === "/resume-analyzer" || location.pathname === "/resume-builder";
 
   const navLinks = [
     { label: "Dashboard", path: "/dashboard" },
+    { label: "Profile", path: "/profile" },
     { label: "Quiz", path: "/quizpage" },
     { label: "Aptitude", path: "/aptitude" },
     { label: "Interview", path: "/mock-interview/dashboard" },
@@ -23,6 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     navigate("/signin");
   };
 

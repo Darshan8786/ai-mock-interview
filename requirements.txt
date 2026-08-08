@@ -1,0 +1,44 @@
+# MindPrep-AI — Root Python Requirements
+# ============================================
+# This file covers the Python dependencies for the whole project.
+# The main Python service lives in ai-services/ (FastAPI proctoring + AI).
+#
+# Install everything with:
+#   pip install -r requirements.txt
+#
+# Or inside a virtual environment:
+#   python -m venv venv
+#   venv\Scripts\activate        # Windows
+#   source venv/bin/activate     # macOS / Linux
+#   pip install -r requirements.txt
+#
+# NOTE: On Windows, the extra pywin32 package (win32com) is used for TTS.
+
+# ── Web Framework ────────────────────────────────────────────────
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+websockets==14.1
+
+# Legacy Flask (kept for backward compatibility with ai-services/server.py)
+flask==3.1.0
+flask-cors==5.0.1
+gunicorn==23.0.0
+
+# ── Image Processing ─────────────────────────────────────────────
+opencv-python==4.11.0.86
+numpy==2.2.4
+
+# ── AI / ML (proctoring & vision) ────────────────────────────────
+mediapipe==0.9.3.1
+ultralytics==8.3.55
+insightface==0.7.3
+onnxruntime==1.20.1
+
+# ── Speech (STT / TTS) ───────────────────────────────────────────
+speech_recognition==3.10.4
+pyttsx3==2.90
+pywin32==306; platform_system == "Windows"
+
+# ── Utilities ────────────────────────────────────────────────────
+requests==2.32.3
+python-dotenv==1.1.0
