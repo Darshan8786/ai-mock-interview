@@ -8,6 +8,8 @@ interface EnvConfig {
   NIM_API_URL: string;
   NIM_API_KEY: string;
   NIM_MODEL: string;
+  OLLAMA_URL: string;
+  OLLAMA_EMBED_MODEL: string;
   NODE_ENV: string;
   JWT_SECRET: string;
   AI_SERVICE_URL: string;
@@ -42,6 +44,8 @@ const getEnv = (): EnvConfig => {
     NIM_API_URL: process.env.NIM_API_URL as string,
     NIM_API_KEY: process.env.NIM_API_KEY as string,
     NIM_MODEL: process.env.NIM_MODEL || "meta/llama-3.1-405b-instruct",
+    OLLAMA_URL: process.env.OLLAMA_URL || "http://localhost:11434",
+    OLLAMA_EMBED_MODEL: process.env.OLLAMA_EMBED_MODEL || "nomic-embed-text",
     NODE_ENV: process.env.NODE_ENV || "development",
     JWT_SECRET: process.env.JWT_SECRET || "fallback-secret-change-me",
     AI_SERVICE_URL: process.env.AI_SERVICE_URL || "http://localhost:5001",

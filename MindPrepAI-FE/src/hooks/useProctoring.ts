@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { BACKEND_URL } from "../config/config";
 import type { ProctorFrameResult, ProctorStatus, ProctorEvent } from "../types/proctor";
 
-const AI_SERVICE_URL = "http://localhost:8000";
+const AI_SERVICE_URL = "http://localhost:8001";
 const AI_SERVICE_KEY = "mindprep-ai-key-2026";
 const FRAME_INTERVAL = 100;
 const MAX_WARNINGS_BEFORE_TERMINATE = 3;
@@ -39,21 +39,52 @@ export function useProctoring(interviewId?: string) {
     setEvents((prev) => [...prev.slice(-50), { type, timestamp: now, description, severity }]);
   }, []);
 
+  const reportToBackend = useCallback(async (eventType: string, description: string) => {
+    if (!interviewId) return;
+    try {
+      const token = localStorage.getItem("token");
+      await fetch(
+        `${BACKEND_URL}/api/v1/mock-interview/${interviewId}/cheating`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ type: eventType, description }),
+        }
+      );
+    } catch {
+      // silently ignore
+    }
+  }, [interviewId]);
+
+  const tabSwitchCount = useRef(0);
+
   const checkTabSwitch = useCallback(() => {
     const handler = () => {
       if (document.visibilityState === "hidden") {
-        setCheatingCount((c) => c + 1);
-        addEvent("tab_switch", "Tab switching detected", "violation");
-        setWarnings((w) => [...w, "Tab switching detected"]);
+        tabSwitchCount.current += 1;
+        const n = tabSwitchCount.current;
+        setCheatingCount(n);
+        if (n > 3) {
+          reportToBackend("tab_switch", "Tab switching limit exceeded - interview terminated");
+          addEvent("tab_switch", "Interview terminated: tab switching limit exceeded", "violation");
+          setWarnings((w) => [...w, "Interview terminated: tab switching limit exceeded"]);
+          setTerminated(true);
+        } else {
+          addEvent("tab_switch", `Tab switching detected (${n}/3)`, "warning");
+          setWarnings((w) => [...w, `Tab switching detected (${n}/3)`]);
+        }
       }
     };
     document.addEventListener("visibilitychange", handler);
     return () => document.removeEventListener("visibilitychange", handler);
-  }, [addEvent]);
+  }, [addEvent, reportToBackend]);
 
   const checkWindowFocus = useCallback(() => {
     const blurHandler = () => {
-      setCheatingCount((c) => c + 1);
+      if (document.visibilityState === "hidden") return;
       addEvent("window_blur", "Interview window lost focus", "warning");
       setWarnings((w) => [...w, "Interview window lost focus"]);
     };
@@ -204,32 +235,13 @@ export function useProctoring(interviewId?: string) {
     };
   }, [checkTabSwitch, checkWindowFocus, checkInternet, stopCapture]);
 
-  const reportToBackend = useCallback(async (eventType: string, description: string) => {
-    if (!interviewId) return;
-    try {
-      const token = localStorage.getItem("token");
-      await fetch(
-        `${BACKEND_URL}/api/v1/mock-interview/${interviewId}/cheating`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ type: eventType, description }),
-        }
-      );
-    } catch {
-      // silently ignore
-    }
-  }, [interviewId]);
-
   const dismissWarning = useCallback((warning: string) => {
     setWarnings((w) => w.filter((x) => x !== warning));
   }, []);
 
   const reset = useCallback(() => {
     setResult(null);
+    tabSwitchCount.current = 0;
     setStatus({
       face: "ok",
       headPose: "ok",

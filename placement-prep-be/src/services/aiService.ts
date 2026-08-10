@@ -1,5 +1,6 @@
-import { geminiModel, embeddingModel } from "../config/gemini";
+import { geminiModel } from "../config/gemini";
 import { AppError } from "../utils/AppError";
+import { embedText } from "./embeddingService";
 
 export const generateQuestion = async (topic: string, difficulty: string) => {
   try {
@@ -21,8 +22,7 @@ export const generateQuestion = async (topic: string, difficulty: string) => {
 
 export const getEmbedding = async (text: string) => {
   try {
-    const result = await embeddingModel.embedContent(text);
-    return result.embedding.values;
+    return await embedText(text);
   } catch (error) {
     throw new AppError(`Embedding generation failed: ${(error as Error).message}`, 500);
   }

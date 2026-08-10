@@ -3,10 +3,13 @@ import json
 import base64
 import io
 import tempfile
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import cv2
+
+load_dotenv()
 
 from nim_service import generate_questions, evaluate_answer, generate_feedback
 from riva_service import text_to_speech, speech_to_text
@@ -43,6 +46,8 @@ def api_generate_questions():
         interview_type=data.get("interviewType", "Technical"),
         difficulty=data.get("difficulty", "Medium"),
         total_questions=data.get("totalQuestions", 5),
+        context=data.get("context", ""),
+        previous_questions=data.get("previousQuestions", ""),
     )
     return jsonify({"questions": questions})
 

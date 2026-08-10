@@ -39,6 +39,8 @@ const shapeStudent = (s: any) => ({
   semester: s.semester,
   section: s.section,
   cgpa: s.cgpa,
+  backlogs: s.backlogs ?? 0,
+  graduationYear: s.graduationYear,
   skills: s.skills || [],
   certifications: s.certifications || [],
   projects: s.projects || [],
@@ -136,6 +138,7 @@ export const updateStudent = asyncHandler(async (req: Request, res: Response) =>
   const allowed = [
     "name", "usn", "registerNumber", "collegeEmail", "personalEmail",
     "phone", "department", "year", "semester", "section", "cgpa",
+    "backlogs", "graduationYear",
     "skills", "certifications", "projects", "resumeUrl", "profilePhoto",
     "linkedin", "github", "portfolio", "address", "dateOfBirth",
     "placementStatus", "verificationStatus", "isActive",

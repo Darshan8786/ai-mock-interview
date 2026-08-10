@@ -13,6 +13,11 @@ import type {
   QuizAttempt,
   AdminJob,
   JobApplicant,
+  JobApplicationsResponse,
+  JobEligibility,
+  ApplicationStatus,
+  EligibilityListResponse,
+  NotifyResult,
   ProctoringLog,
   Announcement,
   AdminSettings,
@@ -26,7 +31,7 @@ import type {
 const API = `${BACKEND_URL}/api/v1/admin`;
 
 export async function adminFetch<T = any>(path: string, init?: RequestInit): Promise<T> {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("adminToken");
   const res = await fetch(`${API}${path}`, {
     ...init,
     headers: {
@@ -73,6 +78,25 @@ const mapStudent = (s: any): AdminStudent => ({
   createdAt: s.createdAt || new Date().toISOString(),
   lastActive: s.lastLoginAt || s.createdAt || new Date().toISOString(),
   status: s.isActive === false ? "inactive" : "active",
+  usn: s.usn || "",
+  registerNumber: s.registerNumber || "",
+  personalEmail: s.personalEmail || "",
+  semester: s.semester || "",
+  section: s.section || "",
+  cgpa: typeof s.cgpa === "number" ? s.cgpa : null,
+  backlogs: typeof s.backlogs === "number" ? s.backlogs : 0,
+  graduationYear: typeof s.graduationYear === "number" ? s.graduationYear : null,
+  skills: s.skills || [],
+  certifications: s.certifications || [],
+  projects: s.projects || [],
+  resumeUrl: s.resumeUrl || "",
+  profilePhoto: s.profilePhoto || "",
+  linkedin: s.linkedin || "",
+  github: s.github || "",
+  portfolio: s.portfolio || "",
+  dateOfBirth: s.dateOfBirth || "",
+  placementStatus: s.placementStatus || "not_applied",
+  verificationStatus: s.verificationStatus || "pending",
   atsScore: s.atsScore ?? 0,
   placementReadiness: s.profileCompletion ?? 0,
   interviewsTaken: s.interviewsTaken ?? 0,
@@ -116,6 +140,51 @@ const mapAnnouncement = (a: any): Announcement => ({
   createdAt: a.createdAt || new Date().toISOString(),
 });
 
+const mapEligibility = (e: any): JobEligibility => ({
+  minimumCGPA: typeof e?.minimumCGPA === "number" ? e.minimumCGPA : null,
+  maximumBacklogs: typeof e?.maximumBacklogs === "number" ? e.maximumBacklogs : null,
+  allowedDepartments: Array.isArray(e?.allowedDepartments) ? e.allowedDepartments : [],
+});
+
+const mapJob = (j: any): AdminJob => ({
+  id: j.id || j._id,
+  companyName: j.companyName || "",
+  jobTitle: j.jobTitle || "",
+  jobDescription: j.jobDescription || "",
+  location: j.location || "",
+  jobType: j.jobType || "",
+  package: j.package || "",
+  requiredSkills: j.requiredSkills || [],
+  eligibility: mapEligibility(j.eligibility),
+  lastDateToApply: j.lastDateToApply || new Date().toISOString(),
+  numberOfOpenings: j.numberOfOpenings ?? 1,
+  companyWebsite: j.companyWebsite || "",
+  applicationLink: j.applicationLink || "",
+  experience: j.experience || "",
+  responsibilities: j.responsibilities || "",
+  qualifications: j.qualifications || "",
+  selectionProcess: j.selectionProcess || "",
+  status: j.status || "active",
+  postedAt: j.postedAt || j.createdAt || new Date().toISOString(),
+  updatedAt: j.updatedAt,
+  applicants: j.applicants ?? 0,
+  isExpired: j.isExpired,
+  eligibilityCounts: j.eligibilityCounts,
+});
+
+const mapApplicant = (a: any): JobApplicant => ({
+  id: a.id || a._id,
+  jobId: a.jobId || "",
+  studentName: a.studentName || "",
+  usn: a.usn || "",
+  email: a.email || "",
+  department: a.department || "",
+  cgpa: typeof a.cgpa === "number" ? a.cgpa : null,
+  resumeUrl: a.resumeUrl || "",
+  status: a.status || "applied",
+  appliedAt: a.appliedAt || a.createdAt || new Date().toISOString(),
+});
+
 export const adminApi = {
   // ── Dashboard ────────────────────────────────────────────
   async getStats(): Promise<AdminStats> {
@@ -126,7 +195,12 @@ export const adminApi = {
       totalInterviews: c.totalInterviews ?? 0,
       totalQuizAttempts: c.quizAttempts ?? 0,
       totalResumeAnalyses: 0,
-      totalJobs: 0,
+      totalJobs: c.totalJobs ?? 0,
+      activeJobs: c.activeJobs ?? 0,
+      expiredJobs: c.expiredJobs ?? 0,
+      totalApplications: c.totalApplications ?? 0,
+      shortlistedStudents: c.shortlistedStudents ?? 0,
+      selectedStudents: c.selectedStudents ?? 0,
       avgAtsScore: 0,
       placementReadiness: Math.min(100, Math.round((c.averageCgpa ?? 0) * 10)),
       todayProctoringViolations: c.totalCheatingEvents ?? 0,
@@ -286,19 +360,106 @@ export const adminApi = {
 
   // ── Jobs ─────────────────────────────────────────────────
   async getJobs(): Promise<AdminJob[]> {
-    return [];
+    const r = await adminFetch("/jobs?limit=100");
+    return (r.data || []).map(mapJob);
+  },
+  async getJob(id: string): Promise<AdminJob> {
+    const r = await adminFetch(`/jobs/${id}`);
+    return mapJob(r.data);
   },
   async createJob(job: Omit<AdminJob, "id" | "applicants" | "postedAt">): Promise<AdminJob> {
-    return delay({ ...job, id: `job_${Date.now()}`, applicants: 0, postedAt: new Date().toISOString() } as AdminJob);
+    const r = await adminFetch("/jobs", { method: "POST", body: JSON.stringify(job) });
+    return mapJob(r.data);
   },
   async updateJob(id: string, patch: Partial<AdminJob>): Promise<AdminJob> {
-    return delay({ ...(await this.getJobs()).find((j) => j.id === id)!, ...patch });
+    const r = await adminFetch(`/jobs/${id}`, { method: "PUT", body: JSON.stringify(patch) });
+    return mapJob(r.data);
   },
-  async deleteJob(_id: string): Promise<void> {
-    return delay(undefined);
+  async deleteJob(id: string): Promise<void> {
+    await adminFetch(`/jobs/${id}`, { method: "DELETE" });
   },
-  async getJobApplicants(_jobId: string): Promise<JobApplicant[]> {
-    return [];
+  async setJobStatus(id: string, status: AdminJob["status"]): Promise<AdminJob> {
+    const r = await adminFetch(`/jobs/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+    return mapJob(r.data);
+  },
+  async getJobApplications(jobId: string): Promise<JobApplicationsResponse> {
+    const r = await adminFetch(`/jobs/${jobId}/applications`);
+    const d = r.data || {};
+    return {
+      job: mapJob(d.job || {}),
+      stats: {
+        total: d.stats?.total ?? 0,
+        applied: d.stats?.applied ?? 0,
+        shortlisted: d.stats?.shortlisted ?? 0,
+        rejected: d.stats?.rejected ?? 0,
+        selected: d.stats?.selected ?? 0,
+        withdrawn: d.stats?.withdrawn ?? 0,
+      },
+      applications: (d.applications || []).map(mapApplicant),
+    };
+  },
+  async updateApplicationStatus(id: string, status: ApplicationStatus): Promise<void> {
+    await adminFetch(`/applications/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+  },
+  async getEligibleStudents(jobId: string): Promise<EligibilityListResponse> {
+    const r = await adminFetch(`/jobs/${jobId}/eligible-students`);
+    const d = r.data || {};
+    return {
+      job: mapJob(d.job || {}),
+      totalStudents: d.totalStudents ?? 0,
+      totalEligible: d.totalEligible ?? 0,
+      students: (d.students || []).map((s: any) => ({
+        id: s.id || s._id,
+        usn: s.usn || "",
+        name: s.name || "",
+        email: s.email || "",
+        department: s.department || "",
+        year: s.year || "",
+        semester: s.semester || "",
+        cgpa: typeof s.cgpa === "number" ? s.cgpa : null,
+        backlogs: s.backlogs ?? 0,
+        eligible: Boolean(s.eligible),
+        reasons: s.reasons || [],
+        checkedAt: s.checkedAt || new Date().toISOString(),
+      })),
+    };
+  },
+  async getIneligibleStudents(jobId: string): Promise<EligibilityListResponse> {
+    const r = await adminFetch(`/jobs/${jobId}/ineligible-students`);
+    const d = r.data || {};
+    return {
+      job: mapJob(d.job || {}),
+      totalStudents: d.totalStudents ?? 0,
+      totalEligible: d.totalEligible ?? 0,
+      students: (d.students || []).map((s: any) => ({
+        id: s.id || s._id,
+        usn: s.usn || "",
+        name: s.name || "",
+        email: s.email || "",
+        department: s.department || "",
+        year: s.year || "",
+        semester: s.semester || "",
+        cgpa: typeof s.cgpa === "number" ? s.cgpa : null,
+        backlogs: s.backlogs ?? 0,
+        eligible: Boolean(s.eligible),
+        reasons: s.reasons || [],
+        checkedAt: s.checkedAt || new Date().toISOString(),
+      })),
+    };
+  },
+  async recalculateEligibility(jobId: string): Promise<{ total: number; eligible: number; ineligible: number }> {
+    const r = await adminFetch(`/jobs/${jobId}/eligibility/recalculate`, { method: "POST" });
+    return r.data;
+  },
+  async notifyEligible(jobId: string): Promise<NotifyResult> {
+    const r = await adminFetch(`/jobs/${jobId}/notify-eligible`, { method: "POST" });
+    return r.data || {};
   },
 
   // ── Proctoring ───────────────────────────────────────────

@@ -95,10 +95,34 @@ def generate_questions(
     interview_type: str,
     difficulty: str,
     total_questions: int,
+    context: str = "",
+    previous_questions: str = "",
 ) -> list:
     system_prompt = (
         "You are an expert technical interviewer at a top tech company. "
         "Generate high-quality interview questions that assess real-world skills."
+    )
+
+    context_block = (
+        f"\nCandidate's past performance (use this to tailor questions toward the "
+        f"candidate's weaker areas):\n{context}\n"
+        if context
+        else ""
+    )
+
+    prev_block = (
+        f"\nQuestions already asked before (DO NOT repeat any of these):\n{previous_questions}\n"
+        if previous_questions
+        else ""
+    )
+
+    difficulty_note = (
+        "\nIMPORTANT: The candidate is a college student preparing for campus placements. "
+        "Keep every question at a MODERATE level - foundational concepts, common frameworks, "
+        "and standard placement topics. Avoid advanced, niche, or expert-level questions. "
+        "Prefer universal core topics (data structures, OOP basics, SQL basics, "
+        "networking/OS fundamentals) and the most mainstream frameworks only. "
+        "Avoid deep framework internals or architecture deep-dives.\n"
     )
 
     prompt = (
@@ -107,6 +131,9 @@ def generate_questions(
         "Every question MUST be different and specifically about this exact role "
         "(its frameworks, tools, concepts, and real scenarios). Do not use generic "
         "questions that would fit any role. "
+        f"{difficulty_note}"
+        f"{context_block}"
+        f"{prev_block}"
         "Return ONLY a JSON array of strings, no other text. "
         "Format: [\"Question 1\", \"Question 2\", ...]"
     )

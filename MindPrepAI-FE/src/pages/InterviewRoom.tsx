@@ -32,6 +32,8 @@ export function InterviewRoom() {
 
   const {
     isRecording,
+    isTranscribing,
+    transcript,
     recordingDuration,
     startRecording,
     stopRecording,
@@ -44,13 +46,11 @@ export function InterviewRoom() {
     isComplete,
     loading,
     error: interviewError,
-    lastEvaluation,
     startInterview,
     submitAnswer,
     skipQuestion,
     terminateInterview,
     getReport,
-    clearLastEvaluation,
     interviewId,
   } = useInterview();
 
@@ -74,8 +74,6 @@ export function InterviewRoom() {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const questionTimerRef = useRef<TimerHandle>(null);
   const overallTimerRef = useRef<TimerHandle>(null);
-
-  const [showEvaluation, setShowEvaluation] = useState(false);
 
   useEffect(() => {
     if (!config) {
@@ -127,9 +125,15 @@ export function InterviewRoom() {
     }
   }, [currentQuestion, resetRecording]);
 
+  useEffect(() => {
+    if (answerMode === "voice" && transcript) {
+      setTextAnswer(transcript);
+    }
+  }, [transcript, answerMode]);
+
   const speakQuestion = useCallback(async (text: string) => {
     try {
-      const res = await fetch("http://localhost:5001/text-to-speech", {
+      const res = await fetch("http://localhost:8000/text-to-speech", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -178,21 +182,25 @@ export function InterviewRoom() {
     let type: "voice" | "text" = answerMode;
 
     if (answerMode === "voice") {
-      const audioB64 = await getAudioBase64();
-      if (audioB64) {
-        try {
-          const res = await fetch("http://localhost:5001/speech-to-text", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-AI-Service-Key": "mindprep-ai-key-2026",
-            },
-            body: JSON.stringify({ audio: audioB64 }),
-          });
-          const data = await res.json();
-          if (data.text) answer = data.text;
-        } catch {
-          answer = textAnswer || "(voice recorded)";
+      if (transcript) {
+        answer = transcript;
+      } else {
+        const audioB64 = await getAudioBase64();
+        if (audioB64) {
+          try {
+            const res = await fetch("http://localhost:8000/speech-to-text", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-AI-Service-Key": "mindprep-ai-key-2026",
+              },
+              body: JSON.stringify({ audio: audioB64 }),
+            });
+            const data = await res.json();
+            if (data.text) answer = data.text;
+          } catch {
+            answer = textAnswer || "(voice recorded)";
+          }
         }
       }
     }
@@ -201,20 +209,12 @@ export function InterviewRoom() {
     await submitAnswer(answer, type, timeTaken);
     setTextAnswer("");
     resetRecording();
-    setShowEvaluation(true);
-  };
-
-  const handleNextQuestion = () => {
-    setShowEvaluation(false);
-    clearLastEvaluation();
   };
 
   const handleSkip = async () => {
     await skipQuestion();
     setTextAnswer("");
     resetRecording();
-    setShowEvaluation(false);
-    clearLastEvaluation();
   };
 
   const handleTimeUp = () => {
@@ -235,20 +235,27 @@ export function InterviewRoom() {
 
   useEffect(() => {
     if (terminated) {
-      handleEndInterview();
+      handleEndInterview("violation");
     }
   }, [terminated]);
 
   useEffect(() => {
     if (isComplete) {
-      handleEndInterview();
+      handleEndInterview("complete");
     }
   }, [isComplete]);
 
-  const handleEndInterview = async () => {
+  const handleEndInterview = async (reason: "complete" | "manual" | "violation" = "manual") => {
     stopProctorCapture();
-    await terminateInterview();
+    if (reason !== "complete") {
+      await terminateInterview();
+    }
     stopWebcam();
+
+    if (reason === "violation") {
+      navigate("/", { state: { interviewTerminated: true } });
+      return;
+    }
 
     const report = await getReport();
     const reportId = report?.report?._id || interviewId;
@@ -337,7 +344,7 @@ export function InterviewRoom() {
                     <li>• Do not switch tabs or minimize window</li>
                     <li>• Stay in fullscreen mode</li>
                     <li>• Copy/Paste actions are prohibited</li>
-                    <li>• Tab switching: 2 warnings → auto terminate</li>
+                    <li>• Tab switching: 3 warnings → auto terminate</li>
                     <li>• Other violations: 3 max then terminate</li>
                     <li>• You can answer via voice or text</li>
                   </ul>
@@ -389,7 +396,7 @@ export function InterviewRoom() {
               </div>
             )}
 
-            {currentQuestion && !showEvaluation && (
+            {currentQuestion && (
               <motion.div
                 key={`answer-${questionIndex}`}
                 initial={{ opacity: 0, y: 10 }}
@@ -431,13 +438,38 @@ export function InterviewRoom() {
                   />
                 )}
 
-                {isRecording && (
-                  <div className="flex items-center gap-3 bg-gray-700/30 rounded-xl px-4 py-3">
-                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-                    <span className="text-gray-300 text-sm">
-                      Recording... {recordingDuration}s
-                    </span>
-                  </div>
+                {answerMode === "voice" && (
+                  <>
+                    {isRecording ? (
+                      <div className="bg-gray-700/30 rounded-xl border border-gray-600 overflow-hidden">
+                        <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-600">
+                          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                          <span className="text-gray-300 text-sm">
+                            Recording... {recordingDuration}s
+                          </span>
+                          {isTranscribing && (
+                            <span className="text-emerald-400 text-sm ml-auto animate-pulse">
+                              Transcribing...
+                            </span>
+                          )}
+                        </div>
+                        <textarea
+                          value={textAnswer}
+                          onChange={(e) => setTextAnswer(e.target.value)}
+                          readOnly={isTranscribing}
+                          placeholder="Your speech will appear here..."
+                          className="w-full h-32 bg-transparent px-4 py-3 text-white placeholder-gray-500 focus:outline-none resize-none"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3 bg-gray-700/30 rounded-xl px-4 py-3">
+                        <span className="text-gray-300 text-sm">
+                          Click "Voice Answer" to start, then speak your answer. It will be
+                          transcribed into text.
+                        </span>
+                      </div>
+                    )}
+                  </>
                 )}
 
                 <div className="flex gap-3 mt-4">
@@ -456,57 +488,6 @@ export function InterviewRoom() {
                     Skip
                   </button>
                 </div>
-              </motion.div>
-            )}
-
-            {showEvaluation && lastEvaluation && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-gradient-to-br from-gray-800 to-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-              >
-                <div className="text-center mb-4">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 200 }}
-                    className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 mb-2"
-                  >
-                    <span className="text-2xl font-bold text-white">
-                      {Math.round(
-                        (lastEvaluation.technicalScore +
-                          lastEvaluation.communicationScore +
-                          lastEvaluation.confidenceScore +
-                          lastEvaluation.grammarScore +
-                          lastEvaluation.fluencyScore) /
-                          5
-                      )}
-                    </span>
-                  </motion.div>
-                  <h3 className="text-lg font-semibold text-white">Question {questionIndex} Score</h3>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                  <ScoreBadge label="Technical" score={lastEvaluation.technicalScore} />
-                  <ScoreBadge label="Communication" score={lastEvaluation.communicationScore} />
-                  <ScoreBadge label="Confidence" score={lastEvaluation.confidenceScore} />
-                  <ScoreBadge label="Grammar" score={lastEvaluation.grammarScore} />
-                  <ScoreBadge label="Fluency" score={lastEvaluation.fluencyScore} />
-                  <ScoreBadge label="Relevance" score={lastEvaluation.relevanceScore} />
-                </div>
-
-                {lastEvaluation.feedback && (
-                  <div className="bg-gray-700/30 rounded-xl p-4 mb-4">
-                    <p className="text-sm text-gray-300 italic">"{lastEvaluation.feedback}"</p>
-                  </div>
-                )}
-
-                <button
-                  onClick={handleNextQuestion}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
-                >
-                  {currentQuestion ? "Next Question →" : "View Results"}
-                </button>
               </motion.div>
             )}
           </div>
@@ -563,7 +544,7 @@ export function InterviewRoom() {
             </div>
 
             <button
-              onClick={handleEndInterview}
+              onClick={() => handleEndInterview("manual")}
               className="w-full px-4 py-3 bg-red-500/10 text-red-400 rounded-xl font-medium border border-red-500/20 hover:bg-red-500/20 transition-all text-sm"
             >
               End Interview Early
@@ -572,23 +553,5 @@ export function InterviewRoom() {
         </div>
       </div>
     </div>
-  );
-}
-
-function ScoreBadge({ label, score }: { label: string; score: number }) {
-  const color =
-    score >= 80 ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" :
-    score >= 60 ? "text-yellow-400 bg-yellow-500/10 border-yellow-500/20" :
-    "text-red-400 bg-red-500/10 border-red-500/20";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl p-3 text-center border ${color}`}
-    >
-      <p className="text-xs font-medium opacity-80">{label}</p>
-      <p className="text-xl font-bold">{score}</p>
-    </motion.div>
   );
 }

@@ -24,6 +24,9 @@ import { AptitudeResult } from "./pages/AptitudeResult";
 import { AptitudeProgress } from "./pages/AptitudeProgress";
 import { AptitudeHistory } from "./pages/AptitudeHistory";
 import { Profile } from "./pages/Profile";
+import { Jobs } from "./pages/Jobs";
+import { JobDetails } from "./pages/JobDetails";
+import { MyApplications } from "./pages/MyApplications";
 import { ResumeBuilder } from "./pages/ResumeBuilder";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
@@ -33,6 +36,9 @@ import { InterviewManagement } from "./pages/admin/InterviewManagement";
 import { QuizManagement } from "./pages/admin/QuizManagement";
 import { AptitudeManagement } from "./pages/admin/AptitudeManagement";
 import { JobManagement } from "./pages/admin/JobManagement";
+import { JobForm } from "./pages/admin/JobForm";
+import { JobApplications } from "./pages/admin/JobApplications";
+import { JobEligibility } from "./pages/admin/JobEligibility";
 import { ReportsAnalytics } from "./pages/admin/ReportsAnalytics";
 import { ProctoringLogs } from "./pages/admin/ProctoringLogs";
 import { Announcements } from "./pages/admin/Announcements";
@@ -70,6 +76,9 @@ function App() {
             <Route path="/aptitude/history" element={<AptitudeHistory />} />
             <Route path="/aptitude/result" element={<AptitudeResult />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/jobs/:id" element={<JobDetails />} />
+            <Route path="/my-applications" element={<MyApplications />} />
           </Route>
           <Route element={<AdminRoute />}>
             <Route path="/admin" element={<AdminLayout />}>
@@ -80,6 +89,10 @@ function App() {
               <Route path="quizzes" element={<QuizManagement />} />
               <Route path="aptitude" element={<AptitudeManagement />} />
               <Route path="jobs" element={<JobManagement />} />
+              <Route path="jobs/create" element={<JobForm />} />
+              <Route path="jobs/:id/edit" element={<JobForm />} />
+              <Route path="jobs/:id/applications" element={<JobApplications />} />
+              <Route path="jobs/:id/eligibility" element={<JobEligibility />} />
               <Route path="reports" element={<ReportsAnalytics />} />
               <Route path="proctoring" element={<ProctoringLogs />} />
               <Route path="announcements" element={<Announcements />} />

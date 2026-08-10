@@ -38,6 +38,8 @@ export interface StudentProfile {
   semester: string;
   section: string;
   cgpa: number | null;
+  backlogs: number;
+  graduationYear: number | null;
   skills: string[];
   certifications: Certification[];
   projects: Project[];

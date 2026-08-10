@@ -8,8 +8,8 @@ from app.config import settings
 logger = logging.getLogger(__name__)
 
 MODEL_URLS = {
-    "yolov11n": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt",
-    "yolov11s": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11s.pt",
+    "yolov11n": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11n.pt",
+    "yolov11s": "https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo11s.pt",
     "face_detector": "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
     "face_landmarker": "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task",
     "face_detector": "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",

@@ -47,6 +47,9 @@ function TextInput({ value, onChange, placeholder }: { value: string; onChange: 
       className={inputCls}
       value={value}
       placeholder={placeholder}
+      spellCheck={false}
+      autoCorrect="off"
+      autoComplete="off"
       onChange={(e) => onChange(e.target.value)}
     />
   );
@@ -194,6 +197,27 @@ export function Profile() {
               step={0.01}
               value={form.cgpa ?? ""}
               onChange={(e) => set("cgpa", e.target.value === "" ? null : Number(e.target.value))}
+            />
+          </Field>
+          <Field label="Active Backlogs">
+            <input
+              className={inputCls}
+              type="number"
+              min={0}
+              step={1}
+              value={form.backlogs ?? ""}
+              onChange={(e) => set("backlogs", e.target.value === "" ? 0 : Number(e.target.value))}
+            />
+          </Field>
+          <Field label="Graduation Year">
+            <input
+              className={inputCls}
+              type="number"
+              min={2000}
+              max={2100}
+              value={form.graduationYear ?? ""}
+              placeholder="e.g. 2026"
+              onChange={(e) => set("graduationYear", e.target.value === "" ? null : Number(e.target.value))}
             />
           </Field>
         </SectionCard>

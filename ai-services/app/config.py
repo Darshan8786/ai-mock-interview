@@ -5,7 +5,7 @@ load_dotenv()
 
 
 class Settings:
-    PORT: int = int(os.getenv("AI_SERVICE_PORT", "8000"))
+    PORT: int = int(os.getenv("PROCTOR_PORT", "8001"))
     AI_SERVICE_KEY: str = os.getenv("AI_SERVICE_KEY", "mindprep-ai-key-2026")
 
     NIM_API_URL: str = os.getenv("NIM_API_URL", "https://integrate.api.nvidia.com/v1")

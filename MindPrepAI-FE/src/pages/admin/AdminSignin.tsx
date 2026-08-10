@@ -37,8 +37,8 @@ export function AdminSignin() {
         return;
       }
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", role);
+      localStorage.setItem("adminToken", response.data.token);
+      localStorage.setItem("adminRole", role);
       toast.success("Admin signed in successfully");
       navigate("/admin");
     } catch (err: any) {

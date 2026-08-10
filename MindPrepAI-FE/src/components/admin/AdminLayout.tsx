@@ -50,8 +50,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const location = useLocation();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminRole");
     navigate("/signin");
   };
 

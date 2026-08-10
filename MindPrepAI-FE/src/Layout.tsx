@@ -1,6 +1,161 @@
 import { Toaster } from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  getMyNotifications,
+  markAllNotificationsRead,
+  markNotificationRead,
+  type StudentNotification,
+} from "./services/notificationsApi";
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
+function NotificationsBell({ isResumeAnalyzer }: { isResumeAnalyzer: boolean }) {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [unread, setUnread] = useState(0);
+  const [notifications, setNotifications] = useState<StudentNotification[]>([]);
+  const [loading, setLoading] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const res = await getMyNotifications();
+        if (mounted) {
+          setUnread(res.unread);
+          setNotifications(res.notifications);
+        }
+      } catch {
+        /* ignore */
+      }
+    };
+    load();
+    const interval = setInterval(load, 60000);
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+
+  const toggle = async () => {
+    const next = !open;
+    setOpen(next);
+    if (next) {
+      setLoading(true);
+      try {
+        const res = await getMyNotifications();
+        setUnread(res.unread);
+        setNotifications(res.notifications);
+      } catch {
+        /* ignore */
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleClick = async (n: StudentNotification) => {
+    if (!n.read) {
+      await markNotificationRead(n.id).catch(() => {});
+      setUnread((u) => Math.max(0, u - 1));
+      setNotifications((prev) => prev.map((x) => (x.id === n.id ? { ...x, read: true } : x)));
+    }
+    setOpen(false);
+    if (n.job?.id) navigate(`/jobs/${n.job.id}`);
+    else if (n.type === "job_status") navigate("/my-applications");
+  };
+
+  const handleMarkAll = async () => {
+    await markAllNotificationsRead().catch(() => {});
+    setUnread(0);
+    setNotifications((prev) => prev.map((x) => ({ ...x, read: true })));
+  };
+
+  const tone = isResumeAnalyzer ? "text-gray-600 hover:bg-gray-100" : "text-gray-300 hover:bg-white/10";
+
+  return (
+    <div className="relative" ref={ref}>
+      <button onClick={toggle} className={`relative p-2 rounded-lg transition-all ${tone}`} aria-label="Notifications">
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        {unread > 0 && (
+          <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+            {unread > 9 ? "9+" : unread}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div className={`absolute right-0 mt-2 w-80 max-h-[420px] overflow-hidden rounded-2xl border shadow-2xl z-50 flex flex-col ${
+          isResumeAnalyzer ? "bg-white border-gray-200" : "bg-gray-900 border-gray-700"
+        }`}>
+          <div className={`flex items-center justify-between px-4 py-3 border-b ${isResumeAnalyzer ? "border-gray-200" : "border-gray-700"}`}>
+            <p className={`text-sm font-semibold ${isResumeAnalyzer ? "text-black" : "text-white"}`}>Notifications</p>
+            {unread > 0 && (
+              <button
+                onClick={handleMarkAll}
+                className={`text-xs font-medium ${isResumeAnalyzer ? "text-blue-600" : "text-blue-400"} hover:underline`}
+              >
+                Mark all read
+              </button>
+            )}
+          </div>
+          <div className="overflow-y-auto">
+            {loading ? (
+              <p className={`text-xs px-4 py-6 text-center ${isResumeAnalyzer ? "text-gray-500" : "text-gray-500"}`}>Loading…</p>
+            ) : notifications.length === 0 ? (
+              <p className={`text-sm px-4 py-8 text-center ${isResumeAnalyzer ? "text-gray-500" : "text-gray-500"}`}>
+                No notifications yet
+              </p>
+            ) : (
+              notifications.map((n) => (
+                <button
+                  key={n.id}
+                  onClick={() => handleClick(n)}
+                  className={`block w-full text-left px-4 py-3 transition-colors border-b last:border-b-0 ${
+                    isResumeAnalyzer
+                      ? "hover:bg-gray-50 border-gray-100"
+                      : "hover:bg-white/5 border-gray-800"
+                  } ${n.read ? "opacity-60" : ""}`}
+                >
+                  <div className="flex items-start gap-2.5">
+                    {!n.read && <span className="mt-1.5 w-2 h-2 rounded-full bg-blue-500 shrink-0" />}
+                    <div className="min-w-0">
+                      <p className={`text-sm font-medium truncate ${isResumeAnalyzer ? "text-black" : "text-white"}`}>{n.title}</p>
+                      <p className={`text-xs mt-0.5 line-clamp-2 ${isResumeAnalyzer ? "text-gray-500" : "text-gray-400"}`}>{n.body}</p>
+                      <p className={`text-[10px] mt-1 uppercase tracking-wide ${isResumeAnalyzer ? "text-gray-400" : "text-gray-500"}`}>
+                        {timeAgo(n.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
@@ -21,6 +176,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { label: "Quiz", path: "/quizpage" },
     { label: "Aptitude", path: "/aptitude" },
     { label: "Interview", path: "/mock-interview/dashboard" },
+    { label: "Jobs", path: "/jobs" },
+    { label: "My Apps", path: "/my-applications" },
     { label: "Analytics", path: "/personalizedreport" },
     { label: "Resume", path: "/resume-analyzer" },
     { label: "Builder", path: "/resume-builder" },
@@ -94,6 +251,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="flex items-center gap-4">
                 {isAuthenticated ? (
                   <>
+                    <NotificationsBell isResumeAnalyzer={isResumeAnalyzer} />
                     <button
                       onClick={handleSignOut}
                       className={`hidden sm:inline px-4 py-2 rounded-lg font-medium transition-all ${isResumeAnalyzer

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Pinecone } from "@pinecone-database/pinecone";
 import OpenAI from "openai";
 import { AttemptModel } from "../db";
+import { embedText } from "../services/embeddingService";
 
 // Ensure API Keys are present
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
@@ -52,7 +53,7 @@ export async function syncAttemptsToVectorDB(req: Request, res: Response) {
             });
         }
 
-        const index = pinecone.Index(INDEX_NAME);
+        const index = pinecone.index(INDEX_NAME);
 
         // Group attempts by subject and topic
         const groupedData: {
@@ -88,13 +89,8 @@ export async function syncAttemptsToVectorDB(req: Request, res: Response) {
         Correct answers: ${correctCount}. Accuracy: ${accuracy}%. 
         Topics studied: ${subject}. Subtopic: ${topic}.`;
 
-                // Generate embedding using OpenAI
-                const embeddingResponse = await openai.embeddings.create({
-                    model: "text-embedding-3-small",
-                    input: summaryText,
-                });
-
-                const embedding = embeddingResponse.data[0].embedding;
+                // Generate embedding using Ollama
+                const embedding = await embedText(summaryText);
 
                 // Create unique ID for this user-subject-topic combination
                 const vectorId = `${userId}-${subject}-${topic}`;
@@ -148,7 +144,7 @@ export async function getVectorDBStats(req: Request, res: Response) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const index = pinecone.Index(INDEX_NAME);
+        const index = pinecone.index(INDEX_NAME);
 
         // Get index stats
         const stats = await index.namespace(userId).describeIndexStats();
@@ -180,15 +176,10 @@ export async function ragQuery(req: Request, res: Response) {
             return res.status(400).json({ error: "Query is required and must be a non-empty string" });
         }
 
-        const index = pinecone.Index(INDEX_NAME);
+        const index = pinecone.index(INDEX_NAME);
 
         // Generate embedding for the user query
-        const queryEmbedding = await openai.embeddings.create({
-            model: "text-embedding-3-small",
-            input: query,
-        });
-
-        const queryVector = queryEmbedding.data[0].embedding;
+        const queryVector = await embedText(query);
 
         // Query Pinecone with user's namespace (top 5 results)
         const queryResults = await index.namespace(userId).query({

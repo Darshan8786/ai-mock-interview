@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { NeuralNetwork3D } from "../components/NeuralNetwork3D";
+import { getMyNotifications, type StudentNotification } from "../services/notificationsApi";
 
 // Dashboard component with 3D visualizations and animations
 
@@ -28,6 +30,13 @@ const itemVariants = {
 
 export function Dashboard() {
     const navigate = useNavigate();
+    const [notifications, setNotifications] = useState<StudentNotification[]>([]);
+
+    useEffect(() => {
+        getMyNotifications()
+            .then((res) => setNotifications(res.notifications.filter((n) => !n.read).slice(0, 4)))
+            .catch(() => {});
+    }, []);
 
     const features = [
         {
@@ -57,6 +66,20 @@ export function Dashboard() {
             description: "Build an ATS-friendly resume with AI assistance",
             path: "/resume-builder",
             color: "from-emerald-500 to-teal-600",
+        },
+        {
+            icon: "💼",
+            title: "Job Opportunities",
+            description: "Browse placement drives and apply for jobs",
+            path: "/jobs",
+            color: "from-blue-500 to-indigo-600",
+        },
+        {
+            icon: "📋",
+            title: "My Applications",
+            description: "Track the status of your job applications",
+            path: "/my-applications",
+            color: "from-fuchsia-500 to-purple-600",
         },
     ];
 
@@ -194,6 +217,51 @@ export function Dashboard() {
                     </motion.div>
                 </div>
             </motion.section>
+
+            {/* Notifications Section */}
+            {notifications.length > 0 && (
+                <motion.section
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="px-4 py-10 sm:px-6 lg:px-8 bg-black"
+                >
+                    <div className="mx-auto max-w-6xl">
+                        <div className="rounded-2xl bg-gray-900 border border-gray-700 p-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="text-xl font-bold text-white">🔔 Notifications</h2>
+                                <button
+                                    onClick={() => navigate("/jobs")}
+                                    className="text-sm text-blue-400 hover:underline font-medium"
+                                >
+                                    View all →
+                                </button>
+                            </div>
+                            <div className="space-y-3">
+                                {notifications.map((n) => (
+                                    <button
+                                        key={n.id}
+                                        onClick={() => n.job?.id && navigate(`/jobs/${n.job.id}`)}
+                                        className="w-full text-left flex items-start gap-3 rounded-xl border border-gray-800 bg-gray-800/40 p-4 hover:border-blue-500 transition-all"
+                                    >
+                                        <span className="mt-1.5 w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                                        <div className="min-w-0">
+                                            <p className="text-white font-medium text-sm">{n.title}</p>
+                                            <p className="text-gray-400 text-sm mt-0.5 line-clamp-2">{n.body}</p>
+                                            {n.job && (
+                                                <p className="text-xs text-blue-400 mt-1.5 font-medium">
+                                                    {n.job.companyName} • {n.job.jobTitle} • View details →
+                                                </p>
+                                            )}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </motion.section>
+            )}
 
             {/* Features Section */}
             <section className="px-4 py-16 sm:px-6 lg:px-8 bg-black">

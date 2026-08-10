@@ -1,9 +1,31 @@
 import { useState, useRef, useCallback } from "react";
 
+type SpeechRecognitionLike = {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  onresult: ((event: any) => void) | null;
+  onend: (() => void) | null;
+  onerror: ((event: any) => void) | null;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+};
+
+function getSpeechRecognition(): SpeechRecognitionLike | null {
+  const w = window as any;
+  const Ctor = w.SpeechRecognition || w.webkitSpeechRecognition;
+  return Ctor ? new Ctor() : null;
+}
+
 export function useMicrophone() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const isRecordingRef = useRef(false);
   const audioChunksRef = useRef<Blob[]>([]);
   const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const [transcript, setTranscript] = useState("");
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);
   const durationIntervalRef = useRef<number | null>(null);
@@ -34,11 +56,50 @@ export function useMicrophone() {
 
       mediaRecorder.start();
       setIsRecording(true);
+      isRecordingRef.current = true;
       setRecordingDuration(0);
 
       durationIntervalRef.current = window.setInterval(() => {
         setRecordingDuration((prev) => prev + 1);
       }, 1000);
+
+      const recognition = getSpeechRecognition();
+      if (recognition) {
+        recognition.lang = "en-US";
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.onresult = (event: any) => {
+          let final = "";
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const res = event.results[i];
+            if (res.isFinal) final += res[0].transcript;
+          }
+          if (final) {
+            setTranscript((prev) => (prev ? `${prev} ${final}` : final).trim());
+          }
+        };
+        recognition.onerror = () => {
+          setIsTranscribing(false);
+        };
+        recognition.onend = () => {
+          setIsTranscribing(false);
+          if (isRecordingRef.current) {
+            try {
+              recognition.start();
+              setIsTranscribing(true);
+            } catch {
+              /* ignore */
+            }
+          }
+        };
+        recognitionRef.current = recognition;
+        try {
+          recognition.start();
+          setIsTranscribing(true);
+        } catch {
+          /* ignore */
+        }
+      }
 
       return true;
     } catch (err) {
@@ -51,6 +112,17 @@ export function useMicrophone() {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
+      isRecordingRef.current = false;
+
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch {
+          /* ignore */
+        }
+        recognitionRef.current = null;
+      }
+      setIsTranscribing(false);
 
       if (durationIntervalRef.current) {
         clearInterval(durationIntervalRef.current);
@@ -77,13 +149,26 @@ export function useMicrophone() {
   }, [audioBlob]);
 
   const resetRecording = useCallback(() => {
+    isRecordingRef.current = false;
     audioChunksRef.current = [];
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+      } catch {
+        /* ignore */
+      }
+      recognitionRef.current = null;
+    }
+    setTranscript("");
+    setIsTranscribing(false);
     setAudioBlob(null);
     setRecordingDuration(0);
   }, []);
 
   return {
     isRecording,
+    isTranscribing,
+    transcript,
     audioBlob,
     recordingDuration,
     startRecording,

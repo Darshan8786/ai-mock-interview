@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { adminApi } from "../../admin/api";
 import { useLoad } from "../../admin/useLoad";
 import type { AdminStudent } from "../../admin/types";
@@ -13,18 +13,6 @@ import { TableSkeleton } from "../../components/admin/Skeleton";
 import { EmptyState } from "../../components/admin/EmptyState";
 import { ErrorState } from "../../components/admin/ErrorState";
 import { TextInput, Select, Field } from "../../components/admin/Inputs";
-
-function ScoreRing({ value }: { value: number }) {
-  const color =
-    value >= 75 ? "text-emerald-400" : value >= 50 ? "text-yellow-400" : "text-red-400";
-  return (
-    <div className="flex items-center gap-2">
-      <div className="w-9 h-9 rounded-full border-2 border-gray-700 flex items-center justify-center">
-        <span className={`text-xs font-bold ${color}`}>{value}</span>
-      </div>
-    </div>
-  );
-}
 
 export function StudentManagement() {
   const { data: students, loading, error, reload, setData } = useLoad(() => adminApi.getStudents());
@@ -45,6 +33,13 @@ export function StudentManagement() {
       return matchQ && matchStatus;
     });
   }, [students, query, statusFilter]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!loading && !selected && !editing && !deleting) reload();
+    }, 30000);
+    return () => clearInterval(id);
+  }, [loading, selected, editing, deleting, reload]);
 
   const handleSave = async () => {
     if (!editing) return;
@@ -89,6 +84,11 @@ export function StudentManagement() {
         title={`Students (${filtered.length})`}
         actions={
           <div className="flex flex-col sm:flex-row gap-2">
+            <IconButton title="Refresh" onClick={reload} className={loading ? "animate-spin" : ""}>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </IconButton>
             <TextInput
               placeholder="Search name or email..."
               value={query}
@@ -117,7 +117,8 @@ export function StudentManagement() {
             columns={[
               { key: "student", header: "Student" },
               { key: "department", header: "Department" },
-              { key: "readiness", header: "Readiness" },
+              { key: "links", header: "Links" },
+              { key: "cgpa", header: "CGPA" },
               { key: "ats", header: "ATS" },
               { key: "interviews", header: "Interviews" },
               { key: "status", header: "Status" },
@@ -145,8 +146,9 @@ export function StudentManagement() {
                   <p className="text-xs text-gray-500">{s.year}</p>
                 </td>
                 <td className="py-3 px-4">
-                  <ScoreRing value={s.placementReadiness} />
+                  <StudentLinks student={s} />
                 </td>
+                <td className="py-3 px-4 text-gray-300">{s.cgpa != null ? s.cgpa : "—"}</td>
                 <td className="py-3 px-4 text-gray-300">{s.atsScore}%</td>
                 <td className="py-3 px-4 text-gray-300">{s.interviewsTaken}</td>
                 <td className="py-3 px-4">
@@ -197,9 +199,80 @@ export function StudentManagement() {
               <Detail label="College" value={selected.college} />
               <Detail label="Department" value={selected.department} />
               <Detail label="Batch" value={selected.year} />
+              <Detail label="Semester" value={selected.semester} />
+              <Detail label="Section" value={selected.section} />
+              <Detail label="USN" value={selected.usn} />
+              <Detail label="Register No." value={selected.registerNumber} />
+              <Detail label="College Email" value={selected.email} />
+              <Detail label="Personal Email" value={selected.personalEmail} />
               <Detail label="Phone" value={selected.phone} />
+              <Detail label="Date of Birth" value={selected.dateOfBirth} />
+              <Detail label="CGPA" value={selected.cgpa ? String(selected.cgpa) : "—"} />
+              <Detail label="Graduation Year" value={selected.graduationYear ? String(selected.graduationYear) : "—"} />
               <Detail label="Location" value={selected.location} />
+              <Detail label="Placement Status" value={selected.placementStatus} />
+              <Detail label="Verification" value={selected.verificationStatus} />
               <Detail label="Status" value={selected.status} />
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <LinkField label="Resume (Google Drive)" value={selected.resumeUrl} />
+              <LinkField label="LinkedIn" value={selected.linkedin} />
+              <LinkField label="GitHub" value={selected.github} />
+              <LinkField label="Portfolio" value={selected.portfolio} />
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 uppercase tracking-wider mb-1.5 font-medium">Skills</p>
+              {selected.skills.length > 0 ? (
+                <div className="flex flex-wrap gap-1.5">
+                  {selected.skills.map((t) => (
+                    <span key={t} className="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/30 rounded-full px-2.5 py-0.5">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500 text-sm">—</p>
+              )}
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 uppercase tracking-wider mb-1.5 font-medium">Certifications</p>
+              {selected.certifications.length > 0 ? (
+                <ul className="space-y-1.5 text-sm">
+                  {selected.certifications.map((c, i) => (
+                    <li key={i} className="text-gray-300">
+                      <span className="text-white font-medium">{c.name}</span>
+                      {c.issuer ? ` — ${c.issuer}` : ""}
+                      {c.year ? ` (${c.year})` : ""}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500 text-sm">—</p>
+              )}
+            </div>
+            <div>
+              <p className="text-xs text-gray-500 uppercase tracking-wider mb-1.5 font-medium">Projects</p>
+              {selected.projects.length > 0 ? (
+                <ul className="space-y-2 text-sm">
+                  {selected.projects.map((p, i) => (
+                    <li key={i}>
+                      <p className="text-white font-medium">{p.title}</p>
+                      <p className="text-gray-400">{p.description}</p>
+                      {p.techStack && p.techStack.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-1">
+                          {p.techStack.map((t) => (
+                            <span key={t} className="text-xs bg-gray-500/10 text-gray-300 border border-gray-600/40 rounded-full px-2 py-0.5">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500 text-sm">—</p>
+              )}
             </div>
             <div className="grid grid-cols-3 gap-3 pt-2 border-t border-gray-800">
               <Metric label="ATS Score" value={`${selected.atsScore}%`} />
@@ -306,6 +379,54 @@ function Detail({ label, value }: { label: string; value: string }) {
     <div>
       <p className="text-xs text-gray-500 uppercase tracking-wider mb-0.5">{label}</p>
       <p className="text-gray-200">{value}</p>
+    </div>
+  );
+}
+
+function LinkField({ label, value }: { label: string; value: string }) {
+  const valid = value && /^https?:\/\//.test(value);
+  return (
+    <div>
+      <p className="text-xs text-gray-500 uppercase tracking-wider mb-0.5">{label}</p>
+      {valid ? (
+        <a
+          href={value}
+          target="_blank"
+          rel="noreferrer"
+          className="text-blue-400 hover:text-blue-300 hover:underline break-all"
+        >
+          {value}
+        </a>
+      ) : (
+        <p className="text-gray-500">—</p>
+      )}
+    </div>
+  );
+}
+
+function StudentLinks({ student }: { student: AdminStudent }) {
+  const links: { label: string; href: string; tone: string }[] = [
+    ...(student.linkedin ? [{ label: "in", href: student.linkedin, tone: "text-sky-400 border-sky-500/40 hover:bg-sky-500/10" }] : []),
+    ...(student.github ? [{ label: "gh", href: student.github, tone: "text-gray-300 border-gray-600/50 hover:bg-gray-500/10" }] : []),
+    ...(student.resumeUrl ? [{ label: "resume", href: student.resumeUrl, tone: "text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/10" }] : []),
+  ];
+  if (links.length === 0) {
+    return <p className="text-gray-600 text-xs">—</p>;
+  }
+  return (
+    <div className="flex items-center gap-1.5">
+      {links.map((l) => (
+        <a
+          key={l.label}
+          href={l.href}
+          target="_blank"
+          rel="noreferrer"
+          title={l.href}
+          className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded border ${l.tone} transition-colors`}
+        >
+          {l.label}
+        </a>
+      ))}
     </div>
   );
 }

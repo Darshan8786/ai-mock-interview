@@ -58,6 +58,20 @@ import {
   updateAdminTest,
   deleteAdminTest,
 } from "../controllers/admin/aptitudeBankController";
+import {
+  getAdminJobs,
+  getAdminJob,
+  createJob,
+  updateJob,
+  deleteJob,
+  setJobStatus,
+  getJobApplications,
+  updateApplicationStatus,
+  getEligibleStudents,
+  getIneligibleStudents,
+  recalculateEligibility,
+  notifyEligibleStudents,
+} from "../controllers/admin/jobsController";
 
 const router = Router();
 
@@ -124,5 +138,21 @@ router.get("/announcements", getAnnouncements);
 router.post("/announcements", createAnnouncement);
 router.patch("/announcements/:id", updateAnnouncement);
 router.delete("/announcements/:id", deleteAnnouncement);
+
+// Jobs
+router.get("/jobs", getAdminJobs);
+router.post("/jobs", createJob);
+router.get("/jobs/:id", getAdminJob);
+router.put("/jobs/:id", updateJob);
+router.delete("/jobs/:id", deleteJob);
+router.patch("/jobs/:id/status", setJobStatus);
+router.get("/jobs/:id/applications", getJobApplications);
+router.get("/jobs/:id/eligible-students", getEligibleStudents);
+router.get("/jobs/:id/ineligible-students", getIneligibleStudents);
+router.post("/jobs/:id/eligibility/recalculate", recalculateEligibility);
+router.post("/jobs/:id/notify-eligible", notifyEligibleStudents);
+
+// Applications
+router.patch("/applications/:id/status", updateApplicationStatus);
 
 export default router;

@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
+import { embedText } from "../../services/embeddingService";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
@@ -11,7 +12,7 @@ if (!OPENAI_API_KEY || !PINECONE_API_KEY) {
 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY || "dummy-key" });
 const pinecone = new Pinecone({ apiKey: PINECONE_API_KEY || "dummy-key" });
-const index = pinecone.Index(PINECONE_INDEX_NAME);
+const index = pinecone.index(PINECONE_INDEX_NAME);
 
 function normalizeSubjectName(subject: string): string {
   return subject
@@ -20,14 +21,6 @@ function normalizeSubjectName(subject: string): string {
     .replace(/subject|subjects|topic|topics/gi, "")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-async function getEmbedding(text: string): Promise<number[]> {
-  const response = await openai.embeddings.create({
-    model: "text-embedding-3-small",
-    input: text,
-  });
-  return response.data[0].embedding;
 }
 
 async function generateSubjectQuestions(subject: string): Promise<string[]> {
@@ -59,7 +52,7 @@ export async function getQuestionsForSubject(validatedSubject: string) {
     const canonicalSubject = normalizeSubjectName(validatedSubject);
     console.log(`🎯 Searching for subject: ${validatedSubject} → canonical: ${canonicalSubject}`);
 
-    const queryVector = await getEmbedding(`Interview questions for ${canonicalSubject}`);
+    const queryVector = await embedText(`Interview questions for ${canonicalSubject}`);
 
     const results = await index.namespace("quiz").query({
       vector: queryVector,
@@ -90,7 +83,7 @@ export async function getQuestionsForSubject(validatedSubject: string) {
     const newQuestions = await generateSubjectQuestions(canonicalSubject);
 
     const embeddings = await Promise.all(
-      newQuestions.map((q) => getEmbedding(`Question: ${q}\n\nSubject: ${canonicalSubject}`))
+      newQuestions.map((q) => embedText(`Question: ${q}\n\nSubject: ${canonicalSubject}`))
     );
 
     await index.namespace("quiz").upsert(

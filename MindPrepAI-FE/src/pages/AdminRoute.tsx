@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 export function AdminRoute() {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("adminToken");
   if (!token) {
     return <Navigate to="/admin/signin" replace />;
   }
 
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("adminRole");
 
   try {
     if (role) {

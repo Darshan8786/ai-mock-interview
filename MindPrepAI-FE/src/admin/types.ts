@@ -19,6 +19,27 @@ export interface AdminStudent {
   lastActive: string;
   status: "active" | "inactive" | "blocked";
 
+  // Full profile details
+  usn: string;
+  registerNumber: string;
+  personalEmail: string;
+  semester: string;
+  section: string;
+  cgpa: number | null;
+  backlogs: number;
+  graduationYear: number | null;
+  skills: string[];
+  certifications: { name: string; issuer: string; year: string; link: string }[];
+  projects: { title: string; description: string; techStack: string[]; link: string }[];
+  resumeUrl: string;
+  profilePhoto: string;
+  linkedin: string;
+  github: string;
+  portfolio: string;
+  dateOfBirth: string;
+  placementStatus: string;
+  verificationStatus: string;
+
   // Derived metrics
   atsScore: number;
   placementReadiness: number;
@@ -99,28 +120,107 @@ export interface QuizAttempt {
   date: string;
 }
 
+export interface JobEligibility {
+  minimumCGPA: number | null;
+  maximumBacklogs: number | null;
+  allowedDepartments: string[];
+}
+
+export interface EligibilityCounts {
+  total: number;
+  eligible: number;
+  ineligible: number;
+}
+
+export type JobStatus = "active" | "inactive" | "closed" | "expired";
+
 export interface AdminJob {
   id: string;
-  company: string;
-  title: string;
+  companyName: string;
+  jobTitle: string;
+  jobDescription: string;
   location: string;
-  salary: string;
-  eligibility: string;
-  skillsRequired: string[];
-  deadline: string;
-  applicants: number;
-  status: "open" | "closed" | "draft";
+  jobType: string;
+  package: string;
+  requiredSkills: string[];
+  eligibility: JobEligibility;
+  lastDateToApply: string;
+  numberOfOpenings: number;
+  companyWebsite: string;
+  applicationLink: string;
+  experience: string;
+  responsibilities: string;
+  qualifications: string;
+  selectionProcess: string;
+  status: JobStatus;
   postedAt: string;
-  description: string;
+  updatedAt?: string;
+  applicants: number;
+  isExpired?: boolean;
+  eligibilityCounts?: EligibilityCounts;
 }
+
+export interface EligibleStudent {
+  id: string;
+  usn: string;
+  name: string;
+  email: string;
+  department: string;
+  year: string;
+  semester: string;
+  cgpa: number | null;
+  backlogs: number;
+  eligible: boolean;
+  reasons: string[];
+  checkedAt: string;
+}
+
+export interface EligibilityListResponse {
+  job: AdminJob;
+  totalStudents: number;
+  totalEligible: number;
+  students: EligibleStudent[];
+}
+
+export interface NotifyResult {
+  eligible: number;
+  created: number;
+  skipped: number;
+}
+
+export type ApplicationStatus =
+  | "applied"
+  | "shortlisted"
+  | "rejected"
+  | "selected"
+  | "withdrawn";
 
 export interface JobApplicant {
   id: string;
-  name: string;
+  jobId: string;
+  studentName: string;
+  usn: string;
   email: string;
+  department: string;
+  cgpa: number | null;
+  resumeUrl: string;
+  status: ApplicationStatus;
   appliedAt: string;
-  atsScore: number;
-  status: "applied" | "shortlisted" | "rejected" | "hired";
+}
+
+export interface JobApplicationStats {
+  total: number;
+  applied: number;
+  shortlisted: number;
+  rejected: number;
+  selected: number;
+  withdrawn: number;
+}
+
+export interface JobApplicationsResponse {
+  job: AdminJob;
+  stats: JobApplicationStats;
+  applications: JobApplicant[];
 }
 
 export interface ProctoringLog {
@@ -227,6 +327,11 @@ export interface AdminStats {
   totalQuizAttempts: number;
   totalResumeAnalyses: number;
   totalJobs: number;
+  activeJobs: number;
+  expiredJobs: number;
+  totalApplications: number;
+  shortlistedStudents: number;
+  selectedStudents: number;
   avgAtsScore: number;
   placementReadiness: number;
   todayProctoringViolations: number;

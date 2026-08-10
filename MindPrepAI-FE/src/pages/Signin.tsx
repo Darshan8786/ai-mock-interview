@@ -35,6 +35,10 @@ export function Signin() {
       const role = response.data?.data?.user?.role || "user";
       localStorage.setItem("token", jwt);
       localStorage.setItem("role", role);
+      if (role === "admin") {
+        localStorage.setItem("adminToken", jwt);
+        localStorage.setItem("adminRole", role);
+      }
       toast.success("Signed in Successfully");
       navigate(role === "admin" ? "/admin" : "/dashboard");
     } catch (err: any) {

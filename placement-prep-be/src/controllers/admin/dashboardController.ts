@@ -8,6 +8,8 @@ import { AptitudeAttempt } from "../../models/AptitudeAttempt";
 import { AttemptModel } from "../../db";
 import { Notification } from "../../models/Notification";
 import { Announcement } from "../../models/Announcement";
+import { Job } from "../../models/Job";
+import { Application } from "../../models/Application";
 
 /**
  * Aggregate dashboard stats for the Training & Placement Officer.
@@ -24,6 +26,23 @@ export const getDashboardStats = asyncHandler(async (_req: Request, res: Respons
       AttemptModel.find().lean(),
       CheatingEvent.countDocuments(),
     ]);
+
+  // Job & application stats
+  const now = new Date();
+  const [totalJobs, activeJobs, closedJobs, totalApplications, shortlistedApplications, selectedApplications] =
+    await Promise.all([
+      Job.countDocuments(),
+      Job.countDocuments({ status: "active" }),
+      Job.countDocuments({ status: { $in: ["inactive", "closed", "expired"] } }),
+      Application.countDocuments(),
+      Application.countDocuments({ status: "shortlisted" }),
+      Application.countDocuments({ status: "selected" }),
+    ]);
+  // Jobs that are still marked active but whose deadline has passed count as expired.
+  const expiredByDeadline = await Job.countDocuments({
+    status: "active",
+    lastDateToApply: { $lt: now },
+  });
 
   const totalStudents = students.length;
 
@@ -131,6 +150,12 @@ export const getDashboardStats = asyncHandler(async (_req: Request, res: Respons
         averageQuizScore: avgQuizScore,
         totalCheatingEvents: cheating,
         announcements: await Announcement.countDocuments(),
+        totalJobs,
+        activeJobs,
+        expiredJobs: closedJobs + expiredByDeadline,
+        totalApplications,
+        shortlistedStudents: shortlistedApplications,
+        selectedStudents: selectedApplications,
       },
       distribution: {
         departmentWise,

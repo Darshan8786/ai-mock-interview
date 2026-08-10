@@ -7,8 +7,14 @@ import { CheatingEvent } from "../models/CheatingEvent";
 import { InterviewReport } from "../models/InterviewReport";
 import axios from "axios";
 import OpenAI from "openai";
+import { syncInterviewToVectorDB, getInterviewContext } from "../services/interviewRagService";
 
 const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://localhost:5001";
+const AI_SERVICE_KEY = process.env.AI_SERVICE_KEY || "mindprep-ai-key-2026";
+
+const aiServiceHeaders = {
+  "X-AI-Service-Key": AI_SERVICE_KEY,
+};
 
 const groq = new OpenAI({
   apiKey: process.env.GROQ_API_KEY || "dummy-key",
@@ -20,14 +26,27 @@ async function generateQuestionsWithGroq(
   experienceLevel: string,
   interviewType: string,
   difficulty: string,
-  count: number
+  count: number,
+  context: string,
+  previousQuestions: string
 ): Promise<string[]> {
+  const contextBlock = context
+    ? `\n\nCandidate's past performance (use this to tailor questions to the candidate's weaker areas):\n${context}`
+    : "";
+  const prevBlock = previousQuestions
+    ? `\n\nQuestions already asked before (DO NOT repeat any of these):\n${previousQuestions}`
+    : "";
+  const difficultyNote = `\n\nIMPORTANT: The candidate is a college student preparing for campus placements. Keep every question at a MODERATE level - foundational concepts, common frameworks, and standard placement topics. Avoid advanced, niche, or expert-level questions. Prefer universal core topics (data structures, OOP basics, SQL basics, networking/OS fundamentals) and the most mainstream frameworks only. Avoid deep framework internals or architecture deep-dives.`;
   const prompt = `You are an expert technical interviewer. Generate ${count} UNIQUE ${difficulty} difficulty ${interviewType} interview questions for a ${experienceLevel} level ${jobRole} position.
-
+${contextBlock}
+${prevBlock}
+${difficultyNote}
 Requirements:
 - Every question MUST be different and specifically about ${jobRole} (frameworks, concepts, tools, and real scenarios for this exact role).
 - Do NOT use generic questions that would fit any role.
 - Mix of conceptual and practical questions.
+- If the candidate's past performance shows weak areas, include questions that probe those weak areas.
+- Do NOT repeat any question from the "already asked before" list.
 Return ONLY a valid JSON array of exactly ${count} strings. Example: ["Question 1", "Question 2", ...]`;
 
   const completion = await groq.chat.completions.create({
@@ -65,6 +84,27 @@ export const createInterview = asyncHandler(async (req: AuthRequest, res: Respon
 
   let questionTexts: string[];
 
+  // RAG: pull the student's past performance from Pinecone to personalise questions
+  const ragContext = await getInterviewContext(req.user._id.toString(), `${jobRole} ${interviewType} ${experienceLevel}`);
+
+  // Collect previously asked questions (from Mongo) so we never repeat them
+  const recentInterviews = await Interview.find({ user: req.user._id })
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .select("questions");
+  const seenSet = new Set<string>();
+  const previousLines: string[] = [];
+  for (const iv of recentInterviews) {
+    for (const q of iv.questions || []) {
+      const key = String(q.question || "").trim().toLowerCase();
+      if (key && !seenSet.has(key)) {
+        seenSet.add(key);
+        previousLines.push(q.question);
+      }
+    }
+  }
+  const previousQuestions = previousLines.slice(0, 40).join("\n");
+
   try {
     const response = await axios.post(`${AI_SERVICE_URL}/generate-questions`, {
       jobRole,
@@ -72,7 +112,9 @@ export const createInterview = asyncHandler(async (req: AuthRequest, res: Respon
       interviewType,
       difficulty,
       totalQuestions,
-    }, { timeout: 5000 });
+      context: ragContext,
+      previousQuestions,
+    }, { timeout: 30000, headers: aiServiceHeaders });
     questionTexts = response.data.questions || [];
   } catch (error: any) {
     questionTexts = [];
@@ -85,7 +127,9 @@ export const createInterview = asyncHandler(async (req: AuthRequest, res: Respon
         experienceLevel,
         interviewType,
         difficulty,
-        totalQuestions
+        totalQuestions,
+        ragContext,
+        previousQuestions
       );
     } catch (err) {
       console.error("Groq question generation failed, using fallback pool:", err);
@@ -171,7 +215,7 @@ export const submitAnswer = asyncHandler(async (req: AuthRequest, res: Response)
       interviewType: interview.interviewType,
       difficulty: interview.difficulty,
       jobRole: interview.jobRole,
-    });
+    }, { timeout: 60000, headers: aiServiceHeaders });
 
     currentQ.evaluation = evalResponse.data.evaluation || currentQ.evaluation;
   } catch (error: any) {
@@ -430,7 +474,7 @@ async function calculateScores(interview: any) {
         strengths: interview.strengths,
         weaknesses: interview.weaknesses,
         jobRole: interview.jobRole,
-      });
+      }, { timeout: 60000, headers: aiServiceHeaders });
       interview.finalFeedback = feedbackRes.data.feedback;
     } catch {
       interview.finalFeedback = generateFallbackFeedback(interview);
@@ -438,6 +482,11 @@ async function calculateScores(interview: any) {
   } else {
     interview.finalFeedback = generateFallbackFeedback(interview);
   }
+
+  // RAG: index the completed interview into Pinecone (fire-and-forget)
+  syncInterviewToVectorDB(interview.user.toString(), interview).catch((err) =>
+    console.error("Interview RAG sync error:", err.message)
+  );
 }
 
 function shuffle<T>(arr: T[]): T[] {

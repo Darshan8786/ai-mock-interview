@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
+import { embedText } from "../../services/embeddingService";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
@@ -11,7 +12,7 @@ if (!OPENAI_API_KEY || !PINECONE_API_KEY) {
 
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY || "dummy-key" });
 const pinecone = new Pinecone({ apiKey: PINECONE_API_KEY || "dummy-key" });
-const index = pinecone.Index(PINECONE_INDEX_NAME);
+const index = pinecone.index(PINECONE_INDEX_NAME);
 
 function normalizeRoleName(role: string): string {
   return role
@@ -20,14 +21,6 @@ function normalizeRoleName(role: string): string {
     .replace(/developer|engineer|role|roles|dev/gi, "")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-async function getEmbedding(text: string): Promise<number[]> {
-  const response = await openai.embeddings.create({
-    model: "text-embedding-3-small",
-    input: text,
-  });
-  return response.data[0].embedding;
 }
 
 async function generateQuestions(role: string): Promise<string[]> {
@@ -59,7 +52,7 @@ export async function getQuestionsForRole(validatedRole: string) {
     const canonicalRole = normalizeRoleName(validatedRole);
     console.log(`🎯 Searching for role: ${validatedRole} → canonical: ${canonicalRole}`);
 
-    const queryVector = await getEmbedding(`Interview questions for ${canonicalRole}`);
+    const queryVector = await embedText(`Interview questions for ${canonicalRole}`);
 
     const results = await index.namespace("quiz").query({
       vector: queryVector,
@@ -90,7 +83,7 @@ export async function getQuestionsForRole(validatedRole: string) {
     const newQuestions = await generateQuestions(canonicalRole);
 
     const embeddings = await Promise.all(
-      newQuestions.map((q) => getEmbedding(`Question: ${q}\n\nRole: ${canonicalRole}`))
+      newQuestions.map((q) => embedText(`Question: ${q}\n\nRole: ${canonicalRole}`))
     );
 
     await index.namespace("quiz").upsert(

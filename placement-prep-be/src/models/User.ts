@@ -40,6 +40,8 @@ const userSchema = new mongoose.Schema(
     semester: { type: String, trim: true, default: "" },
     section: { type: String, trim: true, default: "" },
     cgpa: { type: Number, min: 0, max: 10, default: null },
+    backlogs: { type: Number, min: 0, default: 0 },
+    graduationYear: { type: Number, default: null },
     skills: { type: [String], default: [] },
     certifications: { type: [certificationSchema], default: [] },
     projects: { type: [projectSchema], default: [] },
