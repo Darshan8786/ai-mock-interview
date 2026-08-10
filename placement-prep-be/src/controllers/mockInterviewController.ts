@@ -21,6 +21,33 @@ const groq = new OpenAI({
   baseURL: "https://api.groq.com/openai/v1",
 });
 
+const INTERVIEW_TYPE_GUIDANCE: Record<
+  string,
+  { system: string; note: string; focus: string }
+> = {
+  Technical: {
+    system: "You are an expert technical interviewer at a top tech company.",
+    note:
+      "IMPORTANT: The candidate is a college student preparing for campus placements. Keep every question at a MODERATE level - foundational concepts, common frameworks, and standard placement topics. Avoid advanced, niche, or expert-level questions. Prefer universal core topics (data structures, OOP basics, SQL basics, networking/OS fundamentals) and the most mainstream frameworks only. Avoid deep framework internals or architecture deep-dives.",
+    focus:
+      "Every question MUST be a genuine technical question and specifically about __JOB_ROLE__ (frameworks, concepts, tools, and real scenarios for this exact role). Mix of conceptual and practical questions.",
+  },
+  HR: {
+    system: "You are an experienced HR interviewer at a top tech company.",
+    note:
+      "IMPORTANT: Ask HR-style questions - self-introduction, motivation, strengths and weaknesses, career goals, salary/work expectations, and cultural fit. Keep them at a MODERATE level appropriate for a college student preparing for campus placements.",
+    focus:
+      "Every question MUST be a genuine HR question - NO technical, coding, data-structure, or framework questions. Tailor each question to the __JOB_ROLE__ role but keep it human-resource focused.",
+  },
+  Behavioral: {
+    system: "You are an expert behavioral interviewer at a top tech company.",
+    note:
+      "IMPORTANT: Ask behavioral and situational (STAR method style) questions about past experiences and hypothetical work situations - teamwork, conflict, leadership, deadlines, and adaptation. Keep them at a MODERATE level appropriate for a college student preparing for campus placements.",
+    focus:
+      "Every question MUST be a behavioral or situational question - NO technical, coding, or HR-fit questions. Ask the candidate to describe past behavior or how they would handle a specific scenario relevant to the __JOB_ROLE__ role.",
+  },
+};
+
 async function generateQuestionsWithGroq(
   jobRole: string,
   experienceLevel: string,
@@ -30,21 +57,22 @@ async function generateQuestionsWithGroq(
   context: string,
   previousQuestions: string
 ): Promise<string[]> {
+  const guidance = INTERVIEW_TYPE_GUIDANCE[interviewType] || INTERVIEW_TYPE_GUIDANCE.Technical;
   const contextBlock = context
     ? `\n\nCandidate's past performance (use this to tailor questions to the candidate's weaker areas):\n${context}`
     : "";
   const prevBlock = previousQuestions
     ? `\n\nQuestions already asked before (DO NOT repeat any of these):\n${previousQuestions}`
     : "";
-  const difficultyNote = `\n\nIMPORTANT: The candidate is a college student preparing for campus placements. Keep every question at a MODERATE level - foundational concepts, common frameworks, and standard placement topics. Avoid advanced, niche, or expert-level questions. Prefer universal core topics (data structures, OOP basics, SQL basics, networking/OS fundamentals) and the most mainstream frameworks only. Avoid deep framework internals or architecture deep-dives.`;
-  const prompt = `You are an expert technical interviewer. Generate ${count} UNIQUE ${difficulty} difficulty ${interviewType} interview questions for a ${experienceLevel} level ${jobRole} position.
+  const difficultyNote = `\n\n${guidance.note}`;
+  const focus = guidance.focus.replace(/__JOB_ROLE__/g, jobRole);
+  const prompt = `${guidance.system} Generate ${count} UNIQUE ${difficulty} difficulty ${interviewType} interview questions for a ${experienceLevel} level ${jobRole} position.
 ${contextBlock}
 ${prevBlock}
 ${difficultyNote}
 Requirements:
-- Every question MUST be different and specifically about ${jobRole} (frameworks, concepts, tools, and real scenarios for this exact role).
+- ${focus}
 - Do NOT use generic questions that would fit any role.
-- Mix of conceptual and practical questions.
 - If the candidate's past performance shows weak areas, include questions that probe those weak areas.
 - Do NOT repeat any question from the "already asked before" list.
 Return ONLY a valid JSON array of exactly ${count} strings. Example: ["Question 1", "Question 2", ...]`;

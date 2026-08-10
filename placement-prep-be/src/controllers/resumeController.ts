@@ -500,9 +500,60 @@ Return ONLY the optimized JSON object, no other text.`;
   const cleaned = responseText.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
   const fixedJson = JSON.parse(cleaned);
 
+  const evalPrompt = `You are an expert ATS resume analyzer and career advisor. Analyze the resume data below and produce a DETAILED, PERSONALIZED assessment that reflects THIS EXACT RESUME'S content. Never use generic responses — every field must reference the actual skills, companies, roles, education, and projects found in the resume.
+
+STRICT RULES:
+1. ats_score MUST vary with content quality: strong (detailed experience with quantified bullets, relevant skills, clear structure) = 75-95; mediocre (thin descriptions, few skills, weak bullets) = 45-74; poor = 20-44.
+2. summary MUST be 3-5 sentences evaluating THIS resume: strengths, what role it fits, key gaps, and overall readiness.
+3. missing_keywords MUST be job-relevant keywords (technologies, frameworks, methodologies) NOT already present in the resume.
+4. ats_issues MUST list real problems in this resume (e.g., "No quantified achievements in experience", "Summary section is empty", "Only N skills listed").
+
+Return a JSON object with exactly this structure (no markdown, no code fences):
+
+{
+  "skills": ["skill1", "skill2", ...],
+  "experience_years": number,
+  "top_roles": ["role1", "role2", ...],
+  "strengths": ["strength1", "strength2", ...],
+  "weaknesses": ["weakness1", "weakness2", ...],
+  "improvements": [
+    {
+      "area": "Section or skill to improve",
+      "suggestion": "Specific actionable advice",
+      "priority": "high|medium|low"
+    }
+  ],
+  "ats_score": 75,
+  "ats_friendly": false,
+  "ats_issues": ["String issues"],
+  "ats_passed_checks": ["String passed checks"],
+  "missing_keywords": ["keyword1", "keyword2", ...],
+  "summary": "3-5 sentence detailed assessment of this specific resume"
+}
+
+Structured resume data to evaluate:
+${JSON.stringify(fixedJson, null, 2)}
+
+Return ONLY the JSON object, no other text.`;
+
+  let evaluationJson;
+  try {
+    const evalCompletion = await openai.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [{ role: "user", content: evalPrompt }],
+      response_format: { type: "json_object" },
+    });
+    const evalResponseText = evalCompletion.choices[0]?.message?.content || "";
+    const evalCleaned = evalResponseText.replace(/```json\s*/ig, "").replace(/```\s*/g, "").trim();
+    evaluationJson = JSON.parse(evalCleaned);
+  } catch (err: any) {
+    console.error("OpenAI Error:", err);
+    throw new AppError("Failed to parse ATS evaluation from AI: " + (err.message || "Unknown error"), 500);
+  }
+
   res.json({
     success: true,
-    data: { resume: fixedJson },
+    data: { resume: fixedJson, analysis: evaluationJson },
   });
 });
 

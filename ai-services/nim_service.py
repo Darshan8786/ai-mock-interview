@@ -89,6 +89,65 @@ def _dedupe(questions):
     return result
 
 
+INTERVIEW_TYPE_GUIDANCE = {
+    "Technical": {
+        "system": (
+            "You are an expert technical interviewer at a top tech company. "
+            "Generate high-quality technical interview questions that assess "
+            "real-world engineering skills for the given role."
+        ),
+        "note": (
+            "\nIMPORTANT: The candidate is a college student preparing for campus placements. "
+            "Keep every question at a MODERATE level - foundational concepts, common frameworks, "
+            "and standard placement topics. Avoid advanced, niche, or expert-level questions. "
+            "Prefer universal core topics (data structures, OOP basics, SQL basics, "
+            "networking/OS fundamentals) and the most mainstream frameworks only. "
+            "Avoid deep framework internals or architecture deep-dives.\n"
+        ),
+        "focus": (
+            "Every question MUST be a genuine technical question and specifically about this "
+            "exact role (its frameworks, tools, concepts, and real scenarios). Do not use "
+            "generic questions that would fit any role. Mix conceptual and practical questions."
+        ),
+    },
+    "HR": {
+        "system": (
+            "You are an experienced HR interviewer at a top tech company. Generate high-quality "
+            "HR interview questions that assess the candidate's background, motivation, "
+            "strengths, weaknesses, cultural fit, and career alignment for the given role."
+        ),
+        "note": (
+            "\nIMPORTANT: Ask HR-style questions - self-introduction, motivation, strengths and "
+            "weaknesses, career goals, salary/work expectations, and cultural fit. Keep them at a "
+            "MODERATE level appropriate for a college student preparing for campus placements.\n"
+        ),
+        "focus": (
+            "Every question MUST be a genuine HR question - NO technical, coding, data-structure, "
+            "or framework questions. Tailor each question to this exact role but keep it "
+            "human-resource focused."
+        ),
+    },
+    "Behavioral": {
+        "system": (
+            "You are an expert behavioral interviewer at a top tech company. Generate high-quality "
+            "behavioral interview questions that assess soft skills, situational judgment, "
+            "teamwork, leadership, and adaptability for the given role."
+        ),
+        "note": (
+            "\nIMPORTANT: Ask behavioral and situational (STAR method style) questions about past "
+            "experiences and hypothetical work situations - teamwork, conflict, leadership, "
+            "deadlines, and adaptation. Keep them at a MODERATE level appropriate for a college "
+            "student preparing for campus placements.\n"
+        ),
+        "focus": (
+            "Every question MUST be a behavioral or situational question - NO technical, coding, "
+            "or HR-fit questions. Ask the candidate to describe past behavior or how they would "
+            "handle a specific scenario relevant to this exact role."
+        ),
+    },
+}
+
+
 def generate_questions(
     job_role: str,
     experience_level: str,
@@ -98,10 +157,10 @@ def generate_questions(
     context: str = "",
     previous_questions: str = "",
 ) -> list:
-    system_prompt = (
-        "You are an expert technical interviewer at a top tech company. "
-        "Generate high-quality interview questions that assess real-world skills."
+    guidance = INTERVIEW_TYPE_GUIDANCE.get(
+        interview_type, INTERVIEW_TYPE_GUIDANCE["Technical"]
     )
+    system_prompt = guidance["system"]
 
     context_block = (
         f"\nCandidate's past performance (use this to tailor questions toward the "
@@ -116,21 +175,12 @@ def generate_questions(
         else ""
     )
 
-    difficulty_note = (
-        "\nIMPORTANT: The candidate is a college student preparing for campus placements. "
-        "Keep every question at a MODERATE level - foundational concepts, common frameworks, "
-        "and standard placement topics. Avoid advanced, niche, or expert-level questions. "
-        "Prefer universal core topics (data structures, OOP basics, SQL basics, "
-        "networking/OS fundamentals) and the most mainstream frameworks only. "
-        "Avoid deep framework internals or architecture deep-dives.\n"
-    )
+    difficulty_note = guidance["note"]
 
     prompt = (
         f"Generate {total_questions} UNIQUE {difficulty} difficulty {interview_type} interview questions "
         f"for a {experience_level} level {job_role} position. "
-        "Every question MUST be different and specifically about this exact role "
-        "(its frameworks, tools, concepts, and real scenarios). Do not use generic "
-        "questions that would fit any role. "
+        f"{guidance['focus']} "
         f"{difficulty_note}"
         f"{context_block}"
         f"{prev_block}"
