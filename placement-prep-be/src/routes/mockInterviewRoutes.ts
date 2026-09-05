@@ -3,6 +3,8 @@ import { protect } from "../middleware/auth";
 import {
   createInterview,
   getInterview,
+  getInterviewState,
+  regenerateQuestions,
   submitAnswer,
   skipQuestion,
   reportCheating,
@@ -17,6 +19,8 @@ router.use(protect);
 
 router.post("/create", createInterview);
 router.get("/dashboard", getDashboard);
+router.get("/:id/state", getInterviewState);
+router.post("/:id/regenerate-questions", regenerateQuestions);
 router.get("/:id", getInterview);
 router.post("/:id/answer", submitAnswer);
 router.post("/:id/skip", skipQuestion);

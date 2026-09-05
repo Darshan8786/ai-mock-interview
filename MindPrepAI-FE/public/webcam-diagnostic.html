@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Webcam Diagnostic</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px; background: #0b0f19; color: #e5e7eb;
+    font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  p.sub { margin: 0 0 20px; color: #9ca3af; }
+  .row { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+  .panel { flex: 1 1 420px; min-width: 340px; }
+  button {
+    background: #10b981; color: #04120c; border: 0; border-radius: 8px;
+    padding: 10px 16px; font-weight: 600; cursor: pointer; font-size: 14px;
+  }
+  button.secondary { background: #374151; color: #e5e7eb; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .controls { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  video {
+    width: 100%; max-width: 480px; aspect-ratio: 16/9; background: #000;
+    border-radius: 10px; border: 1px solid #1f2937; transform: scaleX(-1);
+  }
+  #log {
+    background: #05070d; border: 1px solid #1f2937; border-radius: 10px;
+    padding: 12px; height: 60vh; overflow: auto; white-space: pre-wrap;
+    font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .l-ok   { color: #34d399; }
+  .l-err  { color: #f87171; }
+  .l-warn { color: #fbbf24; }
+  .l-info { color: #9ca3af; }
+  .l-step { color: #60a5fa; font-weight: 700; }
+  table { border-collapse: collapse; margin-top: 12px; width: 100%; max-width: 480px; }
+  td { border-top: 1px solid #1f2937; padding: 4px 8px; font-size: 12px; }
+  td:first-child { color: #9ca3af; width: 55%; }
+  code { background:#111827; padding:1px 5px; border-radius:4px; }
+</style>
+</head>
+<body>
+  <h1>Webcam Diagnostic</h1>
+  <p class="sub">
+    Runs the exact acquisition sequence used by the interview app, with every checkpoint logged.
+    No login required. Open this at <code>http://localhost:5173/webcam-diagnostic.html</code>.
+  </p>
+
+  <div class="controls">
+    <button id="run">Run diagnostic</button>
+    <button id="stop" class="secondary" disabled>Stop camera</button>
+    <button id="copy" class="secondary">Copy log</button>
+    <button id="enum" class="secondary">List devices</button>
+  </div>
+
+  <div class="row">
+    <div class="panel">
+      <video id="v" autoplay muted playsinline></video>
+      <table id="stats"></table>
+    </div>
+    <div class="panel">
+      <div id="log"></div>
+    </div>
+  </div>
+
+<script>
+const $log = document.getElementById("log");
+const $v = document.getElementById("v");
+const $stats = document.getElementById("stats");
+const $run = document.getElementById("run");
+const $stop = document.getElementById("stop");
+
+let activeStream = null;
+let frameCount = 0;
+let rvfcHandle = 0;
+
+function line(cls, ...parts) {
+  const t = new Date().toISOString().substr(11, 12);
+  const el = document.createElement("div");
+  el.className = "l-" + cls;
+  el.textContent = `${t}  ${parts.join(" ")}`;
+  $log.appendChild(el);
+  $log.scrollTop = $log.scrollHeight;
+  (cls === "err" ? console.error : cls === "warn" ? console.warn : console.log)("[diag]", ...parts);
+}
+const ok = (...m) => line("ok", ...m);
+const err = (...m) => line("err", ...m);
+const wrn = (...m) => line("warn", ...m);
+const info = (...m) => line("info", ...m);
+const step = (...m) => line("step", ...m);
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function withTimeout(p, ms, label) {
+  let timer;
+  const to = new Promise((_, rej) => {
+    timer = setTimeout(() => {
+      const e = new Error(`${label} did not complete within ${ms}ms`);
+      e.name = "TimeoutError";
+      rej(e);
+    }, ms);
+  });
+  return Promise.race([p, to]).finally(() => clearTimeout(timer));
+}
+
+function renderStats(video, stream) {
+  const vt = stream && stream.getVideoTracks()[0];
+  const at = stream && stream.getAudioTracks()[0];
+  const s = vt && vt.getSettings ? vt.getSettings() : {};
+  const rows = [
+    ["navigator.mediaDevices", !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)],
+    ["window.isSecureContext", window.isSecureContext],
+    ["location.origin", location.origin],
+    ["stream.id", stream ? stream.id : "—"],
+    ["video tracks", stream ? stream.getVideoTracks().length : 0],
+    ["audio tracks", stream ? stream.getAudioTracks().length : 0],
+    ["videoTrack.label", vt ? vt.label : "—"],
+    ["videoTrack.readyState", vt ? vt.readyState : "—"],
+    ["videoTrack.enabled", vt ? vt.enabled : "—"],
+    ["videoTrack.muted", vt ? vt.muted : "—"],
+    ["track settings", vt ? `${s.width||"?"}x${s.height||"?"} @${s.frameRate||"?"}fps` : "—"],
+    ["audioTrack.label", at ? at.label : "—"],
+    ["audioTrack.readyState", at ? at.readyState : "—"],
+    ["video.readyState", video.readyState],
+    ["video.videoWidth", video.videoWidth],
+    ["video.videoHeight", video.videoHeight],
+    ["video.paused", video.paused],
+    ["video.currentTime", video.currentTime.toFixed(2)],
+    ["frames seen (rVFC)", frameCount],
+  ];
+  $stats.innerHTML = rows.map(([k, v]) =>
+    `<tr><td>${k}</td><td>${String(v)}</td></tr>`).join("");
+}
+
+function pumpStats() {
+  renderStats($v, activeStream);
+  if (activeStream) requestAnimationFrame(pumpStats);
+}
+
+async function getMedia(constraints, label) {
+  step(`getUserMedia(${label})`, JSON.stringify(constraints));
+  const call = navigator.mediaDevices.getUserMedia(constraints);
+  try {
+    const s = await withTimeout(call, 12000, `getUserMedia(${label})`);
+    ok(`getUserMedia(${label}) RESOLVED — stream ${s.id}`);
+    return s;
+  } catch (e) {
+    err(`getUserMedia(${label}) REJECTED — ${e.name}: ${e.message}`);
+    call.then(late => { wrn("late-resolved; stopping leaked tracks"); late.getTracks().forEach(t => t.stop()); }).catch(() => {});
+    throw e;
+  }
+}
+
+function waitForFirstFrame(video, timeoutMs) {
+  return new Promise(resolve => {
+    let done = false;
+    const finish = via => { if (done) return; done = true; cleanup(); resolve(via); };
+    const ready = () => video.readyState >= 2 && video.videoWidth > 0 && video.videoHeight > 0;
+    const cap = setTimeout(() => finish("timeout"), timeoutMs);
+
+    if (typeof video.requestVideoFrameCallback === "function") {
+      const tick = () => {
+        frameCount++;
+        if (frameCount === 1) info("requestVideoFrameCallback: first frame delivered");
+        rvfcHandle = video.requestVideoFrameCallback(tick);
+        if (!done) finish("requestVideoFrameCallback");
+      };
+      rvfcHandle = video.requestVideoFrameCallback(tick);
+    } else {
+      wrn("requestVideoFrameCallback NOT supported — using readyState + polling");
+    }
+    const onEv = n => () => { info(`event: ${n} (readyState=${video.readyState}, ${video.videoWidth}x${video.videoHeight})`); if (ready()) finish(n); };
+    const a = onEv("loadedmetadata"), b = onEv("loadeddata"), c = onEv("canplay"), d = onEv("playing");
+    video.addEventListener("loadedmetadata", a);
+    video.addEventListener("loadeddata", b);
+    video.addEventListener("canplay", c);
+    video.addEventListener("playing", d);
+    const poll = setInterval(() => { if (ready()) finish("poll"); }, 120);
+    function cleanup() {
+      clearInterval(poll);
+      clearTimeout(cap);
+      video.removeEventListener("loadedmetadata", a);
+      video.removeEventListener("loadeddata", b);
+      video.removeEventListener("canplay", c);
+      video.removeEventListener("playing", d);
+    }
+    if (ready()) finish("already-ready");
+  });
+}
+
+function stopCamera() {
+  if (rvfcHandle && $v.cancelVideoFrameCallback) { try { $v.cancelVideoFrameCallback(rvfcHandle); } catch {} }
+  if (activeStream) {
+    activeStream.getTracks().forEach(t => { t.stop(); info(`stopped ${t.kind} track (${t.label})`); });
+    activeStream = null;
+  }
+  $v.srcObject = null;
+  $stop.disabled = true;
+  $run.disabled = false;
+}
+
+async function run() {
+  $run.disabled = true;
+  frameCount = 0;
+  const t0 = performance.now();
+  const ms = () => `${Math.round(performance.now() - t0)}ms`;
+  $log.innerHTML = "";
+  step("═══ diagnostic start ═══");
+
+  // 1
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    err("navigator.mediaDevices.getUserMedia is UNAVAILABLE");
+    if (!window.isSecureContext) err("Reason: page is not a secure context. Use http://localhost, not a LAN IP.");
+    $run.disabled = false;
+    return;
+  }
+  ok(`(1) navigator.mediaDevices.getUserMedia present — secureContext=${window.isSecureContext}, origin=${location.origin}`);
+
+  // permission state (Chrome)
+  try {
+    if (navigator.permissions) {
+      const cam = await navigator.permissions.query({ name: "camera" });
+      const mic = await navigator.permissions.query({ name: "microphone" });
+      info(`permissions — camera: ${cam.state}, microphone: ${mic.state}`);
+    }
+  } catch { /* not all browsers */ }
+
+  pumpStats();
+
+  // 2 — combined, simplest constraints
+  let stream;
+  try {
+    stream = await getMedia({ video: true, audio: true }, "video+audio");
+  } catch (e1) {
+    if (["NotReadableError","AbortError","TrackStartError","TimeoutError"].includes(e1.name)) {
+      wrn(`(2) combined failed (${e1.name}) at ${ms()} — retrying VIDEO-ONLY`);
+      try {
+        stream = await getMedia({ video: true, audio: false }, "video-only");
+      } catch (e2) {
+        err(`(2b) video-only ALSO failed (${e2.name}) at ${ms()} — DIAGNOSIS: camera cannot start on this machine`);
+        diagnose(e2);
+        $run.disabled = false;
+        return;
+      }
+    } else {
+      err(`(2) getUserMedia failed (${e1.name}) at ${ms()}`);
+      diagnose(e1);
+      $run.disabled = false;
+      return;
+    }
+  }
+
+  activeStream = stream;
+  $stop.disabled = false;
+
+  // 3 — validate track
+  const vt = stream.getVideoTracks()[0];
+  const at = stream.getAudioTracks()[0];
+  info(`(3) video tracks=${stream.getVideoTracks().length}, audio tracks=${stream.getAudioTracks().length}`);
+  if (!vt) { err("(3) NO VIDEO TRACK in the stream"); return; }
+  ok(`(3) videoTrack "${vt.label}" — readyState=${vt.readyState}, enabled=${vt.enabled}, muted=${vt.muted}`);
+  if (vt.readyState !== "live") err(`(3) video track is NOT live (readyState=${vt.readyState})`);
+  vt.onended = () => err("(!) videoTrack 'ended' event fired — device lost");
+  vt.onmute  = () => wrn("(!) videoTrack 'mute' event — frames paused by the OS/driver");
+  vt.onunmute = () => ok("(!) videoTrack 'unmute' event — frames resumed");
+
+  // 4 — attach + prove frames
+  step("(4) attaching stream to <video> and calling play()");
+  $v.srcObject = stream;
+  $v.muted = true;
+  $v.play().then(() => ok("(4) video.play() RESOLVED")).catch(e => wrn(`(4) video.play() rejected: ${e.name} (non-fatal, autoplay muted self-starts)`));
+
+  const via = await waitForFirstFrame($v, 8000);
+  if (via === "timeout") {
+    if (vt.readyState !== "live") {
+      err("(4) video track DIED before producing a frame");
+      diagnose({ name: "NoFramesError" });
+      return;
+    }
+    wrn(`(4) no frame confirmed in 8000ms BUT track still live (readyState=${$v.readyState}, ${$v.videoWidth}x${$v.videoHeight}) — this is the "black preview" case`);
+  } else {
+    ok(`(4) FIRST FRAME CONFIRMED via "${via}" at ${ms()} — ${$v.videoWidth}x${$v.videoHeight}, readyState=${$v.readyState}`);
+  }
+
+  // 5
+  step("═══ RESULT ═══");
+  ok(`camera READY at ${ms()}  |  CAM=${vt.readyState === "live"}  MIC=${!!at && at.readyState === "live"}`);
+  ok("The interview app would now show the live preview and start proctoring.");
+}
+
+function diagnose(e) {
+  const m = {
+    NotAllowedError:  "Permission denied. Chrome address-bar camera icon → Allow. Also check Windows Settings › Privacy › Camera › 'Let apps / desktop apps access your camera'.",
+    SecurityError:    "Blocked by browser security policy / insecure origin.",
+    NotFoundError:    "No camera device present. Check Device Manager / that the webcam is plugged in and not disabled.",
+    NotReadableError: "Camera opened but delivered NO frames. In priority order: (1) camera-privacy switch is ON — Lenovo/Dell/HP have an Fn key (often F9) or Lenovo Vantage > Camera Privacy Mode, some laptops a physical lens shutter; (2) another app holds it — Zoom/Teams/Meet/OBS/Windows Camera/another browser tab; (3) the Windows Camera Frame Server service crashed and needs a reboot. Also try: Device Manager > Cameras > uninstall 'Integrated Camera' > Scan for hardware changes.",
+    AbortError:       "OS aborted camera start (same causes as NotReadableError — privacy switch, another app, or a Frame Server / driver stall).",
+    TrackStartError:  "Same class as NotReadableError — the source could not start.",
+    OverconstrainedError: "Requested constraints unsupported (should not happen with {video:true}).",
+    TimeoutError:     "getUserMedia never returned — the camera stack is hung. Almost always another app holding the device, or a webcam driver that needs a reboot.",
+    NoFramesError:    "Camera opened but delivered zero frames. Driver issue or the holding app released only the handle, not the pipeline. Unplug/replug or reboot.",
+    TypeError:        "getUserMedia unavailable — not a secure context, or unsupported browser.",
+  };
+  err("DIAGNOSIS: " + (m[e.name] || `Unrecognised error "${e.name}". Full: ${e.message || e}`));
+}
+
+document.getElementById("run").addEventListener("click", run);
+document.getElementById("stop").addEventListener("click", stopCamera);
+document.getElementById("copy").addEventListener("click", () => {
+  navigator.clipboard.writeText($log.innerText).then(() => info("log copied to clipboard"));
+});
+document.getElementById("enum").addEventListener("click", async () => {
+  try {
+    const ds = await navigator.mediaDevices.enumerateDevices();
+    info("--- devices ---");
+    ds.forEach(d => info(`${d.kind}: "${d.label || "(label hidden until permission granted)"}" id=${d.deviceId.slice(0,8)}…`));
+  } catch (e) { err("enumerateDevices failed: " + e); }
+});
+window.addEventListener("beforeunload", stopCamera);
+</script>
+</body>
+</html>

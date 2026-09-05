@@ -28,14 +28,43 @@ export function WebcamPreview({
   useEffect(() => {
     const video = videoRef.current;
     const stream = streamRef.current;
-    if (!video || !stream) return;
+    
+    const attachStream = async () => {
+      if (!video || !stream) return;
+      if (video.srcObject !== stream) {
+        video.srcObject = stream;
+        video.muted = true;
+        try {
+          await video.play();
+        } catch (e) {
+          console.warn('Video play failed:', e);
+        }
+      } else {
+        if (video.paused) {
+          video.play().catch(e => console.warn('Video play failed:', e));
+        }
+      }
+      
+      // If the video is already in a playable/playing state (e.g. after the
+      // setup→interview transition where the stream is already active),
+      // the browser won't fire onCanPlay again — clear the loading spinner now.
+      if (video.readyState >= 2) {
+        setVideoLoading(false);
+      }
+    };
 
-    if (video.srcObject !== stream) {
-      video.srcObject = stream;
-      video.muted = true;
-      video.play().catch(() => {});
-    }
-  }, [videoRef, streamRef]);
+    attachStream();
+
+    // Safety net: if the media events never fire (e.g. the <video> was briefly
+    // hidden when the stream attached), don't leave the spinner up forever once
+    // the stream is actually live.
+    const t = window.setTimeout(() => {
+      if (streamRef.current?.getVideoTracks()[0]?.readyState === "live") {
+        setVideoLoading(false);
+      }
+    }, 3000);
+    return () => window.clearTimeout(t);
+  }, [videoRef, streamRef, cameraOn]);
 
   return (
     <motion.div
@@ -54,6 +83,8 @@ export function WebcamPreview({
         muted
         playsInline
         onCanPlay={() => setVideoLoading(false)}
+        onLoadedMetadata={() => setVideoLoading(false)}
+        onPlaying={() => setVideoLoading(false)}
         className="w-full h-full object-cover bg-black"
         style={{ transform: 'scaleX(-1)' }}
       />

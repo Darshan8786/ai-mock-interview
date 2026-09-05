@@ -9,11 +9,38 @@ NIM_API_KEY = os.getenv("NIM_API_KEY", "")
 NIM_MODEL = os.getenv("NIM_MODEL", "meta/llama-3.1-405b-instruct")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434")
+OLLAMA_CHAT_MODEL = os.getenv("OLLAMA_CHAT_MODEL", "llama3.2:3b")
 
 HEADERS = {
     "Authorization": f"Bearer {NIM_API_KEY}",
     "Content-Type": "application/json",
 }
+
+
+def _call_ollama(prompt: str, system_prompt: str = "") -> Optional[str]:
+    """Local question generation via Ollama (no API keys, works offline)."""
+    messages = []
+    if system_prompt:
+        messages.append({"role": "system", "content": system_prompt})
+    messages.append({"role": "user", "content": prompt})
+
+    try:
+        resp = requests.post(
+            f"{OLLAMA_URL}/api/chat",
+            json={
+                "model": OLLAMA_CHAT_MODEL,
+                "messages": messages,
+                "stream": False,
+                "options": {"temperature": 0.7},
+            },
+            timeout=60,
+        )
+        resp.raise_for_status()
+        return resp.json()["message"]["content"]
+    except Exception as e:
+        print(f"Ollama API error: {e}")
+        return None
 
 
 def _call_groq(prompt: str, system_prompt: str = "") -> Optional[str]:
@@ -49,7 +76,7 @@ def _call_groq(prompt: str, system_prompt: str = "") -> Optional[str]:
 
 def _call_nim(prompt: str, system_prompt: str = "") -> Optional[str]:
     if not NIM_API_KEY:
-        return _call_groq(prompt, system_prompt)
+        return None
 
     messages = []
     if system_prompt:
@@ -69,13 +96,24 @@ def _call_nim(prompt: str, system_prompt: str = "") -> Optional[str]:
             f"{NIM_API_URL}/chat/completions",
             headers=HEADERS,
             json=payload,
-            timeout=30,
+            timeout=10,
         )
         resp.raise_for_status()
         return resp.json()["choices"][0]["message"]["content"]
     except Exception as e:
         print(f"NIM API error: {e}")
-        return _call_groq(prompt, system_prompt)
+        return None
+
+
+def _call_llm(prompt: str, system_prompt: str = "") -> Optional[str]:
+    """Groq (fast) first, then local Ollama, then NVIDIA NIM."""
+    result = _call_groq(prompt, system_prompt)
+    if result:
+        return result
+    result = _call_ollama(prompt, system_prompt)
+    if result:
+        return result
+    return _call_nim(prompt, system_prompt)
 
 
 def _dedupe(questions):
@@ -188,7 +226,7 @@ def generate_questions(
         "Format: [\"Question 1\", \"Question 2\", ...]"
     )
 
-    result = _call_nim(prompt, system_prompt)
+    result = _call_llm(prompt, system_prompt)
     if result:
         try:
             cleaned = result.strip()
@@ -284,7 +322,7 @@ def evaluate_answer(
         "Do not include any text outside the JSON object."
     )
 
-    result = _call_nim(prompt, system_prompt)
+    result = _call_llm(prompt, system_prompt)
     if result:
         try:
             cleaned = result.strip()
@@ -321,7 +359,7 @@ def generate_feedback(scores: dict, strengths: list, weaknesses: list, job_role:
         "with actionable advice for improvement."
     )
 
-    result = _call_nim(prompt, system_prompt)
+    result = _call_llm(prompt, system_prompt)
     if result:
         return result.strip()
 

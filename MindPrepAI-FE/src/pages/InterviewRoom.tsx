@@ -1,19 +1,19 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useWebcam } from "../hooks/useWebcam";
 import { useMicrophone } from "../hooks/useMicrophone";
-import { useProctoring } from "../hooks/useProctoring";
 import { useInterview } from "../hooks/useInterview";
-import { WebcamPreview } from "../components/interview/WebcamPreview";
+import { useProctoring } from "../hooks/useProctoring";
 import { WarningOverlay } from "../components/interview/WarningOverlay";
-import { CheatingCounter } from "../components/interview/CheatingCounter";
-import { InterviewMonitor } from "../components/interview/InterviewMonitor";
+import { ProctoringPanel } from "../components/interview/ProctoringPanel";
+import { QuestionPanel } from "../components/interview/QuestionPanel";
 import { Timer, type TimerHandle } from "../components/mock-interview/Timer";
-import { QuestionCard } from "../components/mock-interview/QuestionCard";
 import { ProgressBar } from "../components/mock-interview/ProgressBar";
 import { StatusIndicator } from "../components/mock-interview/StatusIndicator";
 import { WebcamPreview as SetupWebcamPreview } from "../components/mock-interview/WebcamPreview";
+import { AI_SERVICE_URL, AI_SERVICE_KEY } from "../config/config";
+import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 
 export function InterviewRoom() {
   const location = useLocation();
@@ -24,9 +24,12 @@ export function InterviewRoom() {
     videoRef,
     streamRef,
     status,
+    phase: webcamPhase,
     error: webcamError,
+    errorKind: webcamErrorKind,
     startWebcam,
     stopWebcam,
+    retry: retryWebcam,
     captureFrame,
   } = useWebcam();
 
@@ -43,10 +46,13 @@ export function InterviewRoom() {
 
   const {
     currentQuestion,
+    questionsStatus,
     isComplete,
     loading,
     error: interviewError,
+    errorKind: interviewErrorKind,
     startInterview,
+    retryStartInterview,
     submitAnswer,
     skipQuestion,
     terminateInterview,
@@ -56,6 +62,7 @@ export function InterviewRoom() {
 
   const {
     status: proctorStatus,
+    stalled: proctorStalled,
     result: proctorResult,
     warnings: proctorWarnings,
     cheatingCount,
@@ -67,13 +74,24 @@ export function InterviewRoom() {
 
   const [answerMode, setAnswerMode] = useState<"voice" | "text">("text");
   const [textAnswer, setTextAnswer] = useState("");
-  const [permissionGranted, setPermissionGranted] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(5);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [genTakingLong, setGenTakingLong] = useState(false);
   const questionTimerRef = useRef<TimerHandle>(null);
   const overallTimerRef = useRef<TimerHandle>(null);
+
+  // Surface a "taking longer than usual" hint + retry while the first question
+  // is still being generated, so the user is never stuck on a bare spinner.
+  useEffect(() => {
+    if (questionsStatus === "generating" && !currentQuestion) {
+      setGenTakingLong(false);
+      const t = window.setTimeout(() => setGenTakingLong(true), 20000);
+      return () => window.clearTimeout(t);
+    }
+    setGenTakingLong(false);
+  }, [questionsStatus, currentQuestion]);
 
   useEffect(() => {
     if (!config) {
@@ -84,10 +102,7 @@ export function InterviewRoom() {
   }, [config, navigate]);
 
   const handlePermission = async () => {
-    const stream = await startWebcam();
-    if (stream) {
-      setPermissionGranted(true);
-    }
+    await startWebcam();
   };
 
   const handleStartInterview = async () => {
@@ -106,8 +121,32 @@ export function InterviewRoom() {
       overallTimerRef.current.reset();
     }
 
-    startCapture(captureFrame);
+    // startCapture is NOT called here — the effect below owns the proctoring
+    // lifecycle, keyed on the interview session (not this request's outcome).
   };
+
+  // PROCTORING LIFECYCLE — driven purely by (interview started) + (camera ready).
+  //
+  // Frame capture starts the moment the interview screen is shown and the
+  // webcam stream is READY. It does NOT wait for question generation. The
+  // proctoring WebSocket inside useProctoring opens under a client bridge id
+  // immediately and adopts the real `interviewId` when it appears — so a slow
+  // or failed AI question pipeline (Groq/AI API down, question never rendered,
+  // question component crash) cannot stop or delay proctoring.
+  //
+  // Nothing about question state — currentQuestion, questionsStatus, loading,
+  // errors — is referenced here. A question failure cannot reach this effect.
+  //
+  // `!showInstructions` also guarantees the interview <video> element is mounted
+  // (the setup <video> has unmounted) so captureFrame reads the right element.
+  const proctoringStartedRef = useRef(false);
+  useEffect(() => {
+    const cameraReady = webcamPhase === "ready" && status.camera;
+    if (!showInstructions && cameraReady && !proctoringStartedRef.current) {
+      proctoringStartedRef.current = true;
+      startCapture(captureFrame, 2); // 2 FPS
+    }
+  }, [showInstructions, webcamPhase, status.camera, startCapture, captureFrame]);
 
   useEffect(() => {
     if (currentQuestion) {
@@ -133,14 +172,18 @@ export function InterviewRoom() {
 
   const speakQuestion = useCallback(async (text: string) => {
     try {
-      const res = await fetch("http://localhost:8000/text-to-speech", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-AI-Service-Key": "mindprep-ai-key-2026",
+      const res = await fetchWithTimeout(
+        `${AI_SERVICE_URL}/text-to-speech`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-AI-Service-Key": AI_SERVICE_KEY,
+          },
+          body: JSON.stringify({ text }),
         },
-        body: JSON.stringify({ text }),
-      });
+        8000
+      );
       const data = await res.json();
       if (data.audio) {
         const blob = base64ToBlob(data.audio);
@@ -188,14 +231,18 @@ export function InterviewRoom() {
         const audioB64 = await getAudioBase64();
         if (audioB64) {
           try {
-            const res = await fetch("http://localhost:8000/speech-to-text", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-AI-Service-Key": "mindprep-ai-key-2026",
+            const res = await fetchWithTimeout(
+              `${AI_SERVICE_URL}/speech-to-text`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-AI-Service-Key": AI_SERVICE_KEY,
+                },
+                body: JSON.stringify({ audio: audioB64 }),
               },
-              body: JSON.stringify({ audio: audioB64 }),
-            });
+              15000
+            );
             const data = await res.json();
             if (data.text) answer = data.text;
           } catch {
@@ -301,12 +348,17 @@ export function InterviewRoom() {
             <div className="space-y-4">
               <div className="bg-gray-700/30 rounded-xl p-4">
                 <h3 className="text-sm font-medium text-gray-400 mb-2">Camera & Microphone</h3>
-                {!permissionGranted ? (
+                {webcamPhase !== "ready" ? (
                   <button
                     onClick={handlePermission}
-                    className="w-full px-4 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium hover:bg-emerald-500/30 transition-colors"
+                    disabled={webcamPhase === "initializing"}
+                    className="w-full px-4 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium hover:bg-emerald-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Grant Camera & Microphone Access
+                    {webcamPhase === "initializing"
+                      ? "Starting camera…"
+                      : webcamPhase === "error"
+                      ? "Try Again"
+                      : "Grant Camera & Microphone Access"}
                   </button>
                 ) : (
                   <StatusIndicator
@@ -319,24 +371,70 @@ export function InterviewRoom() {
                 )}
               </div>
 
-              <div className={`mb-4 ${permissionGranted ? "" : "hidden"}`}>
-                <SetupWebcamPreview
-                  videoRef={videoRef}
-                  streamRef={streamRef}
-                  cameraOn={status.camera}
-                  microphoneOn={status.microphone}
-                  internetOn={status.internet}
-                  cheatingCount={0}
-                />
-              </div>
-
-              {webcamError && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">
-                  {webcamError}
+              {(webcamPhase === "initializing" || webcamPhase === "ready") && (
+                <div className="mb-4">
+                  <SetupWebcamPreview
+                    videoRef={videoRef}
+                    streamRef={streamRef}
+                    cameraOn={status.camera}
+                    microphoneOn={status.microphone}
+                    internetOn={status.internet}
+                    cheatingCount={0}
+                  />
                 </div>
               )}
 
-              {permissionGranted && status.camera && status.microphone && (
+              {webcamError && (
+                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm space-y-2">
+                  <p className="font-semibold">
+                    {webcamErrorKind === "permission-denied"
+                      ? "Camera / microphone permission blocked"
+                      : webcamErrorKind === "device-not-found"
+                      ? "No camera found"
+                      : webcamErrorKind === "device-busy"
+                      ? "Camera is in use by another app"
+                      : webcamErrorKind === "timeout"
+                      ? "Camera timed out while starting"
+                      : webcamErrorKind === "no-frames"
+                      ? "Camera started but sent no video"
+                      : webcamErrorKind === "overconstrained"
+                      ? "Camera settings not supported"
+                      : webcamErrorKind === "insecure-context"
+                      ? "Insecure page — camera unavailable"
+                      : "Camera could not start"}
+                  </p>
+                  <p className="text-red-300/90">{webcamError}</p>
+                  <p className="text-red-300/60 text-xs">
+                    Still stuck? Open{" "}
+                    <a
+                      href="/webcam-diagnostic.html"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline hover:text-red-200"
+                    >
+                      /webcam-diagnostic.html
+                    </a>{" "}
+                    for a step-by-step camera check.
+                  </p>
+                  {webcamErrorKind !== "insecure-context" && webcamErrorKind !== "unsupported" && (
+                    <button
+                      onClick={() => retryWebcam()}
+                      className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-300 text-xs font-medium transition-colors"
+                    >
+                      Retry camera
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {webcamPhase === "ready" && status.camera && !status.microphone && (
+                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-yellow-300 text-sm">
+                  Camera is working but no microphone was detected. You can still start —
+                  answer questions using text mode.
+                </div>
+              )}
+
+              {webcamPhase === "ready" && status.camera && (
                 <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
                   <h3 className="font-semibold text-emerald-400 mb-2">Interview Rules</h3>
                   <ul className="text-sm text-gray-300 space-y-1">
@@ -351,7 +449,7 @@ export function InterviewRoom() {
                 </div>
               )}
 
-              {permissionGranted && status.camera && status.microphone && (
+              {webcamPhase === "ready" && status.camera && (
                 <button
                   onClick={handleStartInterview}
                   disabled={loading}
@@ -378,130 +476,46 @@ export function InterviewRoom() {
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2 space-y-4">
-            <AnimatePresence mode="wait">
-              {currentQuestion && (
-                <QuestionCard
-                  key={questionIndex}
-                  question={currentQuestion.question}
-                  questionNumber={questionIndex + 1}
-                  totalQuestions={totalQuestions}
-                />
-              )}
-            </AnimatePresence>
+          {/* ── QUESTION SYSTEM ─ AI question generation, display, answering.
+              Fails/loads entirely on its own; holds zero proctoring state. */}
+          <QuestionPanel
+            questionsStatus={questionsStatus}
+            currentQuestion={currentQuestion}
+            loading={loading}
+            error={interviewError}
+            errorKind={interviewErrorKind}
+            genTakingLong={genTakingLong}
+            questionIndex={questionIndex}
+            totalQuestions={totalQuestions}
+            onRetry={retryStartInterview}
+            answerMode={answerMode}
+            onSelectTextMode={() => {
+              setAnswerMode("text");
+              if (isRecording) stopRecording();
+            }}
+            onVoiceToggle={handleVoiceToggle}
+            isRecording={isRecording}
+            isTranscribing={isTranscribing}
+            recordingDuration={recordingDuration}
+            textAnswer={textAnswer}
+            onTextAnswerChange={setTextAnswer}
+            onSubmit={handleSubmit}
+            onSkip={handleSkip}
+          />
 
-            {interviewError && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">
-                {interviewError}
-              </div>
-            )}
-
-            {currentQuestion && (
-              <motion.div
-                key={`answer-${questionIndex}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-              >
-                <div className="flex gap-2 mb-4">
-                  <button
-                    onClick={handleVoiceToggle}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                      isRecording
-                        ? "bg-red-500/20 text-red-400 border border-red-500/50 animate-pulse"
-                        : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:border-gray-500"
-                    }`}
-                  >
-                    {isRecording ? "🔴 Recording..." : "🎤 Voice"}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setAnswerMode("text");
-                      if (isRecording) stopRecording();
-                    }}
-                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                      answerMode === "text" && !isRecording
-                        ? "bg-blue-500/20 text-blue-400 border border-blue-500/50"
-                        : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:border-gray-500"
-                    }`}
-                  >
-                    ⌨️ Text
-                  </button>
-                </div>
-
-                {answerMode === "text" && (
-                  <textarea
-                    value={textAnswer}
-                    onChange={(e) => setTextAnswer(e.target.value)}
-                    placeholder="Type your answer here..."
-                    className="w-full h-32 bg-gray-700/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors resize-none"
-                  />
-                )}
-
-                {answerMode === "voice" && (
-                  <>
-                    {isRecording ? (
-                      <div className="bg-gray-700/30 rounded-xl border border-gray-600 overflow-hidden">
-                        <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-600">
-                          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-                          <span className="text-gray-300 text-sm">
-                            Recording... {recordingDuration}s
-                          </span>
-                          {isTranscribing && (
-                            <span className="text-emerald-400 text-sm ml-auto animate-pulse">
-                              Transcribing...
-                            </span>
-                          )}
-                        </div>
-                        <textarea
-                          value={textAnswer}
-                          onChange={(e) => setTextAnswer(e.target.value)}
-                          readOnly={isTranscribing}
-                          placeholder="Your speech will appear here..."
-                          className="w-full h-32 bg-transparent px-4 py-3 text-white placeholder-gray-500 focus:outline-none resize-none"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-3 bg-gray-700/30 rounded-xl px-4 py-3">
-                        <span className="text-gray-300 text-sm">
-                          Click "Voice Answer" to start, then speak your answer. It will be
-                          transcribed into text.
-                        </span>
-                      </div>
-                    )}
-                  </>
-                )}
-
-                <div className="flex gap-3 mt-4">
-                  <button
-                    onClick={handleSubmit}
-                    disabled={loading || (!textAnswer && !isRecording && answerMode === "text")}
-                    className="flex-1 px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all disabled:opacity-50"
-                  >
-                    {loading ? "Submitting..." : "Submit Answer"}
-                  </button>
-                  <button
-                    onClick={handleSkip}
-                    disabled={loading}
-                    className="px-6 py-3 bg-gray-700/50 text-gray-300 rounded-xl font-medium border border-gray-600 hover:border-gray-500 transition-all"
-                  >
-                    Skip
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </div>
-
+          {/* ── PROCTORING SYSTEM ─ webcam + frame capture + WebSocket.
+              Sibling of the question panel; never nested under it. */}
           <div className="space-y-3">
-            <WebcamPreview
+            <ProctoringPanel
               videoRef={videoRef}
               streamRef={streamRef}
-              status={proctorStatus}
               cameraOn={status.camera}
               microphoneOn={status.microphone}
               internetOn={status.internet}
+              proctorStatus={proctorStatus}
+              proctorStalled={proctorStalled}
+              proctorResult={proctorResult}
               cheatingCount={cheatingCount}
-              warnings={proctorWarnings}
             />
 
             <div className="grid grid-cols-2 gap-3">
@@ -523,9 +537,6 @@ export function InterviewRoom() {
               total={totalQuestions}
               label="Progress"
             />
-
-            <InterviewMonitor status={proctorStatus} result={proctorResult} />
-            <CheatingCounter count={cheatingCount} maxCount={3} />
 
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
               <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">

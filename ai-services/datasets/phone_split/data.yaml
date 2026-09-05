@@ -1,0 +1,5 @@
+train: C:\Users\Darshan A\OneDrive\Desktop\MindPrep-AI\ai-services\datasets\phone_split\train\images
+val: C:\Users\Darshan A\OneDrive\Desktop\MindPrep-AI\ai-services\datasets\phone_split\valid\images
+names:
+  0: phone
+nc: 1

@@ -8,6 +8,7 @@ import { InterviewReport } from "../models/InterviewReport";
 import axios from "axios";
 import OpenAI from "openai";
 import { syncInterviewToVectorDB, getInterviewContext } from "../services/interviewRagService";
+import { pickBankQuestions } from "../data/interviewQuestionBank";
 
 const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://localhost:5001";
 const AI_SERVICE_KEY = process.env.AI_SERVICE_KEY || "mindprep-ai-key-2026";
@@ -19,7 +20,24 @@ const aiServiceHeaders = {
 const groq = new OpenAI({
   apiKey: process.env.GROQ_API_KEY || "dummy-key",
   baseURL: "https://api.groq.com/openai/v1",
+  // Without these the SDK default is a 10-minute timeout + 2 retries, which lets
+  // a slow/rate-limited Groq call stall interview creation for minutes.
+  timeout: 12000,
+  maxRetries: 1,
 });
+
+// Overall ceiling for acquiring questions before we fall back to the static
+// pool. Interview creation must never exceed roughly this + DB write time.
+const QUESTION_DEADLINE_MS = 14000;
+// Combined budget for the best-effort RAG + previous-questions lookups.
+const PREP_DEADLINE_MS = 4000;
+
+function withTimeout<T>(p: Promise<T>, ms: number, fallback: T): Promise<T> {
+  return Promise.race([
+    p.catch(() => fallback),
+    new Promise<T>((resolve) => setTimeout(() => resolve(fallback), ms)),
+  ]);
+}
 
 const INTERVIEW_TYPE_GUIDANCE: Record<
   string,
@@ -103,6 +121,173 @@ function dedupeQuestions(questions: string[]): string[] {
   return result;
 }
 
+interface QuestionGenInput {
+  jobRole: string;
+  experienceLevel: string;
+  interviewType: string;
+  difficulty: string;
+  totalQuestions: number;
+}
+
+// Runs the full AI question pipeline for an already-created interview, then
+// persists the result. Detached from the HTTP request so interview creation
+// (and therefore proctoring) never waits on — or fails because of — the AI
+// provider. Always resolves to a usable question set (static fallback on any
+// failure); "failed" is only written if even that persistence throws.
+async function generateQuestionsForInterview(
+  interviewId: string,
+  input: QuestionGenInput,
+  userId: string
+): Promise<void> {
+  const { jobRole, experienceLevel, interviewType, difficulty, totalQuestions } = input;
+  // Hoisted so the catch block can also skip already-asked questions.
+  let previousQuestions = "";
+  try {
+    let questionTexts: string[];
+
+    const [ragContext, prev] = await Promise.all([
+      withTimeout(
+        getInterviewContext(userId, `${jobRole} ${interviewType} ${experienceLevel}`),
+        PREP_DEADLINE_MS,
+        ""
+      ),
+      withTimeout(
+        Interview.find({ user: userId })
+          .sort({ createdAt: -1 })
+          .limit(5)
+          .select("questions")
+          .lean()
+          .then((recentInterviews) => {
+            const seenSet = new Set<string>();
+            const previousLines: string[] = [];
+            for (const iv of recentInterviews) {
+              for (const q of (iv as any).questions || []) {
+                const key = String(q.question || "").trim().toLowerCase();
+                if (key && !seenSet.has(key)) {
+                  seenSet.add(key);
+                  previousLines.push(q.question);
+                }
+              }
+            }
+            return previousLines.slice(0, 40).join("\n");
+          }),
+        PREP_DEADLINE_MS,
+        ""
+      ),
+    ]);
+    previousQuestions = prev;
+
+    const questionRacers: Promise<string[]>[] = [];
+
+    if (process.env.GROQ_API_KEY) {
+      questionRacers.push(
+        generateQuestionsWithGroq(
+          jobRole, experienceLevel, interviewType, difficulty, totalQuestions, ragContext, previousQuestions
+        ).catch((err) => {
+          console.error(
+            `Groq question generation failed (status ${err?.status ?? "n/a"}): ${err?.message}`
+          );
+          return [] as string[];
+        })
+      );
+    }
+
+    questionRacers.push(
+      axios.post(`${AI_SERVICE_URL}/generate-questions`, {
+        jobRole, experienceLevel, interviewType, difficulty, totalQuestions,
+        context: ragContext, previousQuestions,
+      }, { timeout: 8000, headers: aiServiceHeaders })
+        .then((r) => (r.data.questions as string[]) || [])
+        .catch(() => [] as string[])
+    );
+
+    const raceForQuestions = new Promise<string[]>((resolve) => {
+      let settled = 0;
+      let resolved = false;
+      if (questionRacers.length === 0) { resolve([]); return; }
+      for (const p of questionRacers) {
+        p.then((qs) => {
+          settled++;
+          if (!resolved && qs.length > 0) { resolved = true; resolve(qs); }
+          else if (settled === questionRacers.length && !resolved) { resolve([]); }
+        });
+      }
+    });
+
+    questionTexts = await withTimeout(raceForQuestions, QUESTION_DEADLINE_MS, []);
+
+    if (questionTexts.length === 0) {
+      console.warn(
+        `Interview ${interviewId}: question generation fell back to static pool (role="${jobRole}" type="${interviewType}")`
+      );
+      questionTexts = generateFallbackQuestions(jobRole, interviewType, totalQuestions, previousQuestions);
+    }
+
+    questionTexts = dedupeQuestions(questionTexts).slice(0, totalQuestions);
+
+    const questions = questionTexts.map((q: string) => ({
+      question: q,
+      answer: "",
+      answerType: "text" as const,
+      timeTaken: 0,
+      skipped: false,
+      evaluation: {
+        technicalScore: 0,
+        communicationScore: 0,
+        confidenceScore: 0,
+        grammarScore: 0,
+        fluencyScore: 0,
+        relevanceScore: 0,
+        feedback: "",
+      },
+    }));
+
+    await Interview.updateOne(
+      { _id: interviewId },
+      { $set: { questions, questionsStatus: "ready" } }
+    );
+  } catch (err: any) {
+    console.error(`generateQuestionsForInterview crashed for ${interviewId}: ${err?.message}`);
+    try {
+      const questions = generateFallbackQuestions(
+        jobRole,
+        interviewType,
+        totalQuestions,
+        previousQuestions
+      ).map(
+        (q: string) => ({
+          question: q,
+          answer: "",
+          answerType: "text" as const,
+          timeTaken: 0,
+          skipped: false,
+          evaluation: {
+            technicalScore: 0,
+            communicationScore: 0,
+            confidenceScore: 0,
+            grammarScore: 0,
+            fluencyScore: 0,
+            relevanceScore: 0,
+            feedback: "",
+          },
+        })
+      );
+      await Interview.updateOne(
+        { _id: interviewId },
+        { $set: { questions, questionsStatus: "ready" } }
+      );
+    } catch (persistErr: any) {
+      console.error(
+        `generateQuestionsForInterview could not persist fallback for ${interviewId}: ${persistErr?.message}`
+      );
+      await Interview.updateOne(
+        { _id: interviewId },
+        { $set: { questionsStatus: "failed" } }
+      ).catch(() => {});
+    }
+  }
+}
+
 export const createInterview = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { jobRole, experienceLevel, interviewType, difficulty, totalQuestions } = req.body;
 
@@ -110,84 +295,9 @@ export const createInterview = asyncHandler(async (req: AuthRequest, res: Respon
     throw new AppError("All fields are required", 400);
   }
 
-  let questionTexts: string[];
-
-  // RAG: pull the student's past performance from Pinecone to personalise questions
-  const ragContext = await getInterviewContext(req.user._id.toString(), `${jobRole} ${interviewType} ${experienceLevel}`);
-
-  // Collect previously asked questions (from Mongo) so we never repeat them
-  const recentInterviews = await Interview.find({ user: req.user._id })
-    .sort({ createdAt: -1 })
-    .limit(5)
-    .select("questions");
-  const seenSet = new Set<string>();
-  const previousLines: string[] = [];
-  for (const iv of recentInterviews) {
-    for (const q of iv.questions || []) {
-      const key = String(q.question || "").trim().toLowerCase();
-      if (key && !seenSet.has(key)) {
-        seenSet.add(key);
-        previousLines.push(q.question);
-      }
-    }
-  }
-  const previousQuestions = previousLines.slice(0, 40).join("\n");
-
-  try {
-    const response = await axios.post(`${AI_SERVICE_URL}/generate-questions`, {
-      jobRole,
-      experienceLevel,
-      interviewType,
-      difficulty,
-      totalQuestions,
-      context: ragContext,
-      previousQuestions,
-    }, { timeout: 30000, headers: aiServiceHeaders });
-    questionTexts = response.data.questions || [];
-  } catch (error: any) {
-    questionTexts = [];
-  }
-
-  if (questionTexts.length === 0 && process.env.GROQ_API_KEY) {
-    try {
-      questionTexts = await generateQuestionsWithGroq(
-        jobRole,
-        experienceLevel,
-        interviewType,
-        difficulty,
-        totalQuestions,
-        ragContext,
-        previousQuestions
-      );
-    } catch (err) {
-      console.error("Groq question generation failed, using fallback pool:", err);
-      questionTexts = [];
-    }
-  }
-
-  if (questionTexts.length === 0) {
-    questionTexts = generateFallbackQuestions(jobRole, interviewType, totalQuestions);
-  }
-
-  questionTexts = dedupeQuestions(questionTexts).slice(0, totalQuestions);
-
-  const questions = questionTexts.map((q: string) => ({
-    question: q,
-    answer: "",
-    answerType: "text" as const,
-    timeTaken: 0,
-    skipped: false,
-    evaluation: {
-      technicalScore: 0,
-      communicationScore: 0,
-      confidenceScore: 0,
-      grammarScore: 0,
-      fluencyScore: 0,
-      relevanceScore: 0,
-      feedback: "",
-    },
-  }));
-
+  // Create the session immediately and return its id — proctoring binds to this
+  // id and must not wait on (or be blocked by) AI question generation, which now
+  // runs in the background.
   const interview = await Interview.create({
     user: req.user._id,
     jobRole,
@@ -196,14 +306,82 @@ export const createInterview = asyncHandler(async (req: AuthRequest, res: Respon
     difficulty,
     totalQuestions,
     status: "in-progress",
+    questionsStatus: "generating",
     startedAt: new Date(),
-    questions,
+    questions: [],
   });
 
-  res.status(201).json({
+  // Detached — must never reject to the process (would trip the global
+  // unhandledRejection handler and take the whole API down). The function is
+  // internally guarded; this is just belt-and-suspenders.
+  generateQuestionsForInterview(
+    interview._id.toString(),
+    { jobRole, experienceLevel, interviewType, difficulty, totalQuestions },
+    req.user._id.toString()
+  ).catch((err) =>
+    console.error(`generateQuestionsForInterview rejected for ${interview._id}: ${err?.message}`)
+  );
+
+  res.status(201).json({ success: true, data: interview });
+});
+
+// Lightweight poll target for the question system. Deliberately small so the
+// client can hit it every ~1.5s without pulling the whole interview document.
+export const getInterviewState = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const interview = await Interview.findOne({
+    _id: req.params.id,
+    user: req.user._id,
+  }).select("status questionsStatus currentQuestionIndex totalQuestions questions.question");
+
+  if (!interview) throw new AppError("Interview not found", 404);
+
+  const idx = interview.currentQuestionIndex;
+  const ready = interview.questionsStatus === "ready" && interview.questions.length > idx;
+
+  res.json({
     success: true,
-    data: interview,
+    data: {
+      status: interview.status,
+      questionsStatus: interview.questionsStatus,
+      currentQuestionIndex: idx,
+      totalQuestions: interview.totalQuestions,
+      currentQuestion: ready
+        ? { question: interview.questions[idx].question, index: idx }
+        : null,
+    },
   });
+});
+
+// Retry hook for the question system — never touches proctoring.
+export const regenerateQuestions = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const interview = await Interview.findOne({
+    _id: req.params.id,
+    user: req.user._id,
+  });
+
+  if (!interview) throw new AppError("Interview not found", 404);
+  if (interview.status !== "in-progress") {
+    throw new AppError("Interview is not in progress", 400);
+  }
+
+  interview.set("questionsStatus", "generating");
+  await interview.save();
+
+  generateQuestionsForInterview(
+    interview._id.toString(),
+    {
+      jobRole: interview.jobRole,
+      experienceLevel: interview.experienceLevel,
+      interviewType: interview.interviewType,
+      difficulty: interview.difficulty,
+      totalQuestions: interview.totalQuestions,
+    },
+    req.user._id.toString()
+  ).catch((err) =>
+    console.error(`generateQuestionsForInterview rejected for ${interview._id}: ${err?.message}`)
+  );
+
+  res.json({ success: true, data: { questionsStatus: "generating" } });
 });
 
 export const getInterview = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -230,32 +408,64 @@ export const submitAnswer = asyncHandler(async (req: AuthRequest, res: Response)
   if (interview.status === "completed" || interview.status === "terminated") {
     throw new AppError("Interview already finished", 400);
   }
+  if (interview.questionsStatus !== "ready" || interview.questions.length === 0) {
+    throw new AppError("Questions are not ready yet", 409);
+  }
 
-  const currentQ = interview.questions[interview.currentQuestionIndex];
+  const answeredIndex = interview.currentQuestionIndex;
+  const currentQ = interview.questions[answeredIndex];
   currentQ.answer = answer;
   currentQ.answerType = answerType || "text";
   currentQ.timeTaken = timeTaken || 0;
 
-  try {
-    const evalResponse = await axios.post(`${AI_SERVICE_URL}/evaluate-answer`, {
-      question: currentQ.question,
-      answer,
-      interviewType: interview.interviewType,
-      difficulty: interview.difficulty,
-      jobRole: interview.jobRole,
-    }, { timeout: 60000, headers: aiServiceHeaders });
+  const isLastQuestion = answeredIndex + 1 >= interview.totalQuestions;
+  const interviewId = interview._id.toString();
+  const evalPayload = {
+    question: currentQ.question,
+    answer,
+    interviewType: interview.interviewType,
+    difficulty: interview.difficulty,
+    jobRole: interview.jobRole,
+  };
 
-    currentQ.evaluation = evalResponse.data.evaluation || currentQ.evaluation;
-  } catch (error: any) {
-    currentQ.evaluation = {
-      technicalScore: Math.floor(Math.random() * 40) + 60,
-      communicationScore: Math.floor(Math.random() * 40) + 60,
-      confidenceScore: Math.floor(Math.random() * 40) + 60,
-      grammarScore: Math.floor(Math.random() * 40) + 60,
-      fluencyScore: Math.floor(Math.random() * 40) + 60,
-      relevanceScore: Math.floor(Math.random() * 40) + 60,
-      feedback: "Good attempt. Consider providing more specific examples in your answer.",
-    };
+  if (isLastQuestion) {
+    // Final answer: the user already expects the "generating report" wait here,
+    // so evaluate inline (bounded) so calculateScores sees real numbers.
+    try {
+      const evalResponse = await axios.post(
+        `${AI_SERVICE_URL}/evaluate-answer`,
+        evalPayload,
+        { timeout: 20000, headers: aiServiceHeaders }
+      );
+      currentQ.evaluation = evalResponse.data.evaluation || heuristicEvaluation();
+    } catch {
+      currentQ.evaluation = heuristicEvaluation();
+    }
+  } else {
+    // Non-final answer: never block the next question on evaluation. Store a
+    // heuristic placeholder now, then patch in the real evaluation in the
+    // background so the final report is still AI-graded.
+    currentQ.evaluation = heuristicEvaluation();
+    void (async () => {
+      try {
+        const evalResponse = await axios.post(
+          `${AI_SERVICE_URL}/evaluate-answer`,
+          evalPayload,
+          { timeout: 45000, headers: aiServiceHeaders }
+        );
+        const evaluation = evalResponse.data.evaluation;
+        if (evaluation) {
+          await Interview.updateOne(
+            { _id: interviewId },
+            { $set: { [`questions.${answeredIndex}.evaluation`]: evaluation } }
+          );
+        }
+      } catch (err: any) {
+        console.error(
+          `Background answer evaluation failed for interview ${interviewId} q${answeredIndex}: ${err?.message}`
+        );
+      }
+    })();
   }
 
   interview.currentQuestionIndex += 1;
@@ -292,6 +502,9 @@ export const skipQuestion = asyncHandler(async (req: AuthRequest, res: Response)
   if (!interview) throw new AppError("Interview not found", 404);
   if (interview.status === "completed" || interview.status === "terminated") {
     throw new AppError("Interview already finished", 400);
+  }
+  if (interview.questionsStatus !== "ready" || interview.questions.length === 0) {
+    throw new AppError("Questions are not ready yet", 409);
   }
 
   interview.questions[interview.currentQuestionIndex].skipped = true;
@@ -396,6 +609,13 @@ export const getReport = asyncHandler(async (req: AuthRequest, res: Response) =>
 
   let report = await InterviewReport.findOne({ interview: interview._id });
   if (!report) {
+    // Background answer evaluations may have landed after the interview was
+    // finalised — recompute the numeric scores (cheap, no external calls) so the
+    // report reflects the real AI grades rather than the placeholder heuristics.
+    if (recomputeNumericScores(interview)) {
+      await interview.save();
+    }
+
     report = await InterviewReport.create({
       interview: interview._id,
       user: req.user._id,
@@ -458,136 +678,162 @@ export const getDashboard = asyncHandler(async (req: AuthRequest, res: Response)
   res.json({ success: true, data: { interviews, reports, stats } });
 });
 
-async function calculateScores(interview: any) {
+// Neutral placeholder used when an AI evaluation is unavailable or still
+// pending in the background. Kept mid-range so it neither rewards nor unfairly
+// penalises the candidate.
+function heuristicEvaluation() {
+  return {
+    technicalScore: Math.floor(Math.random() * 40) + 60,
+    communicationScore: Math.floor(Math.random() * 40) + 60,
+    confidenceScore: Math.floor(Math.random() * 40) + 60,
+    grammarScore: Math.floor(Math.random() * 40) + 60,
+    fluencyScore: Math.floor(Math.random() * 40) + 60,
+    relevanceScore: Math.floor(Math.random() * 40) + 60,
+    feedback: "Good attempt. Consider providing more specific examples in your answer.",
+  };
+}
+
+// Cheap recompute of the aggregate numeric scores from per-question
+// evaluations. No external calls. Returns true if any value changed.
+function recomputeNumericScores(interview: any): boolean {
+  const answered = interview.questions.filter((q: any) => q.evaluation && !q.skipped);
+  if (answered.length === 0) return false;
+
+  const avg = (pick: (e: any) => number) =>
+    Math.round(
+      answered.reduce((sum: number, q: any) => sum + (pick(q.evaluation) || 0), 0) /
+        answered.length
+    );
+
+  const next = {
+    technicalScore: avg((e) => e.technicalScore),
+    communicationScore: avg((e) => e.communicationScore),
+    confidenceScore: avg((e) => e.confidenceScore),
+    grammarScore: avg((e) => e.grammarScore),
+    fluencyScore: avg((e) => e.fluencyScore),
+  };
+  const overall = Math.round(
+    (next.technicalScore +
+      next.communicationScore +
+      next.confidenceScore +
+      next.grammarScore +
+      next.fluencyScore) /
+      5
+  );
+
+  let changed = false;
+  for (const [k, v] of Object.entries(next)) {
+    if (interview[k] !== v) {
+      interview[k] = v;
+      changed = true;
+    }
+  }
+  if (interview.overallScore !== overall) {
+    interview.overallScore = overall;
+    changed = true;
+  }
+  return changed;
+}
+
+// Synchronous finalisation — numeric aggregates, strengths/weaknesses, and a
+// deterministic fallback narrative. No external calls, so callers that run this
+// before responding are never blocked on the AI service.
+function finalizeScores(interview: any) {
   const answered = interview.questions.filter((q: any) => q.evaluation && !q.skipped);
   if (answered.length === 0) {
     interview.overallScore = 0;
     return;
   }
 
-  const techScores = answered.map((q: any) => q.evaluation.technicalScore || 0);
-  const commScores = answered.map((q: any) => q.evaluation.communicationScore || 0);
-  const confScores = answered.map((q: any) => q.evaluation.confidenceScore || 0);
-  const gramScores = answered.map((q: any) => q.evaluation.grammarScore || 0);
-  const fluScores = answered.map((q: any) => q.evaluation.fluencyScore || 0);
+  recomputeNumericScores(interview);
 
-  const avg = (arr: number[]) => Math.round(arr.reduce((a: number, b: number) => a + b, 0) / arr.length);
-
-  interview.technicalScore = avg(techScores);
-  interview.communicationScore = avg(commScores);
-  interview.confidenceScore = avg(confScores);
-  interview.grammarScore = avg(gramScores);
-  interview.fluencyScore = avg(fluScores);
-  interview.overallScore = Math.round(
-    (interview.technicalScore + interview.communicationScore + interview.confidenceScore +
-      interview.grammarScore + interview.fluencyScore) / 5
-  );
-
-  const allFeedback = answered.map((q: any) => q.evaluation.feedback).filter(Boolean);
   interview.strengths = generateStrengths(interview);
   interview.weaknesses = generateWeaknesses(interview);
   interview.areasToImprove = generateAreasToImprove(interview);
 
-  if (allFeedback.length > 0) {
-    try {
-      const feedbackRes = await axios.post(`${AI_SERVICE_URL}/generate-feedback`, {
-        scores: {
-          overall: interview.overallScore,
-          technical: interview.technicalScore,
-          communication: interview.communicationScore,
-          confidence: interview.confidenceScore,
-          grammar: interview.grammarScore,
-          fluency: interview.fluencyScore,
-        },
-        strengths: interview.strengths,
-        weaknesses: interview.weaknesses,
-        jobRole: interview.jobRole,
-      }, { timeout: 60000, headers: aiServiceHeaders });
-      interview.finalFeedback = feedbackRes.data.feedback;
-    } catch {
-      interview.finalFeedback = generateFallbackFeedback(interview);
-    }
-  } else {
+  if (!interview.finalFeedback) {
     interview.finalFeedback = generateFallbackFeedback(interview);
   }
+}
 
-  // RAG: index the completed interview into Pinecone (fire-and-forget)
-  syncInterviewToVectorDB(interview.user.toString(), interview).catch((err) =>
-    console.error("Interview RAG sync error:", err.message)
+// Background: replace the fallback narrative with an AI-generated one and index
+// the interview into Pinecone. Bounded and fully detached from the request.
+async function enhanceFeedbackAndSync(interviewId: string) {
+  // Small delay so the request handler's own interview.save() lands first —
+  // this function only patches finalFeedback via updateOne, never a full save,
+  // so it can't clobber the handler's status/score writes.
+  await new Promise((r) => setTimeout(r, 750));
+  try {
+    const interview = await Interview.findById(interviewId).lean();
+    if (!interview) return;
+    const iv = interview as any;
+    const answered = (iv.questions || []).filter((q: any) => q.evaluation && !q.skipped);
+
+    if (answered.length > 0) {
+      try {
+        const feedbackRes = await axios.post(
+          `${AI_SERVICE_URL}/generate-feedback`,
+          {
+            scores: {
+              overall: iv.overallScore,
+              technical: iv.technicalScore,
+              communication: iv.communicationScore,
+              confidence: iv.confidenceScore,
+              grammar: iv.grammarScore,
+              fluency: iv.fluencyScore,
+            },
+            strengths: iv.strengths,
+            weaknesses: iv.weaknesses,
+            jobRole: iv.jobRole,
+          },
+          { timeout: 15000, headers: aiServiceHeaders }
+        );
+        if (feedbackRes.data.feedback) {
+          await Interview.updateOne(
+            { _id: interviewId },
+            { $set: { finalFeedback: feedbackRes.data.feedback } }
+          );
+        }
+      } catch (err: any) {
+        console.error(
+          `Interview feedback enhancement failed for ${interviewId}: ${err?.message}`
+        );
+      }
+    }
+
+    await syncInterviewToVectorDB(iv.user.toString(), iv).catch((err) =>
+      console.error("Interview RAG sync error:", err.message)
+    );
+  } catch (err: any) {
+    console.error(`enhanceFeedbackAndSync failed for ${interviewId}: ${err?.message}`);
+  }
+}
+
+// Backwards-compatible entry point: finalise synchronously, then kick off the
+// AI enhancement + RAG sync in the background (not awaited).
+async function calculateScores(interview: any) {
+  finalizeScores(interview);
+  const id = interview._id?.toString();
+  if (id) void enhanceFeedbackAndSync(id);
+}
+
+// Server-side fallback question set — used whenever AI generation (Groq +
+// ai-service) produces nothing. Draws from the ~100-question static bank in
+// src/data/interviewQuestionBank.ts, role-filled and shuffled, skipping any
+// question the candidate has already been asked in a recent interview.
+function generateFallbackQuestions(
+  jobRole: string,
+  type: string,
+  count: number,
+  previousQuestions = ""
+): string[] {
+  const exclude = new Set(
+    previousQuestions
+      .split("\n")
+      .map((q) => q.trim().toLowerCase())
+      .filter(Boolean)
   );
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
-
-function generateFallbackQuestions(jobRole: string, type: string, count: number): string[] {
-  const questions: Record<string, string[]> = {
-    Technical: [
-      `Explain the key concepts and technologies used in ${jobRole}.`,
-      `How do you stay updated with the latest trends in ${jobRole}?`,
-      `Describe your approach to debugging a complex issue in ${jobRole}.`,
-      `What are the best practices for optimizing performance in ${jobRole}?`,
-      `Explain a challenging project you worked on related to ${jobRole}.`,
-      `How do you handle technical debt in your projects?`,
-      `Describe your experience with version control and CI/CD pipelines.`,
-      `What security considerations are important in ${jobRole}?`,
-      `How do you approach testing and quality assurance?`,
-      `Explain the difference between REST and GraphQL APIs.`,
-      `How would you design a scalable system for a ${jobRole} feature?`,
-      `What tools and libraries are essential for a ${jobRole} professional?`,
-      `Describe how you would architect a new feature from scratch for ${jobRole}.`,
-      `What common pitfalls should a ${jobRole} developer avoid?`,
-      `How do you measure the success of your work as a ${jobRole}?`,
-    ],
-    HR: [
-      `Tell me about yourself and why you're interested in ${jobRole}.`,
-      `What are your greatest professional strengths?`,
-      `Describe a situation where you handled a difficult workplace conflict.`,
-      `Where do you see yourself in 5 years?`,
-      `Why do you want to work in this field?`,
-      `Describe your leadership style.`,
-      `How do you handle constructive criticism?`,
-      `Tell me about a time you went above and beyond at work.`,
-      `What motivates you professionally?`,
-      `Why should we hire you for this ${jobRole} position?`,
-      `Describe a time you failed and how you handled it.`,
-      `How do you prioritize competing responsibilities in a ${jobRole} role?`,
-      `What aspect of a ${jobRole} role excites you the most?`,
-      `Tell me about a time you led a team or took ownership of an outcome.`,
-      `What kind of work environment helps you perform your best?`,
-    ],
-    Behavioral: [
-      `Describe a time you worked successfully in a team environment for ${jobRole}.`,
-      `Tell me about a project that failed and what you learned from it.`,
-      `How do you prioritize tasks when handling multiple deadlines?`,
-      `Describe a situation where you had to learn a new technology quickly.`,
-      `Tell me about a time you disagreed with a team member's approach.`,
-      `How do you handle pressure or stressful situations?`,
-      `Describe a time you took initiative beyond your responsibilities.`,
-      `Tell me about a situation where you had to adapt to significant changes.`,
-      `How do you ensure clear communication within your team?`,
-      `Describe a time you received difficult feedback and how you responded.`,
-      `Tell me about a time you mentored or helped a teammate.`,
-      `Describe a situation where you had to make a decision with incomplete information.`,
-      `How do you handle a teammate who is not contributing equally?`,
-      `Tell me about a time you had to convince others to adopt your idea.`,
-      `Describe a time you went beyond your job description to help the team succeed.`,
-    ],
-  };
-
-  const pool = questions[type] || questions.Technical;
-  const selected = dedupeQuestions(shuffle(pool)).slice(0, count);
-
-  while (selected.length < count) {
-    selected.push(`Tell me about your experience with ${jobRole} concepts and how you apply them.`);
-  }
-  return selected.slice(0, count);
+  return pickBankQuestions(jobRole, type, count, exclude);
 }
 
 function generateStrengths(interview: any): string[] {

@@ -5,6 +5,15 @@ import mediapipe as mp
 from dataclasses import dataclass, field
 from app.config import settings
 
+# OpenCV joins PyTorch / onnxruntime / TFLite thread pools in this process;
+# disabling its own pool avoids cross-runtime CPU contention.
+cv2.setNumThreads(0)
+
+try:
+    import joblib
+except ImportError:
+    joblib = None
+
 mp_image = mp.Image
 mp_tasks = mp.tasks.vision
 mp_running_mode = mp_tasks.RunningMode
@@ -102,6 +111,21 @@ class FaceDetectionService:
         self.smoothed_pitch = None
         self.smoothed_roll = None
 
+        # Learned head-pose regressors (trained on AFLW2000-3D via MediaPipe
+        # landmarks, same face_landmarker model as runtime). Fall back to
+        # solvePnP heuristics if the model files are unavailable.
+        self.pose_yaw = None
+        self.pose_pitch = None
+        self.pose_roll = None
+        if joblib is not None:
+            try:
+                hp_dir = os.path.join(settings.MODEL_DIR, "headpose")
+                self.pose_yaw = joblib.load(os.path.join(hp_dir, "pose_yaw.joblib"))
+                self.pose_pitch = joblib.load(os.path.join(hp_dir, "pose_pitch.joblib"))
+                self.pose_roll = joblib.load(os.path.join(hp_dir, "pose_roll.joblib"))
+            except Exception:
+                self.pose_yaw = self.pose_pitch = self.pose_roll = None
+
     # ─── 3D Head Pose Estimation (solvePnP) ──────────────────────────
 
     def _estimate_head_pose(self, landmarks, frame_w: int, frame_h: int):
@@ -152,6 +176,26 @@ class FaceDetectionService:
             z = 0.0
 
         return float(np.degrees(y)), float(np.degrees(x)), float(np.degrees(z))
+
+    def _predict_ml_pose(self, landmarks):
+        """Predict (yaw, pitch, roll) via the trained regressors.
+
+        Feature layout matches training: per-vertex [x, y, z] flattened,
+        from the same face_landmarker model used to build the training set.
+        Returns None if the models are not loaded.
+        """
+        if self.pose_yaw is None or self.pose_pitch is None or self.pose_roll is None:
+            return None
+        try:
+            feats = np.concatenate(
+                [[p.x, p.y, p.z] for p in landmarks]
+            ).astype(np.float32).reshape(1, -1)
+            yaw = float(self.pose_yaw.predict(feats)[0])
+            pitch = float(self.pose_pitch.predict(feats)[0])
+            roll = float(self.pose_roll.predict(feats)[0])
+            return yaw, pitch, roll
+        except Exception:
+            return None
 
     def _apply_smoothing(self, yaw: float, pitch: float, roll: float):
         if self.smoothed_yaw is None:
@@ -279,8 +323,12 @@ class FaceDetectionService:
                 if lm_result and lm_result.face_landmarks:
                     landmarks = lm_result.face_landmarks[0]
 
-                    # 3D head pose (raw solvePnP)
-                    yaw, pitch, roll = self._estimate_head_pose(landmarks, w, h)
+                    # 3D head pose: ML regressors when available, else solvePnP
+                    ml_pose = self._predict_ml_pose(landmarks)
+                    if ml_pose is not None:
+                        yaw, pitch, roll = ml_pose
+                    else:
+                        yaw, pitch, roll = self._estimate_head_pose(landmarks, w, h)
 
                     # Temporal smoothing to kill jitter
                     yaw, pitch, roll = self._apply_smoothing(yaw, pitch, roll)

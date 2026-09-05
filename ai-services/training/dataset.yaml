@@ -1,0 +1,13 @@
+# YOLOv8 Dataset Configuration
+# Update these paths to match your downloaded/annotated dataset location.
+# Typically, a dataset exported from Roboflow in YOLO format will have this structure.
+
+path: ../datasets/mindprep_proctoring
+train: train/images
+val: train/images
+test: images/test    # test images (optional)
+
+# Classes
+names:
+  0: mobile_phone
+  1: headset

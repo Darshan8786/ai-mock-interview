@@ -1,5 +1,6 @@
 import os
 import logging
+import threading
 import numpy as np
 from typing import Optional
 from app.config import settings
@@ -12,14 +13,25 @@ COCO_CLASSES = {
     67: "cell phone",
 }
 
+# Phone/person detection does not need full-resolution inference.
+IMGSZ = 416
+
 
 class YOLODetectionService:
     def __init__(self):
         self.model = None
+        self._lock = threading.Lock()
         self._init_model()
 
     def _init_model(self):
         try:
+            import torch
+            # The process also loads onnxruntime (insightface) and TFLite
+            # (MediaPipe). Their OpenMP pools contend with PyTorch's and can
+            # make CPU inference 5-10x slower, so run torch single-threaded.
+            torch.set_num_threads(1)
+            import cv2
+            cv2.setNumThreads(0)
             from ultralytics import YOLO
             weights_path = os.path.join(settings.WEIGHTS_DIR, "yolo11n.pt")
             if not os.path.exists(weights_path):
@@ -27,7 +39,9 @@ class YOLODetectionService:
                 weights_path = download_yolo("yolov11n")
             if weights_path and os.path.exists(weights_path):
                 self.model = YOLO(weights_path)
-                logger.info("YOLOv11 model loaded successfully")
+                # Use GPU when available; fall back to CPU otherwise.
+                self.device = 0 if torch.cuda.is_available() else "cpu"
+                logger.info(f"YOLOv11 model loaded successfully (device={self.device})")
             else:
                 logger.warning("YOLO weights not available, phone/person detection disabled")
         except ImportError:
@@ -46,7 +60,11 @@ class YOLODetectionService:
             return result
 
         try:
-            dets = self.model(frame, conf=conf_threshold, verbose=False)
+            with self._lock:
+                dets = self.model(
+                    frame, conf=conf_threshold, verbose=False,
+                    imgsz=IMGSZ, device=self.device,
+                )
             if not dets:
                 return result
 

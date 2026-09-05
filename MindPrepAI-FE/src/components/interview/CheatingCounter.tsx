@@ -6,67 +6,51 @@ interface CheatingCounterProps {
 }
 
 export function CheatingCounter({ count, maxCount }: CheatingCounterProps) {
-  const severity = count === 0 ? "safe" : count >= maxCount ? "danger" : "warning";
-
+  const isDanger = count >= maxCount - 1;
+  
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl p-3 border ${
-        severity === "safe"
-          ? "bg-emerald-500/10 border-emerald-500/30"
-          : severity === "warning"
-          ? "bg-yellow-500/10 border-yellow-500/30"
-          : "bg-red-500/10 border-red-500/30"
-      }`}
-    >
-      <div className="flex items-center justify-between mb-2">
-        <span className={`text-xs font-bold uppercase tracking-wider ${
-          severity === "safe"
-            ? "text-emerald-400"
-            : severity === "warning"
-            ? "text-yellow-400"
-            : "text-red-400"
+    <div className={`rounded-xl p-4 border transition-all ${
+      count === 0 
+        ? "bg-gray-800/50 border-gray-700" 
+        : isDanger 
+          ? "bg-red-500/10 border-red-500/50" 
+          : "bg-yellow-500/10 border-yellow-500/50"
+    }`}>
+      <div className="flex justify-between items-center mb-2">
+        <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+          Violations
+        </h4>
+        <span className={`text-xs font-bold px-2 py-1 rounded-md ${
+          count === 0 
+            ? "bg-gray-700 text-gray-300" 
+            : isDanger
+              ? "bg-red-500/20 text-red-400"
+              : "bg-yellow-500/20 text-yellow-400"
         }`}>
-          Integrity Status
-        </span>
-        <span className={`text-lg font-bold ${
-          severity === "safe"
-            ? "text-emerald-400"
-            : severity === "warning"
-            ? "text-yellow-400"
-            : "text-red-400"
-        }`}>
-          {count}/{maxCount}
+          {count} / {maxCount}
         </span>
       </div>
-      <div className="w-full bg-gray-700/50 rounded-full h-2 overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${Math.min(100, (count / maxCount) * 100)}%` }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className={`h-full rounded-full ${
-            severity === "safe"
-              ? "bg-emerald-500"
-              : severity === "warning"
-              ? "bg-yellow-500"
-              : "bg-red-500"
-          }`}
-        />
+      
+      <div className="flex gap-1 h-2">
+        {Array.from({ length: maxCount }).map((_, i) => (
+          <motion.div
+            key={i}
+            initial={false}
+            animate={{
+              backgroundColor: i < count 
+                ? (isDanger ? "#ef4444" : "#eab308") 
+                : "#374151"
+            }}
+            className="flex-1 rounded-full"
+          />
+        ))}
       </div>
-      <p className={`text-xs mt-1.5 ${
-        severity === "safe"
-          ? "text-emerald-400/70"
-          : severity === "warning"
-          ? "text-yellow-400/70"
-          : "text-red-400/70"
-      }`}>
-        {severity === "safe"
-          ? "No violations detected"
-          : severity === "warning"
-          ? "Violations detected - continue responsibly"
-          : "Maximum violations reached"}
-      </p>
-    </motion.div>
+      
+      {count > 0 && (
+        <p className={`text-xs mt-2 ${isDanger ? "text-red-400" : "text-yellow-400"}`}>
+          {isDanger ? "Warning: Interview will be terminated on next violation!" : "Please follow interview rules."}
+        </p>
+      )}
+    </div>
   );
 }

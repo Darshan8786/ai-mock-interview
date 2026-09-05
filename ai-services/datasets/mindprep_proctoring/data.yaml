@@ -1,0 +1,11 @@
+names:
+- phone
+nc: 1
+roboflow:
+  license: Public Domain
+  project: mobile-phone-93muc
+  url: https://universe.roboflow.com/sai-mb24m/mobile-phone-93muc/dataset/1
+  version: 1
+  workspace: sai-mb24m
+train: C:\Users\Darshan A\OneDrive\Desktop\MindPrep-AI\ai-services\datasets\mindprep_proctoring\train\images
+val: C:\Users\Darshan A\OneDrive\Desktop\MindPrep-AI\ai-services\datasets\mindprep_proctoring\train\images

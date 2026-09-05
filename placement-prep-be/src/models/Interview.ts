@@ -37,6 +37,13 @@ const interviewSchema = new mongoose.Schema(
       enum: ["pending", "in-progress", "completed", "terminated"],
       default: "pending",
     },
+    // Lifecycle of AI question generation — decoupled from `status` so the
+    // interview session (and proctoring) is live before questions are ready.
+    questionsStatus: {
+      type: String,
+      enum: ["pending", "generating", "ready", "failed"],
+      default: "pending",
+    },
     questions: [questionResponseSchema],
     currentQuestionIndex: { type: Number, default: 0 },
     cheatingCount: { type: Number, default: 0 },

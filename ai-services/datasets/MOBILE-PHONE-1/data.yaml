@@ -1,0 +1,12 @@
+names:
+- phone
+nc: 1
+roboflow:
+  license: Public Domain
+  project: mobile-phone-93muc
+  url: https://universe.roboflow.com/sai-mb24m/mobile-phone-93muc/dataset/1
+  version: 1
+  workspace: sai-mb24m
+test: ../test/images
+train: ../train/images
+val: ../valid/images

@@ -54,12 +54,21 @@ export async function syncInterviewToVectorDB(userId: string, interview: any) {
  */
 export async function getInterviewContext(userId: string, query: string): Promise<string> {
   try {
-    const vector = await embedText(query);
-    const response = await index.namespace(userId).query({
-      vector,
-      topK: 5,
-      includeMetadata: true,
-    });
+    // Bound the whole embed + query sequence, not just the Pinecone call — a
+    // slow/stuck Ollama embedding must not delay interview creation.
+    const response = await Promise.race([
+      (async () => {
+        const vector = await embedText(query);
+        return index.namespace(userId).query({
+          vector,
+          topK: 5,
+          includeMetadata: true,
+        });
+      })(),
+      new Promise<any>((_, reject) =>
+        setTimeout(() => reject(new Error("RAG context lookup timed out (3s)")), 3000)
+      ),
+    ]);
     const matches = response.matches || [];
     if (!matches.length) return "";
 

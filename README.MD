@@ -190,10 +190,20 @@ npm run dev
 cd MindPrepAI-FE
 npm run dev
 
-# Terminal 3 — AI Services (port 8000)
+# Terminal 3 — AI Services: proctoring (FastAPI, port 8001)
 cd ai-services
 python run.py
+
+# Terminal 4 — AI Services: LLM / STT / TTS (Flask, port 8000)
+cd ai-services
+python server.py
 ```
+
+> The `ai-services` folder runs **two** processes: `run.py` serves the FastAPI
+> proctoring WebSocket on **:8001** (`/proctor/ws/{session_id}`), and `server.py`
+> serves the Flask LLM/question/STT/TTS endpoints on **:8000**. The mock
+> interview needs both. Question generation still works with `server.py` down —
+> the backend falls back to Groq and then a static question pool.
 
 Then open **http://localhost:5173** in your browser.
 
@@ -319,6 +329,45 @@ Frontend sends credentials to `/auth/login`; backend validates against MongoDB (
 
 ### 🧠 RAG with Pinecone
 Attempts and questions are embedded and synced to a Pinecone index. When a similar question is asked, semantic search returns past Q&A to enrich AI answers.
+
+---
+
+## Custom Proctoring Model Training
+
+If you want to detect mobile phones and headsets, you must train the YOLO model locally.
+
+### 1. Dataset Preparation
+1. Open a terminal and run the data collection script:
+   ```bash
+   cd ai-services/training
+   python collect_data.py --output ../datasets/raw_images --count 100 --interval 1.0
+   ```
+   *Press 'Space' or wait for the interval to save images of yourself holding phones and wearing headsets.*
+
+### 2. Annotation
+1. Upload the `datasets/raw_images` folder to a tool like [Roboflow](https://roboflow.com/) or CVAT.
+2. Draw bounding boxes around the objects.
+3. Label them as `mobile_phone` (class 0) and `headset` (class 1).
+4. Export the dataset in **YOLOv8 format**.
+5. Extract the exported dataset into `ai-services/datasets/mindprep_proctoring`.
+
+### 3. Training
+Ensure you have the Python dependencies installed (`ultralytics`, `opencv-python`).
+1. Verify `ai-services/training/dataset.yaml` points to your dataset images and has the correct classes.
+2. Run the training script:
+   ```bash
+   cd ai-services/training
+   python train_yolo.py --data dataset.yaml --epochs 50
+   ```
+   *The model weights will be saved to `ai-services/models/proctor_yolo/weights/best.pt`.*
+
+### 4. Validation & Inference
+Test your new model in real-time before starting the backend:
+```bash
+python test_yolo.py --model ../models/proctor_yolo/weights/best.pt
+```
+
+Once validated, restart the `ai-services` FastAPI server. The `ProctoringEngine` will automatically load your custom `best.pt` model and enable phone/headset detection in the browser.
 
 ---
 

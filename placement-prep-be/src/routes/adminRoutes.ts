@@ -28,10 +28,7 @@ import {
   getQuizStats,
   getSubjects,
 } from "../controllers/admin/quizController";
-import {
-  getProctoringLogs,
-  getProctoringStats,
-} from "../controllers/admin/proctoringController";
+
 import {
   createNotification,
   getNotifications,
@@ -124,9 +121,6 @@ router.get("/quizzes/attempts", getQuizAttempts);
 router.get("/quizzes/stats", getQuizStats);
 router.get("/quizzes/subjects", getSubjects);
 
-// Proctoring
-router.get("/proctoring", getProctoringLogs);
-router.get("/proctoring/stats", getProctoringStats);
 
 // Notifications
 router.get("/notifications", getNotifications);

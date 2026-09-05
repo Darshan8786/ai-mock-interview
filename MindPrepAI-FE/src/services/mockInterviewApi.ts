@@ -1,7 +1,4 @@
-import { BACKEND_URL } from "../config/config";
-
-const AI_SERVICE_URL = "http://localhost:8000";
-const AI_SERVICE_KEY = "mindprep-ai-key-2026";
+import { BACKEND_URL, AI_SERVICE_URL, AI_SERVICE_KEY } from "../config/config";
 
 function getAuthHeaders() {
   const token = localStorage.getItem("token");

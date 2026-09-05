@@ -24,10 +24,17 @@ class FaceVerificationService:
                 logger.info("InsightFace model not found, downloading...")
                 model_path = download_insightface()
             if model_path and os.path.exists(model_path):
+                # Pin onnxruntime to a single thread so its OpenMP pool does
+                # not contend with PyTorch / TFLite in the same process.
                 self.model = FaceAnalysis(
                     name="buffalo_l",
                     root=settings.MODEL_DIR,
-                    providers=["CPUExecutionProvider"],
+                    providers=[
+                        ("CPUExecutionProvider", {
+                            "intra_op_num_threads": 1,
+                            "inter_op_num_threads": 1,
+                        })
+                    ],
                 )
                 self.model.prepare(ctx_id=0, det_thresh=settings.FACE_CONFIDENCE_THRESHOLD)
                 logger.info("InsightFace model loaded successfully")

@@ -40,7 +40,6 @@ import { JobForm } from "./pages/admin/JobForm";
 import { JobApplications } from "./pages/admin/JobApplications";
 import { JobEligibility } from "./pages/admin/JobEligibility";
 import { ReportsAnalytics } from "./pages/admin/ReportsAnalytics";
-import { ProctoringLogs } from "./pages/admin/ProctoringLogs";
 import { Announcements } from "./pages/admin/Announcements";
 import { Settings } from "./pages/admin/Settings";
 import { AdminSignin } from "./pages/admin/AdminSignin";
@@ -94,7 +93,6 @@ function App() {
               <Route path="jobs/:id/applications" element={<JobApplications />} />
               <Route path="jobs/:id/eligibility" element={<JobEligibility />} />
               <Route path="reports" element={<ReportsAnalytics />} />
-              <Route path="proctoring" element={<ProctoringLogs />} />
               <Route path="announcements" element={<Announcements />} />
               <Route path="settings" element={<Settings />} />
             </Route>

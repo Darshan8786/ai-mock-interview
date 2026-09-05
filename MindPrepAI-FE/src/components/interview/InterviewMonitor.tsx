@@ -1,91 +1,149 @@
-import { motion } from "framer-motion";
-import type { ProctorStatus } from "../../types/proctor";
-
 interface InterviewMonitorProps {
-  status: ProctorStatus;
-  result?: {
-    headDirection: string;
-    headYaw: number;
-    headPitch: number;
-    headRoll: number;
-    eyeDirection: string;
-    persons: number;
-    phoneConfidence: number;
-    similarity?: number;
-  } | null;
+  status: "idle" | "connecting" | "active" | "error" | "terminated";
+  stalled?: boolean;
+  result: any;
 }
 
-export function InterviewMonitor({ status, result }: InterviewMonitorProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      className="bg-gray-800/50 rounded-2xl p-4 border border-gray-700 space-y-3"
-    >
-      <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-        <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-        Live Proctoring
-      </h3>
+interface PlaceholderState {
+  label: string;
+  dotClass: string;
+  pingClass: string;
+}
 
-      <div className="space-y-2">
-        <MonitorRow label="Face" status={status.face} />
-        <MonitorRow label="Head Pose" status={status.headPose} />
-        <MonitorRow label="Eye Gaze" status={status.eyeGaze} />
-        <MonitorRow label="Phone" status={status.phone} />
-        <MonitorRow label="Identity" status={status.identity} />
-        <MonitorRow label="Camera" status={status.camera} />
-        <MonitorRow label="Microphone" status={status.microphone} />
-        <MonitorRow label="Internet" status={status.internet} />
-      </div>
+function placeholderFor(
+  status: InterviewMonitorProps["status"],
+  stalled: boolean
+): PlaceholderState {
+  if (status === "connecting") {
+    return {
+      label: "Connecting to proctoring…",
+      dotClass: "bg-yellow-500",
+      pingClass: "bg-yellow-400",
+    };
+  }
+  if (status === "active" && stalled) {
+    return {
+      label: "Proctoring reconnecting…",
+      dotClass: "bg-amber-500",
+      pingClass: "bg-amber-400",
+    };
+  }
+  if (status === "active") {
+    // Socket is up, first analysis result not in yet.
+    return {
+      label: "Starting analysis…",
+      dotClass: "bg-emerald-500",
+      pingClass: "bg-emerald-400",
+    };
+  }
+  if (status === "error") {
+    return {
+      label: "Proctoring unavailable — retrying…",
+      dotClass: "bg-red-500",
+      pingClass: "bg-red-400",
+    };
+  }
+  if (status === "terminated") {
+    return { label: "Proctoring ended", dotClass: "bg-gray-500", pingClass: "bg-gray-400" };
+  }
+  return { label: "Proctoring idle", dotClass: "bg-gray-500", pingClass: "bg-gray-400" };
+}
 
-      {result && (
-        <div className="pt-2 border-t border-gray-700/50 space-y-1">
-          <DetailRow label="Head" value={result.headDirection} />
-          <DetailRow label="Eyes" value={result.eyeDirection} />
-          {result.persons > 0 && <DetailRow label="Persons" value={`${result.persons}`} />}
-          {result.phoneConfidence > 0 && (
-            <DetailRow label="Phone" value={`${(result.phoneConfidence * 100).toFixed(0)}%`} />
-          )}
-          {result.similarity !== undefined && (
-            <DetailRow label="Match" value={`${(result.similarity * 100).toFixed(0)}%`} />
-          )}
+export function InterviewMonitor({ status, stalled = false, result }: InterviewMonitorProps) {
+  const showLive = status === "active" && !stalled && !!result;
+
+  if (!showLive) {
+    const ph = placeholderFor(status, stalled);
+    return (
+      <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
+        <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+          AI Proctoring
+        </h4>
+        <div className="flex items-center gap-2 text-sm text-gray-300">
+          <span className="relative flex h-2.5 w-2.5">
+            <span
+              className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${ph.pingClass}`}
+            ></span>
+            <span
+              className={`relative inline-flex rounded-full h-2.5 w-2.5 ${ph.dotClass}`}
+            ></span>
+          </span>
+          {ph.label}
         </div>
-      )}
-    </motion.div>
-  );
-}
+      </div>
+    );
+  }
 
-function MonitorRow({ label, status }: { label: string; status: string }) {
-  const icons: Record<string, string> = {
-    ok: "✓",
-    warning: "!",
-    violation: "✗",
-    pending: "⋯",
-  };
-  const colors: Record<string, string> = {
-    ok: "text-emerald-400",
-    warning: "text-yellow-400",
-    violation: "text-red-400",
-    pending: "text-gray-500",
-  };
+  const faceStatus: string = result?.faceStatus ?? "unknown";
+  const lookingDirection: string = result?.lookingDirection ?? "unknown";
+  const lookingAway: boolean = !!result?.lookingAway;
+  const degraded: boolean = !!result?.analysisDegraded;
 
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs text-gray-400">{label}</span>
-      <span className={`text-xs font-bold ${colors[status] || "text-gray-500"}`}>
-        {icons[status] || "?"}
-      </span>
-    </div>
-  );
-}
+    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700 space-y-3">
+      <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider flex justify-between">
+        <span>AI Proctoring</span>
+        <span className="text-emerald-400 flex items-center gap-1">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          {degraded ? "Limited" : "Live"}
+        </span>
+      </h4>
 
-function DetailRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-[10px] text-gray-500">{label}</span>
-      <span className="text-[10px] font-mono text-gray-300">{value}</span>
+      <div className="space-y-2 text-sm">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-400">Face Status</span>
+          <span
+            className={`px-2 py-0.5 rounded text-xs font-medium ${
+              faceStatus === "normal"
+                ? "bg-emerald-500/10 text-emerald-400"
+                : "bg-red-500/10 text-red-400"
+            }`}
+          >
+            {faceStatus.toUpperCase()}
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <span className="text-gray-400">Looking Direction</span>
+          <span
+            className={`px-2 py-0.5 rounded text-xs font-medium ${
+              !lookingAway
+                ? "bg-emerald-500/10 text-emerald-400"
+                : "bg-yellow-500/10 text-yellow-400"
+            }`}
+          >
+            {lookingDirection.toUpperCase()}
+          </span>
+        </div>
+
+        {(result?.mobilePhone || result?.headset) && (
+          <div className="flex justify-between items-center border-t border-gray-700 pt-2 mt-2">
+            <span className="text-gray-400">Objects Detected</span>
+            <span className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs font-medium flex gap-1">
+              {result?.mobilePhone && <span>📱 Phone</span>}
+              {result?.headset && <span>🎧 Headset</span>}
+            </span>
+          </div>
+        )}
+
+        {result?.cameraObstructed && (
+          <div className="flex justify-between items-center border-t border-gray-700 pt-2 mt-2">
+            <span className="text-gray-400">Camera</span>
+            <span className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs font-medium">
+              🚫 Obstructed
+            </span>
+          </div>
+        )}
+
+        {degraded && (
+          <p className="text-[11px] text-amber-400/80 border-t border-gray-700 pt-2 mt-2">
+            Some analysis passes are degraded — monitoring is still active.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

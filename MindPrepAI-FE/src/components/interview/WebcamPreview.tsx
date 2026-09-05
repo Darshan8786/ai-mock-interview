@@ -1,56 +1,69 @@
 import { type RefObject, type MutableRefObject, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import type { ProctorStatus } from "../../types/proctor";
 
 interface WebcamPreviewProps {
   videoRef: RefObject<HTMLVideoElement | null>;
   streamRef: MutableRefObject<MediaStream | null>;
-  status: ProctorStatus;
   cameraOn: boolean;
   microphoneOn: boolean;
   internetOn: boolean;
-  cheatingCount: number;
-  warnings: string[];
 }
 
 export function WebcamPreview({
   videoRef,
   streamRef,
-  status,
   cameraOn,
   microphoneOn,
   internetOn,
-  cheatingCount,
-  warnings,
 }: WebcamPreviewProps) {
   const [videoLoading, setVideoLoading] = useState(true);
 
   useEffect(() => {
     const video = videoRef.current;
     const stream = streamRef.current;
-    if (!video || !stream) return;
-    if (video.srcObject !== stream) {
-      video.srcObject = stream;
-      video.muted = true;
-      video.play().catch(() => {});
-    }
-  }, [videoRef, streamRef]);
 
-  const borderColor =
-    cheatingCount >= 3 ? "border-red-500" :
-    cheatingCount > 0 || warnings.length > 0 ? "border-yellow-500" :
-    "border-emerald-500";
+    const attachStream = async () => {
+      if (!video || !stream) return;
+      if (video.srcObject !== stream) {
+        video.srcObject = stream;
+        video.muted = true;
+        try {
+          await video.play();
+        } catch (e) {
+          console.warn('Video play failed:', e);
+        }
+      } else {
+        if (video.paused) {
+          video.play().catch(e => console.warn('Video play failed:', e));
+        }
+      }
+      // If the video is already in a playable/playing state (e.g. after the
+      // setup→interview transition where the stream is already active),
+      // the browser won't fire onCanPlay again — clear the loading spinner now.
+      if (video.readyState >= 2) {
+        setVideoLoading(false);
+      }
+    };
+
+    attachStream();
+
+    // Safety net: if the media events never fire (e.g. the <video> was briefly
+    // hidden when the stream attached), don't leave the spinner up forever once
+    // the stream is actually live.
+    const t = window.setTimeout(() => {
+      if (streamRef.current?.getVideoTracks()[0]?.readyState === "live") {
+        setVideoLoading(false);
+      }
+    }, 3000);
+    return () => window.clearTimeout(t);
+  }, [videoRef, streamRef, cameraOn]);
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className={`relative rounded-2xl overflow-hidden border-2 ${borderColor} bg-gray-900 shadow-2xl w-full transition-colors duration-500`}
-      style={{
-        minHeight: "320px",
-        aspectRatio: "16 / 9",
-        maxHeight: "500px",
-      }}
+      className="relative rounded-2xl overflow-hidden border-2 border-emerald-500 bg-gray-900 shadow-2xl w-full transition-colors duration-500"
+      style={{ minHeight: "320px", aspectRatio: "16 / 9", maxHeight: "500px" }}
     >
       <video
         ref={videoRef}
@@ -58,6 +71,8 @@ export function WebcamPreview({
         muted
         playsInline
         onCanPlay={() => setVideoLoading(false)}
+        onLoadedMetadata={() => setVideoLoading(false)}
+        onPlaying={() => setVideoLoading(false)}
         className="w-full h-full object-cover bg-black"
         style={{ transform: "scaleX(-1)" }}
       />
@@ -84,52 +99,13 @@ export function WebcamPreview({
         </div>
       )}
 
-      <div className="absolute top-3 left-3 z-20 flex gap-2">
-        <StatusBadge label="FACE" status={status.face} />
-        <StatusBadge label="HEAD" status={status.headPose} />
-        <StatusBadge label="EYE" status={status.eyeGaze} />
-        <StatusBadge label="PHONE" status={status.phone} />
+      {/* Status dots - CAM / MIC / NET */}
+      <div className="absolute bottom-3 left-3 flex gap-2 z-20">
+        <StatusDot label="CAM" active={cameraOn} color="green" />
+        <StatusDot label="MIC" active={microphoneOn} color="blue" />
+        <StatusDot label="NET" active={internetOn} color="yellow" />
       </div>
-
-      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between z-20">
-        <div className="flex gap-2">
-          <StatusDot label="CAM" active={cameraOn} color="green" />
-          <StatusDot label="MIC" active={microphoneOn} color="blue" />
-          <StatusDot label="NET" active={internetOn} color="yellow" />
-        </div>
-        {cheatingCount > 0 && (
-          <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-            cheatingCount >= 3 ? "bg-red-500 text-white" : "bg-yellow-500/80 text-black"
-          }`}>
-            ⚠ {cheatingCount}/{3}
-          </div>
-        )}
-      </div>
-
-      {warnings.length > 0 && (
-        <div className="absolute bottom-12 left-3 right-3 z-20 space-y-1">
-          {warnings.slice(0, 2).map((w, i) => (
-            <div key={i} className="bg-red-500/80 text-white text-[10px] px-2 py-1 rounded-lg backdrop-blur-sm">
-              {w}
-            </div>
-          ))}
-        </div>
-      )}
     </motion.div>
-  );
-}
-
-function StatusBadge({ label, status }: { label: string; status: string }) {
-  const colorMap: Record<string, string> = {
-    ok: "bg-emerald-500/80 text-white",
-    warning: "bg-yellow-500/80 text-black",
-    violation: "bg-red-500/80 text-white",
-    pending: "bg-gray-500/80 text-gray-200",
-  };
-  return (
-    <div className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${colorMap[status] || "bg-gray-500/80"}`}>
-      {label}: {status === "ok" ? "OK" : status === "warning" ? "!" : status === "violation" ? "✗" : "..."}
-    </div>
   );
 }
 
