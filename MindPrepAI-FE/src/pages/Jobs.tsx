@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getAvailableJobs, type StudentJob } from "../services/jobsApi";
+import { AlumniOpenings } from "../components/AlumniOpenings";
 
 const jobTypes = ["All", "Full-time", "Internship", "Part-time", "Contract", "Remote", "On-site", "Hybrid"];
 
@@ -167,6 +168,8 @@ export function Jobs() {
             })}
           </div>
         )}
+
+        <AlumniOpenings />
       </div>
     </div>
   );

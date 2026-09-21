@@ -127,6 +127,7 @@ ${report.finalFeedback || "N/A"}
   };
 
   const badge = getStatusBadge();
+  const tabSwitchTerminated = interview?.terminationReason === "TAB_SWITCH_LIMIT_EXCEEDED";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-8 px-4">
@@ -158,6 +159,12 @@ ${report.finalFeedback || "N/A"}
             </span>
           </div>
         </div>
+
+        {tabSwitchTerminated && (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-8 text-center text-sm text-red-300">
+            This interview was automatically terminated after {interview.tabSwitchCount ?? 3} tab switches, exceeding the 3-switch limit.
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <ScoreCard

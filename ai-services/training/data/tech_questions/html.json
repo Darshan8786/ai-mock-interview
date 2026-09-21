@@ -1,0 +1,3059 @@
+[
+  {
+    "id": "html_001",
+    "technology": "HTML",
+    "topic": "HTML Basics",
+    "difficulty": "Easy",
+    "question": "What does HTML stand for?",
+    "answer": "HyperText Markup Language",
+    "explanation": "HTML is the standard markup language used to structure content on the web; 'HyperText' refers to linked documents, 'Markup' to the tags that describe structure.",
+    "question_type": "MCQ",
+    "keywords": [
+      "html",
+      "markup",
+      "hypertext"
+    ],
+    "options": [
+      "HyperText Markup Language",
+      "HighText Machine Language",
+      "HyperText and Markup Language",
+      "Home Tool Markup Language"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "html_002",
+    "technology": "HTML",
+    "topic": "HTML Basics",
+    "difficulty": "Easy",
+    "question": "Which tag is used to define the largest heading in HTML?",
+    "answer": "<h1>",
+    "explanation": "HTML headings range from <h1> (largest/most important) to <h6> (smallest); <h1> should typically be used once per page for the main title.",
+    "question_type": "MCQ",
+    "keywords": [
+      "heading",
+      "h1",
+      "tags"
+    ],
+    "options": [
+      "<h6>",
+      "<heading>",
+      "<h1>",
+      "<head>"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "html_003",
+    "technology": "HTML",
+    "topic": "HTML Basics",
+    "difficulty": "Easy",
+    "question": "What is the correct HTML element for inserting a line break?",
+    "answer": "<br>",
+    "explanation": "<br> is a void (self-closing) element that forces a line break within text without starting a new paragraph, unlike <p> which creates a new block.",
+    "question_type": "Technical",
+    "keywords": [
+      "br",
+      "line break",
+      "void element"
+    ]
+  },
+  {
+    "id": "html_004",
+    "technology": "HTML",
+    "topic": "HTML Basics",
+    "difficulty": "Easy",
+    "question": "Is HTML case-sensitive for tag names?",
+    "answer": "No, HTML tag and attribute names are case-insensitive, though lowercase is the conventional and HTML5-recommended style.",
+    "explanation": "The HTML5 spec explicitly treats tag/attribute names as ASCII case-insensitive during parsing; XHTML (XML-based) does require lowercase, which is likely the source of the common lowercase convention.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "case sensitivity",
+      "tags",
+      "html5"
+    ]
+  },
+  {
+    "id": "html_005",
+    "technology": "HTML",
+    "topic": "HTML Basics",
+    "difficulty": "Medium",
+    "question": "What is the difference between an HTML element and an HTML tag?",
+    "answer": "A tag is the markup itself (e.g. <p> or </p>); an element is the complete unit including the opening tag, its content, and the closing tag (e.g. <p>Hello</p>).",
+    "explanation": "This distinction matters because void elements like <img> or <br> have only a single tag and no separate closing tag, yet are still complete elements.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "element",
+      "tag",
+      "terminology"
+    ]
+  },
+  {
+    "id": "html_006",
+    "technology": "HTML",
+    "topic": "Document Structure",
+    "difficulty": "Easy",
+    "question": "Which declaration must appear as the very first line of an HTML5 document?",
+    "answer": "<!DOCTYPE html>",
+    "explanation": "The DOCTYPE tells the browser to render the page in standards mode using the HTML5 parsing rules; omitting it can trigger quirks mode with inconsistent CSS box-model behavior across browsers.",
+    "question_type": "MCQ",
+    "keywords": [
+      "doctype",
+      "html5",
+      "standards mode"
+    ],
+    "options": [
+      "<html>",
+      "<!DOCTYPE html>",
+      "<meta charset=\"utf-8\">",
+      "<!-- HTML5 -->"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_007",
+    "technology": "HTML",
+    "topic": "Document Structure",
+    "difficulty": "Easy",
+    "question": "Which two elements are the direct children of the <html> element in a standard document?",
+    "answer": "<head> and <body>",
+    "explanation": "<head> contains metadata (title, meta tags, links to stylesheets/scripts) that is not rendered directly, while <body> contains the visible page content.",
+    "question_type": "Technical",
+    "keywords": [
+      "head",
+      "body",
+      "html element"
+    ]
+  },
+  {
+    "id": "html_008",
+    "technology": "HTML",
+    "topic": "Document Structure",
+    "difficulty": "Medium",
+    "question": "Where should <script> tags generally be placed to avoid blocking initial page rendering, and what attribute offers an alternative?",
+    "answer": "Either just before the closing </body> tag, or anywhere with the `defer` (or `async`) attribute on the <script> tag.",
+    "explanation": "By default, script tags block HTML parsing while the script downloads and executes; placing them at the end of <body> (or using `defer`, which downloads in parallel and runs after parsing completes in document order) avoids delaying the first paint.",
+    "question_type": "Technical",
+    "keywords": [
+      "script",
+      "defer",
+      "async",
+      "rendering"
+    ]
+  },
+  {
+    "id": "html_009",
+    "technology": "HTML",
+    "topic": "Document Structure",
+    "difficulty": "Medium",
+    "question": "What is the purpose of the <head> element's <title> tag?",
+    "answer": "It sets the text shown in the browser's title bar/tab and is used as the default heading for the page in search results and bookmarks.",
+    "explanation": "Unlike headings inside <body>, <title> content is not rendered on the page itself — it is metadata consumed by the browser chrome, search engines, and social sharing previews.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "title",
+      "head",
+      "seo"
+    ]
+  },
+  {
+    "id": "html_010",
+    "technology": "HTML",
+    "topic": "Document Structure",
+    "difficulty": "Hard",
+    "question": "A browser renders a page with visibly broken CSS box sizing (elements wider than expected) even though the CSS looks correct. What document-structure issue commonly causes this?",
+    "answer": "A missing or malformed <!DOCTYPE html> declaration, which puts the browser into 'quirks mode' instead of standards mode.",
+    "explanation": "In quirks mode, older/legacy box-model rules apply (width includes padding and border by default in some browsers), producing layout differences from what modern standards-mode CSS assumes.",
+    "question_type": "Debugging",
+    "keywords": [
+      "quirks mode",
+      "doctype",
+      "box model"
+    ],
+    "buggy_code": "<html>\n<head><title>Page</title></head>\n<body>...</body>\n</html>",
+    "fixed_code": "<!DOCTYPE html>\n<html>\n<head><title>Page</title></head>\n<body>...</body>\n</html>"
+  },
+  {
+    "id": "html_011",
+    "technology": "HTML",
+    "topic": "Tags & Elements",
+    "difficulty": "Easy",
+    "question": "Which of these is a void (self-closing) HTML element?",
+    "answer": "<img>",
+    "explanation": "<img>, <br>, <hr>, <input>, and <meta> are void elements — they cannot have children or a closing tag because they represent a single, self-contained piece of content.",
+    "question_type": "MCQ",
+    "keywords": [
+      "void element",
+      "img",
+      "self-closing"
+    ],
+    "options": [
+      "<div>",
+      "<img>",
+      "<span>",
+      "<section>"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_012",
+    "technology": "HTML",
+    "topic": "Tags & Elements",
+    "difficulty": "Easy",
+    "question": "What is the difference between a block-level element and an inline element?",
+    "answer": "A block-level element (e.g. <div>, <p>) starts on a new line and takes up the full available width by default; an inline element (e.g. <span>, <a>) only takes up as much width as its content and does not force a line break.",
+    "explanation": "This default display behavior comes from the browser's default stylesheet (`display: block` vs `display: inline`) and can be overridden with CSS.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "block",
+      "inline",
+      "display"
+    ]
+  },
+  {
+    "id": "html_013",
+    "technology": "HTML",
+    "topic": "Tags & Elements",
+    "difficulty": "Medium",
+    "question": "What is the difference between <div> and <span>?",
+    "answer": "<div> is a block-level generic container, while <span> is an inline generic container.",
+    "explanation": "Both carry no semantic meaning on their own and exist purely for grouping content so CSS/JS can target it; the choice between them is driven entirely by whether block or inline layout is needed.",
+    "question_type": "Technical",
+    "keywords": [
+      "div",
+      "span",
+      "generic container"
+    ]
+  },
+  {
+    "id": "html_014",
+    "technology": "HTML",
+    "topic": "Tags & Elements",
+    "difficulty": "Medium",
+    "question": "What does the <iframe> element do, and name one security consideration when using it?",
+    "answer": "<iframe> embeds another HTML document inside the current page as a nested browsing context; a key security consideration is that embedding untrusted third-party content can expose clickjacking risks unless mitigated with the `sandbox` attribute or the embedded site's `X-Frame-Options`/CSP frame-ancestors header.",
+    "explanation": "Because an iframe's content runs as a semi-independent document, it can be abused to overlay invisible malicious UI on top of a legitimate page (clickjacking) unless the site being framed opts out.",
+    "question_type": "Technical",
+    "keywords": [
+      "iframe",
+      "security",
+      "clickjacking"
+    ]
+  },
+  {
+    "id": "html_015",
+    "technology": "HTML",
+    "topic": "Tags & Elements",
+    "difficulty": "Hard",
+    "question": "Why can excessive nesting of generic <div> elements ('div soup') hurt both accessibility and performance?",
+    "answer": "Deeply nested non-semantic divs give screen readers no structural landmarks to navigate by, and force the browser to build and reflow a much larger, deeper DOM/render tree than semantic markup would require.",
+    "explanation": "Screen readers rely on semantic elements and ARIA landmarks to let users jump between regions; a page built entirely of unlabeled divs forces linear reading. On the performance side, layout and style recalculation cost scales with DOM depth and node count.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "div soup",
+      "accessibility",
+      "performance"
+    ]
+  },
+  {
+    "id": "html_016",
+    "technology": "HTML",
+    "topic": "Attributes",
+    "difficulty": "Easy",
+    "question": "Which attribute specifies an alternate text for an image if it cannot be displayed?",
+    "answer": "alt",
+    "explanation": "The `alt` attribute is read by screen readers and shown if the image fails to load, making it essential for both accessibility and graceful degradation.",
+    "question_type": "MCQ",
+    "keywords": [
+      "alt",
+      "img",
+      "accessibility"
+    ],
+    "options": [
+      "title",
+      "alt",
+      "src",
+      "longdesc"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_017",
+    "technology": "HTML",
+    "topic": "Attributes",
+    "difficulty": "Easy",
+    "question": "What is the purpose of the `id` attribute compared to the `class` attribute?",
+    "answer": "`id` must be unique within a page and identifies a single specific element; `class` can be applied to many elements and groups them for shared styling/behavior.",
+    "explanation": "Because `id` values must be unique, they're used for CSS ID selectors, JS `getElementById`, and in-page anchor links (`#section`), while `class` is the right tool whenever a style or behavior applies to multiple elements.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "id",
+      "class",
+      "attributes"
+    ]
+  },
+  {
+    "id": "html_018",
+    "technology": "HTML",
+    "topic": "Attributes",
+    "difficulty": "Medium",
+    "question": "What does the `data-*` attribute convention allow you to do in HTML?",
+    "answer": "It lets you store custom, page-specific data directly on an HTML element without any special meaning to the browser, retrievable in JavaScript via the element's `dataset` property.",
+    "explanation": "For example `<div data-user-id=\"42\">` exposes `element.dataset.userId === '42'` in JS — a standards-compliant alternative to inventing non-standard attributes for custom data.",
+    "question_type": "Technical",
+    "keywords": [
+      "data attributes",
+      "dataset",
+      "custom data"
+    ]
+  },
+  {
+    "id": "html_019",
+    "technology": "HTML",
+    "topic": "Attributes",
+    "difficulty": "Medium",
+    "question": "What is the effect of the `disabled` boolean attribute on a form control?",
+    "answer": "It makes the control non-interactive (cannot be focused, clicked, or edited) and excludes its value from form submission.",
+    "explanation": "Boolean attributes like `disabled` are 'true' simply by being present, regardless of their value (`disabled=\"false\"` still disables the element); to enable it, the attribute must be removed entirely.",
+    "question_type": "Technical",
+    "keywords": [
+      "disabled",
+      "boolean attribute",
+      "forms"
+    ]
+  },
+  {
+    "id": "html_020",
+    "technology": "HTML",
+    "topic": "Attributes",
+    "difficulty": "Hard",
+    "question": "Why does `<input disabled=\"false\">` still disable the input, and how would you actually make it conditionally enabled from a template?",
+    "answer": "Because `disabled` is a boolean attribute, its mere presence — not its string value — controls behavior; any value including \"false\" still counts as present. To conditionally enable it you must add/remove the attribute entirely, e.g. only render `disabled` when the condition is true.",
+    "explanation": "This is a common source of bugs when developers assume boolean HTML attributes behave like typed booleans in a programming language; frameworks like React handle this by accepting a JS boolean and adding/omitting the attribute for you.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "boolean attribute",
+      "disabled",
+      "common bug"
+    ]
+  },
+  {
+    "id": "html_021",
+    "technology": "HTML",
+    "topic": "Forms & Input Types",
+    "difficulty": "Easy",
+    "question": "Which HTML input type is specifically designed for entering an email address with built-in format validation?",
+    "answer": "type=\"email\"",
+    "explanation": "`<input type=\"email\">` triggers the browser's built-in email-format validation and, on mobile, shows an email-optimized on-screen keyboard.",
+    "question_type": "MCQ",
+    "keywords": [
+      "input type",
+      "email",
+      "form validation"
+    ],
+    "options": [
+      "type=\"text\"",
+      "type=\"email\"",
+      "type=\"mail\"",
+      "type=\"address\""
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_022",
+    "technology": "HTML",
+    "topic": "Forms & Input Types",
+    "difficulty": "Easy",
+    "question": "What is the purpose of the <label> element in a form?",
+    "answer": "It provides a text caption associated with a specific form control, improving usability and accessibility (clicking the label focuses/activates the control, and screen readers announce it).",
+    "explanation": "Association is done either by wrapping the input inside the label, or by matching the label's `for` attribute to the input's `id`.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "label",
+      "forms",
+      "accessibility"
+    ]
+  },
+  {
+    "id": "html_023",
+    "technology": "HTML",
+    "topic": "Forms & Input Types",
+    "difficulty": "Medium",
+    "question": "What is the difference between the `GET` and `POST` values of a <form>'s `method` attribute?",
+    "answer": "`GET` appends form data as a URL query string (visible, bookmarkable, size-limited, and cacheable), while `POST` sends form data in the request body (not shown in the URL, no practical size limit, and not cached by default).",
+    "explanation": "GET is appropriate for idempotent operations like search/filtering where the result should be shareable via URL; POST is used for operations that change state or submit sensitive/large data, since it doesn't expose data in the URL or browser history.",
+    "question_type": "Technical",
+    "keywords": [
+      "form method",
+      "get",
+      "post"
+    ]
+  },
+  {
+    "id": "html_024",
+    "technology": "HTML",
+    "topic": "Forms & Input Types",
+    "difficulty": "Medium",
+    "question": "What does the `<select>` element's `multiple` attribute do?",
+    "answer": "It allows the user to select more than one <option> at once (typically via ctrl/cmd+click), and the submitted form data includes all selected values.",
+    "explanation": "When `multiple` is set, the field's submitted name should end in `[]` in many server frameworks (or be read as an array) since more than one value can be sent under the same field name.",
+    "question_type": "Technical",
+    "keywords": [
+      "select",
+      "multiple",
+      "options"
+    ]
+  },
+  {
+    "id": "html_025",
+    "technology": "HTML",
+    "topic": "Forms & Input Types",
+    "difficulty": "Hard",
+    "question": "A form has multiple radio inputs meant to represent one single-choice question, but the user can select more than one at a time. What is the most likely cause?",
+    "answer": "The radio inputs don't all share the same `name` attribute — only inputs with an identical `name` are grouped as mutually exclusive by the browser.",
+    "explanation": "The browser enforces single-selection purely based on the `name` attribute grouping radios; if even one radio in the group has a typo'd or missing `name`, it becomes its own independent group, breaking the intended exclusivity.",
+    "question_type": "Debugging",
+    "keywords": [
+      "radio button",
+      "name attribute",
+      "forms"
+    ],
+    "buggy_code": "<input type=\"radio\" name=\"plan\" value=\"a\"> A\n<input type=\"radio\" name=\"Plan\" value=\"b\"> B",
+    "fixed_code": "<input type=\"radio\" name=\"plan\" value=\"a\"> A\n<input type=\"radio\" name=\"plan\" value=\"b\"> B"
+  },
+  {
+    "id": "html_026",
+    "technology": "HTML",
+    "topic": "Tables",
+    "difficulty": "Easy",
+    "question": "Which tag defines a table row in HTML?",
+    "answer": "<tr>",
+    "explanation": "<table> defines the table, <tr> defines a row within it, and <td>/<th> define individual data/header cells within a row.",
+    "question_type": "MCQ",
+    "keywords": [
+      "table",
+      "tr",
+      "row"
+    ],
+    "options": [
+      "<td>",
+      "<tr>",
+      "<th>",
+      "<row>"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_027",
+    "technology": "HTML",
+    "topic": "Tables",
+    "difficulty": "Easy",
+    "question": "What is the difference between <td> and <th>?",
+    "answer": "<td> is a standard data cell; <th> is a header cell, which browsers render bold and centered by default and which carries semantic meaning for screen readers (it labels the column/row it heads).",
+    "explanation": "Using <th> instead of <td> for header cells isn't just cosmetic — it lets assistive technology associate data cells with their header context.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "td",
+      "th",
+      "table cells"
+    ]
+  },
+  {
+    "id": "html_028",
+    "technology": "HTML",
+    "topic": "Tables",
+    "difficulty": "Medium",
+    "question": "What do the <thead>, <tbody>, and <tfoot> elements group inside a table?",
+    "answer": "<thead> groups the header row(s), <tbody> groups the main data rows, and <tfoot> groups summary/footer rows (e.g. totals) — purely structural/semantic grouping, not new visual cells.",
+    "explanation": "Beyond semantics, separating these lets browsers keep <thead>/<tfoot> visible while <tbody> scrolls in some styling setups, and lets print engines repeat the header on every printed page.",
+    "question_type": "Technical",
+    "keywords": [
+      "thead",
+      "tbody",
+      "tfoot"
+    ]
+  },
+  {
+    "id": "html_029",
+    "technology": "HTML",
+    "topic": "Tables",
+    "difficulty": "Medium",
+    "question": "What does the `colspan` attribute do on a <td> or <th>?",
+    "answer": "It makes that cell span across multiple columns, merging the space that would otherwise be occupied by that many separate cells in the row.",
+    "explanation": "When a cell uses `colspan=\"2\"`, the following row(s) effectively have one fewer explicit cell needed at that position to keep the table's column count consistent; the analogous `rowspan` does the same across rows.",
+    "question_type": "Technical",
+    "keywords": [
+      "colspan",
+      "rowspan",
+      "table layout"
+    ]
+  },
+  {
+    "id": "html_030",
+    "technology": "HTML",
+    "topic": "Tables",
+    "difficulty": "Hard",
+    "question": "Why are HTML tables considered a poor choice for overall page layout (as opposed to displaying tabular data)?",
+    "answer": "Tables force a rigid grid structure that is hard to make responsive, mix layout with content (making the markup non-semantic and harder for screen readers to interpret), and historically caused slow rendering because the browser must calculate the whole table's layout before rendering any of it.",
+    "explanation": "Modern CSS layout tools (Flexbox, Grid) achieve any visual arrangement without abusing an element whose semantic meaning is 'tabular data', keeping markup meaningful for accessibility and SEO while rendering incrementally.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "table layout",
+      "semantic html",
+      "css layout"
+    ]
+  },
+  {
+    "id": "html_031",
+    "technology": "HTML",
+    "topic": "Semantic HTML5",
+    "difficulty": "Easy",
+    "question": "Which HTML5 element is intended to represent the main navigation links of a page?",
+    "answer": "<nav>",
+    "explanation": "<nav> is a semantic landmark that identifies a block of primarily navigational links, letting assistive technology and browsers offer quick navigation between page regions.",
+    "question_type": "MCQ",
+    "keywords": [
+      "nav",
+      "semantic html5",
+      "landmarks"
+    ],
+    "options": [
+      "<menu>",
+      "<nav>",
+      "<links>",
+      "<header>"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_032",
+    "technology": "HTML",
+    "topic": "Semantic HTML5",
+    "difficulty": "Easy",
+    "question": "What is the purpose of the <article> element?",
+    "answer": "It represents a self-contained piece of content that could be independently distributed or reused, such as a blog post, news story, or forum post.",
+    "explanation": "The key test for <article> is independence: if the content would still make sense extracted and syndicated on its own (e.g. via RSS), <article> is appropriate.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "article",
+      "semantic html5"
+    ]
+  },
+  {
+    "id": "html_033",
+    "technology": "HTML",
+    "topic": "Semantic HTML5",
+    "difficulty": "Medium",
+    "question": "What is the difference between <section> and <div>?",
+    "answer": "<section> is a semantic, thematic grouping of content that typically has its own heading and represents a standalone section of a document/application; <div> is a purely generic, non-semantic container used only for styling/scripting hooks.",
+    "explanation": "Using <section> when there's no meaningful heading/theme (just for styling) is considered a misuse — <div> remains the correct choice whenever no semantic meaning applies.",
+    "question_type": "Technical",
+    "keywords": [
+      "section",
+      "div",
+      "semantic html5"
+    ]
+  },
+  {
+    "id": "html_034",
+    "technology": "HTML",
+    "topic": "Semantic HTML5",
+    "difficulty": "Medium",
+    "question": "When should the <aside> element be used?",
+    "answer": "For content that is tangentially related to the surrounding content, such as a sidebar, pull quote, or advertisement — content that could be removed without reducing the meaning of the main content.",
+    "explanation": "<aside> gives assistive technology a way to distinguish supplementary content from primary content, which matters for users navigating by landmark.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "aside",
+      "semantic html5",
+      "sidebar"
+    ]
+  },
+  {
+    "id": "html_035",
+    "technology": "HTML",
+    "topic": "Semantic HTML5",
+    "difficulty": "Hard",
+    "question": "A page uses only <div class=\"header\">, <div class=\"nav\">, and <div class=\"footer\">. What are the concrete downsides of not switching to <header>, <nav>, and <footer>, beyond just 'best practice'?",
+    "answer": "Screen reader users lose the ability to jump directly to landmark regions (header/nav/footer) via assistive technology shortcuts, search engines get weaker structural signals for indexing/snippet generation, and the markup becomes more fragile since meaning now depends entirely on class names that could be renamed or reused inconsistently.",
+    "explanation": "Semantic elements expose an implicit ARIA landmark role (e.g. <nav> maps to role=\"navigation\") for free, whereas class-named divs convey no such role unless ARIA roles are manually and consistently added — an easy thing to forget or get wrong.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "semantic html5",
+      "aria landmarks",
+      "accessibility"
+    ]
+  },
+  {
+    "id": "html_036",
+    "technology": "HTML",
+    "topic": "Multimedia",
+    "difficulty": "Easy",
+    "question": "Which HTML5 element is used to embed video content natively without a plugin?",
+    "answer": "<video>",
+    "explanation": "<video> provides native browser video playback with built-in controls, replacing the older need for Flash or other plugins.",
+    "question_type": "MCQ",
+    "keywords": [
+      "video",
+      "multimedia",
+      "html5"
+    ],
+    "options": [
+      "<media>",
+      "<video>",
+      "<movie>",
+      "<embed>"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_037",
+    "technology": "HTML",
+    "topic": "Multimedia",
+    "difficulty": "Easy",
+    "question": "What does the `controls` attribute do on a <video> or <audio> element?",
+    "answer": "It displays the browser's default playback UI (play/pause, volume, seek bar) for that media element.",
+    "explanation": "Without `controls`, the media element renders with no visible UI at all, and playback must be driven entirely via JavaScript (`element.play()`/`pause()`).",
+    "question_type": "Technical",
+    "keywords": [
+      "controls",
+      "video",
+      "audio"
+    ]
+  },
+  {
+    "id": "html_038",
+    "technology": "HTML",
+    "topic": "Multimedia",
+    "difficulty": "Medium",
+    "question": "Why would you provide multiple <source> elements inside a <video> tag?",
+    "answer": "To offer the same video in multiple formats/codecs (e.g. MP4 and WebM), letting the browser pick the first source it supports, since not every browser supports every codec.",
+    "explanation": "The browser evaluates <source> elements in order and uses the first one whose `type` it can play, falling back to any fallback content placed directly inside <video> if none are supported.",
+    "question_type": "Technical",
+    "keywords": [
+      "source",
+      "video formats",
+      "codecs"
+    ]
+  },
+  {
+    "id": "html_039",
+    "technology": "HTML",
+    "topic": "Multimedia",
+    "difficulty": "Medium",
+    "question": "What accessibility feature should accompany a <video> for deaf or hard-of-hearing users, and which element provides it?",
+    "answer": "Captions/subtitles, provided via the <track> element with `kind=\"captions\"` or `kind=\"subtitles\"` pointing to a WebVTT file.",
+    "explanation": "<track> lets the browser overlay time-synced text without needing to burn captions into the video itself, and also lets users toggle them on/off.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "track",
+      "captions",
+      "accessibility"
+    ]
+  },
+  {
+    "id": "html_040",
+    "technology": "HTML",
+    "topic": "Multimedia",
+    "difficulty": "Hard",
+    "question": "Why might a <video autoplay> tag fail to autoplay in most modern browsers unless another attribute is also present?",
+    "answer": "Modern browsers block autoplay of video WITH sound as an anti-annoyance measure; autoplay is generally only allowed if the video is also muted (the `muted` attribute must be present alongside `autoplay`).",
+    "explanation": "This policy exists because unsolicited audio playback was widely considered a poor user experience; browsers permit silent (muted) autoplay since it can't disrupt the user unexpectedly with sound.",
+    "question_type": "Debugging",
+    "keywords": [
+      "autoplay",
+      "muted",
+      "browser policy"
+    ],
+    "buggy_code": "<video src=\"clip.mp4\" autoplay></video>",
+    "fixed_code": "<video src=\"clip.mp4\" autoplay muted></video>"
+  },
+  {
+    "id": "html_041",
+    "technology": "HTML",
+    "topic": "Links & Navigation",
+    "difficulty": "Easy",
+    "question": "Which attribute of the <a> tag specifies the URL of the page the link goes to?",
+    "answer": "href",
+    "explanation": "`href` (hypertext reference) holds the destination URL; without it, an <a> tag is not an active link.",
+    "question_type": "MCQ",
+    "keywords": [
+      "a tag",
+      "href",
+      "links"
+    ],
+    "options": [
+      "src",
+      "href",
+      "link",
+      "url"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_042",
+    "technology": "HTML",
+    "topic": "Links & Navigation",
+    "difficulty": "Easy",
+    "question": "What does setting `target=\"_blank\"` on an <a> tag do?",
+    "answer": "It opens the linked document in a new browsing context (typically a new tab).",
+    "explanation": "Best practice pairs `target=\"_blank\"` with `rel=\"noopener noreferrer\"` to prevent the new page from gaining a reference back to the opening window (a security/performance concern known as tabnabbing).",
+    "question_type": "Technical",
+    "keywords": [
+      "target blank",
+      "a tag",
+      "new tab"
+    ]
+  },
+  {
+    "id": "html_043",
+    "technology": "HTML",
+    "topic": "Links & Navigation",
+    "difficulty": "Medium",
+    "question": "Why is `rel=\"noopener\"` recommended on links that use `target=\"_blank\"`?",
+    "answer": "Without it, the newly opened page can access the original page via `window.opener` and potentially redirect it to a malicious page (a phishing technique called tabnabbing), and it can also hurt performance since both pages can share the same rendering process.",
+    "explanation": "`rel=\"noopener\"` (and `noreferrer`, which also strips the referrer) severs that `window.opener` link, isolating the new tab from the originating page.",
+    "question_type": "Technical",
+    "keywords": [
+      "noopener",
+      "tabnabbing",
+      "security"
+    ]
+  },
+  {
+    "id": "html_044",
+    "technology": "HTML",
+    "topic": "Links & Navigation",
+    "difficulty": "Medium",
+    "question": "What is the purpose of a fragment identifier like `#section2` in a URL, and how is it targeted in HTML?",
+    "answer": "It scrolls the browser to the element on the page whose `id` matches the fragment (e.g. `id=\"section2\"`), enabling in-page navigation without a full reload.",
+    "explanation": "This is how a page's own table-of-contents links typically work, and it also lets JavaScript listen for `hashchange` events to react to in-page navigation.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "fragment identifier",
+      "anchor",
+      "id"
+    ]
+  },
+  {
+    "id": "html_045",
+    "technology": "HTML",
+    "topic": "Links & Navigation",
+    "difficulty": "Hard",
+    "question": "A single-page app changes the URL fragment (`#/profile`) via JavaScript for client-side routing, but a user who bookmarks and reopens that URL directly sees a 404 from the server. Why, and what's a common fix?",
+    "answer": "The fragment portion of a URL is never sent to the server (only the path before the `#` is), so on a direct load the server only sees the base path and doesn't know which client-side route to render — it just serves (or fails to serve) whatever exists at that base path.",
+    "explanation": "A common fix is to configure the server to serve the app's single `index.html` for all unknown paths (a 'catch-all' fallback) so the client-side router can then read the URL and render the correct view once JavaScript loads, or to switch to the History API (`pushState`) with matching server-side route handling.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "fragment identifier",
+      "spa routing",
+      "client-side routing"
+    ]
+  },
+  {
+    "id": "html_046",
+    "technology": "HTML",
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Easy",
+    "question": "Which meta tag ensures a webpage renders properly and scales correctly on mobile devices?",
+    "answer": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+    "explanation": "Without this viewport meta tag, mobile browsers render the page at a desktop-width virtual viewport (usually 980px) and then zoom out, making text tiny and layout hard to use.",
+    "question_type": "MCQ",
+    "keywords": [
+      "viewport",
+      "meta tag",
+      "responsive"
+    ],
+    "options": [
+      "<meta charset=\"utf-8\">",
+      "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+      "<meta name=\"robots\" content=\"index\">",
+      "<meta http-equiv=\"refresh\" content=\"5\">"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_047",
+    "technology": "HTML",
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Easy",
+    "question": "What does the <meta charset=\"UTF-8\"> tag specify?",
+    "answer": "The character encoding used to interpret the document's bytes as text, ensuring special characters (accents, symbols, non-Latin scripts) render correctly.",
+    "explanation": "UTF-8 is the de facto standard encoding for the web because it can represent virtually any character while remaining backward-compatible with ASCII for plain English text.",
+    "question_type": "Technical",
+    "keywords": [
+      "charset",
+      "utf-8",
+      "encoding"
+    ]
+  },
+  {
+    "id": "html_048",
+    "technology": "HTML",
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Medium",
+    "question": "What is the purpose of a `<meta name=\"description\" content=\"...\">` tag for SEO?",
+    "answer": "It provides a short summary of the page's content that search engines often display as the snippet text under the page's title in search results.",
+    "explanation": "While it doesn't directly boost search ranking, a well-written description can significantly improve click-through rate from search results, which is a real SEO-relevant outcome.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "meta description",
+      "seo",
+      "search snippet"
+    ]
+  },
+  {
+    "id": "html_049",
+    "technology": "HTML",
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Medium",
+    "question": "What does `<meta name=\"robots\" content=\"noindex, nofollow\">` instruct search engine crawlers to do?",
+    "answer": "`noindex` tells the crawler not to include this page in its search index, and `nofollow` tells it not to follow (or pass ranking credit through) any links found on the page.",
+    "explanation": "This is commonly used on pages that shouldn't appear in search results, such as internal admin pages, duplicate content, or thank-you pages after a form submission.",
+    "question_type": "Technical",
+    "keywords": [
+      "robots meta tag",
+      "noindex",
+      "nofollow"
+    ]
+  },
+  {
+    "id": "html_050",
+    "technology": "HTML",
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Hard",
+    "question": "A site's pages all rank poorly and search result snippets show generic or irrelevant text. Besides missing meta descriptions, what other common meta/head-level issue could cause this?",
+    "answer": "Every page sharing an identical or auto-generated <title> and <meta name=\"description\"> (rather than unique, page-specific values), which prevents search engines from understanding what distinguishes each page and often results in them ignoring the description in favor of scraping arbitrary page text.",
+    "explanation": "Search engines treat title/description uniqueness across a site as a signal of content quality and structure; duplicate or missing metadata across many pages is a classic, high-impact technical SEO problem that's easy to overlook when metadata is templated without per-page overrides.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "seo",
+      "meta tags",
+      "duplicate content"
+    ]
+  },
+  {
+    "id": "html_051",
+    "technology": "HTML",
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Easy",
+    "question": "What does ARIA stand for?",
+    "answer": "Accessible Rich Internet Applications",
+    "explanation": "ARIA is a set of HTML attributes that add extra semantic/accessibility information for assistive technologies, especially for custom widgets that don't have a native HTML equivalent.",
+    "question_type": "MCQ",
+    "keywords": [
+      "aria",
+      "accessibility"
+    ],
+    "options": [
+      "Accessible Rich Internet Applications",
+      "Advanced Responsive Interface Attributes",
+      "Automated Real-time Interaction API",
+      "Application Rendering Interface Attributes"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "html_052",
+    "technology": "HTML",
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Easy",
+    "question": "What does the `aria-label` attribute do?",
+    "answer": "It provides an accessible name for an element that a screen reader announces, used when there is no visible text (or the visible text isn't descriptive enough) to serve as the label.",
+    "explanation": "For example, an icon-only button (like a trash icon) has no text content for a screen reader to read, so `aria-label=\"Delete item\"` supplies that missing accessible name.",
+    "question_type": "Technical",
+    "keywords": [
+      "aria-label",
+      "accessible name",
+      "screen reader"
+    ]
+  },
+  {
+    "id": "html_053",
+    "technology": "HTML",
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Medium",
+    "question": "What is the 'first rule of ARIA use'?",
+    "answer": "If a native HTML element or attribute already has the semantics and behavior you need, use it instead of re-purposing an element and adding ARIA to make it accessible.",
+    "explanation": "For example, a native <button> already has correct keyboard focus, activation on Enter/Space, and an implicit role of 'button' for free; recreating a button out of a <div> with `role=\"button\"` and `tabindex=\"0\"` requires manually reimplementing all of that behavior correctly.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "aria",
+      "native html",
+      "best practice"
+    ]
+  },
+  {
+    "id": "html_054",
+    "technology": "HTML",
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Medium",
+    "question": "What does `aria-hidden=\"true\"` do, and what is a common mistake when using it?",
+    "answer": "It hides an element (and its descendants) from the accessibility tree, so screen readers skip it entirely even though it remains visible on screen; a common mistake is applying it to focusable content, which leaves keyboard/screen-reader users able to tab into an element that is announced as if it doesn't exist.",
+    "explanation": "`aria-hidden` is meant for purely decorative content (like a decorative icon next to a labelled button) — hiding meaningful, interactive, or focusable content with it creates a confusing or broken experience for assistive-technology users.",
+    "question_type": "Technical",
+    "keywords": [
+      "aria-hidden",
+      "accessibility tree",
+      "common mistake"
+    ]
+  },
+  {
+    "id": "html_055",
+    "technology": "HTML",
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Hard",
+    "question": "A custom dropdown built from <div>s is fully clickable with a mouse but completely unusable with a keyboard, and a screen reader announces no role or state changes. What's the minimum set of fixes needed to make it accessible?",
+    "answer": "Add `tabindex=\"0\"` so it's keyboard-focusable, implement keyboard event handlers for Enter/Space (activate) and Escape/arrow keys (navigate options), add an appropriate ARIA role (`role=\"combobox\"`/`role=\"listbox\"` with `role=\"option\"` children as applicable), and toggle `aria-expanded`/`aria-selected` attributes to reflect open/closed and selected state changes.",
+    "explanation": "Native <select> elements provide all of this behavior automatically; recreating a dropdown with generic divs means every one of these behaviors — focus, keyboard interaction, and state announcement — must be manually implemented and kept in sync with the visual state, which is exactly the tradeoff the 'first rule of ARIA' warns about.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "aria",
+      "custom widget",
+      "keyboard accessibility"
+    ]
+  },
+  {
+    "id": "html_056",
+    "technology": "HTML",
+    "topic": "Canvas & SVG",
+    "difficulty": "Easy",
+    "question": "What is the fundamental difference between <canvas> and SVG for graphics?",
+    "answer": "<canvas> is a raster (pixel-based) drawing surface controlled entirely via JavaScript, with no memory of individual shapes once drawn; SVG is a vector, XML-based markup where each shape is a separate DOM element that can be styled and manipulated individually.",
+    "explanation": "This means SVG shapes remain accessible/inspectable/stylable via CSS and can be crisp at any zoom level, while canvas content is just pixels — great for performance-heavy, frequently-redrawn graphics like games, but you must track shape state yourself.",
+    "question_type": "MCQ",
+    "keywords": [
+      "canvas",
+      "svg",
+      "vector vs raster"
+    ],
+    "options": [
+      "They are identical, just different syntax",
+      "Canvas is vector-based, SVG is raster-based",
+      "Canvas is a raster pixel surface drawn via JS; SVG is vector markup with individually addressable DOM elements",
+      "SVG can only display static images"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "html_057",
+    "technology": "HTML",
+    "topic": "Canvas & SVG",
+    "difficulty": "Medium",
+    "question": "Why does an SVG shape stay sharp when the page is zoomed in, while a <canvas> drawing can become blurry?",
+    "answer": "SVG shapes are defined mathematically (vectors) and are re-rendered at the new resolution whenever the browser redraws, so edges remain crisp at any zoom level; <canvas> content is just a fixed grid of pixels that gets scaled like a bitmap image when zoomed, causing blurring/pixelation.",
+    "explanation": "This is the core vector-vs-raster tradeoff: vectors scale losslessly because they're recalculated, while raster pixel data has a fixed resolution baked in at draw time.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "svg",
+      "canvas",
+      "vector graphics"
+    ]
+  },
+  {
+    "id": "html_058",
+    "technology": "HTML",
+    "topic": "Canvas & SVG",
+    "difficulty": "Medium",
+    "question": "Why is it generally easier to add a click handler to one specific shape in SVG than in canvas?",
+    "answer": "Each SVG shape is its own DOM element, so you can attach an event listener directly to it (e.g. `circle.addEventListener('click', ...)`); a canvas has no per-shape DOM nodes — the whole thing is one element, so you must manually calculate whether a click's coordinates fall within a shape you drew.",
+    "explanation": "This DOM-per-shape structure is exactly why SVG plays well with CSS and standard DOM event handling, at the cost of scaling worse than canvas when rendering thousands of shapes/frequent redraws.",
+    "question_type": "Technical",
+    "keywords": [
+      "svg",
+      "canvas",
+      "event handling"
+    ]
+  },
+  {
+    "id": "html_059",
+    "technology": "HTML",
+    "topic": "Canvas & SVG",
+    "difficulty": "Hard",
+    "question": "You're building a data visualization with tens of thousands of frequently-updating points (e.g. a live scatter plot). Would SVG or Canvas generally perform better, and why?",
+    "answer": "Canvas generally performs better for very large numbers of frequently-updating elements, because SVG's per-shape DOM node overhead (style recalculation, layout, and the DOM tree size itself) becomes the bottleneck at high element counts, whereas canvas redraws are just pixel operations on one surface with no DOM overhead per point.",
+    "explanation": "SVG's advantages (CSS styling, individual event listeners, crisp scaling) come from maintaining a live DOM node per shape — a cost that scales linearly (or worse) with element count and becomes prohibitive well before tens of thousands of elements; canvas trades away those conveniences for raw pixel-drawing throughput.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "canvas",
+      "svg",
+      "performance"
+    ]
+  },
+  {
+    "id": "html_060",
+    "technology": "HTML",
+    "topic": "Web Storage",
+    "difficulty": "Easy",
+    "question": "What is the key difference between localStorage and sessionStorage?",
+    "answer": "Data in localStorage persists indefinitely (until explicitly cleared) even after the browser is closed and reopened, while sessionStorage data is cleared when the browser tab is closed.",
+    "explanation": "Both share the same synchronous key-value string API (`setItem`/`getItem`/`removeItem`) and are scoped per-origin, differing only in lifetime/scope: sessionStorage is also scoped to a single tab, not shared across tabs of the same origin.",
+    "question_type": "MCQ",
+    "keywords": [
+      "localstorage",
+      "sessionstorage",
+      "web storage"
+    ],
+    "options": [
+      "They are functionally identical",
+      "localStorage persists across browser sessions; sessionStorage clears when the tab closes",
+      "sessionStorage persists across browser sessions; localStorage clears when the tab closes",
+      "localStorage is server-side; sessionStorage is client-side"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_061",
+    "technology": "HTML",
+    "topic": "Web Storage",
+    "difficulty": "Medium",
+    "question": "What data type can be stored directly in localStorage, and what must you do to store an object?",
+    "answer": "localStorage can only store strings; to store an object (or array), you must serialize it with `JSON.stringify()` before saving, and parse it back with `JSON.parse()` when reading.",
+    "explanation": "Calling `localStorage.setItem('user', {name: 'A'})` silently stores the string `\"[object Object]\"` rather than the object, which is a very common beginner bug.",
+    "question_type": "Technical",
+    "keywords": [
+      "localstorage",
+      "json",
+      "serialization"
+    ]
+  },
+  {
+    "id": "html_062",
+    "technology": "HTML",
+    "topic": "Web Storage",
+    "difficulty": "Medium",
+    "question": "Roughly how much storage capacity does localStorage typically offer per origin, and how does that compare to cookies?",
+    "answer": "Typically around 5-10 MB per origin (browser-dependent), which is far larger than cookies, which are usually limited to about 4 KB total and are also sent with every HTTP request to the server.",
+    "explanation": "Because localStorage is never automatically transmitted to the server (only accessible via JavaScript), it's suitable for client-only data, while cookies remain the tool of choice when the server itself needs to read the value on every request (e.g. session identifiers).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "localstorage",
+      "cookies",
+      "storage limits"
+    ]
+  },
+  {
+    "id": "html_063",
+    "technology": "HTML",
+    "topic": "Web Storage",
+    "difficulty": "Hard",
+    "question": "An app stores a JWT auth token in localStorage for convenience. What is the main security risk of this choice compared to storing it in an HttpOnly cookie?",
+    "answer": "Any JavaScript running on the page — including injected malicious script from an XSS vulnerability — can read localStorage directly and exfiltrate the token, whereas an HttpOnly cookie is inaccessible to JavaScript entirely, so an XSS attack cannot read it (though the cookie approach then needs its own CSRF protections).",
+    "explanation": "localStorage has no equivalent of the HttpOnly flag; it is deliberately fully accessible to any script in the page's origin, which trades safety against XSS-based token theft for developer convenience.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "localstorage",
+      "security",
+      "xss",
+      "jwt"
+    ]
+  },
+  {
+    "id": "html_064",
+    "technology": "HTML",
+    "topic": "HTML5 APIs",
+    "difficulty": "Easy",
+    "question": "Which HTML5 API allows a web page to request the user's physical location?",
+    "answer": "The Geolocation API",
+    "explanation": "`navigator.geolocation.getCurrentPosition()` prompts the user for permission and, if granted, returns latitude/longitude coordinates.",
+    "question_type": "MCQ",
+    "keywords": [
+      "geolocation api",
+      "html5 api"
+    ],
+    "options": [
+      "The Geolocation API",
+      "The Location API",
+      "The Position API",
+      "The Maps API"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "html_065",
+    "technology": "HTML",
+    "topic": "HTML5 APIs",
+    "difficulty": "Medium",
+    "question": "What does the Drag and Drop API's `draggable` attribute enable, and which events fire during a drag operation?",
+    "answer": "Setting `draggable=\"true\"` on an element allows the user to pick it up and drag it; during the operation, events like `dragstart`, `dragover`, `drop`, and `dragend` fire on the source/target elements so JavaScript can control the interaction.",
+    "explanation": "`dragover` must have `event.preventDefault()` called in its handler, or the browser will not allow a `drop` event to fire on that target at all — a very common gotcha.",
+    "question_type": "Technical",
+    "keywords": [
+      "drag and drop api",
+      "draggable",
+      "dragover"
+    ]
+  },
+  {
+    "id": "html_066",
+    "technology": "HTML",
+    "topic": "HTML5 APIs",
+    "difficulty": "Medium",
+    "question": "What problem does the Web Workers API solve?",
+    "answer": "It lets JavaScript run computationally expensive code on a separate background thread, off the main UI thread, so long-running scripts don't freeze the page's rendering and user interaction.",
+    "explanation": "Workers communicate with the main thread only via message passing (`postMessage`/`onmessage`) and cannot directly touch the DOM, which is the tradeoff for true off-main-thread execution in a single-threaded-by-default JS runtime.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "web workers",
+      "multithreading",
+      "performance"
+    ]
+  },
+  {
+    "id": "html_067",
+    "technology": "HTML",
+    "topic": "HTML5 APIs",
+    "difficulty": "Hard",
+    "question": "A page uses the Fetch API to load data and the request appears to succeed (a response object comes back) even for a 404 or 500 server error. Why doesn't `fetch()` reject its promise on HTTP error status codes?",
+    "answer": "By design, `fetch()` only rejects its promise for network-level failures (e.g. DNS failure, no connectivity, CORS block) — a successfully received HTTP response, even with a 4xx/5xx status, is still considered a 'successful' fetch from the API's point of view, so the promise resolves and you must manually check `response.ok` or `response.status`.",
+    "explanation": "This differs from many other HTTP client libraries that treat non-2xx statuses as errors automatically, so code that assumes `fetch().then()` only runs on success will silently mishandle server errors unless it explicitly checks `response.ok`.",
+    "question_type": "Debugging",
+    "keywords": [
+      "fetch api",
+      "response.ok",
+      "error handling"
+    ],
+    "buggy_code": "fetch('/api/data').then(res => res.json()).then(data => render(data));",
+    "fixed_code": "fetch('/api/data').then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); }).then(data => render(data));"
+  },
+  {
+    "id": "html_068",
+    "technology": "HTML",
+    "topic": "Form Validation",
+    "difficulty": "Easy",
+    "question": "Which HTML attribute makes an input field mandatory before the form can be submitted?",
+    "answer": "required",
+    "explanation": "The `required` boolean attribute triggers the browser's built-in validation, which blocks submission and shows a native error message if the field is left empty.",
+    "question_type": "MCQ",
+    "keywords": [
+      "required",
+      "form validation"
+    ],
+    "options": [
+      "mandatory",
+      "required",
+      "validate",
+      "must-fill"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "html_069",
+    "technology": "HTML",
+    "topic": "Form Validation",
+    "difficulty": "Easy",
+    "question": "What does the `pattern` attribute on an <input> do?",
+    "answer": "It specifies a regular expression that the input's value must match for the field to be considered valid during native HTML form validation.",
+    "explanation": "For example `pattern=\"[0-9]{5}\"` restricts the field to exactly 5 digits, useful for things like postal codes without needing JavaScript.",
+    "question_type": "Technical",
+    "keywords": [
+      "pattern",
+      "regex",
+      "form validation"
+    ]
+  },
+  {
+    "id": "html_070",
+    "technology": "HTML",
+    "topic": "Form Validation",
+    "difficulty": "Medium",
+    "question": "What is the difference between client-side and server-side form validation, and why are both usually needed?",
+    "answer": "Client-side validation (HTML attributes or JS) gives immediate feedback in the browser and improves UX, while server-side validation independently re-checks the data on the server before trusting/storing it; both are needed because client-side validation can always be bypassed (disabled JS, direct API calls, browser devtools).",
+    "explanation": "Relying on client-side validation alone means any attacker can simply send a request directly to the server's endpoint with invalid or malicious data, bypassing the browser entirely — server-side validation is the actual security/data-integrity boundary.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "client-side validation",
+      "server-side validation",
+      "security"
+    ]
+  },
+  {
+    "id": "html_071",
+    "technology": "HTML",
+    "topic": "Form Validation",
+    "difficulty": "Medium",
+    "question": "What CSS pseudo-classes let you style a form input based on its current native validation state?",
+    "answer": "`:valid` and `:invalid` (and related ones like `:required`, `:optional`, `:in-range`, `:out-of-range`) let you apply styles based on whether the field currently passes its HTML5 validation constraints.",
+    "explanation": "These update live as the user types, so `input:invalid { border-color: red; }` will highlight a field the moment its value violates constraints like `required`, `pattern`, `min`/`max`, or `type=\"email\"` format.",
+    "question_type": "Technical",
+    "keywords": [
+      ":invalid",
+      ":valid",
+      "css pseudo-class"
+    ]
+  },
+  {
+    "id": "html_072",
+    "technology": "HTML",
+    "topic": "Form Validation",
+    "difficulty": "Hard",
+    "question": "A form field has `required` and `pattern=\"\\d{10}\"` set, but a user submits a value with exactly 10 digits and the browser still blocks submission showing a validation error. What's a likely cause?",
+    "answer": "Leading/trailing whitespace in the field's value (e.g. from a pasted value with a trailing space) — the `pattern` attribute must match the ENTIRE value, so any extra character not accounted for by the pattern causes a mismatch even if 10 digits are visually present.",
+    "explanation": "HTML5 pattern matching implicitly anchors the regex to the whole string, so unlike some regex uses elsewhere, a substring match isn't enough; trimming input (or including optional whitespace in the pattern) is the fix.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "pattern attribute",
+      "form validation",
+      "regex anchoring"
+    ]
+  },
+  {
+    "id": "html_073",
+    "technology": "HTML",
+    "topic": "Best Practices",
+    "difficulty": "Easy",
+    "question": "Why should images always include a meaningful `alt` attribute, even for purely decorative images (using `alt=\"\"`)?",
+    "answer": "Meaningful images need `alt` text so screen reader users understand their content, and even decorative images should have an explicit empty `alt=\"\"` so screen readers skip them silently instead of announcing the image's filename as a fallback.",
+    "explanation": "Omitting `alt` entirely (rather than setting it empty) can cause some screen readers to read out the raw file path, which is a confusing, meaningless announcement for a purely decorative image.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "alt attribute",
+      "accessibility",
+      "best practice"
+    ]
+  },
+  {
+    "id": "html_074",
+    "technology": "HTML",
+    "topic": "Best Practices",
+    "difficulty": "Medium",
+    "question": "Why is it considered bad practice to use inline `style` attributes extensively across a large site?",
+    "answer": "Inline styles are harder to maintain and reuse (styling must be repeated on every element rather than defined once), have the highest specificity which makes overriding them from a stylesheet difficult, and prevent separation of concerns between structure (HTML) and presentation (CSS).",
+    "explanation": "A style defined in an external stylesheet can be cached separately from the HTML, reused across many pages, and overridden predictably via normal CSS specificity/cascade rules — none of which apply cleanly to inline styles.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "inline styles",
+      "best practice",
+      "separation of concerns"
+    ]
+  },
+  {
+    "id": "html_075",
+    "technology": "HTML",
+    "topic": "Best Practices",
+    "difficulty": "Medium",
+    "question": "Why should you avoid using the same `id` value on more than one element in a page?",
+    "answer": "`id` is defined by the spec to be unique per document; when duplicated, `document.getElementById()` and CSS `#id` selectors will only reliably target the first matching element, silently breaking any code/styles meant for the others.",
+    "explanation": "This is a subtle bug because the HTML will still often render visually as expected, but any behavior relying on unique targeting (form label association via `for`, JS lookups, fragment links) becomes unpredictable.",
+    "question_type": "Technical",
+    "keywords": [
+      "id uniqueness",
+      "best practice",
+      "common bug"
+    ]
+  },
+  {
+    "id": "html_076",
+    "technology": "HTML",
+    "topic": "Best Practices",
+    "difficulty": "Hard",
+    "question": "A large legacy site's HTML validates fine but real users on screen readers report the site is very hard to navigate, despite semantic tags like <header>/<nav>/<main> being present. What additional practice is likely missing?",
+    "answer": "Meaningful heading structure and landmark labelling — e.g. multiple <nav> elements without distinguishing `aria-label`s so a screen reader user can't tell them apart, or headings that skip levels/are used for styling rather than document outline, breaking the ability to navigate by heading hierarchy.",
+    "explanation": "Valid HTML only guarantees the markup parses correctly, not that it conveys a usable structure; accessibility requires that landmarks be distinguishable (via `aria-label`/`aria-labelledby` when there's more than one of the same landmark type) and that headings form a logical, unbroken hierarchy that mirrors the actual content outline.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "accessibility",
+      "landmarks",
+      "heading structure"
+    ]
+  },
+  {
+    "id": "html_077",
+    "technology": "HTML",
+    "topic": "Best Practices",
+    "difficulty": "Easy",
+    "question": "Why is it good practice to specify `width` and `height` attributes on <img> tags even when the image is styled responsively with CSS?",
+    "answer": "It lets the browser reserve the correct amount of space for the image before it finishes loading, preventing the surrounding layout from visibly shifting once the image arrives (a poor UX metric known as Cumulative Layout Shift).",
+    "explanation": "The browser computes the image's intrinsic aspect ratio from the `width`/`height` attributes and reserves that ratio of space immediately, even before the CSS or the image itself has loaded, which CSS alone (e.g. `max-width: 100%`) cannot do on its own without also knowing the ratio.",
+    "question_type": "Technical",
+    "keywords": [
+      "width height attributes",
+      "layout shift",
+      "performance"
+    ]
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which element is the root element of every HTML document?",
+    "options": [
+      "<body>",
+      "<head>",
+      "<html>",
+      "<doctype>"
+    ],
+    "correct_option": 2,
+    "answer": "<html>",
+    "explanation": "<html> wraps the entire document and is the single top-level element; <head> and <body> are its two children.",
+    "keywords": [
+      "html element",
+      "root",
+      "document structure"
+    ],
+    "id": "html_078",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Easy",
+    "question_type": "Technical",
+    "question": "What is the correct file extension for a standard HTML5 document?",
+    "answer": ".html (or the legacy .htm)",
+    "explanation": ".html is the conventional extension web servers map to the text/html MIME type; .htm is an older DOS-era 3-letter variant that still works but isn't preferred.",
+    "keywords": [
+      "file extension",
+      "mime type"
+    ],
+    "id": "html_079",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does it mean that HTML is a 'markup language' rather than a programming language?",
+    "answer": "HTML describes the structure and meaning of content using tags/elements; it has no variables, loops, or logic of its own - it just annotates content for the browser to render.",
+    "explanation": "This distinguishes it from JavaScript (a real programming language) - HTML alone cannot compute or make decisions, only describe document structure.",
+    "keywords": [
+      "markup language",
+      "structure",
+      "no logic"
+    ],
+    "id": "html_080",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Medium",
+    "question_type": "Output Prediction",
+    "question": "What does a browser render for the HTML `<p>Hello <b>World</b>!</p>`?",
+    "code_snippet": "<p>Hello <b>World</b>!</p>",
+    "answer": "Hello World! - with the word 'World' rendered in bold",
+    "explanation": "<b> is an inline element that bolds its content without starting a new paragraph or line; the surrounding text renders normally in the same line.",
+    "keywords": [
+      "bold",
+      "inline element",
+      "rendering"
+    ],
+    "id": "html_081",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why will most browsers still render `<p>Text<p>More text</p>` even though the first <p> is never explicitly closed?",
+    "answer": "HTML5 parsers implement error-recovery rules: opening a new <p> implicitly closes any currently-open <p>, since <p> cannot legally contain another <p>.",
+    "explanation": "This 'implied end tag' behavior is defined in the HTML5 parsing spec precisely so real-world malformed markup still renders predictably instead of failing outright.",
+    "keywords": [
+      "parser error recovery",
+      "implied end tag",
+      "malformed html"
+    ],
+    "id": "html_082",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which of these correctly writes an HTML comment?",
+    "options": [
+      "// this is a comment",
+      "# this is a comment",
+      "<!-- this is a comment -->",
+      "/* this is a comment */"
+    ],
+    "correct_option": 2,
+    "answer": "<!-- this is a comment -->",
+    "explanation": "HTML comments use <!-- ... --> and are never rendered or sent to the user visually, though they remain visible in page source.",
+    "keywords": [
+      "comments",
+      "syntax"
+    ],
+    "id": "html_083",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Medium",
+    "question_type": "Coding",
+    "starter_code": "<!-- build a minimal valid HTML5 document with a title of 'My Page' -->",
+    "question": "Write the minimal valid HTML5 document skeleton with the page title set to 'My Page'.",
+    "expected_solution": "<!DOCTYPE html>\n<html>\n<head>\n<title>My Page</title>\n</head>\n<body>\n</body>\n</html>",
+    "test_cases": [
+      {
+        "input": "load the document in a browser",
+        "expected_output": "browser tab shows 'My Page' as the title, blank body"
+      },
+      {
+        "input": "validate with an HTML validator",
+        "expected_output": "no errors - doctype, html, head, title, and body are all present and correctly nested"
+      }
+    ],
+    "answer": "A doctype declaration, <html>, <head> with <title>My Page</title>, and an empty <body>.",
+    "explanation": "Every valid HTML5 document needs exactly these elements in this nesting; omitting doctype triggers quirks mode, and omitting <title> fails validation.",
+    "keywords": [
+      "boilerplate",
+      "doctype",
+      "title"
+    ],
+    "id": "html_084",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which attribute of the <html> tag declares the document's human language for accessibility and SEO?",
+    "options": [
+      "lang",
+      "language",
+      "locale",
+      "charset"
+    ],
+    "correct_option": 0,
+    "answer": "lang",
+    "explanation": "`<html lang=\"en\">` tells screen readers which pronunciation rules to use and helps search engines serve the right language to users.",
+    "keywords": [
+      "lang attribute",
+      "accessibility",
+      "seo"
+    ],
+    "id": "html_085",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the practical difference between content placed in <head> versus <body>?",
+    "answer": "<head> holds metadata (title, charset, linked stylesheets/scripts, meta tags) that is never directly rendered as visible page content; <body> holds everything the user actually sees.",
+    "explanation": "Browsers process <head> to configure the page (encoding, styles, title) before rendering the visible <body> content.",
+    "keywords": [
+      "head",
+      "body",
+      "metadata"
+    ],
+    "id": "html_086",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Hard",
+    "question_type": "Conceptual",
+    "question": "Why does omitting the <!DOCTYPE html> declaration risk triggering 'quirks mode' rendering?",
+    "answer": "Without a doctype, browsers can't be sure the page intends modern standards-compliant rendering, so they fall back to a legacy compatibility mode that mimics old, non-standard browser box-model and layout behavior.",
+    "explanation": "Quirks mode changes box-sizing defaults and other layout algorithms to match decades-old browsers, which can make modern CSS behave unpredictably.",
+    "keywords": [
+      "doctype",
+      "quirks mode",
+      "standards mode"
+    ],
+    "id": "html_087",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which element, if present, must appear inside <head> and sets a base URL for all relative links on the page?",
+    "options": [
+      "<base>",
+      "<link>",
+      "<meta>",
+      "<root>"
+    ],
+    "correct_option": 0,
+    "answer": "<base>",
+    "explanation": "`<base href=\"https://example.com/\">` makes every relative URL on the page resolve against that base instead of the current document location.",
+    "keywords": [
+      "base tag",
+      "relative url"
+    ],
+    "id": "html_088",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Medium",
+    "question_type": "Scenario Based",
+    "question": "A page includes two <base> tags with different href values in <head>. Which one does the browser actually use?",
+    "answer": "Only the FIRST <base> element is used; any subsequent <base> tags are ignored by the HTML spec.",
+    "explanation": "The spec explicitly says a document must have no more than one <base> element with an href, and browsers honor only the first one encountered.",
+    "keywords": [
+      "base tag",
+      "duplicate elements",
+      "spec behavior"
+    ],
+    "id": "html_089",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the purpose of the <noscript> element?",
+    "answer": "It defines content to display only when the browser doesn't support scripting or has JavaScript disabled.",
+    "explanation": "This lets a page degrade gracefully - e.g. showing a message asking the user to enable JavaScript - rather than rendering blank content.",
+    "keywords": [
+      "noscript",
+      "javascript disabled",
+      "fallback"
+    ],
+    "id": "html_090",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Hard",
+    "question_type": "Output Prediction",
+    "question": "A stylesheet <link> tag is placed at the very end of <body> instead of in <head>. What visible effect can this have on page load?",
+    "code_snippet": "<body>...content...<link rel=\"stylesheet\" href=\"style.css\"></body>",
+    "answer": "A brief flash of unstyled content (FOUC) - the browser renders the raw HTML before the stylesheet loads and applies, then repaints once the CSS arrives.",
+    "explanation": "Browsers render progressively as HTML streams in; CSS discovered late means layout/styling is applied only after most content is already painted.",
+    "keywords": [
+      "fouc",
+      "stylesheet placement",
+      "render blocking"
+    ],
+    "id": "html_091",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tags & Elements",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which of these is NOT a void (self-closing, no closing tag) element?",
+    "options": [
+      "<br>",
+      "<img>",
+      "<input>",
+      "<span>"
+    ],
+    "correct_option": 3,
+    "answer": "<span>",
+    "explanation": "<span> is a normal inline container that requires a closing </span>; <br>, <img>, and <input> are void elements that never have child content or a closing tag.",
+    "keywords": [
+      "void elements",
+      "self-closing"
+    ],
+    "id": "html_092",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tags & Elements",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between the <b> and <strong> tags, given both render bold text by default?",
+    "answer": "<strong> conveys semantic importance (read with more emphasis by screen readers), while <b> is purely presentational bold styling with no implied meaning.",
+    "explanation": "HTML5 redefined <b>/<i> as stylistic-only, while <strong>/<em> carry semantic weight that assistive technology can act on.",
+    "keywords": [
+      "strong vs b",
+      "semantics",
+      "accessibility"
+    ],
+    "id": "html_093",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tags & Elements",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does the <template> element do?",
+    "answer": "It holds inert HTML markup that is parsed but not rendered or executed until explicitly cloned and inserted into the DOM via JavaScript.",
+    "explanation": "Content inside <template> doesn't run scripts, load images, or display - it's a reusable, inactive fragment meant for later instantiation.",
+    "keywords": [
+      "template element",
+      "inert content",
+      "cloning"
+    ],
+    "id": "html_094",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tags & Elements",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which element is used to define a hyperlink?",
+    "options": [
+      "<link>",
+      "<a>",
+      "<href>",
+      "<nav>"
+    ],
+    "correct_option": 1,
+    "answer": "<a>",
+    "explanation": "<a> (anchor) with an href attribute creates a clickable hyperlink; <link> is a <head>-only element for resource references like stylesheets.",
+    "keywords": [
+      "anchor tag",
+      "hyperlink"
+    ],
+    "id": "html_095",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tags & Elements",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A developer nests a <div> inside a <p> tag expecting normal layout, but the resulting DOM looks wrong when inspected. Why?",
+    "buggy_code": "<p>Some text<div>A block</div>more text</p>",
+    "fixed_code": "<div>Some text<div>A block</div>more text</div>",
+    "answer": "Block-level elements like <div> are not allowed inside <p>, so the browser auto-closes the <p> before the <div>, splitting the intended single paragraph into separate fragments.",
+    "explanation": "The HTML5 content model forbids flow content like <div> inside phrasing-content-only elements like <p>; the parser silently repairs this by closing tags early rather than raising an error.",
+    "keywords": [
+      "content model",
+      "invalid nesting",
+      "auto-close"
+    ],
+    "id": "html_096",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tags & Elements",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between the <ol> and <ul> elements?",
+    "answer": "<ol> creates an ordered (numbered) list, while <ul> creates an unordered (bulleted) list; both contain <li> items.",
+    "explanation": "Use <ol> when the sequence/order of items is meaningful (e.g. steps), and <ul> when the items have no inherent order.",
+    "keywords": [
+      "ordered list",
+      "unordered list"
+    ],
+    "id": "html_097",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Attributes",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which attribute, when present on any element (with no value needed), makes that element non-editable and non-interactive but still visible?",
+    "options": [
+      "disabled",
+      "readonly",
+      "hidden",
+      "inert"
+    ],
+    "correct_option": 3,
+    "answer": "inert",
+    "explanation": "`inert` (a global boolean attribute) removes an element and its descendants from focus/interaction/selection entirely while keeping them visually rendered - distinct from `hidden` which removes visibility too.",
+    "keywords": [
+      "inert attribute",
+      "global attributes"
+    ],
+    "id": "html_098",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Attributes",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between the `readonly` and `disabled` attributes on a form input?",
+    "answer": "`readonly` prevents editing but the value is still submitted with the form and the field can still receive focus; `disabled` prevents editing, focus, AND excludes the value from form submission entirely.",
+    "explanation": "This distinction matters when you want to show a value the user can't change but still needs to be sent to the server - `readonly` is the correct choice there, not `disabled`.",
+    "keywords": [
+      "readonly",
+      "disabled",
+      "form submission"
+    ],
+    "id": "html_099",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Attributes",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does the `contenteditable` attribute do when added to any HTML element?",
+    "answer": "It makes that element's content directly editable by the user in the browser, similar to a rich-text editor, without needing a <textarea> or <input>.",
+    "explanation": "This is the foundation many rich-text/WYSIWYG editors are built on, since it turns arbitrary HTML (not just plain text fields) into an editable surface.",
+    "keywords": [
+      "contenteditable",
+      "rich text editing"
+    ],
+    "id": "html_100",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Attributes",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which attribute prevents a user from selecting/dragging text or images to copy them by default?",
+    "options": [
+      "draggable=\"false\"",
+      "unselectable",
+      "There is no fully reliable built-in attribute for this - it's mainly done with CSS `user-select: none`",
+      "copyable=\"false\""
+    ],
+    "correct_option": 2,
+    "answer": "There is no fully reliable built-in attribute; `user-select: none` in CSS is the standard approach.",
+    "explanation": "HTML has no dedicated 'disable selection' attribute; preventing text selection is a CSS/JS concern, and it can never fully stop determined copying (e.g. via browser devtools).",
+    "keywords": [
+      "user-select",
+      "text selection",
+      "no html equivalent"
+    ],
+    "id": "html_101",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Attributes",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A form has `<input type=\"text\" required minlength=\"5\">` but a user submits exactly 4 characters and the browser blocks submission with a validation message. What built-in mechanism caused this, without any JavaScript?",
+    "answer": "The HTML5 Constraint Validation API, triggered automatically by the `required` and `minlength` attributes, which the browser enforces natively before allowing form submission.",
+    "explanation": "Browsers implement a native validation layer that checks these declarative attributes and shows its own UI (a bubble/tooltip) - no JS is needed for basic constraints like this.",
+    "keywords": [
+      "constraint validation api",
+      "minlength",
+      "native validation"
+    ],
+    "id": "html_102",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Attributes",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `tabindex` attribute control, and what does a negative value like `tabindex=\"-1\"` specifically do?",
+    "answer": "`tabindex` controls an element's position in keyboard Tab-key navigation order; a negative value removes it from the natural Tab order while still allowing it to be focused programmatically (e.g. via JS `.focus()`).",
+    "explanation": "This is commonly used for elements like modal dialogs that should be focusable when opened but not reachable by simply tabbing through the page.",
+    "keywords": [
+      "tabindex",
+      "keyboard navigation",
+      "focus management"
+    ],
+    "id": "html_103",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which input type restricts the on-screen keyboard on mobile and provides a numeric spinner on desktop?",
+    "options": [
+      "type=\"text\"",
+      "type=\"number\"",
+      "type=\"tel\"",
+      "type=\"digit\""
+    ],
+    "correct_option": 1,
+    "answer": "type=\"number\"",
+    "explanation": "`type=\"number\"` signals numeric intent to the browser, which adjusts the mobile keyboard and adds increment/decrement controls on desktop.",
+    "keywords": [
+      "input type",
+      "number input"
+    ],
+    "id": "html_104",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the purpose of the `<fieldset>` and `<legend>` elements in a form?",
+    "answer": "<fieldset> groups a set of related form controls together, and <legend> provides a caption/label for that whole group.",
+    "explanation": "This is both a visual grouping tool (a border/box around related fields) and a semantic/accessibility one, since screen readers announce the legend when a control inside the fieldset receives focus.",
+    "keywords": [
+      "fieldset",
+      "legend",
+      "grouping"
+    ],
+    "id": "html_105",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does the `placeholder` attribute do, and why is it not a substitute for a <label>?",
+    "answer": "`placeholder` shows hint text inside an empty input that disappears once the user types; it is not a substitute for <label> because it vanishes on input, isn't reliably announced by all screen readers, and provides no persistent visible context.",
+    "explanation": "Accessibility guidance is explicit: placeholders should supplement, never replace, a real associated <label>.",
+    "keywords": [
+      "placeholder",
+      "label",
+      "accessibility"
+    ],
+    "id": "html_106",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which attribute links a <label> to a specific form control by id?",
+    "options": [
+      "for",
+      "target",
+      "ref",
+      "name"
+    ],
+    "correct_option": 0,
+    "answer": "for",
+    "explanation": "`<label for=\"email\">` associates the label with `<input id=\"email\">`, so clicking the label focuses/activates that input.",
+    "keywords": [
+      "label for",
+      "form association"
+    ],
+    "id": "html_107",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A checkbox group is meant to let users select multiple options, but only one checkbox can ever be checked at a time. What's the likely bug?",
+    "buggy_code": "<input type=\"checkbox\" name=\"option\" value=\"a\">\n<input type=\"checkbox\" name=\"option\" value=\"b\">",
+    "fixed_code": "<input type=\"checkbox\" name=\"option[]\" value=\"a\">\n<input type=\"checkbox\" name=\"option[]\" value=\"b\">",
+    "answer": "The bug is elsewhere (likely JS treating them as a radio group), not the shared `name` itself - checkboxes with the same `name` CAN all be checked simultaneously, unlike radio buttons.",
+    "explanation": "This is a common misconception: shared `name` only forces mutual exclusivity for `type=\"radio\"`, not `type=\"checkbox\"` - multiple checkboxes with the same name submit as an array/list.",
+    "keywords": [
+      "checkbox vs radio",
+      "shared name",
+      "misconception"
+    ],
+    "id": "html_108",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between the `value` attribute on a submit button versus on a text input?",
+    "answer": "On a text input, `value` sets the initial/current text content; on a submit button, `value` sets the button's visible label text.",
+    "explanation": "The same attribute name serves different roles depending on the input `type` - this is a common source of confusion for beginners.",
+    "keywords": [
+      "value attribute",
+      "submit button"
+    ],
+    "id": "html_109",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tables",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which attribute on a <th> or <td> makes a single cell span multiple rows?",
+    "options": [
+      "colspan",
+      "rowspan",
+      "span",
+      "merge"
+    ],
+    "correct_option": 1,
+    "answer": "rowspan",
+    "explanation": "`rowspan` extends a cell downward across multiple rows, while `colspan` extends it across multiple columns.",
+    "keywords": [
+      "rowspan",
+      "table cells"
+    ],
+    "id": "html_110",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tables",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `scope` attribute on a <th> element do, and why does it matter for accessibility?",
+    "answer": "`scope=\"col\"` or `scope=\"row\"` tells assistive technology whether a header cell applies to its column or its row, so screen readers can announce the correct header when a user navigates to a data cell.",
+    "explanation": "Without `scope`, screen readers have to guess table structure, which becomes ambiguous in tables with headers on both axes.",
+    "keywords": [
+      "scope attribute",
+      "table accessibility"
+    ],
+    "id": "html_111",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tables",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the purpose of the <caption> element in a table?",
+    "answer": "It provides a title/description for the table, displayed by default above the table and announced by screen readers as the table's name.",
+    "explanation": "<caption> must be the first child of <table> and gives both sighted and non-sighted users context about what the table represents.",
+    "keywords": [
+      "caption",
+      "table title"
+    ],
+    "id": "html_112",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tables",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A table renders with all columns oddly sized because one row has far more content in one cell than others, distorting the whole table's layout. What CSS property/value is commonly used to fix this?",
+    "answer": "`table-layout: fixed` on the <table>, combined with explicit column widths - this makes column widths independent of content length instead of the default auto-sizing behavior.",
+    "explanation": "The default `table-layout: auto` measures all cell content before deciding column widths, so one oversized cell can distort the entire table; `fixed` layout ignores content size after the first row.",
+    "keywords": [
+      "table-layout",
+      "fixed layout",
+      "column sizing"
+    ],
+    "id": "html_113",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tables",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which element is used to group and label a set of columns in a table for styling purposes?",
+    "options": [
+      "<colgroup>",
+      "<tgroup>",
+      "<columns>",
+      "<thead>"
+    ],
+    "correct_option": 0,
+    "answer": "<colgroup>",
+    "explanation": "<colgroup> (with nested <col> elements) lets you apply shared styling like width to entire columns without touching every cell in that column.",
+    "keywords": [
+      "colgroup",
+      "col element"
+    ],
+    "id": "html_114",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Semantic HTML5",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which semantic element represents a self-contained composition that could be distributed independently, like a blog post?",
+    "options": [
+      "<section>",
+      "<article>",
+      "<div>",
+      "<content>"
+    ],
+    "correct_option": 1,
+    "answer": "<article>",
+    "explanation": "<article> is meant for content that makes sense on its own outside the page's context, unlike <section> which groups thematically related content within a larger document.",
+    "keywords": [
+      "article element",
+      "self-contained content"
+    ],
+    "id": "html_115",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Semantic HTML5",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the purpose of the <figure> and <figcaption> elements?",
+    "answer": "<figure> wraps self-contained content (typically an image, diagram, or code listing) that could be moved elsewhere without breaking the flow of the main content, and <figcaption> provides its caption.",
+    "explanation": "Unlike a plain <img> with surrounding text, <figure>/<figcaption> semantically groups the media with its caption so assistive tech and search engines understand they belong together.",
+    "keywords": [
+      "figure",
+      "figcaption",
+      "semantic grouping"
+    ],
+    "id": "html_116",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Semantic HTML5",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "Why is using semantic elements like <nav>, <main>, and <footer> considered better practice than an all-<div> layout?",
+    "answer": "Semantic elements convey meaning to browsers, search engines, and assistive technologies (screen readers can jump directly to <main> or <nav>), whereas generic <div>s carry no inherent meaning without extra ARIA roles.",
+    "explanation": "This improves accessibility, SEO, and code readability simultaneously, essentially for free, compared to a purely presentational div-based structure.",
+    "keywords": [
+      "semantic html",
+      "div soup",
+      "accessibility benefit"
+    ],
+    "id": "html_117",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Semantic HTML5",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which element should be used exactly once per page to wrap the dominant, unique content of that page?",
+    "options": [
+      "<section>",
+      "<main>",
+      "<content>",
+      "<body>"
+    ],
+    "correct_option": 1,
+    "answer": "<main>",
+    "explanation": "<main> identifies the primary content, excluding repeated elements like headers/nav/sidebars/footers, and a page should have at most one visible <main>.",
+    "keywords": [
+      "main element",
+      "primary content"
+    ],
+    "id": "html_118",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Semantic HTML5",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A page nests <article> elements inside a <section>, expecting each article to be treated as a standalone item, but a screen reader user reports confusing navigation. Looking at the markup, each <article> itself has no heading. What's missing?",
+    "buggy_code": "<section>\n  <article><p>Some post content...</p></article>\n</section>",
+    "fixed_code": "<section>\n  <article><h2>Post Title</h2><p>Some post content...</p></article>\n</section>",
+    "answer": "Each <article> is missing its own heading (e.g. <h2>), which screen readers rely on to label and let users jump between distinct pieces of content.",
+    "explanation": "Semantic sectioning elements like <article>/<section> are far more useful to assistive technology when each one starts with a heading that names it - without one, screen reader users hear generic 'article' landmarks with no way to tell them apart.",
+    "keywords": [
+      "heading structure",
+      "article",
+      "screen reader navigation"
+    ],
+    "id": "html_119",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Multimedia",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which attribute on <video> makes the video start over automatically when it finishes?",
+    "options": [
+      "repeat",
+      "loop",
+      "replay",
+      "autoplay"
+    ],
+    "correct_option": 1,
+    "answer": "loop",
+    "explanation": "`loop` is a boolean attribute that restarts playback from the beginning once the media ends; `autoplay` only controls whether it starts playing on load.",
+    "keywords": [
+      "loop attribute",
+      "video"
+    ],
+    "id": "html_120",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Multimedia",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the purpose of the <track> element inside a <video> tag?",
+    "answer": "It supplies timed text tracks - like subtitles, captions, or chapter markers - synced to the video's playback time, typically as a WebVTT file via the `src` attribute.",
+    "explanation": "This is the standard, accessible way to add captions without baking them into the video file itself, letting users toggle them independently.",
+    "keywords": [
+      "track element",
+      "subtitles",
+      "webvtt"
+    ],
+    "id": "html_121",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Multimedia",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "Why does the <picture> element exist alongside plain <img>?",
+    "answer": "<picture> lets the browser choose among multiple candidate image sources based on conditions like screen size, pixel density, or supported image format, whereas a plain <img> always loads one fixed source.",
+    "explanation": "This enables responsive images (serving a smaller image to mobile) and modern-format fallbacks (serving WebP where supported, JPEG otherwise) without any JavaScript.",
+    "keywords": [
+      "picture element",
+      "responsive images",
+      "art direction"
+    ],
+    "id": "html_122",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Multimedia",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A <video> element plays fine in Chrome but shows a broken/empty player in Safari. The developer only provided one <source> with an .mp4 file using the H.264 codec. What's the likely issue and general fix?",
+    "answer": "This particular case usually isn't a codec problem (H.264 mp4 is broadly supported including Safari) - more likely the video file itself is malformed, served with a wrong MIME type, or blocked by autoplay/CORS policy; the general fix for real codec gaps is to provide multiple <source> elements in different formats/codecs so the browser picks one it supports.",
+    "explanation": "Providing multiple <source> children (e.g. WebM and MP4) is the standard defensive pattern precisely because no single format has universal, guaranteed browser support.",
+    "keywords": [
+      "video compatibility",
+      "multiple sources",
+      "mime type"
+    ],
+    "id": "html_123",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Multimedia",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which attribute mutes a <video> or <audio> element by default?",
+    "options": [
+      "silent",
+      "muted",
+      "mute",
+      "volume=\"0\""
+    ],
+    "correct_option": 1,
+    "answer": "muted",
+    "explanation": "`muted` is a boolean attribute; note browsers generally require it (alongside `autoplay`) for videos to autoplay without a user gesture.",
+    "keywords": [
+      "muted attribute",
+      "autoplay policy"
+    ],
+    "id": "html_124",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Links & Navigation",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which value of the <a> tag's `target` attribute opens the link in the same browsing context (the default)?",
+    "options": [
+      "_blank",
+      "_self",
+      "_top",
+      "_parent"
+    ],
+    "correct_option": 1,
+    "answer": "_self",
+    "explanation": "`_self` is the default target - the link loads in the current tab/frame, replacing the current document.",
+    "keywords": [
+      "target attribute",
+      "_self"
+    ],
+    "id": "html_125",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Links & Navigation",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between an absolute URL and a relative URL in an <a href>?",
+    "answer": "An absolute URL includes the full scheme and domain (e.g. https://example.com/page), while a relative URL is resolved against the current page's location (e.g. /page or ../page).",
+    "explanation": "Relative URLs make a site portable across domains/environments (dev, staging, production) without hardcoding a host.",
+    "keywords": [
+      "absolute url",
+      "relative url"
+    ],
+    "id": "html_126",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Links & Navigation",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does the `download` attribute on an <a> tag do?",
+    "answer": "It tells the browser to download the linked resource as a file instead of navigating to/displaying it, optionally with a suggested filename as the attribute's value.",
+    "explanation": "This only works reliably for same-origin (or CORS-permitting) resources - cross-origin links without proper headers may still just navigate instead of downloading.",
+    "keywords": [
+      "download attribute",
+      "file download"
+    ],
+    "id": "html_127",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Links & Navigation",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A navigation menu built from <a href=\"#\"> links (used purely to trigger JavaScript, no real navigation) causes the page to jump to the top every time a link is clicked. What's the fix?",
+    "buggy_code": "<a href=\"#\" onclick=\"doSomething()\">Click me</a>",
+    "fixed_code": "<a href=\"#\" onclick=\"doSomething(); event.preventDefault();\">Click me</a>\n<!-- or better: <button onclick=\"doSomething()\">Click me</button> -->",
+    "answer": "`href=\"#\"` is a real navigation target (the top of the page / empty fragment), so the browser jumps there unless the click's default action is prevented; a cleaner fix is to use a <button> instead of a fake link.",
+    "explanation": "Using `event.preventDefault()` stops the jump, but semantically a control that doesn't navigate anywhere shouldn't be an <a> at all - a <button> is the correct element for JS-only actions.",
+    "keywords": [
+      "href hash",
+      "preventDefault",
+      "button vs anchor"
+    ],
+    "id": "html_128",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Links & Navigation",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does `rel=\"nofollow\"` on a link communicate to search engines?",
+    "answer": "It tells search engine crawlers not to pass ranking credit/authority through that particular link to the linked page.",
+    "explanation": "This is commonly used for user-generated content links (comments, forum posts) or paid/sponsored links, to avoid implicitly endorsing or boosting the linked site's SEO.",
+    "keywords": [
+      "nofollow",
+      "seo",
+      "link relationship"
+    ],
+    "id": "html_129",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which meta tag property is part of the Open Graph protocol used to control how a link preview appears when shared on social media?",
+    "options": [
+      "og:title",
+      "meta:title",
+      "seo:title",
+      "share:title"
+    ],
+    "correct_option": 0,
+    "answer": "og:title",
+    "explanation": "Open Graph meta tags (`og:title`, `og:image`, `og:description`, etc.) are read by platforms like Facebook and LinkedIn to build rich link preview cards.",
+    "keywords": [
+      "open graph",
+      "social sharing"
+    ],
+    "id": "html_130",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `<link rel=\"canonical\" href=\"...\">` tag do, and why is it important for SEO?",
+    "answer": "It tells search engines which URL is the 'master' version of a page when the same or near-duplicate content is reachable via multiple URLs, preventing duplicate-content ranking penalties.",
+    "explanation": "Without a canonical tag, search engines might index several URL variants of the same content as separate pages, diluting SEO ranking signals across them.",
+    "keywords": [
+      "canonical url",
+      "duplicate content"
+    ],
+    "id": "html_131",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the purpose of a `<meta name=\"viewport\">` tag, and what happens on mobile if it's omitted?",
+    "answer": "It controls how a page's dimensions and scaling are handled on mobile devices; without it, mobile browsers assume a wide desktop-like virtual viewport and render a tiny, zoomed-out version of the page.",
+    "explanation": "`<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">` is the standard tag that makes a page actually responsive on phones.",
+    "keywords": [
+      "viewport meta tag",
+      "mobile rendering"
+    ],
+    "id": "html_132",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A site's important pages are correctly built and linked, but Google Search Console shows they were never indexed. The team confirms no `noindex` tag exists on the pages. What other meta-level cause is commonly responsible?",
+    "answer": "A `robots.txt` file at the site root disallowing crawler access to those paths - this blocks crawling entirely before any per-page meta tag is even read.",
+    "explanation": "`noindex` (a per-page directive) and `robots.txt` (a site-wide crawl directive) are two separate, often-confused mechanisms; robots.txt can block indexing even with no noindex tag anywhere.",
+    "keywords": [
+      "robots.txt",
+      "crawling vs indexing",
+      "noindex"
+    ],
+    "id": "html_133",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which meta tag value tells a browser to automatically refresh/redirect the page after a delay?",
+    "options": [
+      "<meta http-equiv=\"refresh\" content=\"5;url=...\">",
+      "<meta name=\"redirect\" content=\"5\">",
+      "<meta charset=\"refresh\">",
+      "<meta name=\"reload\" content=\"5\">"
+    ],
+    "correct_option": 0,
+    "answer": "<meta http-equiv=\"refresh\" content=\"5;url=...\">",
+    "explanation": "This legacy technique refreshes or redirects after N seconds, though a server-side redirect (301/302) is now considered better practice for SEO and UX.",
+    "keywords": [
+      "meta refresh",
+      "redirect"
+    ],
+    "id": "html_134",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which ARIA attribute announces dynamically updating content (like a live chat message) to screen readers without moving focus?",
+    "options": [
+      "aria-live",
+      "aria-update",
+      "aria-dynamic",
+      "aria-notify"
+    ],
+    "correct_option": 0,
+    "answer": "aria-live",
+    "explanation": "`aria-live=\"polite\"` (or `\"assertive\"`) marks a region so screen readers announce changes inside it as they happen, which is essential for chat widgets, notifications, and live status updates.",
+    "keywords": [
+      "aria-live",
+      "live region"
+    ],
+    "id": "html_135",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `aria-labelledby` and `aria-label`?",
+    "answer": "`aria-label` provides an inline text string as the accessible name directly; `aria-labelledby` instead references the `id` of another element on the page whose text content becomes the accessible name.",
+    "explanation": "`aria-labelledby` is preferred when a visible label already exists elsewhere in the DOM, avoiding duplicated text; `aria-label` is used when there's no visible text to reference.",
+    "keywords": [
+      "aria-labelledby",
+      "aria-label",
+      "accessible name"
+    ],
+    "id": "html_136",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does the `role` attribute do in ARIA, and give an example of when it's necessary?",
+    "answer": "`role` overrides or supplies the semantic purpose of an element for assistive technology - e.g. `role=\"button\"` on a <div> that's been styled and scripted to behave like a button, since a plain <div> has no inherent semantic role.",
+    "explanation": "Native elements (like a real <button>) already have the correct implicit role; `role` is a patch needed only when you've built interactive behavior on top of a non-semantic element.",
+    "keywords": [
+      "role attribute",
+      "implicit vs explicit role"
+    ],
+    "id": "html_137",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A modal dialog implemented with a plain <div> traps keyboard focus correctly, but screen reader users report they can still 'hear' and interact with background page content while the modal is open. What ARIA attribute is likely missing?",
+    "answer": "`aria-modal=\"true\"` on the dialog container (paired with `role=\"dialog\"`), and/or `aria-hidden=\"true\"` applied to the rest of the page content while the modal is open.",
+    "explanation": "Visually trapping focus with JS isn't enough - screen readers need explicit signals that everything outside the dialog is temporarily inert, which `aria-modal`/`aria-hidden` on background content provides.",
+    "keywords": [
+      "aria-modal",
+      "dialog role",
+      "background content"
+    ],
+    "id": "html_138",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the 'accessibility tree', and how does it relate to the regular DOM tree?",
+    "answer": "The accessibility tree is a parallel structure the browser builds from the DOM, containing only the information assistive technologies need (roles, names, states, properties) - some DOM nodes are omitted or transformed based on their computed accessibility semantics.",
+    "explanation": "Screen readers and other AT don't read the raw DOM directly; they consume this derived accessibility tree, which is why ARIA attributes (which shape this tree) matter so much.",
+    "keywords": [
+      "accessibility tree",
+      "assistive technology"
+    ],
+    "id": "html_139",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Canvas & SVG",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which technology represents its graphics as a tree of XML elements that can be individually styled with CSS?",
+    "options": [
+      "<canvas>",
+      "SVG",
+      "WebGL",
+      "Both equally"
+    ],
+    "correct_option": 1,
+    "answer": "SVG",
+    "explanation": "SVG shapes are actual DOM elements (<circle>, <rect>, <path>, etc.), so CSS selectors and JS DOM APIs can target them individually, unlike <canvas>'s single flat pixel buffer.",
+    "keywords": [
+      "svg dom",
+      "css styling"
+    ],
+    "id": "html_140",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Canvas & SVG",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the 2D rendering context obtained via `canvas.getContext('2d')` provide access to?",
+    "answer": "A set of imperative drawing methods (fillRect, arc, moveTo/lineTo, drawImage, etc.) used to paint pixels directly onto the canvas's bitmap.",
+    "explanation": "Unlike SVG's declarative element tree, canvas drawing is purely procedural - once something is drawn, the canvas has no memory of it as a distinct shape, only as pixels.",
+    "keywords": [
+      "canvas context",
+      "imperative drawing"
+    ],
+    "id": "html_141",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Canvas & SVG",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does it mean that an SVG image is 'resolution independent'?",
+    "answer": "Because SVG shapes are defined mathematically (paths, coordinates) rather than as a fixed pixel grid, they can be scaled to any size and re-rendered sharply at that new size with no blurring or pixelation.",
+    "explanation": "A raster image (or a canvas snapshot) is a fixed grid of pixels, so scaling it up beyond its native resolution necessarily blurs or pixelates it.",
+    "keywords": [
+      "resolution independence",
+      "vector graphics"
+    ],
+    "id": "html_142",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Canvas & SVG",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "An SVG icon renders correctly in isolation but appears the wrong color when embedded via <img src=\"icon.svg\"> and the developer wants to control its color with CSS `fill`. Why doesn't `fill` work in this case, and what's the fix?",
+    "answer": "An SVG loaded via <img> is treated as an opaque external resource, isolated from the parent page's CSS - so external stylesheets can't reach inside it; the fix is to inline the SVG markup directly into the HTML (or use it as a CSS `mask`/background with `currentColor` tricks) so the page's CSS can target its internal elements.",
+    "explanation": "Only SVG that is part of the actual page DOM (inlined <svg>, or referenced via <object>/<use> in some cases) can be styled by external CSS - an <img>-embedded SVG is sandboxed like any other image file.",
+    "keywords": [
+      "inline svg",
+      "img embedding",
+      "svg fill css"
+    ],
+    "id": "html_143",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Canvas & SVG",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why does redrawing frequently-changing content on <canvas> generally scale better performance-wise than animating thousands of SVG DOM elements?",
+    "answer": "Canvas has no per-shape DOM overhead - the browser just repaints pixels - while each SVG shape is a real DOM node whose creation, style recalculation, and layout the browser must track individually, which becomes expensive at very high element counts.",
+    "explanation": "This is why canvas (or WebGL) is typically preferred for particle systems, real-time charts with huge datasets, or games, while SVG excels at smaller numbers of interactive, stylable shapes.",
+    "keywords": [
+      "canvas performance",
+      "svg dom overhead"
+    ],
+    "id": "html_144",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Web Storage",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which Web Storage API method removes a single key from localStorage?",
+    "options": [
+      "localStorage.delete(key)",
+      "localStorage.removeItem(key)",
+      "localStorage.remove(key)",
+      "delete localStorage[key]"
+    ],
+    "correct_option": 1,
+    "answer": "localStorage.removeItem(key)",
+    "explanation": "`removeItem(key)` is the standard API method; `delete localStorage[key]` also technically works since localStorage is proxy-like, but `removeItem` is the documented, intended method.",
+    "keywords": [
+      "removeItem",
+      "localstorage api"
+    ],
+    "id": "html_145",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Web Storage",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What triggers the `storage` event, and in which browsing context does it fire?",
+    "answer": "It fires when localStorage (or sessionStorage) is modified from ANOTHER tab/window on the same origin - not in the tab that made the change itself.",
+    "explanation": "This lets multiple open tabs of the same site stay in sync (e.g. logging out in one tab can trigger the same effect in others) by listening for cross-tab storage changes.",
+    "keywords": [
+      "storage event",
+      "cross-tab sync"
+    ],
+    "id": "html_146",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Web Storage",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "Why is Web Storage (localStorage/sessionStorage) considered synchronous and blocking, and why does this matter?",
+    "answer": "Every read/write to Web Storage runs synchronously on the main thread, so storing or retrieving large values can briefly block UI rendering and script execution.",
+    "explanation": "This is a key reason IndexedDB (an asynchronous API) is recommended over Web Storage for larger amounts of data or performance-sensitive code paths.",
+    "keywords": [
+      "synchronous api",
+      "main thread blocking"
+    ],
+    "id": "html_147",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Web Storage",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A site stores user preferences in localStorage, but after the browser is set to 'Clear cookies and site data on exit,' the preferences disappear too, even though localStorage isn't a cookie. Why?",
+    "answer": "Browsers commonly group localStorage under the same 'site data' clearing category as cookies, since both are origin-scoped persistent client-side storage - clearing 'site data' wipes localStorage, IndexedDB, and cookies together, not just cookies specifically.",
+    "explanation": "This is a common misconception: localStorage avoids cookie-specific issues (like being sent with every HTTP request) but is not exempt from browser privacy/data-clearing settings aimed at 'site data' broadly.",
+    "keywords": [
+      "site data clearing",
+      "privacy settings",
+      "localstorage persistence"
+    ],
+    "id": "html_148",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Web Storage",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What data type does `localStorage.getItem()` always return, even if you stored a number or boolean?",
+    "answer": "A string, or `null` if the key doesn't exist - localStorage stores and returns everything as strings regardless of what type was originally passed to `setItem`.",
+    "explanation": "Storing `localStorage.setItem('count', 5)` and later reading it back gives you the string `\"5\"`, not the number 5, so callers must explicitly parse it back (e.g. `Number(...)`) if a non-string type is needed.",
+    "keywords": [
+      "string coercion",
+      "getItem return type"
+    ],
+    "id": "html_149",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML5 APIs",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which API lets a web page copy text to the user's system clipboard programmatically?",
+    "options": [
+      "Clipboard API",
+      "Copy API",
+      "System API",
+      "Paste API"
+    ],
+    "correct_option": 0,
+    "answer": "Clipboard API",
+    "explanation": "`navigator.clipboard.writeText(...)` is the modern, promise-based way to write to the clipboard, generally requiring a secure context (HTTPS) and often a user gesture.",
+    "keywords": [
+      "clipboard api",
+      "navigator.clipboard"
+    ],
+    "id": "html_150",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML5 APIs",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What problem does the Intersection Observer API solve, compared to manually checking element positions on every scroll event?",
+    "answer": "It lets a page efficiently detect when an element enters or leaves the viewport (or another container) asynchronously, without the performance cost of repeatedly running layout-reading code inside a scroll event handler.",
+    "explanation": "This underlies common patterns like lazy-loading images and infinite-scroll, and is far cheaper than polling `getBoundingClientRect()` on every scroll tick.",
+    "keywords": [
+      "intersection observer",
+      "lazy loading",
+      "scroll performance"
+    ],
+    "id": "html_151",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML5 APIs",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the Page Visibility API used for?",
+    "answer": "It exposes whether the current document/tab is visible to the user or hidden (backgrounded, minimized, switched away from), via `document.visibilityState` and the `visibilitychange` event.",
+    "explanation": "Common uses include pausing videos/animations, reducing polling frequency, or - relevant to proctored tests - detecting when a user switches away from a tab.",
+    "keywords": [
+      "page visibility api",
+      "visibilitychange"
+    ],
+    "id": "html_152",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML5 APIs",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A page uses the History API's `pushState()` to change the URL for client-side routing without a full page reload, but clicking the browser's Back button doesn't seem to do anything. What is likely missing?",
+    "answer": "A `popstate` event listener - `pushState` alone only changes the URL/history entry, it does NOT automatically re-render the page; the app must listen for `popstate` and manually update the UI to match the new/previous URL.",
+    "explanation": "This is a very common single-page-app routing bug: developers wire up forward navigation (pushState on link clicks) but forget backward navigation needs its own explicit handler.",
+    "keywords": [
+      "history api",
+      "popstate",
+      "spa routing"
+    ],
+    "id": "html_153",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML5 APIs",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the Fetch API's `AbortController` allow you to do?",
+    "answer": "It lets you cancel an in-flight `fetch()` request before it completes, by calling `controller.abort()` after passing `controller.signal` as the fetch's `signal` option.",
+    "explanation": "This is essential for scenarios like a user typing a new search query before the previous search's fetch has resolved - the stale request can be cancelled instead of racing with the new one.",
+    "keywords": [
+      "abortcontroller",
+      "fetch cancellation"
+    ],
+    "id": "html_154",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which of these attributes is a 'global attribute' usable on virtually any HTML element?",
+    "options": [
+      "href",
+      "src",
+      "class",
+      "action"
+    ],
+    "correct_option": 2,
+    "answer": "class",
+    "explanation": "`class`, `id`, `style`, `title`, and `data-*` are global attributes valid on nearly every element; `href`/`src`/`action` are specific to particular elements like <a>, <img>, and <form>.",
+    "keywords": [
+      "global attributes",
+      "class attribute"
+    ],
+    "id": "html_155",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML Basics",
+    "difficulty": "Hard",
+    "question_type": "Conceptual",
+    "question": "Why is HTML described as being parsed with 'error tolerance' compared to strict formats like XML?",
+    "answer": "Browsers are required by the HTML5 parsing spec to recover from malformed markup (unclosed tags, misordered elements) using well-defined repair rules, rendering something reasonable instead of stopping with a fatal error the way an XML parser would.",
+    "explanation": "This is a deliberate, standardized design choice (not just historical laxness) - the WHATWG HTML spec defines exact algorithms for how a parser must handle broken markup, ensuring consistent rendering across browsers even for invalid documents.",
+    "keywords": [
+      "error tolerant parsing",
+      "xml strictness comparison"
+    ],
+    "id": "html_156",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which meta tag, when placed early in <head>, should generally come before other meta tags for correct character decoding?",
+    "options": [
+      "<meta charset=\"UTF-8\">",
+      "<meta name=\"viewport\">",
+      "<meta name=\"description\">",
+      "<title>"
+    ],
+    "correct_option": 0,
+    "answer": "<meta charset=\"UTF-8\">",
+    "explanation": "The charset declaration should appear within the first 1024 bytes of the document so the browser decodes the rest of the page's text correctly before encountering any non-ASCII characters.",
+    "keywords": [
+      "meta charset placement"
+    ],
+    "id": "html_157",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Document Structure",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between placing a <script> tag with the `defer` attribute versus the `async` attribute?",
+    "answer": "`defer` scripts download in parallel but execute only after HTML parsing completes, in original document order; `async` scripts download in parallel and execute as soon as they're ready, potentially out of order and before parsing finishes.",
+    "explanation": "`defer` is generally safer for scripts that depend on the full DOM being parsed and on running in a specific order relative to other scripts.",
+    "keywords": [
+      "defer vs async",
+      "script loading"
+    ],
+    "id": "html_158",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tags & Elements",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which element represents a thematic break between paragraph-level content, typically rendered as a horizontal line?",
+    "options": [
+      "<hr>",
+      "<break>",
+      "<divider>",
+      "<line>"
+    ],
+    "correct_option": 0,
+    "answer": "<hr>",
+    "explanation": "<hr> is a void element with semantic meaning (a shift in topic), not just a decorative line - purely visual dividers should use CSS borders instead.",
+    "keywords": [
+      "hr element",
+      "thematic break"
+    ],
+    "id": "html_159",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tags & Elements",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "What is the difference between the <details>/<summary> elements and a JavaScript-built custom accordion widget?",
+    "answer": "<details>/<summary> provide a native, disclosure widget (expand/collapse) with built-in keyboard accessibility, no JavaScript, and a default open/closed toggle state managed entirely by the browser - a custom JS accordion must reimplement all of that behavior and accessibility manually.",
+    "explanation": "This is a good example of 'use the platform' - many interactive UI patterns now have native HTML equivalents that are more accessible by default than hand-rolled JS/CSS versions.",
+    "keywords": [
+      "details summary",
+      "native disclosure widget"
+    ],
+    "id": "html_160",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Attributes",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which attribute, when added to a <script> tag, marks it as an ES module rather than a classic script?",
+    "options": [
+      "type=\"module\"",
+      "module",
+      "es6",
+      "import"
+    ],
+    "correct_option": 0,
+    "answer": "type=\"module\"",
+    "explanation": "`<script type=\"module\">` enables `import`/`export` syntax and runs the script in strict mode with deferred execution by default.",
+    "keywords": [
+      "type=module",
+      "es modules in html"
+    ],
+    "id": "html_161",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Attributes",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `crossorigin` attribute on a <script> or <img> tag control?",
+    "answer": "It configures whether the resource request is made with CORS credentials, which affects both whether cross-origin errors can be caught in detail (e.g. full script error messages) and whether the browser applies the Same-Origin Policy to reading the resource's data.",
+    "explanation": "Without `crossorigin`, cross-origin script errors are reported generically as 'Script error' with no stack trace, for security reasons.",
+    "keywords": [
+      "crossorigin attribute",
+      "cors"
+    ],
+    "id": "html_162",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which input type provides a native color-picker UI in supporting browsers?",
+    "options": [
+      "type=\"color\"",
+      "type=\"picker\"",
+      "type=\"swatch\"",
+      "type=\"rgb\""
+    ],
+    "correct_option": 0,
+    "answer": "type=\"color\"",
+    "explanation": "`<input type=\"color\">` opens a native color-selection UI and its value is always a lowercase 7-character hex string like `#ff0000`.",
+    "keywords": [
+      "input type color"
+    ],
+    "id": "html_163",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "What is the difference between the `formaction` attribute on a submit button and the `action` attribute on the enclosing <form>?",
+    "answer": "`action` on <form> sets the default submission URL for the whole form; `formaction` on an individual submit button OVERRIDES that URL just for that specific button, letting one form submit to different endpoints depending on which button was clicked.",
+    "explanation": "This is useful for forms with multiple actions (e.g. 'Save Draft' vs 'Publish') without needing separate <form> elements or JavaScript to change the action dynamically.",
+    "keywords": [
+      "formaction override",
+      "multiple submit buttons"
+    ],
+    "id": "html_164",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tables",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which attribute historically specified spacing between table cells, now handled by CSS `border-spacing` instead?",
+    "options": [
+      "cellspacing",
+      "cellpadding",
+      "border",
+      "gap"
+    ],
+    "correct_option": 0,
+    "answer": "cellspacing",
+    "explanation": "`cellspacing`/`cellpadding` are deprecated presentational HTML attributes; modern code uses CSS (`border-spacing`, `padding`) on the table/cells instead.",
+    "keywords": [
+      "cellspacing deprecated"
+    ],
+    "id": "html_165",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tables",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why does `border-collapse: collapse` change how borders between adjacent table cells render compared to the default `separate`?",
+    "answer": "With `collapse`, adjacent cells share a single border line (adjacent cell borders merge into one), while `separate` (the default) gives each cell its own independent border, potentially creating a visible double-border look between cells.",
+    "explanation": "`collapse` is almost always what's visually intended for a clean grid-style table; `separate` is more useful when `border-spacing` gaps between cells are wanted.",
+    "keywords": [
+      "border-collapse",
+      "collapse vs separate"
+    ],
+    "id": "html_166",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Semantic HTML5",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which element is intended specifically to represent a page's or article's introductory content, like a logo and heading group?",
+    "options": [
+      "<header>",
+      "<head>",
+      "<top>",
+      "<intro>"
+    ],
+    "correct_option": 0,
+    "answer": "<header>",
+    "explanation": "<header> is a content-sectioning element usable multiple times per page (e.g. once for the whole site, once inside each <article>) unlike <head> which is metadata-only and appears exactly once.",
+    "keywords": [
+      "header element",
+      "header vs head"
+    ],
+    "id": "html_167",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Semantic HTML5",
+    "difficulty": "Hard",
+    "question_type": "Conceptual",
+    "question": "Can a page legally contain multiple <header> and <footer> elements, and if so, in what context does this make sense?",
+    "answer": "Yes - <header>/<footer> are scoped to their nearest sectioning ancestor (like <article> or <section>), not just the page as a whole, so each article in a list of blog posts can have its own <header> (title/date) and the page can still have one overall page-level <header>/<footer> too.",
+    "explanation": "This is a common point of confusion since the names suggest 'the page header,' but the spec explicitly scopes them to their containing sectioning content.",
+    "keywords": [
+      "header footer scoping",
+      "multiple per page"
+    ],
+    "id": "html_168",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Multimedia",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which attribute on <audio>/<video> hides the browser's default playback controls (play/pause/volume)?",
+    "options": [
+      "Omitting the `controls` attribute",
+      "hidden=\"true\"",
+      "noplayback",
+      "silent"
+    ],
+    "correct_option": 0,
+    "answer": "Omitting the `controls` attribute",
+    "explanation": "Without `controls`, no default UI is shown at all - the media element becomes invisible/non-interactive unless controlled entirely via JavaScript and a custom UI.",
+    "keywords": [
+      "controls attribute omission"
+    ],
+    "id": "html_169",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Multimedia",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `preload` attribute on a <video> element control, and what are its three main values?",
+    "answer": "It hints to the browser how much of the video to load before playback starts: `none` (don't preload anything), `metadata` (load only duration/dimensions), and `auto` (let the browser decide, often preloading substantial data).",
+    "explanation": "This is a hint, not a guarantee - browsers may ignore it based on factors like the user's data-saving settings or connection type.",
+    "keywords": [
+      "preload attribute",
+      "video loading hint"
+    ],
+    "id": "html_170",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Links & Navigation",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which value of `rel` on an <a> tag indicates the linked document is an alternate version of the current page, e.g. a different language?",
+    "options": [
+      "alternate",
+      "canonical",
+      "next",
+      "prev"
+    ],
+    "correct_option": 0,
+    "answer": "alternate",
+    "explanation": "`rel=\"alternate\" hreflang=\"fr\"` is the standard way to point search engines to a translated version of a page.",
+    "keywords": [
+      "rel alternate",
+      "hreflang"
+    ],
+    "id": "html_171",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Links & Navigation",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `<a href=\"mailto:someone@example.com\">` and a regular link?",
+    "answer": "Clicking a `mailto:` link opens the user's default email client with a new message pre-addressed to that address, instead of navigating the browser to another page.",
+    "explanation": "Additional query parameters like `?subject=Hello&body=Hi` can pre-fill the subject/body of the composed email as well.",
+    "keywords": [
+      "mailto link",
+      "email client"
+    ],
+    "id": "html_172",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which HTTP-equivalent meta tag can instruct the browser to enforce a Content Security Policy from within the HTML itself (rather than an HTTP header)?",
+    "options": [
+      "<meta http-equiv=\"Content-Security-Policy\" content=\"...\">",
+      "<meta name=\"csp\" content=\"...\">",
+      "<meta security=\"strict\">",
+      "<meta http-equiv=\"security-policy\">"
+    ],
+    "correct_option": 0,
+    "answer": "<meta http-equiv=\"Content-Security-Policy\" content=\"...\">",
+    "explanation": "This lets a page declare a CSP without needing server-level header configuration access, though a real HTTP header is generally considered more robust since it can't be tampered with by injected HTML.",
+    "keywords": [
+      "csp meta tag",
+      "http-equiv"
+    ],
+    "id": "html_173",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A site adds structured data (JSON-LD) for recipes to its pages hoping for rich search snippets, but Google's rich results test shows no errors yet the rich snippet never appears in search results. What is a common, non-error reason for this?",
+    "answer": "Valid structured data is necessary but not sufficient for a rich result - Google independently decides whether/when to actually display a rich snippet based on its own quality and eligibility algorithms, and there can be a significant delay after re-crawling before any change appears in live search results.",
+    "explanation": "Developers often assume 'valid markup = guaranteed rich result,' but search engines treat structured data as a hint, not a directive, and eligibility can change over time even for technically correct markup.",
+    "keywords": [
+      "structured data eligibility",
+      "rich snippets"
+    ],
+    "id": "html_174",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which ARIA attribute indicates whether a collapsible section (like an accordion panel) is currently expanded or collapsed?",
+    "options": [
+      "aria-expanded",
+      "aria-open",
+      "aria-visible",
+      "aria-toggled"
+    ],
+    "correct_option": 0,
+    "answer": "aria-expanded",
+    "explanation": "`aria-expanded=\"true\"`/`\"false\"` on the toggle control tells assistive technology the current disclosure state, which must be kept in sync with the actual visual state via JavaScript.",
+    "keywords": [
+      "aria-expanded"
+    ],
+    "id": "html_175",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "What is the 'first rule of ARIA use' as stated in the WAI-ARIA authoring practices, and why does it exist?",
+    "answer": "If a native HTML element or attribute already has the semantics/behavior you need, use it instead of re-purposing a generic element with ARIA roles - because native elements come with built-in keyboard interaction, focus management, and browser/AT support that ARIA-only reimplementations must painstakingly replicate and often get subtly wrong.",
+    "explanation": "ARIA can describe semantics but never implements behavior itself - adding `role=\"button\"` to a <div> doesn't give it Enter/Space key activation for free, unlike a real <button>.",
+    "keywords": [
+      "first rule of aria",
+      "native elements preferred"
+    ],
+    "id": "html_176",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Canvas & SVG",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which SVG element defines a reusable graphic that can be referenced multiple times via <use>?",
+    "options": [
+      "<symbol>",
+      "<def>",
+      "<reuse>",
+      "<template>"
+    ],
+    "correct_option": 0,
+    "answer": "<symbol>",
+    "explanation": "<symbol> (often inside a hidden <defs> block) defines a graphic once; `<use href=\"#iconId\">` then instantiates it anywhere without duplicating the markup.",
+    "keywords": [
+      "svg symbol",
+      "svg use element"
+    ],
+    "id": "html_177",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Canvas & SVG",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the purpose of the SVG `viewBox` attribute?",
+    "answer": "It defines the internal coordinate system and aspect ratio of an SVG's content, decoupled from the element's actual rendered width/height - letting the graphic scale responsively while preserving its internal proportions.",
+    "explanation": "Without a `viewBox`, an SVG's coordinates map 1:1 to pixels at its declared width/height, making it much harder to scale cleanly.",
+    "keywords": [
+      "svg viewbox",
+      "coordinate system"
+    ],
+    "id": "html_178",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Web Storage",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which Web Storage method returns the total number of key/value pairs currently stored?",
+    "options": [
+      "localStorage.length",
+      "localStorage.count()",
+      "localStorage.size",
+      "localStorage.keys().length"
+    ],
+    "correct_option": 0,
+    "answer": "localStorage.length",
+    "explanation": "`length` is a property (not a method call) that reflects the current number of stored items.",
+    "keywords": [
+      "localstorage length"
+    ],
+    "id": "html_179",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Web Storage",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why is storing sensitive data like passwords or full credit card numbers in localStorage considered a poor security practice, even on an HTTPS site?",
+    "answer": "Any JavaScript running on the page - including from a successful XSS (cross-site scripting) attack - has full read access to localStorage, with no way to mark data as HTTP-only or otherwise inaccessible to scripts, unlike HTTP-only cookies which JS cannot read at all.",
+    "explanation": "HTTPS protects data in transit, but localStorage's exposure to any script on the page is a client-side risk independent of transport security.",
+    "keywords": [
+      "localstorage xss risk",
+      "httponly cookie comparison"
+    ],
+    "id": "html_180",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML5 APIs",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which API provides low-level access to a user's camera and microphone streams directly in the browser?",
+    "options": [
+      "getUserMedia (Media Capture and Streams API)",
+      "Camera API",
+      "MediaDevices.record()",
+      "WebRTC.capture()"
+    ],
+    "correct_option": 0,
+    "answer": "getUserMedia (Media Capture and Streams API)",
+    "explanation": "`navigator.mediaDevices.getUserMedia({video: true, audio: true})` returns a promise resolving to a MediaStream, after prompting the user for permission.",
+    "keywords": [
+      "getusermedia",
+      "media capture api"
+    ],
+    "id": "html_181",
+    "technology": "HTML"
+  },
+  {
+    "topic": "HTML5 APIs",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A page calls `navigator.geolocation.getCurrentPosition()` expecting the success callback to fire, but nothing happens at all - not even the error callback. What's a likely cause, given the page is served over plain HTTP (not HTTPS)?",
+    "buggy_code": "navigator.geolocation.getCurrentPosition(onSuccess, onError);",
+    "fixed_code": "// Serve the page over HTTPS - most powerful browser APIs (geolocation, camera, clipboard write, etc.) require a secure context",
+    "answer": "Modern browsers restrict the Geolocation API (and many other sensitive APIs) to secure contexts (HTTPS, or localhost) - on plain HTTP, some browsers silently refuse to even prompt, calling neither callback, rather than obviously erroring.",
+    "explanation": "This 'secure context required' restriction applies broadly across newer web APIs and can be a confusing silent-failure trap for developers testing on non-HTTPS origins.",
+    "keywords": [
+      "secure context requirement",
+      "geolocation https"
+    ],
+    "id": "html_182",
+    "technology": "HTML"
+  }
+]

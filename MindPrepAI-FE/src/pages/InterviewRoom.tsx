@@ -5,15 +5,18 @@ import { useWebcam } from "../hooks/useWebcam";
 import { useMicrophone } from "../hooks/useMicrophone";
 import { useInterview } from "../hooks/useInterview";
 import { useProctoring } from "../hooks/useProctoring";
+import { useTabSwitchMonitor, clearTabSwitchSession } from "../hooks/useTabSwitchMonitor";
 import { WarningOverlay } from "../components/interview/WarningOverlay";
 import { ProctoringPanel } from "../components/interview/ProctoringPanel";
 import { QuestionPanel } from "../components/interview/QuestionPanel";
+import { TabSwitchGuardModal } from "../components/common/TabSwitchGuardModal";
 import { Timer, type TimerHandle } from "../components/mock-interview/Timer";
 import { ProgressBar } from "../components/mock-interview/ProgressBar";
 import { StatusIndicator } from "../components/mock-interview/StatusIndicator";
 import { WebcamPreview as SetupWebcamPreview } from "../components/mock-interview/WebcamPreview";
 import { AI_SERVICE_URL, AI_SERVICE_KEY } from "../config/config";
 import { fetchWithTimeout } from "../utils/fetchWithTimeout";
+import { reportCheating as reportInterviewCheating } from "../services/mockInterviewApi";
 
 export function InterviewRoom() {
   const location = useLocation();
@@ -82,6 +85,78 @@ export function InterviewRoom() {
   const questionTimerRef = useRef<TimerHandle>(null);
   const overallTimerRef = useRef<TimerHandle>(null);
 
+  // ── TAB-SWITCH / VISIBILITY MONITORING ──────────────────────────────────
+  // Independent of question generation, AI evaluation, and the webcam-based
+  // proctoring WebSocket above - driven purely by the browser's own
+  // visibilitychange event. `activeTabWarning` controls the (dismissible)
+  // 1st/2nd warning modal; `tabTerminated` is permanent once the 3rd switch
+  // happens and gates further answering while the termination flow runs.
+  const [activeTabWarning, setActiveTabWarning] = useState(0);
+  const [tabTerminated, setTabTerminated] = useState(false);
+
+  const handleTabSwitchWarning = useCallback(
+    (count: number) => {
+      setActiveTabWarning(count);
+      if (interviewId) {
+        reportInterviewCheating(
+          interviewId,
+          "tab_switch",
+          "Browser tab switched during interview",
+          { count, severity: "WARNING" }
+        ).catch((err) => console.error("Failed to report tab-switch warning:", err));
+      }
+    },
+    [interviewId]
+  );
+
+  const handleTabSwitchTerminate = useCallback(() => {
+    setActiveTabWarning(0);
+    setTabTerminated(true);
+  }, []);
+
+  const { tabSwitchCount } = useTabSwitchMonitor({
+    sessionKey: interviewId,
+    active: !showInstructions && !!interviewId && !isComplete && !tabTerminated,
+    onWarning: handleTabSwitchWarning,
+    onTerminate: handleTabSwitchTerminate,
+  });
+
+  // Runs once when the 3rd tab switch is detected: persists the violation +
+  // termination reason via the existing cheating-report endpoint (which,
+  // reused as-is, already flips the interview to "terminated" once its
+  // cheatingCount reaches 3 - no new backend endpoint needed), tears down
+  // proctoring/camera, then reuses the normal report flow to land on the
+  // existing interview result page.
+  useEffect(() => {
+    if (!tabTerminated) return;
+    let cancelled = false;
+    (async () => {
+      stopProctorCapture();
+      if (interviewId) {
+        try {
+          await reportInterviewCheating(
+            interviewId,
+            "tab_switch",
+            "Tab switch limit exceeded - interview terminated",
+            { count: 3, severity: "TERMINATED" }
+          );
+        } catch (err) {
+          console.error("Failed to report tab-switch termination:", err);
+        }
+      }
+      stopWebcam();
+      const report = await getReport();
+      if (cancelled) return;
+      clearTabSwitchSession(interviewId);
+      const reportId = report?.report?._id || interviewId;
+      navigate(`/mock-interview/result/${reportId}`, { state: { report, config } });
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabTerminated]);
+
   // Surface a "taking longer than usual" hint + retry while the first question
   // is still being generated, so the user is never stuck on a bare spinner.
   useEffect(() => {
@@ -115,6 +190,7 @@ export function InterviewRoom() {
       interviewType: config.interviewType,
       difficulty: config.difficulty,
       totalQuestions: config.totalQuestions,
+      resume: config.resume,
     });
 
     if (id && overallTimerRef.current) {
@@ -219,7 +295,7 @@ export function InterviewRoom() {
   }, [currentQuestion, speakQuestion]);
 
   const handleSubmit = async () => {
-    if (!currentQuestion) return;
+    if (!currentQuestion || tabTerminated) return;
 
     let answer = textAnswer;
     let type: "voice" | "text" = answerMode;
@@ -259,6 +335,7 @@ export function InterviewRoom() {
   };
 
   const handleSkip = async () => {
+    if (tabTerminated) return;
     await skipQuestion();
     setTextAnswer("");
     resetRecording();
@@ -300,11 +377,13 @@ export function InterviewRoom() {
     stopWebcam();
 
     if (reason === "violation") {
+      clearTabSwitchSession(interviewId);
       navigate("/", { state: { interviewTerminated: true } });
       return;
     }
 
     const report = await getReport();
+    clearTabSwitchSession(interviewId);
     const reportId = report?.report?._id || interviewId;
     navigate(`/mock-interview/result/${reportId}`, {
       state: { report, config },
@@ -474,6 +553,13 @@ export function InterviewRoom() {
         onDismiss={dismissWarning}
       />
 
+      <TabSwitchGuardModal
+        warningCount={activeTabWarning}
+        terminated={tabTerminated}
+        onReturn={() => setActiveTabWarning(0)}
+        onGoToResult={() => navigate("/mock-interview/dashboard")}
+      />
+
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* ── QUESTION SYSTEM ─ AI question generation, display, answering.
@@ -550,6 +636,12 @@ export function InterviewRoom() {
                 <div className="flex justify-between">
                   <span className="text-gray-400">Mode</span>
                   <span className="text-white capitalize">{answerMode}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Tab Switches</span>
+                  <span className={tabSwitchCount > 0 ? "text-red-400 font-semibold" : "text-white"}>
+                    {tabSwitchCount}/3
+                  </span>
                 </div>
               </div>
             </div>

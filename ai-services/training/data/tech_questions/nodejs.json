@@ -1,0 +1,4051 @@
+[
+  {
+    "id": "nodejs_001",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Easy",
+    "question": "What is Node.js?",
+    "answer": "A JavaScript runtime built on Chrome's V8 engine that lets JavaScript run outside the browser, typically on a server.",
+    "explanation": "Node.js adds APIs (file system, networking, etc.) that aren't available in browser JavaScript, enabling server-side and CLI applications written in JS.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "node.js",
+      "runtime",
+      "v8"
+    ]
+  },
+  {
+    "id": "nodejs_002",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Easy",
+    "question": "Is Node.js single-threaded or multi-threaded for executing JavaScript?",
+    "answer": "Single-threaded for JavaScript execution (one main event loop thread), though it uses a background thread pool (libuv) for some I/O operations.",
+    "explanation": "This single-threaded model avoids many concurrency issues (no shared-memory race conditions in JS code) but means CPU-bound JS work blocks the whole event loop.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "single-threaded",
+      "event loop",
+      "libuv"
+    ]
+  },
+  {
+    "id": "nodejs_003",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Easy",
+    "question": "Which global object in Node.js is roughly equivalent to `window` in the browser?",
+    "answer": "global",
+    "explanation": "`global` provides Node's global scope (setTimeout, console, process, etc.), analogous to how `window` provides the browser's global scope.",
+    "question_type": "MCQ",
+    "keywords": [
+      "global",
+      "global object",
+      "node basics"
+    ],
+    "options": [
+      "window",
+      "global",
+      "self",
+      "document"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_004",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "What is the `process` object used for in Node.js?",
+    "answer": "It provides information about, and control over, the current Node.js process — e.g. `process.argv` (CLI arguments), `process.env` (environment variables), and `process.exit()`.",
+    "explanation": "It's a global object available without requiring anything, since interacting with the running process is a core part of most Node scripts.",
+    "question_type": "Technical",
+    "keywords": [
+      "process",
+      "env",
+      "argv"
+    ]
+  },
+  {
+    "id": "nodejs_005",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Hard",
+    "question": "Why is heavy synchronous CPU work (e.g. a large synchronous JSON.parse or a tight computational loop) discouraged in a Node.js HTTP server?",
+    "answer": "Because Node's single JS thread handles all incoming request callbacks; a long synchronous operation blocks the event loop entirely, so no other request can be processed until it finishes, causing the whole server to stall.",
+    "explanation": "For CPU-heavy work, options include offloading to worker_threads, a child process, or a separate service, so the main event loop stays free to handle I/O-bound request handling.",
+    "question_type": "Technical",
+    "keywords": [
+      "event loop blocking",
+      "cpu-bound",
+      "worker threads"
+    ]
+  },
+  {
+    "id": "nodejs_006",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Easy",
+    "question": "How do you export a value from a CommonJS module in Node.js?",
+    "answer": "By assigning to `module.exports` (or adding properties to it), e.g. `module.exports = myFunction;` or `exports.myFunction = myFunction;`.",
+    "explanation": "`require()` then imports whatever was assigned to module.exports in that file.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "commonjs",
+      "module.exports",
+      "require"
+    ]
+  },
+  {
+    "id": "nodejs_007",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Easy",
+    "question": "Which keyword is used to import a module in ES Modules syntax (as opposed to CommonJS's require)?",
+    "answer": "import",
+    "explanation": "ES Modules use `import`/`export` syntax; Node supports this when the file has a `.mjs` extension or the nearest package.json sets `\"type\": \"module\"`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "esm",
+      "import",
+      "es modules"
+    ],
+    "options": [
+      "require",
+      "import",
+      "include",
+      "using"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_008",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Medium",
+    "question": "What is a key structural difference between CommonJS `require` and ES Module `import` regarding load timing?",
+    "answer": "`require()` calls are synchronous and can appear anywhere in the code (even conditionally), while `import` statements are statically analyzed and hoisted to the top of the module before any code runs.",
+    "explanation": "This static structure is what allows ES Modules to support features like tree-shaking (removing unused exports at bundle time), which CommonJS's dynamic, conditional requires don't reliably support.",
+    "question_type": "Technical",
+    "keywords": [
+      "commonjs",
+      "esm",
+      "static analysis"
+    ]
+  },
+  {
+    "id": "nodejs_009",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Medium",
+    "question": "How does Node.js decide whether to treat a `.js` file as CommonJS or an ES Module?",
+    "answer": "By the nearest ancestor `package.json`'s `\"type\"` field — `\"type\": \"module\"` treats `.js` as ESM, `\"type\": \"commonjs\"` (or the field's absence) treats it as CommonJS; `.mjs` and `.cjs` extensions override this explicitly regardless of package.json.",
+    "explanation": "This dual-mode resolution was introduced so the ecosystem could migrate to ESM gradually without breaking every existing CommonJS package at once.",
+    "question_type": "Technical",
+    "keywords": [
+      "package.json",
+      "module type",
+      "mjs cjs"
+    ]
+  },
+  {
+    "id": "nodejs_010",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Hard",
+    "question": "Why does Node cache the result of `require()` for the same module path across multiple require calls in an application?",
+    "answer": "Node keeps a module cache keyed by resolved file path; the first `require()` executes the module and caches its `module.exports`, and every subsequent `require()` of that same path returns the cached exports object without re-executing the file.",
+    "explanation": "This means module-level state (e.g. a counter variable at the top of a module) is SHARED across every part of the app that requires it — a singleton by default — which can surprise developers expecting a fresh instance each time.",
+    "question_type": "Technical",
+    "keywords": [
+      "require cache",
+      "singleton",
+      "module caching"
+    ]
+  },
+  {
+    "id": "nodejs_011",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Easy",
+    "question": "What is the purpose of the package.json file in a Node.js project?",
+    "answer": "It declares project metadata (name, version), dependencies, scripts, and configuration that npm (and Node's module resolution) use.",
+    "explanation": "Running `npm install` reads the `dependencies`/`devDependencies` fields to know exactly which packages (and versions) to install.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "package.json",
+      "npm",
+      "metadata"
+    ]
+  },
+  {
+    "id": "nodejs_012",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Easy",
+    "question": "What is the difference between `dependencies` and `devDependencies` in package.json?",
+    "answer": "`dependencies` are packages required at runtime in production; `devDependencies` are only needed during development/testing (e.g. test runners, linters, bundlers).",
+    "explanation": "Running `npm install --production` (or `npm ci --omit=dev`) skips installing devDependencies, keeping production deployments smaller.",
+    "question_type": "Technical",
+    "keywords": [
+      "dependencies",
+      "devdependencies",
+      "npm"
+    ]
+  },
+  {
+    "id": "nodejs_013",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Medium",
+    "question": "What does a caret (^) version range like `\"^1.2.3\"` in package.json allow npm to install?",
+    "answer": "Any version that is greater than or equal to 1.2.3 but less than 2.0.0 — i.e. it allows minor and patch updates but not a major version bump.",
+    "explanation": "This follows semantic versioning convention, where a major version bump signals breaking changes that shouldn't be installed automatically.",
+    "question_type": "Technical",
+    "keywords": [
+      "semver",
+      "caret range",
+      "package.json"
+    ]
+  },
+  {
+    "id": "nodejs_014",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Medium",
+    "question": "What is the purpose of a package-lock.json file?",
+    "answer": "It records the exact resolved version (and dependency tree) of every installed package, ensuring that `npm install` produces an identical `node_modules` tree across different machines/times, even though package.json itself specifies flexible version ranges.",
+    "explanation": "Without a lock file, two installs at different times could resolve different compatible versions if new releases were published in between, risking subtle environment differences.",
+    "question_type": "Technical",
+    "keywords": [
+      "package-lock",
+      "reproducible install",
+      "npm"
+    ]
+  },
+  {
+    "id": "nodejs_015",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Hard",
+    "question": "What is the difference between `npm install` and `npm ci`?",
+    "answer": "`npm ci` deletes the existing node_modules and installs EXACTLY what's in package-lock.json (failing if package.json and the lock file are out of sync), while `npm install` may update the lock file and resolve new versions within the allowed ranges.",
+    "explanation": "`npm ci` is faster and safer for CI/CD pipelines and production builds specifically because it guarantees a byte-for-byte reproducible install rather than potentially drifting.",
+    "question_type": "Technical",
+    "keywords": [
+      "npm ci",
+      "npm install",
+      "ci/cd"
+    ]
+  },
+  {
+    "id": "nodejs_016",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Easy",
+    "question": "What is the Event Loop in Node.js?",
+    "answer": "The mechanism that allows Node.js to perform non-blocking I/O by offloading operations (like file/network access) and executing their callbacks once the operation completes, all while continuing to process other code in the meantime.",
+    "explanation": "It's what enables a single-threaded runtime to handle many concurrent I/O operations without needing a thread per connection.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "event loop",
+      "non-blocking io",
+      "concurrency"
+    ]
+  },
+  {
+    "id": "nodejs_017",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Medium",
+    "question": "What is the correct execution order for this code?",
+    "answer": "'start', 'end', 'promise', 'timeout' — synchronous code runs first, then microtasks (Promise callbacks) before the next macrotask, then macrotasks (setTimeout) after.",
+    "explanation": "The event loop always drains the entire microtask queue (Promises, process.nextTick) before moving to the next macrotask (timers, I/O callbacks), regardless of a 0ms delay.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "event loop",
+      "microtask",
+      "macrotask"
+    ],
+    "code_snippet": "console.log('start');\nsetTimeout(() => console.log('timeout'), 0);\nPromise.resolve().then(() => console.log('promise'));\nconsole.log('end');"
+  },
+  {
+    "id": "nodejs_018",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Medium",
+    "question": "Where does `process.nextTick()` fit relative to Promise callbacks in the queue ordering?",
+    "answer": "process.nextTick callbacks run BEFORE Promise microtasks — Node processes the entire nextTick queue first, then the Promise microtask queue, before returning to the event loop's next phase.",
+    "explanation": "This makes process.nextTick even higher priority than Promises, which can starve the event loop if used recursively/excessively, since Node keeps draining it before moving on.",
+    "question_type": "Technical",
+    "keywords": [
+      "process.nexttick",
+      "microtask",
+      "priority"
+    ]
+  },
+  {
+    "id": "nodejs_019",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Hard",
+    "question": "Name the main phases of the Node.js event loop in order.",
+    "answer": "Timers, Pending callbacks, Idle/Prepare (internal), Poll, Check, Close callbacks — with microtasks (Promises, process.nextTick) processed between each phase.",
+    "explanation": "The Poll phase is where most I/O callbacks fire and where the loop can block waiting for new events if nothing else is scheduled; the Check phase is specifically where setImmediate callbacks run.",
+    "question_type": "Technical",
+    "keywords": [
+      "event loop phases",
+      "poll",
+      "libuv"
+    ]
+  },
+  {
+    "id": "nodejs_020",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Hard",
+    "question": "What is the difference between `setTimeout(fn, 0)` and `setImmediate(fn)` when both are scheduled from within an I/O callback?",
+    "answer": "Inside an I/O callback, setImmediate() is guaranteed to execute before any setTimeout() scheduled in that same callback, because the Check phase (setImmediate) always runs immediately after the Poll phase (where the I/O callback executed), whereas the Timers phase is checked again only on the loop's next full iteration.",
+    "explanation": "Outside of an I/O cycle (e.g. at the top level of a script), the order between the two is not guaranteed and can depend on process performance timing.",
+    "question_type": "Technical",
+    "keywords": [
+      "setimmediate",
+      "settimeout",
+      "event loop ordering"
+    ]
+  },
+  {
+    "id": "nodejs_021",
+    "technology": "Node.js",
+    "topic": "Asynchronous Programming",
+    "difficulty": "Easy",
+    "question": "Why is asynchronous, non-blocking I/O central to Node.js's design?",
+    "answer": "Because Node is single-threaded for JS execution — if I/O calls blocked that one thread, the server could only handle one operation at a time; non-blocking I/O lets it start many operations and handle their results as they complete.",
+    "explanation": "This design makes Node particularly well suited for I/O-heavy workloads (APIs, streaming) with many concurrent connections, at the cost of being less ideal for CPU-heavy workloads.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "async",
+      "non-blocking",
+      "concurrency"
+    ]
+  },
+  {
+    "id": "nodejs_022",
+    "technology": "Node.js",
+    "topic": "Asynchronous Programming",
+    "difficulty": "Medium",
+    "question": "What is 'callback hell' and what commonly causes it?",
+    "answer": "Deeply nested callbacks (each one triggered inside the previous one's completion) that make code hard to read, reason about, and handle errors in, typically caused by chaining several sequential async operations using plain callbacks.",
+    "explanation": "Promises (and later async/await) were introduced largely to flatten this nesting into more linear, readable code.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "callback hell",
+      "nested callbacks",
+      "readability"
+    ]
+  },
+  {
+    "id": "nodejs_023",
+    "technology": "Node.js",
+    "topic": "Asynchronous Programming",
+    "difficulty": "Medium",
+    "question": "What is the Node.js 'error-first callback' convention?",
+    "answer": "A callback's first parameter is reserved for an error object (null if no error occurred), and subsequent parameters carry the successful result, e.g. `fs.readFile(path, (err, data) => { ... })`.",
+    "explanation": "This convention gives every async callback a consistent, predictable way to signal failure, which calling code must check explicitly (unlike thrown exceptions, which wouldn't propagate correctly across an async boundary with plain callbacks).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "error-first callback",
+      "convention",
+      "fs"
+    ]
+  },
+  {
+    "id": "nodejs_024",
+    "technology": "Node.js",
+    "topic": "Asynchronous Programming",
+    "difficulty": "Hard",
+    "question": "Why does an uncaught exception thrown INSIDE a Node.js callback (e.g. inside a `fs.readFile` callback) crash the whole process instead of being caught by a surrounding try/catch?",
+    "answer": "By the time the callback executes, the original synchronous call stack (including any surrounding try/catch) has already completed and unwound — the callback runs later, in a completely new stack frame from the event loop, so a try/catch wrapped around the original async call cannot catch an exception thrown inside the callback.",
+    "explanation": "The fix is to put the try/catch INSIDE the callback itself, or use Promises/async-await with proper .catch()/try-catch, which correctly propagate rejections across the async boundary.",
+    "question_type": "Debugging",
+    "keywords": [
+      "try/catch",
+      "async boundary",
+      "uncaught exception"
+    ],
+    "buggy_code": "try {\n  fs.readFile('file.txt', (err, data) => {\n    JSON.parse(data); // throws if invalid JSON\n  });\n} catch (e) {\n  console.error('caught:', e);\n}",
+    "fixed_code": "fs.readFile('file.txt', (err, data) => {\n  try {\n    JSON.parse(data);\n  } catch (e) {\n    console.error('caught:', e);\n  }\n});"
+  },
+  {
+    "id": "nodejs_025",
+    "technology": "Node.js",
+    "topic": "Callbacks & Callback Hell",
+    "difficulty": "Easy",
+    "question": "What is a callback function in Node.js?",
+    "answer": "A function passed as an argument to another function, to be invoked later — typically once an asynchronous operation completes.",
+    "explanation": "Callbacks are the original, lowest-level building block for async control flow in Node, predating Promises.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "callback",
+      "async",
+      "function argument"
+    ]
+  },
+  {
+    "id": "nodejs_026",
+    "technology": "Node.js",
+    "topic": "Callbacks & Callback Hell",
+    "difficulty": "Medium",
+    "question": "Refactor this callback-hell code to use Promises instead (assume readFileAsync returns a Promise).",
+    "answer": "readFileAsync('a.txt').then(a => readFileAsync('b.txt')).then(b => readFileAsync('c.txt')).then(c => console.log('done')).catch(err => console.error(err));",
+    "explanation": "Chaining .then() calls flattens the nested structure into a linear sequence, and a single .catch() at the end handles errors from ANY step in the chain, unlike needing an if(err) check after every nested callback.",
+    "question_type": "Coding",
+    "keywords": [
+      "callback hell",
+      "promises",
+      "refactor"
+    ],
+    "starter_code": "readFile('a.txt', (err, a) => {\n  readFile('b.txt', (err, b) => {\n    readFile('c.txt', (err, c) => {\n      console.log('done');\n    });\n  });\n});",
+    "expected_solution": "readFileAsync('a.txt')\n  .then(a => readFileAsync('b.txt'))\n  .then(b => readFileAsync('c.txt'))\n  .then(c => console.log('done'))\n  .catch(err => console.error(err));",
+    "test_cases": [
+      {
+        "input": "all three reads succeed",
+        "expected_output": "'done' logged once"
+      },
+      {
+        "input": "the second read rejects",
+        "expected_output": "error is caught by the single .catch(), 'done' is never logged"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_027",
+    "technology": "Node.js",
+    "topic": "Callbacks & Callback Hell",
+    "difficulty": "Medium",
+    "question": "What does 'inversion of control' mean as a downside of raw callbacks (compared to Promises)?",
+    "answer": "When you pass a callback to a third-party function, you're trusting that function to call your callback correctly (exactly once, with the right arguments, not swallowing errors) — you no longer control when/how/if it's invoked.",
+    "explanation": "Promises solve this by making the calling code hold onto a Promise object with guaranteed semantics (settles exactly once, chainable, propagates errors), rather than trusting an arbitrary function's calling convention.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "inversion of control",
+      "callbacks",
+      "promises"
+    ]
+  },
+  {
+    "id": "nodejs_028",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Easy",
+    "question": "What are the three possible states of a JavaScript Promise?",
+    "answer": "Pending, Fulfilled, and Rejected.",
+    "explanation": "A Promise starts Pending and can transition to Fulfilled (with a value) or Rejected (with a reason) exactly once — it cannot change state again after settling.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "promise states",
+      "pending",
+      "fulfilled"
+    ]
+  },
+  {
+    "id": "nodejs_029",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Easy",
+    "question": "Which Promise method runs a callback regardless of whether the Promise was fulfilled or rejected?",
+    "answer": ".finally()",
+    "explanation": "It's useful for cleanup logic (like hiding a loading spinner) that should run either way, without duplicating it in both .then() and .catch().",
+    "question_type": "MCQ",
+    "keywords": [
+      "finally",
+      "promise",
+      "cleanup"
+    ],
+    "options": [
+      ".then()",
+      ".catch()",
+      ".finally()",
+      ".resolve()"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "nodejs_030",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "What does `Promise.all([p1, p2, p3])` do, and what happens if one of them rejects?",
+    "answer": "It returns a single Promise that resolves with an array of all results once EVERY input Promise fulfills; if ANY one of them rejects, the returned Promise immediately rejects with that first rejection reason (the others' results, even if they succeed later, are ignored).",
+    "explanation": "For a scenario where you want all results regardless of individual failures, `Promise.allSettled` is the appropriate alternative, since it always resolves with per-promise status/value or reason.",
+    "question_type": "Technical",
+    "keywords": [
+      "promise.all",
+      "promise.allsettled",
+      "rejection"
+    ]
+  },
+  {
+    "id": "nodejs_031",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "What is the output of this code?",
+    "answer": "'A', 'B', 'C' — new Promise's executor function runs SYNCHRONOUSLY and immediately (logging 'A'), then the rest of the synchronous script continues ('B' before the .then() microtask), and only after the current synchronous code finishes does the .then() callback run ('C').",
+    "explanation": "A common misconception is that creating a Promise defers its executor function — it does not; only the .then()/.catch() callbacks are deferred to the microtask queue.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "promise executor",
+      "microtask",
+      "synchronous"
+    ],
+    "code_snippet": "new Promise((resolve) => {\n  console.log('A');\n  resolve();\n}).then(() => console.log('C'));\nconsole.log('B');"
+  },
+  {
+    "id": "nodejs_032",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Hard",
+    "question": "Why does forgetting to return a Promise from inside a `.then()` callback (when chaining) cause the next `.then()` to run before the inner async work finishes?",
+    "answer": "If a `.then()` callback starts an async operation (like a fetch) but doesn't `return` its Promise, the chain doesn't know to wait for it — it resolves immediately with `undefined`, so the next `.then()` in the chain runs right away instead of after the inner operation completes.",
+    "explanation": "The fix is always `return somePromise` inside a `.then()` when you want the chain to wait for it, ensuring proper sequencing of dependent async steps.",
+    "question_type": "Debugging",
+    "keywords": [
+      "promise chaining",
+      "missing return",
+      "sequencing"
+    ],
+    "buggy_code": "fetchUser(id).then(user => {\n  fetchPosts(user.id); // missing return\n}).then(posts => {\n  console.log(posts); // undefined, runs too early\n});",
+    "fixed_code": "fetchUser(id).then(user => {\n  return fetchPosts(user.id);\n}).then(posts => {\n  console.log(posts); // correct posts data\n});"
+  },
+  {
+    "id": "nodejs_033",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Easy",
+    "question": "What does the `await` keyword do inside an `async` function?",
+    "answer": "It pauses execution of that async function until the awaited Promise settles, then resumes with the resolved value (or throws if the Promise rejected).",
+    "explanation": "Under the hood it's syntactic sugar over Promise `.then()` chains, making asynchronous code read like synchronous, sequential code.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "await",
+      "async function",
+      "promise"
+    ]
+  },
+  {
+    "id": "nodejs_034",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Easy",
+    "question": "How do you handle a rejected Promise when using async/await?",
+    "answer": "Wrap the `await` expression in a try/catch block.",
+    "explanation": "Since an awaited rejection throws inside the async function, standard try/catch semantics apply, unlike raw Promises which need .catch().",
+    "question_type": "Technical",
+    "keywords": [
+      "try/catch",
+      "await",
+      "error handling"
+    ]
+  },
+  {
+    "id": "nodejs_035",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "What is wrong with this code if `fetchA()` and `fetchB()` don't depend on each other?",
+    "answer": "Awaiting them sequentially forces fetchB to wait for fetchA to finish first, even though they're independent — this wastes time by running two independent async operations one after another instead of concurrently.",
+    "explanation": "Using `const [a, b] = await Promise.all([fetchA(), fetchB()]);` starts both operations at the same time and waits for both to finish, which is faster when they don't depend on each other.",
+    "question_type": "Debugging",
+    "keywords": [
+      "async/await",
+      "sequential vs parallel",
+      "promise.all"
+    ],
+    "buggy_code": "const a = await fetchA();\nconst b = await fetchB();",
+    "fixed_code": "const [a, b] = await Promise.all([fetchA(), fetchB()]);"
+  },
+  {
+    "id": "nodejs_036",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Hard",
+    "question": "Why does an unhandled rejected Promise from an `async` function that's called WITHOUT `await` or `.catch()` sometimes go silently unnoticed until a later Node version terminates the process?",
+    "answer": "Calling an async function without awaiting or catching its result still returns a Promise; if that Promise rejects and nothing ever attaches a `.catch()`/`await`+try-catch to it, the rejection is 'unhandled' — historically Node only logged a warning, but since Node 15+, an unhandled promise rejection causes the process to actually terminate by default.",
+    "explanation": "This is why fire-and-forget async calls (`doAsyncThing();` without await) should still have an attached `.catch(handleError)` to avoid a rejection silently vanishing (or crashing the process on newer Node versions).",
+    "question_type": "Technical",
+    "keywords": [
+      "unhandled rejection",
+      "async function",
+      "node behavior change"
+    ]
+  },
+  {
+    "id": "nodejs_037",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Easy",
+    "question": "Which built-in Node.js module provides functions for reading and writing files?",
+    "answer": "fs (File System)",
+    "explanation": "It offers both synchronous (fs.readFileSync) and asynchronous (fs.readFile, fs.promises.readFile) variants for most operations.",
+    "question_type": "MCQ",
+    "keywords": [
+      "fs module",
+      "file system",
+      "node builtin"
+    ],
+    "options": [
+      "path",
+      "fs",
+      "os",
+      "http"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_038",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Easy",
+    "question": "Why is `fs.readFileSync` generally discouraged inside a running HTTP server's request handler?",
+    "answer": "It's a blocking, synchronous call — it halts the entire event loop (and thus every other in-flight request) until the file read completes.",
+    "explanation": "The asynchronous variants (`fs.readFile` with a callback, or `fs.promises.readFile` with async/await) let Node continue serving other requests while the file I/O happens in the background.",
+    "question_type": "Technical",
+    "keywords": [
+      "fs.readfilesync",
+      "blocking",
+      "event loop"
+    ]
+  },
+  {
+    "id": "nodejs_039",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Medium",
+    "question": "How do you read a file asynchronously using the Promise-based fs API and async/await?",
+    "answer": "`const data = await fs.promises.readFile(path, 'utf-8');` (or `import { readFile } from 'fs/promises'`).",
+    "explanation": "The `fs.promises` (or `node:fs/promises`) namespace mirrors the callback-based fs API but returns Promises, making it compose naturally with async/await instead of nested callbacks.",
+    "question_type": "Technical",
+    "keywords": [
+      "fs.promises",
+      "async/await",
+      "readFile"
+    ]
+  },
+  {
+    "id": "nodejs_040",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Medium",
+    "question": "What is the difference between `fs.writeFile` and `fs.appendFile`?",
+    "answer": "`fs.writeFile` overwrites the entire file's contents (creating it if it doesn't exist), while `fs.appendFile` adds the given content to the end of the existing file's contents (creating the file if needed).",
+    "explanation": "Using writeFile in a loop to add lines would repeatedly discard previous content, whereas appendFile is the correct choice for incrementally growing a file like a log.",
+    "question_type": "Technical",
+    "keywords": [
+      "fs.writefile",
+      "fs.appendfile",
+      "file operations"
+    ]
+  },
+  {
+    "id": "nodejs_041",
+    "technology": "Node.js",
+    "topic": "HTTP Module",
+    "difficulty": "Easy",
+    "question": "Which built-in Node.js module lets you create an HTTP server without any external framework?",
+    "answer": "http",
+    "explanation": "`http.createServer((req, res) => {...}).listen(port)` is the minimal way to start handling HTTP requests directly with Node's standard library.",
+    "question_type": "MCQ",
+    "keywords": [
+      "http module",
+      "createserver",
+      "node builtin"
+    ],
+    "options": [
+      "net",
+      "http",
+      "https",
+      "dgram"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_042",
+    "technology": "Node.js",
+    "topic": "HTTP Module",
+    "difficulty": "Medium",
+    "question": "Write a minimal Node.js HTTP server (using only the built-in `http` module) that responds with 'Hello World' to every request on port 3000.",
+    "answer": "const http = require('http');\nhttp.createServer((req, res) => {\n  res.writeHead(200, { 'Content-Type': 'text/plain' });\n  res.end('Hello World');\n}).listen(3000);",
+    "explanation": "`res.writeHead` sets the status code and headers, and `res.end()` sends the body and signals the response is complete; forgetting to call res.end() would leave the request hanging.",
+    "question_type": "Coding",
+    "keywords": [
+      "http server",
+      "createserver",
+      "response"
+    ],
+    "starter_code": "const http = require('http');\n// create and start a server on port 3000",
+    "expected_solution": "const http = require('http');\nhttp.createServer((req, res) => {\n  res.writeHead(200, { 'Content-Type': 'text/plain' });\n  res.end('Hello World');\n}).listen(3000);",
+    "test_cases": [
+      {
+        "input": "GET request to http://localhost:3000/",
+        "expected_output": "200 response with body 'Hello World'"
+      },
+      {
+        "input": "GET request to http://localhost:3000/anything",
+        "expected_output": "same 'Hello World' response (no routing logic)"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_043",
+    "technology": "Node.js",
+    "topic": "HTTP Module",
+    "difficulty": "Medium",
+    "question": "Why must you call `res.end()` even after sending a response body with `res.write()`?",
+    "answer": "`res.write()` sends a chunk of the response body but does not signal that the response is finished; the client's connection stays open waiting for more data (or a timeout) until `res.end()` is called.",
+    "explanation": "This chunked-writing capability is what enables streaming responses, but it also means forgetting `res.end()` is a common cause of a request hanging forever.",
+    "question_type": "Technical",
+    "keywords": [
+      "res.end",
+      "res.write",
+      "response lifecycle"
+    ]
+  },
+  {
+    "id": "nodejs_044",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Easy",
+    "question": "What is Express.js?",
+    "answer": "A minimal, unopinionated web application framework for Node.js that simplifies routing, middleware, and request/response handling on top of the built-in http module.",
+    "explanation": "It's one of the most widely used Node frameworks for building REST APIs and web servers, providing conveniences the raw http module lacks (like route parameters and easy JSON responses).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "express",
+      "web framework",
+      "routing"
+    ]
+  },
+  {
+    "id": "nodejs_045",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Easy",
+    "question": "How do you define a GET route at `/users` in Express that returns a JSON array?",
+    "answer": "`app.get('/users', (req, res) => { res.json(users); });`",
+    "explanation": "`res.json()` automatically sets the Content-Type header to application/json and serializes the given value.",
+    "question_type": "Technical",
+    "keywords": [
+      "express route",
+      "app.get",
+      "res.json"
+    ]
+  },
+  {
+    "id": "nodejs_046",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Medium",
+    "question": "How do you read a route parameter (e.g. the `id` in `/users/:id`) inside an Express route handler?",
+    "answer": "Via `req.params.id`, e.g. `app.get('/users/:id', (req, res) => { const id = req.params.id; ... });`",
+    "explanation": "Express automatically parses named route segments (prefixed with `:`) into the `req.params` object based on the route pattern.",
+    "question_type": "Technical",
+    "keywords": [
+      "req.params",
+      "route parameters",
+      "express"
+    ]
+  },
+  {
+    "id": "nodejs_047",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Medium",
+    "question": "Why do you need `app.use(express.json())` to read a POST request's JSON body via `req.body`?",
+    "answer": "Without this (or an equivalent body-parsing) middleware, Express does not parse the raw incoming request stream into a JS object — `req.body` would be undefined.",
+    "explanation": "`express.json()` is built into Express (since v4.16) as middleware that parses `Content-Type: application/json` bodies and attaches the result to `req.body` for downstream handlers.",
+    "question_type": "Technical",
+    "keywords": [
+      "express.json",
+      "middleware",
+      "req.body"
+    ]
+  },
+  {
+    "id": "nodejs_048",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Easy",
+    "question": "What is middleware in the context of Express.js?",
+    "answer": "A function with the signature `(req, res, next)` that runs during the request-response cycle, able to modify req/res, end the cycle, or call `next()` to pass control to the next middleware/route handler.",
+    "explanation": "Middleware is how Express composes cross-cutting behavior — logging, authentication, body parsing, error handling — as a pipeline each request flows through.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "middleware",
+      "next",
+      "request pipeline"
+    ]
+  },
+  {
+    "id": "nodejs_049",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Medium",
+    "question": "What happens if a middleware function never calls `next()` and never sends a response?",
+    "answer": "The request hangs indefinitely — the client never receives a response and the request-response cycle never completes, since nothing downstream runs and nothing was sent back.",
+    "explanation": "This is a common bug: every middleware must either call next() to continue the chain or terminate the request itself (res.send/res.json/res.end).",
+    "question_type": "Debugging",
+    "keywords": [
+      "middleware",
+      "hanging request",
+      "next()"
+    ],
+    "buggy_code": "function logger(req, res, next) {\n  console.log(req.method, req.url);\n}",
+    "fixed_code": "function logger(req, res, next) {\n  console.log(req.method, req.url);\n  next();\n}"
+  },
+  {
+    "id": "nodejs_050",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Medium",
+    "question": "How does Express distinguish an error-handling middleware from a regular one?",
+    "answer": "An error-handling middleware has FOUR parameters: `(err, req, res, next)`, instead of the usual three; Express only invokes these when `next(err)` is called or an error is thrown/passed along the chain.",
+    "explanation": "Error-handling middleware must be registered AFTER all other routes/middleware, since Express calls the first matching error handler it finds further down the stack.",
+    "question_type": "Technical",
+    "keywords": [
+      "error middleware",
+      "four parameters",
+      "next(err)"
+    ]
+  },
+  {
+    "id": "nodejs_051",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Hard",
+    "question": "Why does middleware order matter in Express (e.g. registering an authentication middleware before vs. after a protected route)?",
+    "answer": "Express executes middleware in the exact order they're registered via `app.use()`/route definitions; if the authentication check is registered AFTER the protected route handler, the route runs first, completely bypassing the auth check.",
+    "explanation": "This is why security-sensitive middleware (auth, rate limiting) must always be registered before the routes they're meant to protect.",
+    "question_type": "Technical",
+    "keywords": [
+      "middleware order",
+      "authentication",
+      "security"
+    ]
+  },
+  {
+    "id": "nodejs_052",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Easy",
+    "question": "Which HTTP method is conventionally used to retrieve a resource without modifying it?",
+    "answer": "GET",
+    "explanation": "REST conventions map CRUD operations to HTTP methods: GET (read), POST (create), PUT/PATCH (update), DELETE (delete) — GET requests should be safe and idempotent (no side effects).",
+    "question_type": "MCQ",
+    "keywords": [
+      "http methods",
+      "get",
+      "rest convention"
+    ],
+    "options": [
+      "POST",
+      "GET",
+      "DELETE",
+      "PUT"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_053",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Medium",
+    "question": "What is the difference between PUT and PATCH in REST API conventions?",
+    "answer": "PUT is meant to replace the ENTIRE resource with the given representation, while PATCH applies a PARTIAL update, modifying only the specified fields.",
+    "explanation": "Sending a PUT with only some fields could, per strict convention, be interpreted as clearing the omitted fields, whereas PATCH explicitly only touches what's included.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "put",
+      "patch",
+      "rest convention"
+    ]
+  },
+  {
+    "id": "nodejs_054",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Medium",
+    "question": "What does it mean for an HTTP method to be 'idempotent', and which common REST methods are idempotent?",
+    "answer": "An idempotent operation produces the same result (server state) no matter how many times it's repeated with the same input; GET, PUT, and DELETE are conventionally idempotent, while POST is not.",
+    "explanation": "For example, DELETE /users/5 called twice leaves the user deleted either way (same end state), but POST /users called twice typically creates two separate new users.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "idempotent",
+      "http methods",
+      "rest"
+    ]
+  },
+  {
+    "id": "nodejs_055",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Hard",
+    "question": "Why is returning HTTP 200 for every response (including errors, with error details only in the JSON body) considered bad REST API practice?",
+    "answer": "It breaks the semantic contract HTTP status codes exist to provide — clients, proxies, caches, and monitoring tools rely on status codes (4xx for client errors, 5xx for server errors) to make decisions without parsing the response body, and always returning 200 forces every consumer to inspect the body just to know if something failed.",
+    "explanation": "Correct practice is to use meaningful status codes (400 for bad input, 401/403 for auth issues, 404 for missing resources, 500 for server errors) alongside a descriptive JSON error body.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "http status codes",
+      "rest api design",
+      "error handling"
+    ]
+  },
+  {
+    "id": "nodejs_056",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Easy",
+    "question": "What is a Buffer in Node.js?",
+    "answer": "A fixed-size chunk of raw binary data allocated outside the V8 JS heap, used to handle binary data (like file contents or network packets) that isn't naturally represented as a JS string.",
+    "explanation": "Buffers exist because JavaScript historically had no good way to work with raw binary data, and Node deals with binary data constantly (files, sockets, streams).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "buffer",
+      "binary data",
+      "node builtin"
+    ]
+  },
+  {
+    "id": "nodejs_057",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Medium",
+    "question": "What is the main advantage of using a Readable Stream to process a large file instead of `fs.readFileSync`?",
+    "answer": "Streams process data in small chunks as they arrive, keeping memory usage low and letting processing start before the entire file has been read, whereas readFileSync loads the ENTIRE file into memory at once.",
+    "explanation": "For very large files (e.g. multi-gigabyte logs), loading the whole thing into memory via readFileSync/readFile could exhaust available memory, while a stream's chunked processing scales to arbitrary file sizes.",
+    "question_type": "Technical",
+    "keywords": [
+      "streams",
+      "memory efficiency",
+      "readfilesync"
+    ]
+  },
+  {
+    "id": "nodejs_058",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Medium",
+    "question": "What are the four fundamental stream types in Node.js?",
+    "answer": "Readable, Writable, Duplex (both readable and writable), and Transform (a duplex stream that modifies data as it passes through).",
+    "explanation": "An HTTP response object is Writable, an HTTP request object (on the server) is Readable, a TCP socket is Duplex, and something like zlib's gzip stream is a Transform.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "stream types",
+      "readable",
+      "writable",
+      "transform"
+    ]
+  },
+  {
+    "id": "nodejs_059",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Hard",
+    "question": "Why is `stream.pipe()` (or pipeline()) preferred over manually reading chunks and writing them to the destination yourself?",
+    "answer": "pipe()/pipeline() automatically handles 'backpressure' — pausing the readable source if the writable destination can't keep up with incoming data — preventing memory from ballooning if the destination is slower than the source.",
+    "explanation": "Manually forwarding chunks (readable.on('data', chunk => writable.write(chunk))) ignores the return value of writable.write(), which signals backpressure, risking unbounded memory growth if you don't implement that pause/resume logic yourself; `pipeline()` (over raw pipe()) also properly propagates errors and cleans up streams.",
+    "question_type": "Technical",
+    "keywords": [
+      "backpressure",
+      "stream.pipe",
+      "pipeline"
+    ]
+  },
+  {
+    "id": "nodejs_060",
+    "technology": "Node.js",
+    "topic": "Event Emitters",
+    "difficulty": "Easy",
+    "question": "What is the EventEmitter class used for in Node.js?",
+    "answer": "It implements the observer pattern — objects can emit named events, and other code can register listener functions to run when those events fire, using `.on(event, listener)` and `.emit(event, ...args)`.",
+    "explanation": "Many core Node APIs (streams, HTTP servers, child processes) are built on EventEmitter internally.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "eventemitter",
+      "observer pattern",
+      "events"
+    ]
+  },
+  {
+    "id": "nodejs_061",
+    "technology": "Node.js",
+    "topic": "Event Emitters",
+    "difficulty": "Medium",
+    "question": "What is the difference between `emitter.on('event', fn)` and `emitter.once('event', fn)`?",
+    "answer": "`.on()` registers a listener that runs every time the event is emitted; `.once()` registers a listener that runs only for the FIRST emission of that event, then automatically removes itself.",
+    "explanation": "`.once()` is useful for one-time setup events (like a 'connect' or 'ready' event) where you don't want the handler to accumulate or re-fire on subsequent emissions.",
+    "question_type": "Technical",
+    "keywords": [
+      "eventemitter",
+      "once",
+      "on"
+    ]
+  },
+  {
+    "id": "nodejs_062",
+    "technology": "Node.js",
+    "topic": "Event Emitters",
+    "difficulty": "Hard",
+    "question": "What warning does Node.js log if you attach more than 10 listeners for the same event on one EventEmitter, and why does this limit exist?",
+    "answer": "A 'MaxListenersExceededWarning', because attaching an unbounded/growing number of listeners for the same event on the same emitter usually indicates a memory leak (e.g. a listener being re-added on every request instead of once).",
+    "explanation": "The default limit (10) is just a heuristic warning, not a hard cap — it can be changed via `emitter.setMaxListeners(n)` if a legitimately large number of listeners is intended.",
+    "question_type": "Technical",
+    "keywords": [
+      "maxlistenersexceededwarning",
+      "memory leak",
+      "eventemitter"
+    ]
+  },
+  {
+    "id": "nodejs_063",
+    "technology": "Node.js",
+    "topic": "Error Handling",
+    "difficulty": "Easy",
+    "question": "What is the recommended way to handle an error inside an Express route handler that uses async/await?",
+    "answer": "Wrap the handler logic in a try/catch and call `next(err)` in the catch block, so Express's error-handling middleware can process it.",
+    "explanation": "Simply throwing inside an async function without a try/catch produces an unhandled rejection that Express (pre-v5) does not automatically forward to its error middleware.",
+    "question_type": "Technical",
+    "keywords": [
+      "express error handling",
+      "try/catch",
+      "next(err)"
+    ]
+  },
+  {
+    "id": "nodejs_064",
+    "technology": "Node.js",
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "What is the difference between an 'operational error' (e.g. invalid user input, failed DB connection) and a 'programmer error' (e.g. calling a function with the wrong type) in Node.js error-handling philosophy?",
+    "answer": "Operational errors are expected runtime failures a well-written program should anticipate and handle gracefully (return a 400, retry, etc.); programmer errors are bugs (a real defect in the code) that should generally cause a crash/restart rather than being silently caught and 'handled', since the program's internal state can no longer be trusted.",
+    "explanation": "This distinction guides where try/catch belongs (around operational failure points) versus where you should let the process crash and rely on a process manager (like PM2 or a container orchestrator) to restart it cleanly.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "operational error",
+      "programmer error",
+      "error philosophy"
+    ]
+  },
+  {
+    "id": "nodejs_065",
+    "technology": "Node.js",
+    "topic": "Error Handling",
+    "difficulty": "Hard",
+    "question": "Why does a global `process.on('uncaughtException', ...)` handler NOT make it safe to keep the process running after an unexpected synchronous error?",
+    "answer": "Once an uncaught exception has occurred, the application's internal state may be corrupted in ways that are unknown/unpredictable (mid-operation, resources half-released, etc.), so continuing to serve new requests risks silent data corruption or cascading failures.",
+    "explanation": "Best practice is to log the error, perform any critical cleanup, and then exit the process deliberately (`process.exit(1)`), relying on an external process manager/orchestrator to restart a fresh, known-good instance.",
+    "question_type": "Technical",
+    "keywords": [
+      "uncaughtexception",
+      "process crash",
+      "graceful shutdown"
+    ]
+  },
+  {
+    "id": "nodejs_066",
+    "technology": "Node.js",
+    "topic": "Child Processes",
+    "difficulty": "Easy",
+    "question": "Which core Node.js module lets you spawn external OS processes (like running a shell command)?",
+    "answer": "child_process",
+    "explanation": "It offers several functions (spawn, exec, execFile, fork) with different trade-offs for how output is buffered and how the child process is created.",
+    "question_type": "MCQ",
+    "keywords": [
+      "child_process",
+      "spawn",
+      "external process"
+    ],
+    "options": [
+      "cluster",
+      "child_process",
+      "worker_threads",
+      "process"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_067",
+    "technology": "Node.js",
+    "topic": "Child Processes",
+    "difficulty": "Medium",
+    "question": "What is the difference between `child_process.exec()` and `child_process.spawn()`?",
+    "answer": "`exec()` buffers the child's entire stdout/stderr into memory and passes it to a callback once the process exits (limited by a maxBuffer size), while `spawn()` returns a stream-based interface, letting you process output incrementally as it's produced and handle much larger outputs.",
+    "explanation": "`exec()` is convenient for short commands with small output; `spawn()` is preferred for long-running processes or large output volumes since it avoids the buffer size limit and memory spike.",
+    "question_type": "Technical",
+    "keywords": [
+      "exec",
+      "spawn",
+      "child process"
+    ]
+  },
+  {
+    "id": "nodejs_068",
+    "technology": "Node.js",
+    "topic": "Child Processes",
+    "difficulty": "Hard",
+    "question": "What is the specific purpose of `child_process.fork()` compared to `spawn()`?",
+    "answer": "`fork()` is a specialized version of spawn specifically for launching new Node.js processes, automatically setting up an IPC (inter-process communication) channel so the parent and child can exchange messages via `.send()`/`on('message')`.",
+    "explanation": "This makes fork() the standard way to offload CPU-heavy JS work to a separate Node process while still being able to communicate results back, without blocking the main event loop.",
+    "question_type": "Technical",
+    "keywords": [
+      "fork",
+      "ipc",
+      "child process"
+    ]
+  },
+  {
+    "id": "nodejs_069",
+    "technology": "Node.js",
+    "topic": "Clustering",
+    "difficulty": "Medium",
+    "question": "What problem does the Node.js `cluster` module solve on a multi-core machine?",
+    "answer": "Since a single Node process only uses one CPU core (JS execution is single-threaded), the cluster module lets you fork multiple worker processes (typically one per CPU core) that all share the same server port, letting the application use all available cores.",
+    "explanation": "The OS (or Node's round-robin scheduling) distributes incoming connections across the worker processes, effectively parallelizing request handling across cores.",
+    "question_type": "Technical",
+    "keywords": [
+      "cluster module",
+      "multi-core",
+      "worker processes"
+    ]
+  },
+  {
+    "id": "nodejs_070",
+    "technology": "Node.js",
+    "topic": "Clustering",
+    "difficulty": "Hard",
+    "question": "Why do clustered Node.js worker processes NOT share in-memory state (e.g. a plain JS object used as an in-memory cache) by default?",
+    "answer": "Each cluster worker is a completely separate OS process with its own V8 instance and memory space; forking doesn't share memory, so a variable updated in one worker's memory has no effect on another worker's copy.",
+    "explanation": "For state that must be shared across workers (sessions, caches), you need an external shared store (like Redis) rather than relying on in-process memory.",
+    "question_type": "Technical",
+    "keywords": [
+      "cluster",
+      "shared state",
+      "separate processes"
+    ]
+  },
+  {
+    "id": "nodejs_071",
+    "technology": "Node.js",
+    "topic": "Environment Variables",
+    "difficulty": "Easy",
+    "question": "How do you read an environment variable's value inside a Node.js script?",
+    "answer": "`process.env.VARIABLE_NAME`",
+    "explanation": "Environment variables are exposed as string properties on the `process.env` object.",
+    "question_type": "Technical",
+    "keywords": [
+      "process.env",
+      "environment variables",
+      "node basics"
+    ]
+  },
+  {
+    "id": "nodejs_072",
+    "technology": "Node.js",
+    "topic": "Environment Variables",
+    "difficulty": "Medium",
+    "question": "Why is it a bad practice to hardcode secrets (like a database password or API key) directly in source code instead of using environment variables?",
+    "answer": "Hardcoded secrets get committed to version control (visible to anyone with repo access, and permanently in git history even if later removed) and can't differ between environments (dev/staging/prod) without editing code.",
+    "explanation": "Environment variables (often loaded from a local, git-ignored `.env` file via a package like dotenv) let the same codebase run with different, environment-appropriate secrets without ever committing them.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "secrets",
+      "environment variables",
+      "security"
+    ]
+  },
+  {
+    "id": "nodejs_073",
+    "technology": "Node.js",
+    "topic": "Environment Variables",
+    "difficulty": "Medium",
+    "question": "What does the `dotenv` package do in a Node.js project?",
+    "answer": "It reads key=value pairs from a `.env` file and loads them into `process.env` at application startup, so environment-specific configuration doesn't need to be set manually in the shell.",
+    "explanation": "It's a development convenience — in production, environment variables are typically set directly by the hosting platform/orchestrator rather than via a .env file.",
+    "question_type": "Technical",
+    "keywords": [
+      "dotenv",
+      ".env file",
+      "configuration"
+    ]
+  },
+  {
+    "id": "nodejs_074",
+    "technology": "Node.js",
+    "topic": "Authentication Basics (JWT)",
+    "difficulty": "Easy",
+    "question": "What does JWT stand for, and what is it typically used for?",
+    "answer": "JSON Web Token — a compact, self-contained token format commonly used to represent a user's identity/claims for stateless authentication between a client and server.",
+    "explanation": "Because the token itself carries the claims (and is signed), the server doesn't need to look up a session store to verify who's making a request, which is why it's called 'stateless'.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "jwt",
+      "authentication",
+      "stateless"
+    ]
+  },
+  {
+    "id": "nodejs_075",
+    "technology": "Node.js",
+    "topic": "Authentication Basics (JWT)",
+    "difficulty": "Medium",
+    "question": "What are the three parts of a JWT, separated by dots?",
+    "answer": "Header, Payload, and Signature.",
+    "explanation": "The Header specifies the algorithm/type, the Payload holds the claims (like user id, expiry), and the Signature (computed from the header+payload and a secret/private key) lets the server verify the token hasn't been tampered with.",
+    "question_type": "Technical",
+    "keywords": [
+      "jwt structure",
+      "header payload signature",
+      "jwt"
+    ]
+  },
+  {
+    "id": "nodejs_076",
+    "technology": "Node.js",
+    "topic": "Authentication Basics (JWT)",
+    "difficulty": "Hard",
+    "question": "Why does the fact that a JWT's payload is only Base64URL-ENCODED (not encrypted) matter for what you should and shouldn't put in it?",
+    "answer": "Base64URL encoding is trivially reversible by anyone (it's not encryption) — so any client or intermediary can decode and READ the payload's contents even without the signing secret; the signature only prevents undetected TAMPERING, not reading.",
+    "explanation": "This means sensitive data (passwords, secrets, private PII) must never be placed in a JWT payload, since 'signed' does not mean 'confidential'.",
+    "question_type": "Technical",
+    "keywords": [
+      "jwt security",
+      "base64",
+      "encoding vs encryption"
+    ]
+  },
+  {
+    "id": "nodejs_077",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Easy",
+    "question": "What is an ORM, and name one popular ORM/ODM used in Node.js projects.",
+    "answer": "An Object-Relational Mapper (or Object-Document Mapper for NoSQL) that lets you interact with a database using objects/classes and methods instead of writing raw queries directly; Mongoose (for MongoDB) and Sequelize/Prisma (for SQL databases) are common examples in Node.",
+    "explanation": "ORMs/ODMs typically also provide schema validation, migrations, and relationship management on top of the raw query layer.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "orm",
+      "mongoose",
+      "sequelize"
+    ]
+  },
+  {
+    "id": "nodejs_078",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Medium",
+    "question": "Why should database connection pooling be used instead of opening a brand-new connection for every incoming request?",
+    "answer": "Establishing a new database connection has real overhead (TCP handshake, authentication) that adds latency to every request; a connection pool keeps a set of already-open, reusable connections that requests can borrow and return quickly.",
+    "explanation": "Without pooling, a spike in concurrent requests could also exhaust the database's max-connections limit far faster, since each request would hold its own dedicated connection for its full duration.",
+    "question_type": "Technical",
+    "keywords": [
+      "connection pooling",
+      "database performance",
+      "scalability"
+    ]
+  },
+  {
+    "id": "nodejs_079",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Hard",
+    "question": "Why is directly interpolating user input into a raw SQL query string (instead of using parameterized queries) in a Node.js app dangerous?",
+    "answer": "It opens the application to SQL injection — a malicious user could craft input containing SQL syntax that changes the query's meaning (e.g. bypassing a WHERE clause or exfiltrating other users' data).",
+    "explanation": "Parameterized queries (placeholders like `?` or `$1`, with values passed separately to the driver) ensure user input is always treated strictly as data, never as executable SQL syntax, regardless of its contents.",
+    "question_type": "Technical",
+    "keywords": [
+      "sql injection",
+      "parameterized queries",
+      "security"
+    ]
+  },
+  {
+    "id": "nodejs_080",
+    "technology": "Node.js",
+    "topic": "Debugging & Performance",
+    "difficulty": "Easy",
+    "question": "Which built-in Node.js flag lets you attach the Chrome DevTools debugger to a running script?",
+    "answer": "--inspect (e.g. `node --inspect app.js`)",
+    "explanation": "It opens a WebSocket-based debugging protocol port that Chrome DevTools (via chrome://inspect) or VS Code's debugger can connect to for breakpoints, stepping, and variable inspection.",
+    "question_type": "Technical",
+    "keywords": [
+      "--inspect",
+      "debugging",
+      "devtools"
+    ]
+  },
+  {
+    "id": "nodejs_081",
+    "technology": "Node.js",
+    "topic": "Debugging & Performance",
+    "difficulty": "Medium",
+    "question": "What is a memory leak in a long-running Node.js process, and give one common cause.",
+    "answer": "A situation where memory usage keeps growing over time without being released, eventually leading to degraded performance or an out-of-memory crash; a common cause is an ever-growing array/cache/EventEmitter listener list that's added to but never cleaned up.",
+    "explanation": "Global caches without eviction, or forgetting to remove event listeners/timers when they're no longer needed, are classic sources of this kind of unbounded growth in a server process that runs for days or weeks.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "memory leak",
+      "long-running process",
+      "cleanup"
+    ]
+  },
+  {
+    "id": "nodejs_082",
+    "technology": "Node.js",
+    "topic": "Debugging & Performance",
+    "difficulty": "Hard",
+    "question": "How can you use Node's built-in `--prof` flag (or clinic.js/0x) to diagnose a CPU performance bottleneck?",
+    "answer": "`--prof` generates a V8 profiler log (isolate-*.log) capturing where CPU time is spent during execution, which can then be processed with `node --prof-process` into a human-readable summary showing hot functions and call stacks.",
+    "explanation": "This sampling-profiler approach identifies which specific functions consume the most CPU time under real load, which is far more reliable than guessing at bottlenecks from code inspection alone.",
+    "question_type": "Technical",
+    "keywords": [
+      "--prof",
+      "profiling",
+      "performance bottleneck"
+    ]
+  },
+  {
+    "id": "nodejs_083",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Medium",
+    "question": "Implement a Promise-returning `delay(ms)` function that resolves after the given number of milliseconds.",
+    "answer": "function delay(ms) {\n  return new Promise(resolve => setTimeout(resolve, ms));\n}",
+    "explanation": "Wrapping setTimeout in a Promise constructor is the standard pattern for converting a callback-based timer API into something awaitable with async/await.",
+    "question_type": "Coding",
+    "keywords": [
+      "promise",
+      "settimeout",
+      "delay"
+    ],
+    "starter_code": "function delay(ms) {\n  // return a Promise that resolves after ms milliseconds\n}",
+    "expected_solution": "function delay(ms) {\n  return new Promise(resolve => setTimeout(resolve, ms));\n}",
+    "test_cases": [
+      {
+        "input": "await delay(100)",
+        "expected_output": "resolves after approximately 100ms"
+      },
+      {
+        "input": "await delay(0)",
+        "expected_output": "resolves on the next event loop tick"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_084",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Medium",
+    "question": "Implement an Express middleware `requestLogger` that logs the HTTP method, URL, and response time for every request.",
+    "answer": "function requestLogger(req, res, next) {\n  const start = Date.now();\n  res.on('finish', () => {\n    console.log(`${req.method} ${req.url} ${Date.now() - start}ms`);\n  });\n  next();\n}",
+    "explanation": "Listening for the response's 'finish' event (rather than logging immediately) ensures the logged duration includes the time taken by all downstream middleware/handlers, and next() is still called immediately so the request isn't blocked.",
+    "question_type": "Coding",
+    "keywords": [
+      "express middleware",
+      "logging",
+      "response event"
+    ],
+    "starter_code": "function requestLogger(req, res, next) {\n  // log method, url, and duration once response finishes\n}",
+    "expected_solution": "function requestLogger(req, res, next) {\n  const start = Date.now();\n  res.on('finish', () => {\n    console.log(`${req.method} ${req.url} ${Date.now() - start}ms`);\n  });\n  next();\n}",
+    "test_cases": [
+      {
+        "input": "GET /users, responds after 50ms",
+        "expected_output": "logs 'GET /users 50ms' (approximately) after response completes"
+      },
+      {
+        "input": "POST /login, responds after 10ms",
+        "expected_output": "logs 'POST /login 10ms' (approximately)"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_085",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Hard",
+    "question": "Implement a `retry(fn, attempts)` async helper that retries a Promise-returning function up to `attempts` times before giving up.",
+    "answer": "async function retry(fn, attempts) {\n  let lastError;\n  for (let i = 0; i < attempts; i++) {\n    try {\n      return await fn();\n    } catch (err) {\n      lastError = err;\n    }\n  }\n  throw lastError;\n}",
+    "explanation": "The loop tries `fn()` up to `attempts` times, returning immediately on the first success; if every attempt fails, it re-throws the last captured error so the caller can still handle final failure.",
+    "question_type": "Coding",
+    "keywords": [
+      "retry logic",
+      "async/await",
+      "error handling"
+    ],
+    "starter_code": "async function retry(fn, attempts) {\n  // retry fn() up to `attempts` times\n}",
+    "expected_solution": "async function retry(fn, attempts) {\n  let lastError;\n  for (let i = 0; i < attempts; i++) {\n    try {\n      return await fn();\n    } catch (err) {\n      lastError = err;\n    }\n  }\n  throw lastError;\n}",
+    "test_cases": [
+      {
+        "input": "fn fails twice then succeeds, attempts=3",
+        "expected_output": "returns fn's successful result on the 3rd attempt"
+      },
+      {
+        "input": "fn always fails, attempts=2",
+        "expected_output": "throws the error from the 2nd (final) attempt"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_086",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "What is the REPL in the context of Node.js?",
+    "answer": "Read-Eval-Print-Loop — an interactive shell (started by typing `node` with no file argument) that reads a JS expression, evaluates it, prints the result, and loops, useful for quick experimentation.",
+    "explanation": "It's the same underlying engine used for scripts, just wrapped in an interactive prompt rather than reading from a file.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "repl",
+      "interactive shell",
+      "node cli"
+    ]
+  },
+  {
+    "id": "nodejs_087",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Medium",
+    "question": "What does Node.js use to resolve a bare module specifier like `require('lodash')` (no relative path)?",
+    "answer": "It searches up the directory tree for a `node_modules` folder containing a `lodash` package, starting from the requiring file's directory and continuing up to the filesystem root.",
+    "explanation": "This is why installing a package with npm places it in a `node_modules` folder that Node's module resolution algorithm knows to search.",
+    "question_type": "Technical",
+    "keywords": [
+      "module resolution",
+      "node_modules",
+      "require"
+    ]
+  },
+  {
+    "id": "nodejs_088",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Easy",
+    "question": "Which npm command installs all dependencies listed in an existing package.json?",
+    "answer": "npm install",
+    "explanation": "Run with no package name argument, npm install reads package.json (and package-lock.json if present) and installs everything listed into node_modules.",
+    "question_type": "MCQ",
+    "keywords": [
+      "npm install",
+      "dependencies",
+      "npm command"
+    ],
+    "options": [
+      "npm start",
+      "npm install",
+      "npm init",
+      "npm run"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_089",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Medium",
+    "question": "Why is `console.log` output sometimes seen to interleave unexpectedly with async callback output in Node scripts with mixed sync/async code?",
+    "answer": "Because all synchronous code in the current call stack always finishes executing BEFORE the event loop processes any queued microtasks or macrotasks — so any log statements placed after an async call but still in synchronous code run before the async callback's logs, regardless of the source-code order suggesting otherwise.",
+    "explanation": "This is the single most common source of confusion for developers new to Node's async model — reading the CODE top-to-bottom does not tell you the actual EXECUTION order once async operations are involved.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "event loop ordering",
+      "synchronous code",
+      "async confusion"
+    ]
+  },
+  {
+    "id": "nodejs_090",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Easy",
+    "question": "Which static Promise method takes an array of Promises and resolves as soon as the FIRST one settles (fulfilled or rejected)?",
+    "answer": "Promise.race()",
+    "explanation": "Unlike Promise.all (waits for all) or Promise.any (waits for the first FULFILLED one, ignoring rejections until all reject), Promise.race settles with whichever input settles first, success or failure.",
+    "question_type": "MCQ",
+    "keywords": [
+      "promise.race",
+      "promise.all",
+      "promise.any"
+    ],
+    "options": [
+      "Promise.all",
+      "Promise.race",
+      "Promise.any",
+      "Promise.allSettled"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_091",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "Can you use `await` at the top level of a CommonJS module file (outside any async function)?",
+    "answer": "No — top-level await is only supported in ES Modules (.mjs files, or .js with \"type\": \"module\"), not in CommonJS modules; in CommonJS, await is only valid inside an async function.",
+    "explanation": "This is one practical reason some projects migrate to ESM — top-level await simplifies scripts/entry points that need to perform async setup (like connecting to a database) before anything else runs.",
+    "question_type": "Technical",
+    "keywords": [
+      "top-level await",
+      "esm",
+      "commonjs limitation"
+    ]
+  },
+  {
+    "id": "nodejs_092",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Medium",
+    "question": "How do you serve static files (like images or a built frontend) from a folder named `public` in Express?",
+    "answer": "`app.use(express.static('public'));`",
+    "explanation": "This built-in middleware serves any file under the given directory directly by its path, e.g. a file at public/logo.png becomes available at /logo.png.",
+    "question_type": "Technical",
+    "keywords": [
+      "express.static",
+      "static files",
+      "express middleware"
+    ]
+  },
+  {
+    "id": "nodejs_093",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Easy",
+    "question": "Which HTTP status code should a REST API return when a requested resource does not exist?",
+    "answer": "404 Not Found",
+    "explanation": "It's a client-error status specifically meaning the server couldn't find a resource matching the requested URI.",
+    "question_type": "MCQ",
+    "keywords": [
+      "404",
+      "http status codes",
+      "rest api"
+    ],
+    "options": [
+      "200",
+      "404",
+      "500",
+      "301"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_094",
+    "technology": "Node.js",
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "Why should an Express error-handling middleware be registered as the LAST `app.use()` call, after all routes?",
+    "answer": "Express matches middleware/routes in registration order, and error-handling middleware (4-argument signature) is only invoked when an earlier handler calls `next(err)` or throws — placing it last ensures it can catch errors from ANY route defined above it.",
+    "explanation": "If it were registered before the routes, it simply wouldn't be reachable for errors those routes produce, since Express wouldn't have processed those routes yet when hitting the error handler in registration order.",
+    "question_type": "Technical",
+    "keywords": [
+      "error middleware order",
+      "express",
+      "next(err)"
+    ]
+  },
+  {
+    "id": "nodejs_095",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Easy",
+    "question": "What event does a Readable stream emit each time a new chunk of data is available?",
+    "answer": "'data'",
+    "explanation": "Listening with `readable.on('data', chunk => {...})` switches the stream into 'flowing mode', where chunks are pushed to the listener as soon as they're available.",
+    "question_type": "MCQ",
+    "keywords": [
+      "stream events",
+      "'data' event",
+      "readable stream"
+    ],
+    "options": [
+      "'chunk'",
+      "'data'",
+      "'read'",
+      "'next'"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_096",
+    "technology": "Node.js",
+    "topic": "Authentication Basics (JWT)",
+    "difficulty": "Medium",
+    "question": "Where is a JWT typically stored and sent from the client on subsequent requests?",
+    "answer": "Commonly in an `Authorization: Bearer <token>` HTTP header on each request, though it may also be stored in an HttpOnly cookie depending on the app's security requirements.",
+    "explanation": "Storing it in localStorage and reading it into memory to set the header manually is common but exposes the token to XSS attacks; an HttpOnly cookie is not readable by JS at all, offering better XSS protection at the cost of needing CSRF protection instead.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "jwt storage",
+      "authorization header",
+      "security tradeoffs"
+    ]
+  },
+  {
+    "id": "nodejs_097",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Medium",
+    "question": "What is the N+1 query problem, and how might it show up in a Node.js app using an ORM?",
+    "answer": "It's a performance anti-pattern where fetching a list of N parent records triggers one additional query PER record to fetch related data (N extra queries), instead of a single batched query — e.g. looping over 100 blog posts and querying each post's author individually inside the loop.",
+    "explanation": "ORMs typically offer 'eager loading'/'includes' (e.g. Sequelize's `include`, Mongoose's `populate`) to fetch related data in a single batched query instead of one-per-record.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "n+1 problem",
+      "orm performance",
+      "eager loading"
+    ]
+  },
+  {
+    "id": "nodejs_098",
+    "technology": "Node.js",
+    "topic": "Clustering",
+    "difficulty": "Medium",
+    "question": "In a clustered Node.js app (using the `cluster` module), which process is responsible for accepting new connections and distributing them to workers?",
+    "answer": "The primary (master) process — it listens on the shared port and distributes incoming connections to its worker processes (round-robin by default on most platforms).",
+    "explanation": "Workers themselves don't bind the port directly in the typical setup; they receive already-accepted connections handed off by the primary process.",
+    "question_type": "Technical",
+    "keywords": [
+      "cluster primary process",
+      "worker distribution",
+      "master process"
+    ]
+  },
+  {
+    "id": "nodejs_099",
+    "technology": "Node.js",
+    "topic": "Child Processes",
+    "difficulty": "Medium",
+    "question": "What communication mechanism does `child_process.fork()` set up between parent and child that plain `spawn()` does not provide automatically?",
+    "answer": "An IPC (inter-process communication) channel, allowing `parentProcess.send(message)` / `child.on('message', ...)` and vice versa, for structured message passing between the two Node processes.",
+    "explanation": "Plain spawn() only gives you the child's stdin/stdout/stderr streams; you'd have to implement your own message protocol over those streams to achieve similar structured communication.",
+    "question_type": "Technical",
+    "keywords": [
+      "fork ipc",
+      "process communication",
+      "spawn vs fork"
+    ]
+  },
+  {
+    "id": "nodejs_100",
+    "technology": "Node.js",
+    "topic": "HTTP Module",
+    "difficulty": "Hard",
+    "question": "Why does a raw Node.js `http.createServer` handler need to manually parse the URL and route logic itself, unlike Express?",
+    "answer": "The built-in `http` module only gives you the raw request/response objects and does not include any routing, parameter parsing, or middleware concepts — those are exactly the conveniences frameworks like Express layer on top of it.",
+    "explanation": "This is why most real-world Node HTTP servers use a framework: writing an if/else chain on `req.url`/`req.method` to route manually becomes unwieldy fast for any API with more than a couple of endpoints.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "http module limitations",
+      "manual routing",
+      "express comparison"
+    ]
+  },
+  {
+    "id": "nodejs_101",
+    "technology": "Node.js",
+    "topic": "Environment Variables",
+    "difficulty": "Hard",
+    "question": "Why should you avoid committing a `.env` file containing real secrets to version control, and what's the standard mitigation?",
+    "answer": "A committed `.env` file permanently exposes secrets in the repository's history (visible to anyone with access, even if the file is later deleted, since git retains old commits), which is a serious security risk if the repo is ever made public or a collaborator's access is later revoked.",
+    "explanation": "The standard mitigation is adding `.env` to `.gitignore`, committing only a `.env.example` template with placeholder values, and managing real secrets via the deployment platform's secret management instead.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "dotenv security",
+      "gitignore",
+      "secret management"
+    ]
+  },
+  {
+    "id": "nodejs_102",
+    "technology": "Node.js",
+    "topic": "Debugging & Performance",
+    "difficulty": "Medium",
+    "question": "What Node.js built-in tool lets you take a heap snapshot to investigate a suspected memory leak?",
+    "answer": "The `--inspect` flag combined with Chrome DevTools' Memory tab (or the `v8` module's `writeHeapSnapshot()`), which captures a snapshot of all objects currently on the heap for analysis.",
+    "explanation": "Comparing heap snapshots taken at different points in time (e.g. before and after repeating an operation many times) helps identify which object types are accumulating and never being garbage collected.",
+    "question_type": "Technical",
+    "keywords": [
+      "heap snapshot",
+      "memory leak debugging",
+      "v8 inspector"
+    ]
+  },
+  {
+    "id": "nodejs_103",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Medium",
+    "question": "Implement an async `readJsonFile(path)` function that reads a file and returns its parsed JSON content, throwing a clear error if the JSON is invalid.",
+    "answer": "async function readJsonFile(path) {\n  const raw = await fs.promises.readFile(path, 'utf-8');\n  try {\n    return JSON.parse(raw);\n  } catch (err) {\n    throw new Error(`Invalid JSON in ${path}: ${err.message}`);\n  }\n}",
+    "explanation": "Wrapping only the JSON.parse call in try/catch (not the file read) lets a file-not-found error propagate with its own natural message, while giving a more specific, actionable error for malformed JSON content.",
+    "question_type": "Coding",
+    "keywords": [
+      "fs.promises",
+      "json.parse",
+      "error wrapping"
+    ],
+    "starter_code": "async function readJsonFile(path) {\n  // read file and parse JSON, with a clear error on invalid JSON\n}",
+    "expected_solution": "async function readJsonFile(path) {\n  const raw = await fs.promises.readFile(path, 'utf-8');\n  try {\n    return JSON.parse(raw);\n  } catch (err) {\n    throw new Error(`Invalid JSON in ${path}: ${err.message}`);\n  }\n}",
+    "test_cases": [
+      {
+        "input": "path points to a file containing '{\"a\":1}'",
+        "expected_output": "returns {a: 1}"
+      },
+      {
+        "input": "path points to a file containing invalid JSON like '{a:1'",
+        "expected_output": "throws an Error mentioning 'Invalid JSON'"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_104",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Hard",
+    "question": "Why does calling `next()` a SECOND time within the same request (e.g. once in a try block and again in a catch block, both unconditionally) cause unpredictable behavior in Express?",
+    "answer": "Calling next() twice hands control to the next middleware/route twice for the same request, which can result in 'headers already sent' errors if a later handler tries to send a second response, or double-execution of downstream logic.",
+    "explanation": "The fix is ensuring next() (or a response-ending call) happens exactly once per code path — typically by returning immediately after calling next() or res.send(), and structuring conditionals so only one branch runs per request.",
+    "question_type": "Debugging",
+    "keywords": [
+      "double next()",
+      "headers already sent",
+      "middleware bug"
+    ],
+    "buggy_code": "function middleware(req, res, next) {\n  try {\n    doWork();\n    next();\n  } catch (err) {\n    next(err);\n  } finally {\n    next(); // bug: called again unconditionally\n  }\n}",
+    "fixed_code": "function middleware(req, res, next) {\n  try {\n    doWork();\n    next();\n  } catch (err) {\n    next(err);\n  }\n}"
+  },
+  {
+    "id": "nodejs_105",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Medium",
+    "question": "What is API versioning (e.g. `/api/v1/users`) used for, and why introduce it?",
+    "answer": "It lets a REST API evolve (change response shapes, remove fields, change behavior) without breaking existing clients that depend on an older version, by serving multiple versions of an endpoint simultaneously.",
+    "explanation": "Common strategies include a version segment in the URL path (/v1/, /v2/) or a version header, chosen based on how explicit/cacheable the API needs versioning to be.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "api versioning",
+      "backward compatibility",
+      "rest"
+    ]
+  },
+  {
+    "id": "nodejs_106",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Medium",
+    "question": "How do you check whether a file exists asynchronously in modern Node.js, given that `fs.exists()` is deprecated?",
+    "answer": "Attempt `await fs.promises.access(path)` inside a try/catch — it resolves if the path is accessible (exists with the checked permissions) and rejects otherwise; alternatively `fs.promises.stat(path)` and catch the rejection.",
+    "explanation": "`fs.exists()` was deprecated specifically because its callback signature (`exists(path, callback(exists))`) doesn't follow the error-first convention, making it awkward to compose with other fs APIs; access()/stat() follow the standard convention.",
+    "question_type": "Technical",
+    "keywords": [
+      "fs.access",
+      "file existence check",
+      "deprecated api"
+    ]
+  },
+  {
+    "id": "nodejs_107",
+    "technology": "Node.js",
+    "topic": "Event Emitters",
+    "difficulty": "Medium",
+    "question": "Write a small class `Ticker` extending EventEmitter that emits a 'tick' event with an incrementing counter every second when `.start()` is called.",
+    "answer": "class Ticker extends EventEmitter {\n  start() {\n    let count = 0;\n    this.interval = setInterval(() => this.emit('tick', ++count), 1000);\n  }\n  stop() {\n    clearInterval(this.interval);\n  }\n}",
+    "explanation": "Extending EventEmitter directly (rather than composing one internally) gives Ticker instances the .on()/.emit() API for free, which is idiomatic for Node classes that represent an ongoing, event-driven process.",
+    "question_type": "Coding",
+    "keywords": [
+      "eventemitter subclass",
+      "setinterval",
+      "custom events"
+    ],
+    "starter_code": "class Ticker extends EventEmitter {\n  start() {\n    // emit 'tick' with incrementing count every second\n  }\n}",
+    "expected_solution": "class Ticker extends EventEmitter {\n  start() {\n    let count = 0;\n    this.interval = setInterval(() => this.emit('tick', ++count), 1000);\n  }\n  stop() {\n    clearInterval(this.interval);\n  }\n}",
+    "test_cases": [
+      {
+        "input": "start(), listen for 'tick', wait ~3s",
+        "expected_output": "'tick' fires with 1, then 2, then 3"
+      },
+      {
+        "input": "start() then stop() immediately",
+        "expected_output": "no further 'tick' events fire"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_108",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Hard",
+    "question": "Why does Node.js use libuv's thread pool for certain asynchronous operations (like fs and DNS lookups) but NOT for network I/O (sockets)?",
+    "answer": "Most modern operating systems provide efficient native asynchronous APIs for network sockets (epoll on Linux, kqueue on macOS, IOCP on Windows) that libuv can use directly without needing a worker thread, but file system operations on many platforms lack an equally robust native async API, so libuv simulates async behavior for them using its internal thread pool (default size 4).",
+    "explanation": "This is why CPU-light network-heavy Node apps scale very well on one thread, while heavy file-system or crypto work can exhaust the (by default, only 4-thread) libuv pool and become a bottleneck sooner.",
+    "question_type": "Technical",
+    "keywords": [
+      "libuv",
+      "thread pool",
+      "network io vs file io"
+    ]
+  },
+  {
+    "id": "nodejs_109",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "What is the output of this code, and why?",
+    "answer": "'1', '2', '4', '3' — the synchronous console.log('1') runs first; calling foo() then runs synchronously up to its first await, logging '2' before foo() returns a pending Promise back to the caller; the caller's console.log('4') then runs synchronously; finally, the microtask resuming foo() after the await logs '3'.",
+    "explanation": "A function marked `async` runs synchronously from its start up until it hits the first `await` — only the code AFTER that await is deferred to the microtask queue; a common mistake is assuming the entire async function body is deferred.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "async function execution",
+      "microtask",
+      "await timing"
+    ],
+    "code_snippet": "async function foo() {\n  console.log('2');\n  await null;\n  console.log('3');\n}\nconsole.log('1');\nfoo();\nconsole.log('4');"
+  },
+  {
+    "id": "nodejs_110",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Easy",
+    "question": "Name one popular Node.js driver/library for connecting to a MongoDB database.",
+    "answer": "Mongoose (an ODM) or the official `mongodb` native driver.",
+    "explanation": "Mongoose adds schema definitions, validation, and model methods on top of the lower-level official driver, which is why many Express + MongoDB projects use Mongoose rather than the raw driver directly.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "mongodb",
+      "mongoose",
+      "database driver"
+    ]
+  },
+  {
+    "id": "nodejs_111",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Easy",
+    "question": "What JavaScript engine does Node.js use to execute JavaScript?",
+    "answer": "V8",
+    "explanation": "Node.js is built on Google's V8 engine (the same engine used in Chrome), which compiles JavaScript to native machine code.",
+    "question_type": "MCQ",
+    "keywords": [
+      "v8",
+      "javascript engine",
+      "node basics"
+    ],
+    "options": [
+      "SpiderMonkey",
+      "V8",
+      "Chakra",
+      "JavaScriptCore"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_112",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Easy",
+    "question": "Node.js is best described as:",
+    "answer": "A JavaScript runtime built on Chrome's V8 engine for running JS outside the browser",
+    "explanation": "Node.js lets JavaScript run server-side/outside the browser by pairing V8 with a set of built-in APIs (fs, http, etc.) and an event-driven, non-blocking I/O model.",
+    "question_type": "MCQ",
+    "keywords": [
+      "node.js",
+      "runtime",
+      "v8"
+    ],
+    "options": [
+      "A front-end JavaScript framework",
+      "A JavaScript runtime built on Chrome's V8 engine for running JS outside the browser",
+      "A CSS preprocessor",
+      "A database"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_113",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "Why is Node.js often described as good for I/O-heavy applications but not ideal for CPU-heavy computation?",
+    "answer": "Node runs JavaScript on a SINGLE main thread with a non-blocking, event-driven I/O model - I/O operations (file/network/db) are delegated to the OS/libuv's thread pool and don't block the main thread, but a long CPU-bound computation runs synchronously ON that same main thread, blocking the event loop and freezing all other requests until it finishes.",
+    "explanation": "CPU-heavy work should be offloaded to worker threads, child processes, or a separate service to avoid blocking the event loop.",
+    "question_type": "Technical",
+    "keywords": [
+      "single threaded",
+      "event loop",
+      "cpu bound",
+      "i/o bound"
+    ]
+  },
+  {
+    "id": "nodejs_114",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Easy",
+    "question": "In CommonJS (the traditional Node.js module system), how do you export a value from a module?",
+    "answer": "module.exports = value;",
+    "explanation": "CommonJS uses `module.exports` (or the shorthand `exports.name = ...`) to expose values; `export`/`export default` is ES Module syntax, used when `type: \"module\"` is set or a `.mjs` extension is used.",
+    "question_type": "MCQ",
+    "keywords": [
+      "commonjs",
+      "module.exports",
+      "require"
+    ],
+    "options": [
+      "export default value;",
+      "module.exports = value;",
+      "export { value };",
+      "return value;"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_115",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Medium",
+    "question": "What is the key difference in how CommonJS `require()` and ES Module `import` resolve/load modules?",
+    "answer": "`require()` is synchronous - it loads and executes the module in-line, blocking until it's done, and modules are cached after the first `require`. ES Module `import` is asynchronous by specification (the module graph is resolved and can be loaded in parallel) and supports static analysis (imports are hoisted and known before execution), enabling tree-shaking.",
+    "explanation": "This is why dynamic conditional loading is trivial with `require()` inside an `if`, but ES Modules need the `import()` dynamic-import function for the same effect.",
+    "question_type": "Technical",
+    "keywords": [
+      "commonjs",
+      "es modules",
+      "require",
+      "import"
+    ]
+  },
+  {
+    "id": "nodejs_116",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Easy",
+    "question": "Which file lists a Node.js project's dependencies and metadata?",
+    "answer": "package.json",
+    "explanation": "`package.json` declares the project's name, version, scripts, and its `dependencies`/`devDependencies`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "package.json",
+      "npm",
+      "dependencies"
+    ],
+    "options": [
+      "node_modules.json",
+      "package.json",
+      "npm.config.json",
+      "dependencies.json"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_117",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Medium",
+    "question": "In which phase of the Node.js event loop do `setTimeout`/`setInterval` callbacks run?",
+    "answer": "The 'timers' phase",
+    "explanation": "The event loop's 'timers' phase executes callbacks scheduled by `setTimeout`/`setInterval` whose threshold has elapsed.",
+    "question_type": "MCQ",
+    "keywords": [
+      "event loop",
+      "timers phase",
+      "settimeout"
+    ],
+    "options": [
+      "The 'poll' phase",
+      "The 'timers' phase",
+      "The 'close callbacks' phase",
+      "Immediately, synchronously"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_118",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Hard",
+    "question": "What is the output order of: `console.log('A'); setTimeout(() => console.log('B'), 0); Promise.resolve().then(() => console.log('C')); console.log('D');`?",
+    "answer": "A, D, C, B",
+    "explanation": "Synchronous code (A, D) runs first to completion. Then microtasks (Promise callbacks) run before the next macrotask, so 'C' (a microtask) runs before 'B' (a `setTimeout` macrotask), even though the timeout is 0ms.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "event loop",
+      "microtask",
+      "macrotask",
+      "settimeout"
+    ],
+    "code_snippet": "console.log('A');\nsetTimeout(() => console.log('B'), 0);\nPromise.resolve().then(() => console.log('C'));\nconsole.log('D');"
+  },
+  {
+    "id": "nodejs_119",
+    "technology": "Node.js",
+    "topic": "Asynchronous Programming",
+    "difficulty": "Easy",
+    "question": "Which of these is a non-blocking way to read a file in Node.js?",
+    "answer": "fs.readFile (with a callback)",
+    "explanation": "`fs.readFile` is asynchronous (callback/Promise-based, non-blocking); `fs.readFileSync` blocks the event loop until the read completes.",
+    "question_type": "MCQ",
+    "keywords": [
+      "fs.readfile",
+      "non-blocking",
+      "asynchronous"
+    ],
+    "options": [
+      "fs.readFileSync",
+      "fs.readFile (with a callback)",
+      "fs.readFileBlocking",
+      "require('fs').read()"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_120",
+    "technology": "Node.js",
+    "topic": "Asynchronous Programming",
+    "difficulty": "Medium",
+    "question": "Why can excessive use of `fs.readFileSync`/other synchronous fs calls hurt a Node.js server's throughput?",
+    "answer": "Synchronous fs calls block the single main thread until the disk I/O completes, meaning the entire server can't process ANY other incoming request during that time - unlike the async versions, which delegate the actual I/O to libuv's thread pool and let the event loop keep serving other requests while waiting.",
+    "explanation": "This matters most under concurrent load; a single quick sync call in a script is harmless, but doing it inside a request handler on a busy server serializes all requests behind each file read.",
+    "question_type": "Technical",
+    "keywords": [
+      "synchronous io",
+      "blocking",
+      "throughput",
+      "event loop"
+    ]
+  },
+  {
+    "id": "nodejs_121",
+    "technology": "Node.js",
+    "topic": "Callbacks & Callback Hell",
+    "difficulty": "Easy",
+    "question": "What Node.js convention specifies that a callback's FIRST argument is reserved for an error (or null if none occurred)?",
+    "answer": "Error-first (Node-style) callback convention",
+    "explanation": "The error-first callback pattern, e.g. `fs.readFile(path, (err, data) => {...})`, is the traditional Node.js async convention - always check `err` first before using `data`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "error-first callback",
+      "node style callback"
+    ],
+    "options": [
+      "Promise convention",
+      "Error-first (Node-style) callback convention",
+      "Observer pattern",
+      "CommonJS convention"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_122",
+    "technology": "Node.js",
+    "topic": "Callbacks & Callback Hell",
+    "difficulty": "Medium",
+    "question": "What is 'callback hell', and name two modern alternatives that address it.",
+    "answer": "Callback hell is the deeply nested, hard-to-read pyramid of callbacks that results from chaining several async operations, each depending on the previous one's result, using only nested callback functions. Promises (with `.then()` chaining) and `async`/`await` both flatten this into more linear, readable code.",
+    "explanation": "async/await in particular lets asynchronous code be written and read almost like synchronous code, while still being non-blocking under the hood.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "callback hell",
+      "promises",
+      "async await"
+    ]
+  },
+  {
+    "id": "nodejs_123",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "What is the difference between `Promise.all()` and `Promise.allSettled()`?",
+    "answer": "`Promise.all()` resolves when ALL input promises fulfill, but rejects immediately as soon as ANY one rejects (short-circuiting, discarding other results). `Promise.allSettled()` always waits for every promise to settle (fulfilled or rejected) and resolves with an array describing each outcome individually - it never short-circuits.",
+    "explanation": "Use `allSettled` when you want results from every operation regardless of individual failures (e.g. batch API calls where partial failure is acceptable).",
+    "question_type": "Technical",
+    "keywords": [
+      "promise.all",
+      "promise.allsettled",
+      "short circuit"
+    ]
+  },
+  {
+    "id": "nodejs_124",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Hard",
+    "question": "What does `Promise.race([p1, p2])` resolve/reject with?",
+    "answer": "The outcome (value or error) of whichever promise SETTLES FIRST",
+    "explanation": "`Promise.race` settles as soon as the FIRST of the input promises settles (whether fulfilled or rejected), adopting that same outcome - it's often used to implement timeouts by racing a real operation against a timer promise.",
+    "question_type": "MCQ",
+    "keywords": [
+      "promise.race",
+      "timeout pattern"
+    ],
+    "options": [
+      "The value of whichever promise resolves LAST",
+      "The outcome (value or error) of whichever promise SETTLES FIRST",
+      "Always p1's outcome",
+      "An array of both outcomes"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_125",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "This function is supposed to fetch two resources in parallel but actually fetches them one after another, doubling the wait time. What's wrong?",
+    "answer": "Using `await` sequentially (`await fetchA(); await fetchB();`) makes the second fetch wait for the first to fully complete before even starting; to run them in parallel, start both promises first (without awaiting immediately) and then `await Promise.all([fetchA(), fetchB()])`.",
+    "explanation": "`await` only pauses the surrounding function, but calling it back-to-back on separate operations serializes them since the second call doesn't even START until the first `await` resumes.",
+    "question_type": "Debugging",
+    "keywords": [
+      "async await",
+      "sequential vs parallel",
+      "promise.all"
+    ],
+    "buggy_code": "async function loadBoth() {\n  const a = await fetchA();\n  const b = await fetchB();\n  return [a, b];\n}",
+    "fixed_code": "async function loadBoth() {\n  const [a, b] = await Promise.all([fetchA(), fetchB()]);\n  return [a, b];\n}"
+  },
+  {
+    "id": "nodejs_126",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "How do you catch an error thrown inside an `async` function that uses `await`?",
+    "answer": "Wrap the await in a try/catch block",
+    "explanation": "A rejected awaited promise throws inside the async function just like a synchronous throw, so a standard `try { await ... } catch (err) { ... }` block catches it (calling the async function also still returns a promise that rejects if uncaught, catchable with `.catch()` from outside).",
+    "question_type": "MCQ",
+    "keywords": [
+      "async await",
+      "try catch",
+      "error handling"
+    ],
+    "options": [
+      "It's impossible to catch async errors",
+      "Wrap the await in a try/catch block",
+      "Use .catch() directly on the async function call always",
+      "async functions never throw"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_127",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Easy",
+    "question": "Which `fs` function returns a Promise-based API for file operations (in modern Node.js)?",
+    "answer": "require('fs').promises (or require('fs/promises'))",
+    "explanation": "`fs.promises` (or the `node:fs/promises` module) exposes Promise-returning versions of the fs functions, usable with `async`/`await` instead of error-first callbacks.",
+    "question_type": "MCQ",
+    "keywords": [
+      "fs.promises",
+      "fs module",
+      "promise based"
+    ],
+    "options": [
+      "require('fs')",
+      "require('fs').promises (or require('fs/promises'))",
+      "require('fs-promise')",
+      "require('fs').async"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_128",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Medium",
+    "question": "Why would you use a Stream (e.g. `fs.createReadStream`) instead of `fs.readFile` to process a very large file?",
+    "answer": "`fs.readFile` loads the ENTIRE file into memory before your callback runs, which can exhaust memory or be slow for very large files; a read stream processes the file in small chunks as they arrive, keeping memory usage low and letting you start processing before the whole file has even been read.",
+    "explanation": "This chunked, low-memory-footprint processing is exactly why Node's HTTP request/response bodies and file uploads are also stream-based.",
+    "question_type": "Technical",
+    "keywords": [
+      "streams",
+      "fs.readfile",
+      "memory usage",
+      "large files"
+    ]
+  },
+  {
+    "id": "nodejs_129",
+    "technology": "Node.js",
+    "topic": "HTTP Module",
+    "difficulty": "Medium",
+    "question": "In a raw `http.createServer` handler, why must you call `res.end()` even after writing data with `res.write()`?",
+    "answer": "The HTTP response stream stays open until explicitly ended - `res.end()` signals that no more data will be sent and flushes/closes the response, letting the client know the response is complete; without it, the client's request would hang waiting for more data or a close signal.",
+    "explanation": "`res.end(data)` is shorthand for `res.write(data); res.end();` when there's nothing more to write.",
+    "question_type": "Technical",
+    "keywords": [
+      "http server",
+      "res.end",
+      "response stream"
+    ]
+  },
+  {
+    "id": "nodejs_130",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Easy",
+    "question": "What does `app.get('/users', handler)` register in an Express app?",
+    "answer": "A route handler for GET requests to /users",
+    "explanation": "`app.get(path, handler)` registers a route-specific handler that runs only for GET requests matching that path.",
+    "question_type": "MCQ",
+    "keywords": [
+      "express",
+      "app.get",
+      "routing"
+    ],
+    "options": [
+      "A database query",
+      "A route handler for GET requests to /users",
+      "A global middleware for all routes",
+      "A static file server"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_131",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Medium",
+    "question": "What is the purpose of `app.use(express.json())` in an Express app?",
+    "answer": "It registers built-in middleware that parses incoming requests with a `Content-Type: application/json` body, populating `req.body` with the parsed JavaScript object - without it, `req.body` would be undefined for JSON requests.",
+    "explanation": "Express does not parse request bodies by default; you must explicitly wire up the appropriate body-parsing middleware for the content types your API accepts.",
+    "question_type": "Technical",
+    "keywords": [
+      "express.json",
+      "middleware",
+      "req.body",
+      "body parsing"
+    ]
+  },
+  {
+    "id": "nodejs_132",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Medium",
+    "question": "What must an Express middleware function call to pass control to the next middleware/route handler in the chain?",
+    "answer": "next()",
+    "explanation": "Calling `next()` hands off execution to the next matching middleware or route handler; forgetting to call it (without also sending a response) leaves the request hanging forever.",
+    "question_type": "MCQ",
+    "keywords": [
+      "middleware",
+      "next function",
+      "express"
+    ],
+    "options": [
+      "return()",
+      "next()",
+      "continue()",
+      "resolve()"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_133",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Hard",
+    "question": "This Express error-handling middleware never runs even when a route handler throws. Why, and what's the fix?",
+    "answer": "Error-handling middleware is only invoked if it's registered AFTER all other routes/middleware, AND it must have exactly 4 parameters `(err, req, res, next)` - Express distinguishes it from regular middleware purely by that arity; if it's registered too early or has only 3 params, Express treats it as regular middleware and skips it for error dispatch.",
+    "explanation": "Also, an error thrown inside a synchronous route handler is caught automatically by Express, but an error thrown inside an async handler is NOT automatically forwarded - you must catch it and call `next(err)` yourself (or use a wrapper), otherwise it never reaches the error middleware at all.",
+    "question_type": "Debugging",
+    "keywords": [
+      "express error handling",
+      "middleware order",
+      "next(err)"
+    ],
+    "buggy_code": "app.use((err, req, res, next) => {\n  res.status(500).send('Error!');\n});\napp.get('/risky', (req, res) => {\n  throw new Error('boom');\n});",
+    "fixed_code": "app.get('/risky', (req, res) => {\n  throw new Error('boom');\n});\napp.use((err, req, res, next) => {\n  res.status(500).send('Error!');\n});"
+  },
+  {
+    "id": "nodejs_134",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Easy",
+    "question": "Which HTTP method conventionally represents a partial update to an existing resource?",
+    "answer": "PATCH",
+    "explanation": "PATCH is conventionally used for partial updates (only the given fields change); PUT conventionally represents a full replacement of the resource.",
+    "question_type": "MCQ",
+    "keywords": [
+      "rest",
+      "patch",
+      "put",
+      "http methods"
+    ],
+    "options": [
+      "POST",
+      "PUT",
+      "PATCH",
+      "GET"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "nodejs_135",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Medium",
+    "question": "What does it mean for an HTTP method to be 'idempotent', and is DELETE idempotent?",
+    "answer": "An idempotent operation produces the same server-side result no matter how many times it's repeated with the same input (though the response itself might differ, e.g. 404 on a second call). DELETE is considered idempotent: deleting an already-deleted resource still leaves it deleted - the end state doesn't change on repeated calls, even if the second call returns a 404 instead of a 200.",
+    "explanation": "GET, PUT, and DELETE are idempotent by convention; POST is generally NOT idempotent since repeating it typically creates a new resource each time.",
+    "question_type": "Technical",
+    "keywords": [
+      "idempotent",
+      "delete",
+      "rest conventions"
+    ]
+  },
+  {
+    "id": "nodejs_136",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Medium",
+    "question": "Which HTTP status code should a successful resource-creation (POST) response typically return?",
+    "answer": "201 Created",
+    "explanation": "201 Created signals that a new resource was successfully created, conventionally accompanied by a `Location` header pointing to the new resource.",
+    "question_type": "MCQ",
+    "keywords": [
+      "http status codes",
+      "201 created",
+      "rest"
+    ],
+    "options": [
+      "200 OK",
+      "201 Created",
+      "204 No Content",
+      "202 Accepted"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_137",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Medium",
+    "question": "What are the four fundamental types of streams in Node.js?",
+    "answer": "Readable, Writable, Duplex, Transform",
+    "explanation": "Readable (data source), Writable (data destination), Duplex (both readable and writable, e.g. a TCP socket), and Transform (a duplex stream that modifies data as it passes through, e.g. zlib compression) are Node's four stream categories.",
+    "question_type": "MCQ",
+    "keywords": [
+      "streams",
+      "readable",
+      "writable",
+      "duplex",
+      "transform"
+    ],
+    "options": [
+      "Readable, Writable, Duplex, Transform",
+      "Fast, Slow, Buffered, Unbuffered",
+      "Input, Output, Error, Log",
+      "Sync, Async, Callback, Promise"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_138",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Medium",
+    "question": "What is a Node.js `Buffer`, and why is it needed alongside JavaScript strings?",
+    "answer": "A `Buffer` is a fixed-size chunk of raw binary data allocated outside the V8 JS heap - it's used for handling binary data (file contents, network packets, images) that isn't naturally representable as a JS string, which is always UTF-16 text; Buffers let Node work efficiently with arbitrary bytes without forcing an encoding.",
+    "explanation": "You explicitly convert between them (e.g. `buffer.toString('utf8')`) only when you know the bytes represent text in a specific encoding.",
+    "question_type": "Technical",
+    "keywords": [
+      "buffer",
+      "binary data",
+      "raw bytes"
+    ]
+  },
+  {
+    "id": "nodejs_139",
+    "technology": "Node.js",
+    "topic": "Event Emitters",
+    "difficulty": "Easy",
+    "question": "Which core Node.js class do many built-in objects (like streams and the http server) inherit from to support `.on('event', handler)`?",
+    "answer": "EventEmitter",
+    "explanation": "`EventEmitter` (from the `events` module) provides the `.on()`/`.emit()`/`.once()` API that Node's built-in event-driven objects are built on.",
+    "question_type": "MCQ",
+    "keywords": [
+      "eventemitter",
+      "events module",
+      "on emit"
+    ],
+    "options": [
+      "EventTarget",
+      "EventEmitter",
+      "Observable",
+      "PubSub"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_140",
+    "technology": "Node.js",
+    "topic": "Event Emitters",
+    "difficulty": "Medium",
+    "question": "What is the difference between `.on('event', handler)` and `.once('event', handler)` on an EventEmitter?",
+    "answer": "`.on()` registers a listener that fires EVERY time the event is emitted; `.once()` registers a listener that fires only for the FIRST emission of that event, then automatically removes itself.",
+    "explanation": "`.once()` is useful for things like a one-time 'ready' or 'connect' event where you never need to react to it again after the first occurrence.",
+    "question_type": "Technical",
+    "keywords": [
+      "eventemitter",
+      "on vs once",
+      "listener"
+    ]
+  },
+  {
+    "id": "nodejs_141",
+    "technology": "Node.js",
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "What happens to a Node.js process if an uncaught exception is thrown and there's no `process.on('uncaughtException', ...)` handler?",
+    "answer": "The process crashes and exits",
+    "explanation": "By default, an uncaught synchronous exception crashes the Node process (prints the stack trace and exits) - this is intentional, since the app may be left in an undefined/corrupted state.",
+    "question_type": "MCQ",
+    "keywords": [
+      "uncaught exception",
+      "process crash",
+      "error handling"
+    ],
+    "options": [
+      "Node silently ignores it and continues",
+      "The process crashes and exits",
+      "The request that caused it is retried automatically",
+      "Node restarts the event loop"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_142",
+    "technology": "Node.js",
+    "topic": "Error Handling",
+    "difficulty": "Hard",
+    "question": "Why is it generally considered unsafe to try to 'recover' from an `uncaughtException` and keep the process running indefinitely?",
+    "answer": "An uncaught exception means something happened that the code didn't anticipate handling, which can leave shared in-memory state (open connections, half-completed operations, module-level variables) in an inconsistent state; continuing to serve requests from that corrupted state risks subtle data corruption or cascading failures, which is worse than a clean crash-and-restart (typically handled by a process manager).",
+    "explanation": "The Node.js docs themselves recommend using `uncaughtException` only for synchronous cleanup/logging before letting the process exit, not as a general error-recovery mechanism.",
+    "question_type": "Technical",
+    "keywords": [
+      "uncaughtexception",
+      "process manager",
+      "graceful shutdown"
+    ]
+  },
+  {
+    "id": "nodejs_143",
+    "technology": "Node.js",
+    "topic": "Child Processes",
+    "difficulty": "Medium",
+    "question": "Which `child_process` method is best suited for running another Node.js script as a separate process while keeping a persistent IPC channel open?",
+    "answer": "fork()",
+    "explanation": "`fork()` is a specialized `spawn()` for launching new Node.js processes, automatically setting up an IPC (inter-process communication) channel so the parent and child can `.send()` messages to each other.",
+    "question_type": "MCQ",
+    "keywords": [
+      "child_process",
+      "fork",
+      "ipc"
+    ],
+    "options": [
+      "exec()",
+      "execSync()",
+      "fork()",
+      "spawnSync()"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "nodejs_144",
+    "technology": "Node.js",
+    "topic": "Child Processes",
+    "difficulty": "Medium",
+    "question": "What is the key difference between `exec()` and `spawn()` in the `child_process` module?",
+    "answer": "`exec()` buffers the child process's entire stdout/stderr in memory and calls a callback with it once the process exits (fine for smallish output, runs the command through a shell); `spawn()` returns a stream-based interface (`child.stdout` is a readable stream) that you consume incrementally as data arrives, better suited for large or long-running output.",
+    "explanation": "`exec()`'s in-memory buffering has a default max buffer size and can run out of memory for very large output, which `spawn()`'s streaming approach avoids.",
+    "question_type": "Technical",
+    "keywords": [
+      "child_process",
+      "exec vs spawn",
+      "streaming output"
+    ]
+  },
+  {
+    "id": "nodejs_145",
+    "technology": "Node.js",
+    "topic": "Clustering",
+    "difficulty": "Medium",
+    "question": "What is the main purpose of Node.js's built-in `cluster` module?",
+    "answer": "To fork multiple worker processes that share the same server port, using multiple CPU cores",
+    "explanation": "Since Node runs JS on a single thread per process, `cluster` lets you fork one worker process per CPU core, all listening on the same port (load-balanced by the OS/master), to use multiple cores for a single Node application.",
+    "question_type": "MCQ",
+    "keywords": [
+      "cluster module",
+      "worker processes",
+      "multi-core"
+    ],
+    "options": [
+      "To connect to a database cluster",
+      "To fork multiple worker processes that share the same server port, using multiple CPU cores",
+      "To cluster related npm packages together",
+      "To manage a Kubernetes cluster"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_146",
+    "technology": "Node.js",
+    "topic": "Clustering",
+    "difficulty": "Hard",
+    "question": "Why doesn't clustering automatically share in-memory state (like a simple in-memory cache) between worker processes?",
+    "answer": "Each cluster worker is a completely separate OS process with its OWN V8 instance and memory space - forking doesn't create shared memory, so a variable set in one worker's memory simply doesn't exist in another worker's process; state that needs to be shared across workers must live in an external store (Redis, a database) or be communicated explicitly via IPC messages.",
+    "explanation": "This is a common gotcha when moving a single-process app with an in-memory cache to a clustered deployment - the cache silently becomes per-worker and inconsistent.",
+    "question_type": "Technical",
+    "keywords": [
+      "cluster",
+      "shared state",
+      "separate processes",
+      "ipc"
+    ]
+  },
+  {
+    "id": "nodejs_147",
+    "technology": "Node.js",
+    "topic": "Environment Variables",
+    "difficulty": "Easy",
+    "question": "How do you access an environment variable named `PORT` in a Node.js script?",
+    "answer": "process.env.PORT",
+    "explanation": "`process.env` is an object exposing the current process's environment variables as string values.",
+    "question_type": "MCQ",
+    "keywords": [
+      "process.env",
+      "environment variables"
+    ],
+    "options": [
+      "env.PORT",
+      "process.env.PORT",
+      "global.PORT",
+      "require('env').PORT"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_148",
+    "technology": "Node.js",
+    "topic": "Environment Variables",
+    "difficulty": "Medium",
+    "question": "Why are environment variables (rather than hardcoded values) the standard place to store secrets like API keys and database URLs?",
+    "answer": "Environment variables keep configuration OUT of the source code, so secrets aren't committed to version control, and the same codebase can run against different values (dev/staging/production) without any code changes - just different environment configuration per deployment.",
+    "explanation": "Tools like `.env` files (loaded via a package like dotenv, kept out of git via .gitignore) are a common local-development convenience for setting these variables.",
+    "question_type": "Technical",
+    "keywords": [
+      "environment variables",
+      "secrets",
+      "configuration",
+      "dotenv"
+    ]
+  },
+  {
+    "id": "nodejs_149",
+    "technology": "Node.js",
+    "topic": "Authentication Basics (JWT)",
+    "difficulty": "Medium",
+    "question": "What are the three dot-separated parts of a JWT (JSON Web Token)?",
+    "answer": "Header, Payload, Signature",
+    "explanation": "A JWT is `base64url(header).base64url(payload).signature` - the header names the algorithm, the payload carries claims (like user id, expiry), and the signature verifies the token wasn't tampered with.",
+    "question_type": "MCQ",
+    "keywords": [
+      "jwt",
+      "json web token",
+      "header payload signature"
+    ],
+    "options": [
+      "Username, Password, Signature",
+      "Header, Payload, Signature",
+      "Issuer, Audience, Expiry",
+      "Public Key, Private Key, Hash"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_150",
+    "technology": "Node.js",
+    "topic": "Authentication Basics (JWT)",
+    "difficulty": "Hard",
+    "question": "Why is a JWT's payload NOT a safe place to store sensitive secret data, even though the token is signed?",
+    "answer": "The signature only guarantees the payload hasn't been TAMPERED with - it does NOT encrypt the payload; anyone who intercepts the token can trivially base64-decode the payload and read its contents in plain text, so secrets (passwords, sensitive PII) should never go in a standard signed JWT (an encrypted JWE would be needed for confidentiality).",
+    "explanation": "This is a very common misconception - 'signed' is confused with 'encrypted', but they solve different problems (integrity/authenticity vs. confidentiality).",
+    "question_type": "Technical",
+    "keywords": [
+      "jwt",
+      "signed not encrypted",
+      "payload security"
+    ]
+  },
+  {
+    "id": "nodejs_151",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Medium",
+    "question": "What is 'connection pooling' when a Node.js app talks to a database?",
+    "answer": "Reusing a fixed set of already-open database connections across requests instead of opening/closing a new connection per query",
+    "explanation": "Opening a fresh DB connection per request is expensive (TCP handshake, auth); a connection pool keeps a set of connections open and hands them out/returns them per query, dramatically reducing per-request overhead under load.",
+    "question_type": "MCQ",
+    "keywords": [
+      "connection pooling",
+      "database connections",
+      "performance"
+    ],
+    "options": [
+      "Storing query results in memory permanently",
+      "Reusing a fixed set of already-open database connections across requests instead of opening/closing a new connection per query",
+      "Merging multiple databases into one",
+      "A caching layer for HTTP responses"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_152",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Medium",
+    "question": "Why should you use parameterized queries (or an ORM's query builder) instead of string-concatenating user input directly into a SQL query in a Node.js app?",
+    "answer": "Directly concatenating untrusted user input into a SQL string opens the door to SQL injection - a malicious input can alter the query's structure entirely (e.g. appending `OR 1=1` or a second statement); parameterized queries send the user input as data, separate from the query structure, so the database never interprets it as SQL syntax.",
+    "explanation": "This is true regardless of language - the vulnerability is about how the query STRING is built, and Node's DB drivers (pg, mysql2, etc.) all support parameterized placeholders (`$1`, `?`) for exactly this reason.",
+    "question_type": "Technical",
+    "keywords": [
+      "sql injection",
+      "parameterized queries",
+      "security"
+    ]
+  },
+  {
+    "id": "nodejs_153",
+    "technology": "Node.js",
+    "topic": "Debugging & Performance",
+    "difficulty": "Medium",
+    "question": "Which built-in Node.js flag/tool lets you profile CPU usage and generate a flame graph for performance analysis?",
+    "answer": "node --inspect (with Chrome DevTools / a CPU profiler)",
+    "explanation": "`node --inspect` opens a debugging port that Chrome DevTools (or similar tools) can connect to, offering CPU profiling, heap snapshots, and step debugging.",
+    "question_type": "MCQ",
+    "keywords": [
+      "node --inspect",
+      "profiling",
+      "chrome devtools"
+    ],
+    "options": [
+      "node --inspect (with Chrome DevTools / a CPU profiler)",
+      "node --colors",
+      "node --version",
+      "node --check"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_154",
+    "technology": "Node.js",
+    "topic": "Debugging & Performance",
+    "difficulty": "Hard",
+    "question": "A Node.js server's memory usage keeps climbing over hours of uptime and never goes back down, even under low load ('memory leak'). Name one common Node.js-specific cause.",
+    "answer": "A common cause is accumulating references that prevent garbage collection - e.g. an array/Map used as an ad-hoc cache that's never pruned, event listeners added repeatedly without ever being removed (each holding a closure over data), or closures capturing large objects unintentionally kept alive by a long-lived timer/interval.",
+    "explanation": "Taking heap snapshots at intervals (via `--inspect` and Chrome DevTools' Memory tab) and comparing retained object counts over time is the standard way to pinpoint exactly what's accumulating.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "memory leak",
+      "garbage collection",
+      "event listeners",
+      "heap snapshot"
+    ]
+  },
+  {
+    "id": "nodejs_155",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write an async function `readJsonFile(path)` that reads a JSON file using `fs.promises` and returns the parsed object.",
+    "answer": "An async function using fs.promises.readFile and JSON.parse.",
+    "explanation": "Using the Promise-based fs API lets this compose naturally with async/await and propagate errors (bad path, invalid JSON) as a rejected promise, catchable by the caller.",
+    "question_type": "Coding",
+    "keywords": [
+      "fs.promises",
+      "json.parse",
+      "async function"
+    ],
+    "starter_code": "const fs = require('fs').promises;\n\nasync function readJsonFile(path) {\n  // your code here\n}",
+    "expected_solution": "const fs = require('fs').promises;\n\nasync function readJsonFile(path) {\n  const text = await fs.readFile(path, 'utf8');\n  return JSON.parse(text);\n}",
+    "test_cases": [
+      {
+        "input": "readJsonFile('./config.json') where config.json contains {\"port\": 3000}",
+        "expected_output": "resolves to {port: 3000}"
+      },
+      {
+        "input": "readJsonFile('./missing.json') where the file does not exist",
+        "expected_output": "the returned promise rejects with an ENOENT error"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_156",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Hard",
+    "question": "Write a function `retry(fn, attempts)` that calls an async function `fn`, retrying up to `attempts` times if it rejects, and finally rejecting with the last error if all attempts fail.",
+    "answer": "A recursive/looping async function that catches rejections and retries.",
+    "explanation": "Each failed attempt is caught and, if attempts remain, the function tries again; only after exhausting all attempts does the final error propagate to the caller.",
+    "question_type": "Coding",
+    "keywords": [
+      "retry logic",
+      "async function",
+      "error handling"
+    ],
+    "starter_code": "async function retry(fn, attempts) {\n  // your code here\n}",
+    "expected_solution": "async function retry(fn, attempts) {\n  let lastError;\n  for (let i = 0; i < attempts; i++) {\n    try {\n      return await fn();\n    } catch (err) {\n      lastError = err;\n    }\n  }\n  throw lastError;\n}",
+    "test_cases": [
+      {
+        "input": "fn fails twice then succeeds on the 3rd call, attempts=3",
+        "expected_output": "retry resolves with the successful result"
+      },
+      {
+        "input": "fn always fails, attempts=2",
+        "expected_output": "retry rejects with the error from the 2nd (last) attempt"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_157",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "What does `__dirname` evaluate to inside a Node.js (CommonJS) module?",
+    "answer": "The absolute path of the directory containing the currently executing file",
+    "explanation": "`__dirname` is the absolute path of the directory the CURRENT module file lives in - not necessarily the same as `process.cwd()` (the directory Node was launched FROM), which is a common source of path bugs.",
+    "question_type": "MCQ",
+    "keywords": [
+      "__dirname",
+      "process.cwd",
+      "file paths"
+    ],
+    "options": [
+      "The current working directory of the process",
+      "The absolute path of the directory containing the currently executing file",
+      "The name of the file itself",
+      "The npm package's root directory"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_158",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Hard",
+    "question": "Why can two modules that `require()` each other (a circular dependency) end up with one of them receiving an incomplete/partial `module.exports` object?",
+    "answer": "Node caches a module's `exports` object the moment it starts executing (even before the module finishes running) - if module A requires B, and B in turn requires A while A is still mid-execution, B receives whatever partial `exports` A has built SO FAR (possibly empty), not the final, fully-populated version.",
+    "explanation": "The fix is usually to restructure the dependency (avoid the cycle), or require the dependency lazily inside a function body rather than at the top of the file, so it's fully loaded by the time it's actually used.",
+    "question_type": "Technical",
+    "keywords": [
+      "circular dependency",
+      "require",
+      "module.exports",
+      "module caching"
+    ]
+  },
+  {
+    "id": "nodejs_159",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Easy",
+    "question": "Which command runs a file named `server.js` with Node.js?",
+    "answer": "node server.js",
+    "explanation": "`node <file>` is the basic command to execute a JavaScript file with the Node.js runtime.",
+    "question_type": "MCQ",
+    "keywords": [
+      "node cli",
+      "running scripts"
+    ],
+    "options": [
+      "node server.js",
+      "run server.js",
+      "npm server.js",
+      "execute server.js"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_160",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "What is `libuv`'s role in Node.js?",
+    "answer": "A C library providing the event loop and non-blocking async I/O (thread pool, file/network operations) that Node builds on",
+    "explanation": "libuv abstracts platform-specific async I/O and provides Node's event loop implementation and a thread pool for operations (like some fs/dns calls) that can't be done non-blockingly at the OS level.",
+    "question_type": "MCQ",
+    "keywords": [
+      "libuv",
+      "event loop",
+      "thread pool"
+    ],
+    "options": [
+      "It's the V8 JavaScript engine itself",
+      "A C library providing the event loop and non-blocking async I/O (thread pool, file/network operations) that Node builds on",
+      "A CSS framework bundled with Node",
+      "Node's package manager"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_161",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Medium",
+    "question": "How do you tell Node.js to treat `.js` files in a project as ES Modules by default?",
+    "answer": "Add \"type\": \"module\" to package.json",
+    "explanation": "Setting `\"type\": \"module\"` in `package.json` makes Node interpret `.js` files as ES Modules (using `import`/`export`) instead of the CommonJS default; `.cjs` can still be used for CommonJS files in such a project.",
+    "question_type": "MCQ",
+    "keywords": [
+      "package.json type module",
+      "es modules"
+    ],
+    "options": [
+      "Add \"type\": \"module\" to package.json",
+      "Rename every file to .mjs only, nothing else works",
+      "Add a shebang line",
+      "Set NODE_ENV=module"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_162",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Medium",
+    "question": "What is the purpose of the `devDependencies` field in package.json, as opposed to `dependencies`?",
+    "answer": "devDependencies are only needed for development/testing/building (e.g. test runners, bundlers), not at runtime in production",
+    "explanation": "Packages like test frameworks, linters, and build tools go in `devDependencies` since production deployments (`npm install --production` / `npm ci --omit=dev`) can skip installing them, keeping production installs leaner.",
+    "question_type": "MCQ",
+    "keywords": [
+      "devdependencies",
+      "dependencies",
+      "package.json"
+    ],
+    "options": [
+      "devDependencies are optional and never installed",
+      "devDependencies are only needed for development/testing/building (e.g. test runners, bundlers), not at runtime in production",
+      "There is no real difference, just naming",
+      "devDependencies install faster"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_163",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Hard",
+    "question": "Which phase of the Node.js event loop runs `setImmediate()` callbacks?",
+    "answer": "The dedicated 'check' phase, which runs after the 'poll' phase",
+    "explanation": "`setImmediate` has its own 'check' phase, which runs right after the 'poll' phase completes - this is why, inside an I/O callback, `setImmediate` is guaranteed to fire before a `setTimeout(fn, 0)` scheduled at the same point.",
+    "question_type": "MCQ",
+    "keywords": [
+      "setimmediate",
+      "check phase",
+      "event loop phases"
+    ],
+    "options": [
+      "The 'timers' phase, same as setTimeout(fn, 0)",
+      "The dedicated 'check' phase, which runs after the 'poll' phase",
+      "Immediately, synchronously, before anything else",
+      "The 'close callbacks' phase"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_164",
+    "technology": "Node.js",
+    "topic": "Asynchronous Programming",
+    "difficulty": "Medium",
+    "question": "What does `process.nextTick(callback)` guarantee compared to a Promise's `.then()`?",
+    "answer": "process.nextTick callbacks run BEFORE the Promise microtask queue, at the end of the current operation",
+    "explanation": "Node processes its own `nextTick` queue completely before draining the Promise microtask queue, both of which run before the event loop proceeds to the next phase - `nextTick` has the highest priority of the two.",
+    "question_type": "MCQ",
+    "keywords": [
+      "process.nexttick",
+      "microtask priority",
+      "promise then"
+    ],
+    "options": [
+      "They're identical in priority",
+      "process.nextTick callbacks run BEFORE the Promise microtask queue, at the end of the current operation",
+      "nextTick runs after I/O",
+      "nextTick is deprecated and does nothing"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_165",
+    "technology": "Node.js",
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "What happens if you forget to return (or await) a promise inside a `.then()` callback that itself starts another async operation?",
+    "answer": "The outer promise chain won't wait for that inner operation to complete before continuing",
+    "explanation": "If you don't `return` the inner promise, the `.then()` chain resolves as soon as the OUTER callback function returns (ignoring the still-pending inner promise), so subsequent `.then()`s run before the inner async work actually finishes - a classic 'promise chain broke' bug.",
+    "question_type": "MCQ",
+    "keywords": [
+      "promise chaining",
+      "forgetting return",
+      "async ordering"
+    ],
+    "options": [
+      "The outer promise chain won't wait for that inner operation to complete before continuing",
+      "Node throws a SyntaxError",
+      "It works exactly the same as returning it",
+      "The inner promise runs synchronously instead"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_166",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "What type of value does an `async` function ALWAYS return, regardless of what its `return` statement returns?",
+    "answer": "A Promise that resolves to the returned value (or rejects if an error is thrown)",
+    "explanation": "Declaring a function `async` automatically wraps its return value in a Promise - `return 5` inside an async function means the function itself returns `Promise.resolve(5)` to its caller.",
+    "question_type": "MCQ",
+    "keywords": [
+      "async function",
+      "implicit promise wrapping"
+    ],
+    "options": [
+      "The raw returned value directly",
+      "A Promise that resolves to the returned value (or rejects if an error is thrown)",
+      "undefined always",
+      "A callback function"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_167",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Medium",
+    "question": "What does `fs.watch(path, callback)` do?",
+    "answer": "Watches a file or directory for changes and invokes the callback when something changes",
+    "explanation": "`fs.watch` sets up filesystem change notifications (rename/change events) for a path, commonly used for things like dev-server file-change detection/hot reload.",
+    "question_type": "MCQ",
+    "keywords": [
+      "fs.watch",
+      "file watching",
+      "change notification"
+    ],
+    "options": [
+      "Reads a file once and returns its contents",
+      "Watches a file or directory for changes and invokes the callback when something changes",
+      "Deletes a file after a timeout",
+      "Copies a file to a new path"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_168",
+    "technology": "Node.js",
+    "topic": "HTTP Module",
+    "difficulty": "Medium",
+    "question": "In a raw Node `http.createServer` callback `(req, res) => {...}`, how do you read the incoming request body (e.g. for a POST)?",
+    "answer": "Listen for 'data' and 'end' events on the req stream (req is a Readable stream) and accumulate chunks yourself",
+    "explanation": "The raw `http` module does NOT parse the body for you - `req` is a readable stream, so you must manually collect `data` chunks and act once the `end` event fires; frameworks like Express add body-parsing middleware on top of this exact pattern.",
+    "question_type": "MCQ",
+    "keywords": [
+      "http module",
+      "request body",
+      "readable stream"
+    ],
+    "options": [
+      "req.body is populated automatically",
+      "Listen for 'data' and 'end' events on the req stream (req is a Readable stream) and accumulate chunks yourself",
+      "res.getBody()",
+      "It's impossible without Express"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_169",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Medium",
+    "question": "What does `express.static('public')` middleware do?",
+    "answer": "Serves static files (HTML, CSS, images, JS) directly from the given directory",
+    "explanation": "`express.static` serves files straight from the filesystem for matching request paths, commonly used for a frontend build's static assets.",
+    "question_type": "MCQ",
+    "keywords": [
+      "express.static",
+      "static files",
+      "middleware"
+    ],
+    "options": [
+      "Compiles JSX files in the public folder",
+      "Serves static files (HTML, CSS, images, JS) directly from the given directory",
+      "Minifies all responses",
+      "Sets up a static (unchanging) database connection"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_170",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Medium",
+    "question": "What is the effect of registering middleware with `app.use(middleware)` (no path argument) versus `app.use('/api', middleware)`?",
+    "answer": "The first runs for EVERY request; the second only runs for requests whose path starts with /api",
+    "explanation": "Omitting the path applies the middleware globally to all incoming requests; supplying a path prefix scopes it to only requests under that path.",
+    "question_type": "MCQ",
+    "keywords": [
+      "app.use",
+      "middleware scoping",
+      "path prefix"
+    ],
+    "options": [
+      "No difference, path is ignored either way",
+      "The first runs for EVERY request; the second only runs for requests whose path starts with /api",
+      "The second one runs twice as often",
+      "app.use always requires a path argument"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_171",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Medium",
+    "question": "What does HATEOAS (a REST maturity concept) suggest an API response should include?",
+    "answer": "Hyperlinks to related actions/resources, so clients can navigate the API dynamically rather than hardcoding URLs",
+    "explanation": "HATEOAS (Hypermedia As The Engine Of Application State) means responses carry links describing what a client can do next (e.g. a 'cancel' link on an order resource), reducing tight coupling between client and fixed URL structures.",
+    "question_type": "MCQ",
+    "keywords": [
+      "hateoas",
+      "hypermedia",
+      "rest maturity"
+    ],
+    "options": [
+      "The database schema",
+      "Hyperlinks to related actions/resources, so clients can navigate the API dynamically rather than hardcoding URLs",
+      "The server's source code",
+      "A list of all users"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_172",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Medium",
+    "question": "What does calling `.pipe()` on a readable stream do, e.g. `readStream.pipe(writeStream)`?",
+    "answer": "Automatically manages reading from the source and writing to the destination, including backpressure handling",
+    "explanation": "`.pipe()` wires a readable stream's output directly to a writable stream's input, automatically pausing the source when the destination's internal buffer is full (backpressure) and resuming when it drains - all without manual buffering.",
+    "question_type": "MCQ",
+    "keywords": [
+      "stream.pipe",
+      "backpressure",
+      "readable writable"
+    ],
+    "options": [
+      "Copies the entire file into memory first, then writes it",
+      "Automatically manages reading from the source and writing to the destination, including backpressure handling",
+      "Deletes the source file after writing",
+      "Only works between two files, never with HTTP"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_173",
+    "technology": "Node.js",
+    "topic": "Event Emitters",
+    "difficulty": "Medium",
+    "question": "What happens if an EventEmitter emits an `'error'` event with no listener registered for it?",
+    "answer": "Node throws the error and (if uncaught elsewhere) crashes the process",
+    "explanation": "The `'error'` event is special-cased in Node's EventEmitter: if there's no `'error'` listener, the emitted error is thrown, which can crash the process if not caught elsewhere - this is why streams/sockets etc. should always have an error handler attached.",
+    "question_type": "MCQ",
+    "keywords": [
+      "error event",
+      "eventemitter",
+      "unhandled error"
+    ],
+    "options": [
+      "Nothing, it's silently ignored like any other event",
+      "Node throws the error and (if uncaught elsewhere) crashes the process",
+      "The event is queued until a listener is added later",
+      "It automatically retries the operation"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_174",
+    "technology": "Node.js",
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "What does the `unhandledRejection` process event fire for?",
+    "answer": "A Promise that rejects with no `.catch()` (or try/catch around an await) handling it",
+    "explanation": "`process.on('unhandledRejection', ...)` lets you observe/log promise rejections that nothing in your code ever caught, which is useful for surfacing silent async failures that wouldn't otherwise crash or log anything.",
+    "question_type": "MCQ",
+    "keywords": [
+      "unhandledrejection",
+      "promise rejection",
+      "process events"
+    ],
+    "options": [
+      "A synchronous throw with no try/catch",
+      "A Promise that rejects with no `.catch()` (or try/catch around an await) handling it",
+      "Every rejected promise, even if handled",
+      "A failed HTTP request specifically"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_175",
+    "technology": "Node.js",
+    "topic": "Child Processes",
+    "difficulty": "Medium",
+    "question": "What is the main risk of using `child_process.exec()` with a command string built from user input?",
+    "answer": "Command injection - since exec runs the string through a shell, unsanitized input can inject additional shell commands",
+    "explanation": "Because `exec()` passes the command through a shell interpreter, unescaped user input can break out of the intended command (e.g. appending `; rm -rf /`) - `execFile`/`spawn` with an argument ARRAY (not shell-interpreted) avoids this class of vulnerability.",
+    "question_type": "MCQ",
+    "keywords": [
+      "command injection",
+      "child_process.exec",
+      "security"
+    ],
+    "options": [
+      "It runs slower than spawn",
+      "Command injection - since exec runs the string through a shell, unsanitized input can inject additional shell commands",
+      "It only works on Linux",
+      "It cannot return any output"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_176",
+    "technology": "Node.js",
+    "topic": "Clustering",
+    "difficulty": "Medium",
+    "question": "In the `cluster` module, which process is responsible for accepting incoming connections and distributing them to workers?",
+    "answer": "The primary/master process",
+    "explanation": "The primary process listens on the shared port and hands off (or load-balances) incoming connections to one of the forked worker processes, depending on the scheduling policy in use.",
+    "question_type": "MCQ",
+    "keywords": [
+      "cluster module",
+      "primary process",
+      "load balancing"
+    ],
+    "options": [
+      "Each worker independently binds its own port",
+      "The primary/master process",
+      "The OS kernel exclusively, with no Node involvement",
+      "Whichever worker started first"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_177",
+    "technology": "Node.js",
+    "topic": "Environment Variables",
+    "difficulty": "Medium",
+    "question": "Why is it a bad practice to commit a `.env` file containing real secrets to a public Git repository?",
+    "answer": "Anyone with repo access (or anyone who finds a leaked/public repo) can read the secrets directly from git history, even after later deleting the file",
+    "explanation": "Removing a file in a later commit does NOT remove it from git's history - the secret remains recoverable from any earlier commit unless history is rewritten (and even then, anyone who already cloned it has a copy); secrets should be rotated immediately if ever committed.",
+    "question_type": "MCQ",
+    "keywords": [
+      "dotenv",
+      "git history",
+      "secret leakage"
+    ],
+    "options": [
+      "It has no real downside",
+      "Anyone with repo access (or anyone who finds a leaked/public repo) can read the secrets directly from git history, even after later deleting the file",
+      "Git automatically encrypts .env files",
+      ".env files are ignored by git by default"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_178",
+    "technology": "Node.js",
+    "topic": "Authentication Basics (JWT)",
+    "difficulty": "Medium",
+    "question": "What is a common way to allow a JWT-based session to be effectively 'revoked' before its expiry, given JWTs are normally stateless?",
+    "answer": "Maintain a server-side denylist/blacklist of revoked token ids (or a short expiry + refresh-token rotation scheme)",
+    "explanation": "Since a valid signature alone would normally still be accepted, true early revocation requires some server-side state (a blocklist checked per request, or issuing short-lived access tokens paired with a revocable refresh token) - pure stateless JWTs can't be 'un-issued' by design.",
+    "question_type": "MCQ",
+    "keywords": [
+      "jwt revocation",
+      "stateless tokens",
+      "refresh tokens"
+    ],
+    "options": [
+      "JWTs can never be revoked under any circumstances",
+      "Maintain a server-side denylist/blacklist of revoked token ids (or a short expiry + refresh-token rotation scheme)",
+      "Change the JWT secret key on every single request",
+      "Rely on the client to voluntarily stop sending it"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_179",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Medium",
+    "question": "What does an ORM (Object-Relational Mapper) like Sequelize or Mongoose primarily provide?",
+    "answer": "A way to interact with the database using JavaScript objects/models instead of writing raw queries by hand",
+    "explanation": "An ORM/ODM maps database rows/documents to JS objects and exposes methods (`.find()`, `.save()`, etc.) so application code manipulates familiar objects rather than hand-writing every SQL/query statement.",
+    "question_type": "MCQ",
+    "keywords": [
+      "orm",
+      "sequelize",
+      "mongoose",
+      "object mapping"
+    ],
+    "options": [
+      "A replacement database engine",
+      "A way to interact with the database using JavaScript objects/models instead of writing raw queries by hand",
+      "Automatic UI generation",
+      "A caching layer only"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_180",
+    "technology": "Node.js",
+    "topic": "Debugging & Performance",
+    "difficulty": "Medium",
+    "question": "What is one downside of adding `console.log` statements liberally throughout a production Node.js server for debugging?",
+    "answer": "console.log writes are synchronous when stdout is not a TTY (e.g. redirected to a file/pipe in production), which can slow down a busy server",
+    "explanation": "When stdout isn't an interactive terminal (common in production, where output is piped to a log file/aggregator), Node's `console.log` writes synchronously, so heavy logging on a hot code path can noticeably block the event loop under load - dedicated async loggers (pino, winston) are preferred for production.",
+    "question_type": "MCQ",
+    "keywords": [
+      "console.log",
+      "synchronous stdout",
+      "production logging"
+    ],
+    "options": [
+      "console.log is asynchronous and never blocks",
+      "console.log writes are synchronous when stdout is not a TTY (e.g. redirected to a file/pipe in production), which can slow down a busy server",
+      "console.log automatically gets removed at deploy time",
+      "There is no real downside ever"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_181",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Easy",
+    "question": "Write a function `sleep(ms)` that returns a Promise resolving after `ms` milliseconds, then use it inside an async function to delay by 200ms before returning a value.",
+    "answer": "A sleep helper built on setTimeout wrapped in a Promise, awaited before returning.",
+    "explanation": "Wrapping setTimeout in a Promise is the standard way to make a delay awaitable inside async/await code.",
+    "question_type": "Coding",
+    "keywords": [
+      "sleep",
+      "settimeout",
+      "promise",
+      "async await"
+    ],
+    "starter_code": "function sleep(ms) {\n  // your code here\n}\n\nasync function delayedValue() {\n  // await sleep(200), then return 42\n}",
+    "expected_solution": "function sleep(ms) {\n  return new Promise(resolve => setTimeout(resolve, ms));\n}\n\nasync function delayedValue() {\n  await sleep(200);\n  return 42;\n}",
+    "test_cases": [
+      {
+        "input": "await delayedValue()",
+        "expected_output": "resolves to 42 after roughly 200ms"
+      },
+      {
+        "input": "await sleep(0)",
+        "expected_output": "resolves on the next tick, effectively immediately but still asynchronously"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_182",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write an Express middleware `requireAuth(req, res, next)` that checks for an `Authorization: Bearer <token>` header, and if it's missing, responds with 401 and does NOT call next().",
+    "answer": "Middleware that inspects the header and either calls next() or short-circuits with a 401 response.",
+    "explanation": "Not calling next() when unauthorized is what actually blocks the request from reaching later route handlers; calling res.status(401).send() sends the response so the client isn't left hanging.",
+    "question_type": "Coding",
+    "keywords": [
+      "express middleware",
+      "authorization header",
+      "401 unauthorized"
+    ],
+    "starter_code": "function requireAuth(req, res, next) {\n  // your code here\n}",
+    "expected_solution": "function requireAuth(req, res, next) {\n  const header = req.headers.authorization;\n  if (!header || !header.startsWith('Bearer ')) {\n    return res.status(401).json({ error: 'Unauthorized' });\n  }\n  next();\n}",
+    "test_cases": [
+      {
+        "input": "request with no Authorization header",
+        "expected_output": "responds 401 and next() is never called"
+      },
+      {
+        "input": "request with 'Authorization: Bearer abc123'",
+        "expected_output": "next() is called, request proceeds to the route handler"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_183",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Easy",
+    "question": "Which HTTP status code conventionally means 'the resource was not found'?",
+    "answer": "404",
+    "explanation": "404 Not Found is the standard status for a request to a resource/URL that doesn't exist on the server.",
+    "question_type": "MCQ",
+    "keywords": [
+      "404",
+      "http status codes"
+    ],
+    "options": [
+      "400",
+      "401",
+      "404",
+      "500"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "nodejs_184",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Easy",
+    "question": "What keyword is used to import a named export in an ES Module?",
+    "answer": "import",
+    "explanation": "ES Modules use `import { name } from './module.js'` for named imports (as opposed to CommonJS's `const { name } = require('./module')`).",
+    "question_type": "MCQ",
+    "keywords": [
+      "es modules",
+      "import",
+      "named export"
+    ],
+    "options": [
+      "require",
+      "include",
+      "import",
+      "using"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "nodejs_185",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "What core Node.js module provides utilities for working with file and directory paths in a cross-platform way?",
+    "answer": "path",
+    "explanation": "The `path` module (e.g. `path.join`, `path.resolve`) correctly handles path separator differences between OSes (e.g. `/` on POSIX vs `\\` on Windows), avoiding manual string concatenation bugs.",
+    "question_type": "MCQ",
+    "keywords": [
+      "path module",
+      "cross-platform paths"
+    ],
+    "options": [
+      "fs",
+      "path",
+      "os",
+      "url"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_186",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "What does `path.join('/foo', 'bar', '../baz')` resolve to?",
+    "answer": "/foo/baz",
+    "explanation": "`path.join` concatenates the segments and then NORMALIZES the result, resolving `..` (go up one directory) against `bar`, leaving `/foo/baz`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "path.join",
+      "path normalization",
+      ".. segments"
+    ],
+    "options": [
+      "/foo/bar/../baz",
+      "/foo/baz",
+      "/bar/baz",
+      "It throws an error"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_187",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Easy",
+    "question": "Which core module gives you information about the operating system, like total memory or CPU count?",
+    "answer": "os",
+    "explanation": "The `os` module exposes OS-level info such as `os.cpus()`, `os.totalmem()`, and `os.platform()`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "os module",
+      "system info"
+    ],
+    "options": [
+      "os",
+      "path",
+      "util",
+      "process"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_188",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Hard",
+    "question": "What is a Worker Thread (from the `worker_threads` module) used for, compared to `child_process`?",
+    "answer": "Running JS in a separate thread WITHIN the same process, able to share memory via SharedArrayBuffer, for CPU-intensive work without blocking the main event loop",
+    "explanation": "Unlike `child_process` (a fully separate OS process) or `cluster` (separate processes sharing a port), Worker Threads run in the SAME process but a different thread, with lower overhead for spinning up and the option to share memory directly via `SharedArrayBuffer`, making them well suited for offloading CPU-bound JS work.",
+    "question_type": "MCQ",
+    "keywords": [
+      "worker_threads",
+      "cpu-bound",
+      "shared memory"
+    ],
+    "options": [
+      "Running a completely separate Node.js CLI tool",
+      "Running JS in a separate thread WITHIN the same process, able to share memory via SharedArrayBuffer, for CPU-intensive work without blocking the main event loop",
+      "Only for handling HTTP requests",
+      "They are identical to cluster workers"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_189",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "How do you gracefully shut down a Node.js server when it receives a `SIGTERM` signal (e.g. from a container orchestrator)?",
+    "answer": "Listen with `process.on('SIGTERM', () => { server.close(() => process.exit(0)); })` to stop accepting new connections and let in-flight ones finish first",
+    "explanation": "Handling `SIGTERM` explicitly lets you stop accepting new connections (`server.close()`), let existing requests finish, close DB connections, etc., before actually exiting - important for zero-downtime deploys/restarts under something like Kubernetes.",
+    "question_type": "MCQ",
+    "keywords": [
+      "sigterm",
+      "graceful shutdown",
+      "process signals"
+    ],
+    "options": [
+      "Node ignores SIGTERM by default with no way to handle it",
+      "Listen with `process.on('SIGTERM', () => { server.close(() => process.exit(0)); })` to stop accepting new connections and let in-flight ones finish first",
+      "Call process.exit() immediately with no cleanup",
+      "SIGTERM automatically triggers a graceful shutdown, no code needed"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_190",
+    "technology": "Node.js",
+    "topic": "NPM & package.json",
+    "difficulty": "Easy",
+    "question": "In package.json's `scripts` field, what command runs the script named `\"start\": \"node index.js\"`?",
+    "answer": "npm start",
+    "explanation": "`npm start` is a special shorthand (no `run` keyword needed) that runs the `start` script; other named scripts need `npm run <name>`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "npm scripts",
+      "npm start",
+      "package.json"
+    ],
+    "options": [
+      "npm run-script index.js",
+      "npm start",
+      "npm execute start",
+      "node package.json start"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_191",
+    "technology": "Node.js",
+    "topic": "Modules (CommonJS vs ES Modules)",
+    "difficulty": "Hard",
+    "question": "What does Node's `require.cache` let you do (with caution)?",
+    "answer": "Inspect/delete a module's cached exports so a subsequent require() re-executes and re-loads that module fresh",
+    "explanation": "`require.cache` is an object keyed by resolved file path holding each loaded module's cached export - deleting an entry (`delete require.cache[require.resolve('./mod')]`) forces the NEXT `require('./mod')` to re-execute the file, occasionally used for hot-reloading in dev tools, though it's an advanced/fragile technique.",
+    "question_type": "MCQ",
+    "keywords": [
+      "require.cache",
+      "module caching",
+      "hot reload"
+    ],
+    "options": [
+      "Nothing, it doesn't exist",
+      "Inspect/delete a module's cached exports so a subsequent require() re-executes and re-loads that module fresh",
+      "Cache HTTP responses automatically",
+      "Speed up npm install"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_192",
+    "technology": "Node.js",
+    "topic": "Event Loop",
+    "difficulty": "Medium",
+    "question": "What does calling `.unref()` on a Node.js `Timer` (from setTimeout/setInterval) do?",
+    "answer": "Allows the Node process to exit even if that timer is still pending, i.e. it doesn't keep the event loop 'alive' by itself",
+    "explanation": "By default, a pending timer keeps the process alive/running; `.unref()` marks it as NOT something that alone should prevent the process from exiting, useful for background/heartbeat timers that shouldn't block a clean shutdown.",
+    "question_type": "MCQ",
+    "keywords": [
+      "timer.unref",
+      "event loop alive",
+      "process exit"
+    ],
+    "options": [
+      "Cancels the timer immediately",
+      "Allows the Node process to exit even if that timer is still pending, i.e. it doesn't keep the event loop 'alive' by itself",
+      "Doubles the timer's delay",
+      "Converts it into a synchronous call"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_193",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Medium",
+    "question": "Which core module provides gzip/deflate compression for streams in Node.js?",
+    "answer": "zlib",
+    "explanation": "The `zlib` module provides compression/decompression (gzip, deflate, brotli) transform streams, often piped into/out of HTTP responses or file writes.",
+    "question_type": "MCQ",
+    "keywords": [
+      "zlib",
+      "gzip",
+      "compression"
+    ],
+    "options": [
+      "crypto",
+      "zlib",
+      "buffer",
+      "stream"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_194",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Medium",
+    "question": "What does Node's built-in `crypto` module provide that's commonly used for password storage?",
+    "answer": "Hashing functions (and via libraries, bcrypt-style salted hashing) so passwords are never stored in plaintext",
+    "explanation": "`crypto` provides primitives like `crypto.scrypt`/`crypto.pbkdf2` for deriving a salted hash from a password - passwords should always be hashed (ideally with a purpose-built slow hash + per-user salt) rather than stored as plaintext or with a fast general-purpose hash alone.",
+    "question_type": "MCQ",
+    "keywords": [
+      "crypto module",
+      "password hashing",
+      "salting"
+    ],
+    "options": [
+      "Direct plaintext storage helpers",
+      "Hashing functions (and via libraries, bcrypt-style salted hashing) so passwords are never stored in plaintext",
+      "A full built-in database",
+      "HTTP request signing only"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_195",
+    "technology": "Node.js",
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "What is the recommended way to handle an error thrown inside an Express route handler that uses `async/await` (in Express 4.x, before built-in async error handling)?",
+    "answer": "Wrap the handler's body in try/catch and call next(err) in the catch block, or use a wrapper utility that does this for you",
+    "explanation": "Express 4 does NOT automatically catch errors thrown inside an async function passed as a route handler (unlike synchronous throws, which it does catch); you must catch the rejection yourself and forward it via `next(err)` so Express's error-handling middleware runs (or use a helper like express-async-handler that wraps this pattern).",
+    "question_type": "MCQ",
+    "keywords": [
+      "express async errors",
+      "next(err)",
+      "try catch"
+    ],
+    "options": [
+      "Async errors are caught automatically by Express 4, no extra code needed",
+      "Wrap the handler's body in try/catch and call next(err) in the catch block, or use a wrapper utility that does this for you",
+      "Use process.on('uncaughtException') only",
+      "Return a rejected promise from the route and ignore it"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_196",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `parseQueryString(qs)` that parses a query string like `\"a=1&b=2&c=hello\"` into an object `{a: '1', b: '2', c: 'hello'}` without using the built-in `querystring`/`URLSearchParams` APIs.",
+    "answer": "A function that splits on '&' then '=' and builds an object.",
+    "explanation": "Splitting on '&' first isolates each key=value pair, then splitting each pair on the first '=' separates key from value; using URLSearchParams in real code is preferred, but implementing it by hand demonstrates the underlying parsing logic.",
+    "question_type": "Coding",
+    "keywords": [
+      "query string parsing",
+      "string manipulation",
+      "url"
+    ],
+    "starter_code": "function parseQueryString(qs) {\n  // your code here\n}",
+    "expected_solution": "function parseQueryString(qs) {\n  const result = {};\n  for (const pair of qs.split('&')) {\n    const [key, value] = pair.split('=');\n    result[key] = value;\n  }\n  return result;\n}",
+    "test_cases": [
+      {
+        "input": "parseQueryString('a=1&b=2&c=hello')",
+        "expected_output": "{a: '1', b: '2', c: 'hello'}"
+      },
+      {
+        "input": "parseQueryString('x=42')",
+        "expected_output": "{x: '42'}"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_197",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Medium",
+    "question": "What does API 'versioning' (e.g. `/api/v1/users`) help achieve?",
+    "answer": "Letting an API evolve/introduce breaking changes in a new version while existing clients keep using the older, stable version",
+    "explanation": "Embedding a version in the URL (or a header) lets a team ship breaking changes as a new version without immediately forcing every existing client/integration to update simultaneously.",
+    "question_type": "MCQ",
+    "keywords": [
+      "api versioning",
+      "breaking changes",
+      "backward compatibility"
+    ],
+    "options": [
+      "Faster database queries",
+      "Letting an API evolve/introduce breaking changes in a new version while existing clients keep using the older, stable version",
+      "Automatic load balancing",
+      "Reducing the number of endpoints needed"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_198",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Medium",
+    "question": "What is 'CORS' middleware (e.g. the `cors` npm package) responsible for in an Express app?",
+    "answer": "Setting the appropriate Access-Control-* response headers so browsers allow cross-origin requests from a different domain/port",
+    "explanation": "Browsers block cross-origin requests by default unless the SERVER'S response includes CORS headers explicitly permitting the requesting origin - CORS middleware automates setting those headers correctly per configured rules.",
+    "question_type": "MCQ",
+    "keywords": [
+      "cors",
+      "cross-origin",
+      "access-control headers"
+    ],
+    "options": [
+      "Compressing responses",
+      "Setting the appropriate Access-Control-* response headers so browsers allow cross-origin requests from a different domain/port",
+      "Parsing JSON request bodies",
+      "Rate limiting requests"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_199",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "What does `process.exit(code)` do?",
+    "answer": "Immediately terminates the Node process with the given exit code, without waiting for pending async operations to finish",
+    "explanation": "`process.exit()` forces immediate termination, which can cut off pending I/O (e.g. an in-flight write or unflushed stdout) - it's generally safer to let the event loop drain naturally or handle shutdown signals gracefully instead of calling it directly.",
+    "question_type": "MCQ",
+    "keywords": [
+      "process.exit",
+      "immediate termination",
+      "pending io"
+    ],
+    "options": [
+      "Pauses the process until code finishes",
+      "Immediately terminates the Node process with the given exit code, without waiting for pending async operations to finish",
+      "Restarts the process",
+      "Only exits after all timers complete"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_200",
+    "technology": "Node.js",
+    "topic": "Event Emitters",
+    "difficulty": "Medium",
+    "question": "What warning does Node.js print if you add more than 10 listeners for the same event on one EventEmitter (by default)?",
+    "answer": "A 'MaxListenersExceededWarning', often indicating a memory leak from listeners never being removed",
+    "explanation": "The default max-listeners limit (10) is a heuristic to catch a common bug pattern - repeatedly adding listeners (e.g. inside a loop or on every request) without ever removing them, which leaks memory over time; the limit can be raised via `setMaxListeners()` if genuinely needed.",
+    "question_type": "MCQ",
+    "keywords": [
+      "maxlistenersexceededwarning",
+      "memory leak",
+      "eventemitter"
+    ],
+    "options": [
+      "No warning is ever printed",
+      "A 'MaxListenersExceededWarning', often indicating a memory leak from listeners never being removed",
+      "A syntax error",
+      "It automatically removes the oldest listener"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_201",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "What does `Promise.any([p1, p2, p3])` resolve with?",
+    "answer": "The value of the FIRST promise to FULFILL (ignoring rejections unless all reject)",
+    "explanation": "`Promise.any` resolves as soon as any ONE input promise fulfills, ignoring earlier rejections; it only rejects (with an AggregateError) if ALL of the input promises reject.",
+    "question_type": "MCQ",
+    "keywords": [
+      "promise.any",
+      "aggregateerror",
+      "first fulfillment"
+    ],
+    "options": [
+      "The value of the FIRST promise to FULFILL (ignoring rejections unless all reject)",
+      "The value of the first promise to settle in any way",
+      "An array of all fulfilled values",
+      "It always rejects if any one promise rejects"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_202",
+    "technology": "Node.js",
+    "topic": "File System (fs module)",
+    "difficulty": "Medium",
+    "question": "What is the difference between `fs.readFile`'s callback signature and awaiting `fs.promises.readFile`?",
+    "answer": "The callback version passes (err, data) to a callback; the promises version returns a Promise you can await, with errors surfacing as a rejection catchable via try/catch",
+    "explanation": "Both perform the same underlying async read, but the callback API uses the error-first callback convention while `fs.promises` wraps the same operation in a Promise-based API compatible with async/await and .catch() error handling.",
+    "question_type": "MCQ",
+    "keywords": [
+      "fs.readfile",
+      "fs.promises",
+      "callback vs promise"
+    ],
+    "options": [
+      "They behave identically in every way including error handling style",
+      "The callback version passes (err, data) to a callback; the promises version returns a Promise you can await, with errors surfacing as a rejection catchable via try/catch",
+      "fs.promises.readFile is synchronous",
+      "Only the callback version can read binary files"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_203",
+    "technology": "Node.js",
+    "topic": "HTTP Module",
+    "difficulty": "Medium",
+    "question": "Which HTTP header tells the server what MEDIA TYPE the request body is encoded as (e.g. JSON vs form data)?",
+    "answer": "Content-Type",
+    "explanation": "`Content-Type` (e.g. `application/json`, `multipart/form-data`) tells the receiving server how to correctly parse the request body; `Accept` instead tells the server what format the CLIENT wants back in the response.",
+    "question_type": "MCQ",
+    "keywords": [
+      "content-type",
+      "http headers",
+      "request body encoding"
+    ],
+    "options": [
+      "Accept",
+      "Content-Type",
+      "Content-Length",
+      "Host"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_204",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Medium",
+    "question": "How do you access URL query string parameters (e.g. `?page=2`) in an Express route handler?",
+    "answer": "req.query.page",
+    "explanation": "`req.query` holds parsed query-string parameters; `req.params` instead holds named ROUTE parameters (like `:id` in `/users/:id`), a common source of confusion between the two.",
+    "question_type": "MCQ",
+    "keywords": [
+      "req.query",
+      "req.params",
+      "express routing"
+    ],
+    "options": [
+      "req.params.page",
+      "req.query.page",
+      "req.body.page",
+      "req.headers.page"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_205",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Easy",
+    "question": "Write a function `readLines(filePath)` (async, using fs.promises) that reads a text file and returns an array of its non-empty lines.",
+    "answer": "An async function reading the file then splitting/filtering lines.",
+    "explanation": "Splitting on newline characters and filtering out empty strings handles both trailing newlines and blank lines within the file.",
+    "question_type": "Coding",
+    "keywords": [
+      "fs.promises",
+      "readfile",
+      "string split"
+    ],
+    "starter_code": "const fs = require('fs').promises;\n\nasync function readLines(filePath) {\n  // your code here\n}",
+    "expected_solution": "const fs = require('fs').promises;\n\nasync function readLines(filePath) {\n  const text = await fs.readFile(filePath, 'utf8');\n  return text.split('\\n').map(l => l.trim()).filter(l => l.length > 0);\n}",
+    "test_cases": [
+      {
+        "input": "a file containing 'a\\n\\nb\\nc\\n'",
+        "expected_output": "['a', 'b', 'c']"
+      },
+      {
+        "input": "an empty file",
+        "expected_output": "[]"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_206",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Easy",
+    "question": "Which command shows the currently installed Node.js version?",
+    "answer": "node -v",
+    "explanation": "`node -v` (or `node --version`) prints the installed Node.js runtime version.",
+    "question_type": "MCQ",
+    "keywords": [
+      "node -v",
+      "version check"
+    ],
+    "options": [
+      "node -v",
+      "node --list",
+      "npm node",
+      "node info"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_207",
+    "technology": "Node.js",
+    "topic": "REST API Design",
+    "difficulty": "Medium",
+    "question": "Which HTTP status code range (in general) indicates a CLIENT error (something wrong with the request itself)?",
+    "answer": "4xx",
+    "explanation": "4xx codes (400 Bad Request, 401 Unauthorized, 404 Not Found, etc.) indicate the client's request was malformed/unauthorized/not found; 5xx indicates a SERVER-side failure instead.",
+    "question_type": "MCQ",
+    "keywords": [
+      "http status codes",
+      "4xx",
+      "client error"
+    ],
+    "options": [
+      "1xx",
+      "2xx",
+      "4xx",
+      "5xx"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "nodejs_208",
+    "technology": "Node.js",
+    "topic": "Express.js Basics",
+    "difficulty": "Medium",
+    "question": "What does `res.json({ ok: true })` do, compared to `res.send({ ok: true })`?",
+    "answer": "Both ultimately serialize the object to JSON and set Content-Type: application/json when given a plain object - res.json is more explicit about intent",
+    "explanation": "For a plain JS object, Express's `res.send()` actually delegates to JSON serialization internally too, so behavior is effectively the same - `res.json()` is preferred for clarity/explicitness about returning JSON specifically.",
+    "question_type": "MCQ",
+    "keywords": [
+      "res.json",
+      "res.send",
+      "json response"
+    ],
+    "options": [
+      "They behave completely differently and are not interchangeable for objects",
+      "Both ultimately serialize the object to JSON and set Content-Type: application/json when given a plain object - res.json is more explicit about intent",
+      "res.send never accepts objects",
+      "res.json only works with arrays"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_209",
+    "technology": "Node.js",
+    "topic": "Middleware",
+    "difficulty": "Easy",
+    "question": "In Express, in what order do middleware functions registered via multiple `app.use()` calls execute for a matching request?",
+    "answer": "In the order they were registered (top to bottom in the file)",
+    "explanation": "Express executes middleware/route handlers strictly in registration order for a given request, each calling `next()` to pass control along - this is why middleware order (e.g. body parser before routes that read req.body) matters.",
+    "question_type": "MCQ",
+    "keywords": [
+      "middleware order",
+      "app.use",
+      "registration order"
+    ],
+    "options": [
+      "Random order",
+      "In the order they were registered (top to bottom in the file)",
+      "Alphabetical by function name",
+      "All simultaneously in parallel"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_210",
+    "technology": "Node.js",
+    "topic": "Async/Await",
+    "difficulty": "Easy",
+    "question": "Can you use `await` at the top level of a CommonJS module (outside any async function)?",
+    "answer": "No, top-level await is only supported in ES Modules, not plain CommonJS files",
+    "explanation": "Top-level `await` is a feature of ES Modules; a CommonJS (`require`-based) file must wrap any `await` inside an `async function` since it lacks module-level async support.",
+    "question_type": "MCQ",
+    "keywords": [
+      "top-level await",
+      "es modules",
+      "commonjs"
+    ],
+    "options": [
+      "Yes, always, in any Node.js file",
+      "No, top-level await is only supported in ES Modules, not plain CommonJS files",
+      "Only inside a class",
+      "Only in an if statement"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_211",
+    "technology": "Node.js",
+    "topic": "Debugging & Performance",
+    "difficulty": "Medium",
+    "question": "What does the `--max-old-space-size` V8 flag control?",
+    "answer": "The maximum heap memory size V8 is allowed to use before more aggressively garbage collecting / eventually crashing with an out-of-memory error",
+    "explanation": "Node inherits V8's default heap size limits; for memory-hungry applications you can raise `--max-old-space-size` (in MB) to allow a larger heap before V8's garbage collector becomes a bottleneck or the process hits a fatal out-of-memory crash.",
+    "question_type": "MCQ",
+    "keywords": [
+      "max-old-space-size",
+      "v8 heap",
+      "out of memory"
+    ],
+    "options": [
+      "The maximum number of npm packages installable",
+      "The maximum heap memory size V8 is allowed to use before more aggressively garbage collecting / eventually crashing with an out-of-memory error",
+      "The maximum number of HTTP connections",
+      "The maximum file size Node can read"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_212",
+    "technology": "Node.js",
+    "topic": "Node.js Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `withTimeout(promise, ms)` that rejects with an Error('Timeout') if `promise` doesn't settle within `ms` milliseconds, otherwise resolves/rejects with `promise`'s own outcome.",
+    "answer": "A function using Promise.race between the given promise and a timeout promise.",
+    "explanation": "Promise.race adopts whichever promise settles first; if the timeout promise's setTimeout fires before the real operation resolves, the race rejects with the timeout error instead.",
+    "question_type": "Coding",
+    "keywords": [
+      "promise.race",
+      "timeout pattern",
+      "async utility"
+    ],
+    "starter_code": "function withTimeout(promise, ms) {\n  // your code here\n}",
+    "expected_solution": "function withTimeout(promise, ms) {\n  const timeout = new Promise((_, reject) => {\n    setTimeout(() => reject(new Error('Timeout')), ms);\n  });\n  return Promise.race([promise, timeout]);\n}",
+    "test_cases": [
+      {
+        "input": "a promise that resolves after 50ms, ms=200",
+        "expected_output": "resolves with the promise's value (it finished before the timeout)"
+      },
+      {
+        "input": "a promise that never resolves, ms=100",
+        "expected_output": "rejects with Error('Timeout') after 100ms"
+      }
+    ]
+  },
+  {
+    "id": "nodejs_213",
+    "technology": "Node.js",
+    "topic": "Authentication Basics (JWT)",
+    "difficulty": "Medium",
+    "question": "Where is a JWT commonly stored on the client for a web app, and what's a security tradeoff of each option?",
+    "answer": "In an httpOnly cookie (safer against XSS reading it, but needs CSRF protection) or in localStorage (vulnerable to XSS reading it, but simpler and CSRF-immune)",
+    "explanation": "httpOnly cookies aren't accessible to JavaScript (mitigating token theft via XSS) but are automatically sent by the browser (making CSRF a concern needing mitigation like SameSite cookies); localStorage is easy to use from JS but any successful XSS can read and exfiltrate the token directly.",
+    "question_type": "MCQ",
+    "keywords": [
+      "jwt storage",
+      "httponly cookie",
+      "localstorage",
+      "xss csrf"
+    ],
+    "options": [
+      "Only in a URL query parameter, which is always safest",
+      "In an httpOnly cookie (safer against XSS reading it, but needs CSRF protection) or in localStorage (vulnerable to XSS reading it, but simpler and CSRF-immune)",
+      "In a plain global JS variable only, since that's the only supported approach",
+      "JWTs cannot be stored client-side at all"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_214",
+    "technology": "Node.js",
+    "topic": "Node.js Basics",
+    "difficulty": "Medium",
+    "question": "What does the term 'non-blocking I/O' mean in the context of Node.js?",
+    "answer": "The program can continue executing other code while an I/O operation (like a file read or network call) is still in progress, instead of halting until it completes",
+    "explanation": "Non-blocking I/O means initiating a read/write/network call doesn't freeze the single JS thread - execution continues, and a callback/promise resolves later when the operation actually finishes, which is the foundation of Node's concurrency model.",
+    "question_type": "MCQ",
+    "keywords": [
+      "non-blocking io",
+      "concurrency model",
+      "event-driven"
+    ],
+    "options": [
+      "I/O operations happen instantly with zero delay",
+      "The program can continue executing other code while an I/O operation (like a file read or network call) is still in progress, instead of halting until it completes",
+      "I/O operations are disabled entirely",
+      "It refers only to blocking the mouse/keyboard input"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "nodejs_215",
+    "technology": "Node.js",
+    "topic": "Streams & Buffers",
+    "difficulty": "Medium",
+    "question": "What event does a Readable stream emit when there is no more data to be consumed?",
+    "answer": "'end'",
+    "explanation": "A Readable stream emits `'end'` once all data has been consumed; `'finish'` is the corresponding event for a WRITABLE stream once all data has been flushed/written.",
+    "question_type": "MCQ",
+    "keywords": [
+      "readable stream",
+      "end event",
+      "finish event"
+    ],
+    "options": [
+      "'end'",
+      "'finish'",
+      "'close' only",
+      "'done'"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "nodejs_216",
+    "technology": "Node.js",
+    "topic": "Database Integration Concepts",
+    "difficulty": "Medium",
+    "question": "What is a database 'migration' in the context of a Node.js app using an ORM?",
+    "answer": "A version-controlled script describing an incremental change to the database schema (e.g. adding a column), so schema changes can be tracked and applied consistently across environments",
+    "explanation": "Migrations let schema changes be reviewed, version-controlled alongside application code, and applied in order across dev/staging/production, rather than manually running ad-hoc SQL against each environment.",
+    "question_type": "MCQ",
+    "keywords": [
+      "migrations",
+      "schema versioning",
+      "orm"
+    ],
+    "options": [
+      "A one-time copy of data to a new server",
+      "A version-controlled script describing an incremental change to the database schema (e.g. adding a column), so schema changes can be tracked and applied consistently across environments",
+      "Moving the app to a different hosting provider",
+      "A backup of the entire database"
+    ],
+    "correct_option": 1
+  }
+]

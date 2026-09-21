@@ -1,0 +1,286 @@
+[
+ {
+  "q": "quick way to work out percentage of a number",
+  "expect": "apt-percentage"
+ },
+ {
+  "q": "selling price is more than cost price how much profit",
+  "expect": "apt-profit-loss"
+ },
+ {
+  "q": "loan interest per year formula",
+  "expect": "apt-simple-interest"
+ },
+ {
+  "q": "how is compound interest different from simple",
+  "expect": "apt-compound-interest"
+ },
+ {
+  "q": "bike goes 40 km in an hour how far in 3 hours",
+  "expect": "apt-time-speed-distance"
+ },
+ {
+  "q": "ten men complete a job in 12 days how many for 6 days",
+  "expect": "apt-time-work"
+ },
+ {
+  "q": "cistern filled by two taps",
+  "expect": "apt-pipes-cisterns"
+ },
+ {
+  "q": "swimming against the current speed",
+  "expect": "apt-boats-streams"
+ },
+ {
+  "q": "average of five numbers is given find the sixth",
+  "expect": "apt-averages"
+ },
+ {
+  "q": "how to find lcm quickly",
+  "expect": "apt-number-system"
+ },
+ {
+  "q": "combinations of choosing 3 from 10",
+  "expect": "apt-permutation-combination"
+ },
+ {
+  "q": "what is the chance of rolling a six",
+  "expect": "apt-probability"
+ },
+ {
+  "q": "which formula gives the area of a circle",
+  "expect": "apt-mensuration"
+ },
+ {
+  "q": "how should i attempt the di questions",
+  "expect": "apt-data-interpretation"
+ },
+ {
+  "q": "find the odd term in the sequence",
+  "expect": "apt-number-series"
+ },
+ {
+  "q": "which direction is she facing after two turns",
+  "expect": "apt-direction-sense"
+ },
+ {
+  "q": "how to solve puzzle where people sit in a row",
+  "expect": "apt-seating-arrangement"
+ },
+ {
+  "q": "tricks to solve para jumble questions",
+  "expect": "apt-verbal-grammar"
+ },
+ {
+  "q": "should i leave questions i am unsure about",
+  "expect": "apt-time-management"
+ },
+ {
+  "q": "what is polymorphism",
+  "expect": "oop-pillars"
+ },
+ {
+  "q": "method overloading vs method overriding",
+  "expect": "oop-overloading-overriding"
+ },
+ {
+  "q": "what is a deadlock and how to avoid it",
+  "expect": "os-deadlock"
+ },
+ {
+  "q": "what is a page replacement policy",
+  "expect": "os-memory"
+ },
+ {
+  "q": "explain race condition",
+  "expect": "os-sync"
+ },
+ {
+  "q": "what is normalization in sql",
+  "expect": "dbms-normalization"
+ },
+ {
+  "q": "what is a candidate key",
+  "expect": "dbms-keys"
+ },
+ {
+  "q": "difference between truncate and delete",
+  "expect": "dbms-sql-misc"
+ },
+ {
+  "q": "what is a three way handshake",
+  "expect": "cn-tcp-udp"
+ },
+ {
+  "q": "how does dns resolve a domain",
+  "expect": "cn-http-dns"
+ },
+ {
+  "q": "which sorting algorithm is fastest",
+  "expect": "dsa-bigo"
+ },
+ {
+  "q": "queue vs stack data structure",
+  "expect": "dsa-stack-queue"
+ },
+ {
+  "q": "what is a balanced tree",
+  "expect": "dsa-trees"
+ },
+ {
+  "q": "how does dijkstra work",
+  "expect": "dsa-bfs-dfs"
+ },
+ {
+  "q": "what is jvm",
+  "expect": "java-jdk-jvm"
+ },
+ {
+  "q": "what is a decorator in python",
+  "expect": "python-basics"
+ },
+ {
+  "q": "what does async await do",
+  "expect": "js-async"
+ },
+ {
+  "q": "props vs state",
+  "expect": "react-basics"
+ },
+ {
+  "q": "what is a json web token",
+  "expect": "web-rest-jwt"
+ },
+ {
+  "q": "how do i prevent xss",
+  "expect": "web-security"
+ },
+ {
+  "q": "git rebase or merge",
+  "expect": "git-basics"
+ },
+ {
+  "q": "how to answer where do you see yourself",
+  "expect": "hr-five-years"
+ },
+ {
+  "q": "why should i be selected for this position",
+  "expect": "hr-why-hire"
+ },
+ {
+  "q": "what do i say for salary expectation",
+  "expect": "hr-salary"
+ },
+ {
+  "q": "what to ask at the end of an interview",
+  "expect": "hr-ask-interviewer"
+ },
+ {
+  "q": "how to describe my final year project",
+  "expect": "interview-projects"
+ },
+ {
+  "q": "resume format for a fresh graduate",
+  "expect": "resume-tips"
+ },
+ {
+  "q": "how to clear a group discussion round",
+  "expect": "gd-tips"
+ },
+ {
+  "q": "how to talk confidently in english",
+  "expect": "communication-skills"
+ },
+ {
+  "q": "how do the placement rounds go",
+  "expect": "placement-process"
+ },
+ {
+  "q": "what is this app for",
+  "expect": "platform-overview"
+ },
+ {
+  "q": "camera is not detecting my face",
+  "expect": "platform-proctoring"
+ },
+ {
+  "q": "how do i view my previous aptitude attempts",
+  "expect": "platform-aptitude-how"
+ },
+ {
+  "q": "which areas am i lagging in",
+  "expect": "my_weak_areas"
+ },
+ {
+  "q": "what topics am i strong at",
+  "expect": "my_strengths"
+ },
+ {
+  "q": "how ready am i for placements",
+  "expect": "my_progress"
+ },
+ {
+  "q": "what did i get in aptitude",
+  "expect": "my_aptitude"
+ },
+ {
+  "q": "what are my mock interview scores",
+  "expect": "my_interview"
+ },
+ {
+  "q": "what should i learn next",
+  "expect": "next_steps"
+ },
+ {
+  "q": "hey",
+  "expect": "greeting"
+ },
+ {
+  "q": "thanks for the help",
+  "expect": "thanks"
+ },
+ {
+  "q": "see you",
+  "expect": "goodbye"
+ },
+ {
+  "q": "what is the tallest tree",
+  "expect": null
+ },
+ {
+  "q": "who is going to win the world cup",
+  "expect": null
+ },
+ {
+  "q": "what should i have for lunch",
+  "expect": null
+ },
+ {
+  "q": "how much does a flight to dubai cost",
+  "expect": null
+ },
+ {
+  "q": "is the earth flat",
+  "expect": null
+ },
+ {
+  "q": "recommend a book to read",
+  "expect": null
+ },
+ {
+  "q": "what is happening in the stock market",
+  "expect": null
+ },
+ {
+  "q": "how do i cook noodles",
+  "expect": null
+ },
+ {
+  "q": "can you tell me the news",
+  "expect": null
+ },
+ {
+  "q": "my phone battery drains fast",
+  "expect": null
+ }
+]

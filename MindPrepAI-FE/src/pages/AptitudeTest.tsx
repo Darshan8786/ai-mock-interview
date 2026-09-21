@@ -8,8 +8,10 @@ import {
   submitPractice,
 } from "../services/profileApi";
 import type { AptitudeQuestionDTO } from "../services/profileApi";
+import { useTabSwitchMonitor, clearTabSwitchSession } from "../hooks/useTabSwitchMonitor";
+import { TabSwitchGuardModal } from "../components/common/TabSwitchGuardModal";
 
-const TAB_WARNING_LIMIT = 2;
+const TAB_WARNING_LIMIT = 3;
 
 const CATEGORY_COLORS: Record<string, string> = {
   Quantitative: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -42,12 +44,23 @@ export function AptitudeTest() {
   const [timeLeft, setTimeLeft] = useState(20 * 60);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [tabWarnings, setTabWarnings] = useState(0);
-  const [showTabWarning, setShowTabWarning] = useState(false);
-  const tabWarningRef = useRef<number>(0);
   const startTime = useRef(Date.now());
   const answersRef = useRef(answers);
   answersRef.current = answers;
+  const terminationReasonRef = useRef<string>("");
+
+  // A practice session has no server-issued attempt id until it's submitted,
+  // so a stable per-mount id is generated once to scope the tab-switch count
+  // (and its sessionStorage persistence) to THIS session only - a fresh
+  // practice run always gets a fresh component instance (navigated to after
+  // the previous one submits), so this can never leak between sessions.
+  const sessionInstanceIdRef = useRef<string>("");
+  if (!sessionInstanceIdRef.current) {
+    sessionInstanceIdRef.current =
+      globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  }
+  const [activeTabWarning, setActiveTabWarning] = useState(0);
+  const [tabTerminated, setTabTerminated] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -101,36 +114,22 @@ export function AptitudeTest() {
     return () => clearInterval(timer);
   }, [isSubmitted, questions.length]);
 
-  useEffect(() => {
-    const handleVisibility = () => {
-      if (document.hidden && !isSubmitted) {
-        tabWarningRef.current += 1;
-        setTabWarnings(tabWarningRef.current);
-        setShowTabWarning(true);
-        setTimeout(() => setShowTabWarning(false), 3000);
-
-        if (tabWarningRef.current >= TAB_WARNING_LIMIT) {
-          handleSubmit();
-        }
-      }
-    };
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, [isSubmitted]);
-
   const handleSubmit = useCallback(async () => {
     if (isSubmitted || questions.length === 0) return;
     setIsSubmitted(true);
     setSubmitting(true);
 
     const timeTaken = Math.floor((Date.now() - startTime.current) / 1000);
+    const tabWarnings = tabSwitchCountRef.current;
+    const terminationReason = terminationReasonRef.current || undefined;
 
     try {
       const result = isPractice
         ? await submitPractice({
             answers: answersRef.current,
             timeTaken,
-            tabWarnings: tabWarningRef.current,
+            tabWarnings,
+            terminationReason,
             drawnQuestionIds,
             marksPerQuestion: 1,
             negativeMarksPerQuestion: 0,
@@ -138,12 +137,15 @@ export function AptitudeTest() {
         : await submitAptitudeTest(testId!, {
             answers: answersRef.current,
             timeTaken,
-            tabWarnings: tabWarningRef.current,
+            tabWarnings,
+            terminationReason,
             drawnQuestionIds,
           });
 
+      clearTabSwitchSession(testId || sessionInstanceIdRef.current);
       navigate("/aptitude/result", { state: { result } });
     } catch {
+      clearTabSwitchSession(testId || sessionInstanceIdRef.current);
       navigate("/aptitude/result", {
         state: { result: null },
         replace: true,
@@ -151,7 +153,25 @@ export function AptitudeTest() {
     }
   }, [isSubmitted, isPractice, testId, questions.length, drawnQuestionIds, navigate]);
 
+  const handleTabSwitchTerminate = useCallback(() => {
+    setActiveTabWarning(0);
+    setTabTerminated(true);
+    terminationReasonRef.current = "TAB_SWITCH_LIMIT_EXCEEDED";
+    handleSubmit();
+  }, [handleSubmit]);
+
+  const { tabSwitchCount } = useTabSwitchMonitor({
+    sessionKey: testId || sessionInstanceIdRef.current,
+    active: !isSubmitted && !loading && questions.length > 0,
+    maxWarnings: TAB_WARNING_LIMIT,
+    onWarning: setActiveTabWarning,
+    onTerminate: handleTabSwitchTerminate,
+  });
+  const tabSwitchCountRef = useRef(0);
+  tabSwitchCountRef.current = tabSwitchCount;
+
   const selectAnswer = (optIdx: number) => {
+    if (isSubmitted || tabTerminated) return;
     setAnswers((prev) => ({ ...prev, [questions[currentQ].id]: optIdx }));
   };
 
@@ -208,19 +228,13 @@ export function AptitudeTest() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800">
-      <AnimatePresence>
-        {showTabWarning && (
-          <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
-            className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-500/90 text-white px-6 py-3 rounded-xl shadow-2xl"
-          >
-            ⚠ Tab Switch Detected! Warning {tabWarnings}/{TAB_WARNING_LIMIT}
-            {tabWarnings >= TAB_WARNING_LIMIT && " - Test Terminated!"}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <TabSwitchGuardModal
+        warningCount={activeTabWarning}
+        terminated={tabTerminated}
+        maxCount={TAB_WARNING_LIMIT}
+        onReturn={() => setActiveTabWarning(0)}
+        onGoToResult={() => navigate("/aptitude/result", { state: { result: null } })}
+      />
 
       <div className="max-w-7xl mx-auto p-4">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
@@ -358,15 +372,15 @@ export function AptitudeTest() {
 
             <div className="bg-gray-800/50 rounded-2xl p-4 border border-gray-700">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-gray-400">Tab Warnings</span>
-                <span className={`text-sm font-bold ${tabWarnings >= TAB_WARNING_LIMIT ? "text-red-400" : "text-yellow-400"}`}>
-                  {tabWarnings}/{TAB_WARNING_LIMIT}
+                <span className="text-xs text-gray-400">Tab Switches</span>
+                <span className={`text-sm font-bold ${tabSwitchCount >= TAB_WARNING_LIMIT ? "text-red-400" : "text-yellow-400"}`}>
+                  {tabSwitchCount}/{TAB_WARNING_LIMIT}
                 </span>
               </div>
               <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full transition-all ${tabWarnings >= TAB_WARNING_LIMIT ? "bg-red-500" : "bg-yellow-500"}`}
-                  style={{ width: `${(tabWarnings / TAB_WARNING_LIMIT) * 100}%` }}
+                  className={`h-full rounded-full transition-all ${tabSwitchCount >= TAB_WARNING_LIMIT ? "bg-red-500" : "bg-yellow-500"}`}
+                  style={{ width: `${(tabSwitchCount / TAB_WARNING_LIMIT) * 100}%` }}
                 />
               </div>
             </div>

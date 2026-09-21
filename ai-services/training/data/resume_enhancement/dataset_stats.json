@@ -1,0 +1,15 @@
+{
+  "total_raw_examples": 119,
+  "rejected": {
+    "exact_duplicate": 12
+  },
+  "total_clean_examples": 107,
+  "training_examples": 91,
+  "validation_examples": 16,
+  "examples_per_task": {
+    "bullet": 95,
+    "summary": 12
+  },
+  "seed": 42,
+  "val_fraction": 0.15
+}

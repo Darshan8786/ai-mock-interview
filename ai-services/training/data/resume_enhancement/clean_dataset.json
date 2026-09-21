@@ -1,0 +1,621 @@
+[
+  {
+    "task": "bullet",
+    "weak": "Worked on the backend API for the payments team.",
+    "strong": "Developed the backend API for the payments team."
+  },
+  {
+    "task": "bullet",
+    "weak": "Responsible for fixing bugs in the mobile app.",
+    "strong": "Resolved bugs in the mobile app to improve stability."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped build a new feature for user onboarding.",
+    "strong": "Built a new feature for the user onboarding flow."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was in charge of the database migration project.",
+    "strong": "Led the database migration project."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did code reviews for the team.",
+    "strong": "Conducted code reviews to maintain code quality across the team."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on improving website performance.",
+    "strong": "Improved website performance through code splitting and image compression."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped with writing unit tests.",
+    "strong": "Wrote unit tests to catch regressions before release."
+  },
+  {
+    "task": "bullet",
+    "weak": "Involved in deploying the application to production.",
+    "strong": "Automated production deployments using a CI/CD pipeline."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on the front-end using React.",
+    "strong": "Developed reusable front-end components using React."
+  },
+  {
+    "task": "bullet",
+    "weak": "Responsible for maintaining the internal admin tool.",
+    "strong": "Maintained and extended the internal admin tool used by the support team."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped set up monitoring for the servers.",
+    "strong": "Implemented monitoring and alerting for production servers."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked with the team to design the system architecture.",
+    "strong": "Co-designed the system architecture with the engineering team."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some work on the authentication system.",
+    "strong": "Rebuilt the authentication system using JWT and refresh tokens."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped migrate the app to a new cloud provider.",
+    "strong": "Migrated the production application to a new cloud provider."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on integrating a third-party payment gateway.",
+    "strong": "Integrated a third-party payment gateway into the checkout flow."
+  },
+  {
+    "task": "bullet",
+    "weak": "Fixed issues reported by users.",
+    "strong": "Triaged and resolved issues reported by users."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was responsible for the API documentation.",
+    "strong": "Authored API documentation for internal engineering teams."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped refactor old legacy code.",
+    "strong": "Refactored legacy code into modular, maintainable services."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on caching to make things faster.",
+    "strong": "Introduced caching to reduce average API response time."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did testing before releases.",
+    "strong": "Ran regression testing before each release to catch defects early."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped improve the error handling in the app.",
+    "strong": "Improved error handling across the application for clearer failure diagnosis."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on setting up logging for the service.",
+    "strong": "Implemented structured logging for the service to speed up debugging."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some work rewriting the search feature.",
+    "strong": "Rewrote the search feature to return more relevant results."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped design the database schema for the new product.",
+    "strong": "Designed the database schema for the new product."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was involved in the code freeze process before launch.",
+    "strong": "Coordinated the code freeze process ahead of launch."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on reducing technical debt in the codebase.",
+    "strong": "Reduced technical debt by consolidating duplicated code paths."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped set up the local development environment for the team.",
+    "strong": "Set up a standardized local development environment for the team."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did pair programming with junior engineers.",
+    "strong": "Pair-programmed with junior engineers to help them ramp up."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on migrating the codebase from JavaScript to TypeScript.",
+    "strong": "Migrated the codebase from JavaScript to TypeScript for stronger type safety."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped review pull requests for the team.",
+    "strong": "Reviewed pull requests to uphold code quality standards for the team."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on a machine learning model for predictions.",
+    "strong": "Built a machine learning model for predictive analysis."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped clean and prepare data for analysis.",
+    "strong": "Cleaned and prepared raw data for downstream analysis."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some data analysis for the marketing team.",
+    "strong": "Delivered data analysis to inform the marketing team's strategy."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on a dashboard to show metrics.",
+    "strong": "Built a dashboard to visualize key business metrics."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped train a model to classify images.",
+    "strong": "Trained an image classification model."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on feature engineering for the model.",
+    "strong": "Engineered new features to improve model performance."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did research on different algorithms.",
+    "strong": "Benchmarked multiple algorithms to select the best-performing option for production."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped deploy the ML model to production.",
+    "strong": "Deployed a machine learning model into production."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked with SQL to pull reports.",
+    "strong": "Wrote SQL queries to generate recurring business reports."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some work with NLP for text data.",
+    "strong": "Applied NLP techniques to classify unstructured text data."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped build a data pipeline for the analytics team.",
+    "strong": "Built a data pipeline to feed the analytics team's reporting."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was responsible for validating the model's predictions.",
+    "strong": "Validated model predictions against held-out test data."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on tuning hyperparameters for the model.",
+    "strong": "Tuned model hyperparameters to improve prediction quality."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped visualize the results of the analysis.",
+    "strong": "Visualized analysis results to communicate findings to stakeholders."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some A/B testing for the recommendation system.",
+    "strong": "Ran A/B tests to evaluate changes to the recommendation system."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was responsible for testing the application.",
+    "strong": "Designed and executed test cases for the application."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped find bugs before release.",
+    "strong": "Identified defects through exploratory testing before release."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on automating manual test cases.",
+    "strong": "Automated manual test cases to speed up regression testing."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some API testing.",
+    "strong": "Built an automated test suite for the API."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped write test plans for new features.",
+    "strong": "Wrote test plans covering new feature functionality."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on setting up a test environment.",
+    "strong": "Set up a dedicated test environment mirroring production."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did bug triage for the release.",
+    "strong": "Triaged and prioritized bugs ahead of the release."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped improve test coverage for the module.",
+    "strong": "Improved test coverage for the module to catch regressions earlier."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped set up the CI/CD pipeline.",
+    "strong": "Built a CI/CD pipeline to automate testing and deployment."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on containerizing the application.",
+    "strong": "Containerized the application using Docker for consistent environments."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some work with Kubernetes.",
+    "strong": "Managed application deployments on Kubernetes."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped reduce cloud costs.",
+    "strong": "Reduced cloud costs through resource right-sizing."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on setting up infrastructure as code.",
+    "strong": "Implemented infrastructure as code using Terraform."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some work on the deployment scripts.",
+    "strong": "Wrote deployment scripts to standardize the release process."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped set up alerting for production incidents.",
+    "strong": "Set up alerting to detect production incidents earlier."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on improving the backup strategy.",
+    "strong": "Improved the backup and disaster-recovery strategy for production systems."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked with stakeholders to define requirements.",
+    "strong": "Gathered requirements from stakeholders to shape the product roadmap."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped launch a new product feature.",
+    "strong": "Led the launch of a new product feature."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did market research for the product team.",
+    "strong": "Conducted market research to inform product strategy."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on improving the customer onboarding process.",
+    "strong": "Redesigned the customer onboarding process to reduce friction."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped manage the product backlog.",
+    "strong": "Managed and prioritized the product backlog."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was responsible for writing product requirement documents.",
+    "strong": "Authored product requirement documents for upcoming releases."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked with engineering to scope upcoming features.",
+    "strong": "Partnered with engineering to scope and plan upcoming features."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped run user interviews for a new feature.",
+    "strong": "Ran user interviews to validate a new feature concept."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did competitive analysis for the product team.",
+    "strong": "Conducted competitive analysis to inform product positioning."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was involved in pricing discussions for the product.",
+    "strong": "Contributed to pricing strategy discussions for the product."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped design the new app interface.",
+    "strong": "Designed the new app interface based on user research."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on wireframes for the checkout flow.",
+    "strong": "Created wireframes for the checkout flow."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some usability testing for the redesign.",
+    "strong": "Conducted usability testing to validate the redesign."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped build a design system for the product.",
+    "strong": "Built a design system to standardize UI components across the product."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on improving the accessibility of the site.",
+    "strong": "Improved site accessibility to meet WCAG guidelines."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did user research to understand pain points.",
+    "strong": "Conducted user research to identify key user pain points."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped create prototypes in Figma.",
+    "strong": "Created interactive prototypes in Figma for stakeholder review."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped identify security vulnerabilities in the app.",
+    "strong": "Identified security vulnerabilities in the application through code review."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on penetration testing for the platform.",
+    "strong": "Conducted penetration testing on the platform."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some work improving authentication security.",
+    "strong": "Strengthened authentication security by enforcing multi-factor authentication."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped set up a SIEM tool for monitoring.",
+    "strong": "Configured a SIEM tool to monitor for security incidents."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was responsible for the security audit of the codebase.",
+    "strong": "Led a security audit of the codebase."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped the team with various tasks.",
+    "strong": "Supported the team across development, testing, and documentation tasks."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked as an intern for three months.",
+    "strong": "Completed a three-month internship contributing to production features."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some volunteer work organizing events.",
+    "strong": "Organized campus tech events."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped teach a coding class to students.",
+    "strong": "Taught weekly coding workshops to students."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was part of a team project in college.",
+    "strong": "Collaborated in a team to deliver a full-stack project for a college course."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked on improving documentation for the project.",
+    "strong": "Rewrote project documentation to speed up new-developer onboarding."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did some presentations for the team.",
+    "strong": "Presented technical findings to the engineering team."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped mentor junior team members.",
+    "strong": "Mentored junior team members on best practices."
+  },
+  {
+    "task": "bullet",
+    "weak": "Was involved in organizing a hackathon.",
+    "strong": "Helped organize a campus hackathon."
+  },
+  {
+    "task": "bullet",
+    "weak": "Did research for a class project.",
+    "strong": "Conducted research to support a class project's technical direction."
+  },
+  {
+    "task": "bullet",
+    "weak": "Worked part-time as a teaching assistant.",
+    "strong": "Served as a teaching assistant, grading assignments and holding office hours."
+  },
+  {
+    "task": "bullet",
+    "weak": "Helped set up the club's website.",
+    "strong": "Built and maintained the club's website."
+  },
+  {
+    "task": "summary",
+    "role": "Software Engineer",
+    "skills": [
+      "Python",
+      "Django",
+      "SQL",
+      "Git"
+    ],
+    "experience_years": 0,
+    "summary": "Final-year computer science student with hands-on experience building backend applications using Python, Django, and SQL. Strong foundation in data structures, algorithms, and collaborative software development through academic and personal projects. Eager to contribute to a fast-paced engineering team and grow as a backend developer."
+  },
+  {
+    "task": "summary",
+    "role": "Frontend Developer",
+    "skills": [
+      "JavaScript",
+      "React",
+      "CSS",
+      "HTML"
+    ],
+    "experience_years": 1,
+    "summary": "Frontend developer with 1 year of experience building responsive, user-friendly web interfaces using React, JavaScript, and modern CSS. Skilled at translating design mockups into performant, accessible components. Passionate about clean UI code and continuously improving user experience."
+  },
+  {
+    "task": "summary",
+    "role": "Backend Developer",
+    "skills": [
+      "Java",
+      "Spring Boot",
+      "PostgreSQL",
+      "REST API"
+    ],
+    "experience_years": 3,
+    "summary": "Backend developer with 3 years of experience designing and building REST APIs and services using Java and Spring Boot. Proven track record of optimizing database performance and delivering scalable backend systems. Comfortable working across the full backend lifecycle from design to production deployment."
+  },
+  {
+    "task": "summary",
+    "role": "Full Stack Developer",
+    "skills": [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "MongoDB"
+    ],
+    "experience_years": 2,
+    "summary": "Full stack developer with 2 years of experience building end-to-end web applications using React, Node.js, and MongoDB. Adept at owning features from database schema to polished UI. Known for writing maintainable code and collaborating closely with design and product teams."
+  },
+  {
+    "task": "summary",
+    "role": "Data Scientist",
+    "skills": [
+      "Python",
+      "Pandas",
+      "Machine Learning",
+      "SQL"
+    ],
+    "experience_years": 2,
+    "summary": "Data scientist with 2 years of experience turning raw data into actionable insights using Python, Pandas, and machine learning. Experienced in building predictive models and communicating findings to non-technical stakeholders. Focused on delivering measurable business impact through data-driven decisions."
+  },
+  {
+    "task": "summary",
+    "role": "Machine Learning Engineer",
+    "skills": [
+      "Python",
+      "TensorFlow",
+      "PyTorch",
+      "Machine Learning"
+    ],
+    "experience_years": 4,
+    "summary": "Machine learning engineer with 4 years of experience designing, training, and deploying production ML models using TensorFlow and PyTorch. Strong background in the full ML lifecycle from data pipelines to model monitoring. Passionate about building reliable, scalable AI systems."
+  },
+  {
+    "task": "summary",
+    "role": "DevOps Engineer",
+    "skills": [
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "CI/CD"
+    ],
+    "experience_years": 3,
+    "summary": "DevOps engineer with 3 years of experience automating infrastructure and deployment pipelines using Docker, Kubernetes, and AWS. Skilled at improving system reliability and reducing deployment friction for engineering teams. Committed to infrastructure as code and continuous improvement."
+  },
+  {
+    "task": "summary",
+    "role": "QA Engineer",
+    "skills": [
+      "Selenium",
+      "Manual Testing",
+      "API Testing",
+      "Test Automation"
+    ],
+    "experience_years": 2,
+    "summary": "QA engineer with 2 years of experience designing manual and automated test strategies using Selenium and API testing tools. Detail-oriented with a strong record of catching critical defects before release. Focused on building robust, maintainable test suites that scale with the product."
+  },
+  {
+    "task": "summary",
+    "role": "Product Manager",
+    "skills": [
+      "Roadmapping",
+      "Agile",
+      "Stakeholder Management",
+      "Data Analysis"
+    ],
+    "experience_years": 5,
+    "summary": "Product manager with 5 years of experience leading cross-functional teams to deliver customer-focused products. Skilled at translating user needs and data insights into a clear, prioritized roadmap. Strong track record of shipping features that measurably improve engagement and retention."
+  },
+  {
+    "task": "summary",
+    "role": "UI/UX Designer",
+    "skills": [
+      "Figma",
+      "User Research",
+      "Prototyping",
+      "Wireframing"
+    ],
+    "experience_years": 2,
+    "summary": "UI/UX designer with 2 years of experience creating user-centered designs through research, wireframing, and prototyping in Figma. Passionate about solving real user problems with clean, accessible interfaces. Comfortable collaborating closely with engineering to ship polished products."
+  },
+  {
+    "task": "summary",
+    "role": "Cloud Architect",
+    "skills": [
+      "AWS",
+      "Azure",
+      "Terraform",
+      "System Design"
+    ],
+    "experience_years": 7,
+    "summary": "Cloud architect with 7 years of experience designing scalable, cost-efficient infrastructure across AWS and Azure. Proven expertise in infrastructure as code, system design, and leading cloud migrations for enterprise workloads. Focused on reliability, security, and cost optimization at scale."
+  },
+  {
+    "task": "summary",
+    "role": "Security Engineer",
+    "skills": [
+      "Network Security",
+      "Penetration Testing",
+      "SIEM",
+      "Python"
+    ],
+    "experience_years": 4,
+    "summary": "Security engineer with 4 years of experience identifying and remediating vulnerabilities across network and application layers. Skilled in penetration testing, SIEM tooling, and security automation with Python. Committed to building a strong security posture without slowing down engineering velocity."
+  }
+]

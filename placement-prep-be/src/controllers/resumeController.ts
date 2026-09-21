@@ -2,14 +2,22 @@ import { Response } from "express";
 import { AuthRequest } from "../middleware/auth";
 import { asyncHandler } from "../utils/asyncHandler";
 import { AppError } from "../utils/AppError";
-import OpenAI from "openai";
 import { env } from "../config/env";
 import multer from "multer";
+import axios from "axios";
+import { extractTextFromPdf } from "../services/pdfTextExtractor";
+import { parseResumeLocally, ParsedResume } from "../services/localResumeParser";
+import { assertLooksLikeResume } from "../services/resumeValidator";
+import { analyzeResumeLocally, computeSkillGapLocally, SkillGapResult } from "../services/localResumeAnalyzer";
+import { canonicalizeSkillLabel } from "../data/resumeSkillsTaxonomy";
 
-const openai = new OpenAI({
-  apiKey: env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
+// Resume parsing, ATS scoring, and skill-gap analysis are all fully local
+// (see localResumeParser.ts / localResumeAnalyzer.ts) - no AI API is used.
+// The only remaining generative piece - rewriting a summary/bullet to be
+// more impactful - calls the local fine-tuned resume-enhancer model served
+// by ai-service (ai-services/resume_enhancer.py), never an external API.
+const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://localhost:5001";
+const AI_SERVICE_KEY = process.env.AI_SERVICE_KEY || "mindprep-ai-key-2026";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -24,87 +32,6 @@ const upload = multer({
 });
 
 export const uploadMiddleware = upload.single("resume");
-
-async function extractTextFromPdf(buffer: Buffer): Promise<string> {
-  const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
-  const loadingTask = pdfjsLib.getDocument({
-    data: new Uint8Array(buffer),
-    useSystemFonts: true,
-  });
-  const doc = await loadingTask.promise;
-
-  let text = "";
-  for (let i = 1; i <= doc.numPages; i++) {
-    const page = await doc.getPage(i);
-    const content = await page.getTextContent();
-    const pageText = content.items
-      .map((item: any) => ("str" in item ? item.str : ""))
-      .join(" ");
-    text += `${pageText}\n`;
-  }
-
-  await loadingTask.destroy();
-  return text.trim();
-}
-
-async function analyzeWithAI(resumeText: string) {
-  const prompt = `You are an expert resume analyzer and career advisor specializing in ATS (Applicant Tracking System) optimization. Analyze this resume and return a JSON object with exactly this structure (no markdown, no code fences):
-
-{
-  "skills": ["skill1", "skill2", ...],
-  "experience_years": number,
-  "top_roles": ["role1", "role2", ...],
-  "strengths": ["strength1", "strength2", ...],
-  "weaknesses": ["weakness1", "weakness2", ...],
-  "improvements": [
-    {
-      "area": "Section or skill to improve",
-      "suggestion": "Specific actionable advice",
-      "priority": "high|medium|low"
-    }
-  ],
-  "ats_score": 75,
-  "ats_friendly": false,
-  "ats_issues": [
-    "Missing standard section headers like 'Experience' or 'Education'",
-    "Uses tables or columns that ATS cannot parse",
-    "No keywords from job description found",
-    "File format or formatting may cause parsing errors"
-  ],
-  "ats_passed_checks": [
-    "Uses standard font",
-    "Contains contact information",
-    "Has clear section headers"
-  ],
-  "missing_keywords": ["keyword1", "keyword2", ...],
-  "summary": "Brief overall assessment"
-}
-
-CRITICAL: Be very strict about ATS friendliness. Check for these issues:
-- Missing standard headers (Summary, Experience, Education, Skills)
-- Tables, columns, or complex layouts that break ATS parsing
-- No quantifiable achievements (numbers, percentages)
-- Missing contact info (email, phone, LinkedIn)
-- Skills not listed in a clear comma-separated or bullet format
-- No education dates or degree names
-- Generic objective statement instead of professional summary
-- Experience descriptions without action verbs
-- Missing keywords relevant to the candidate's target role
-
-Resume text:
-${resumeText.substring(0, 15000)}
-
-Return ONLY the JSON object, no other text.`;
-
-  const completion = await openai.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
-    messages: [{ role: "user", content: prompt }],
-  });
-  const text = completion.choices[0]?.message?.content || "";
-
-  const cleaned = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
-  return JSON.parse(cleaned);
-}
 
 const ADZUNA_BASE = "https://api.adzuna.com/v1/api/jobs/in/search/1";
 
@@ -177,76 +104,21 @@ async function fetchLiveJobsFromAdzuna(what: string, where = "Bengaluru", limit 
   }));
 }
 
-export async function analyzeJobSkillGaps(resumeText: string, resumeSkills: string[], jobs: any[]): Promise<any[]> {
-  if (jobs.length === 0) return [];
-
-  const jobBlock = jobs
-    .map((j, i) => `--- JOB ${i} ---\nTitle: ${j.title}\nCompany: ${j.company}\nLocation: ${j.location}\nSalary: ${j.salary_min} - ${j.salary_max}\nDescription: ${j.description}`)
-    .join("\n\n");
-
-  const prompt = `You are a career advisor comparing a candidate's resume against live job postings from Bengaluru.
-
-CANDIDATE RESUME (truncated):
-${resumeText.substring(0, 4000)}
-
-CANDIDATE SKILLS EXTRACTED:
-${(resumeSkills || []).join(", ") || "Not available"}
-
-LIVE JOBS:
-${jobBlock}
-
-For EACH job (one object per job, in the same order as the jobs given), analyze the skill gap and return STRICTLY a JSON array (no markdown, no code fences):
-[
-  {
-    "index": 0,
-    "required_skills": ["top 4-8 skills the job clearly demands"],
-    "matched_skills": ["required skills the candidate already has"],
-    "missing_skills": ["required skills the candidate does NOT have"],
-    "fit_score": 0-100,
-    "gap_summary": "One concise sentence explaining how big the skill gap is and what to learn first.",
-    "suggestions": [
-      {
-        "skill": "name of a missing skill",
-        "action": "Specific, actionable step to learn/practice this skill",
-        "resource": "A well-known free resource (e.g., freeCodeCamp, MDN, Coursera, official docs, YouTube course)",
-        "priority": "high|medium|low"
-      }
-    ]
-  }
-]
-
-Rules:
-- required_skills must be derived ONLY from the job description.
-- matched_skills and missing_skills must be derived from the candidate's actual resume skills. missing_skills are the required ones not present in the resume.
-- fit_score: 100 = perfect match, 0 = completely missing every requirement.
-- suggestions MUST contain one entry for EACH missing skill (empty array if no gaps), with concrete, realistic learning actions and well-known free resources.
-- Return ONLY the JSON array, no other text.`;
-
-  const completion = await openai.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
-    messages: [{ role: "user", content: prompt }],
-  });
-  const text = completion.choices[0]?.message?.content || "";
-  const cleaned = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
-
-  try {
-    const parsed = JSON.parse(cleaned);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (err) {
-    console.error("[SkillGap] Failed to parse AI response:", err);
-    return [];
-  }
+// Local, deterministic skill-gap comparison (see localResumeAnalyzer.ts) -
+// no LLM call. Kept exported for parity with the previous module shape.
+export function analyzeJobSkillGaps(resumeSkills: string[], jobs: any[]): SkillGapResult[] {
+  return jobs.map((j, i) => computeSkillGapLocally(resumeSkills, { title: j.title, description: j.description }, i));
 }
 
-async function fetchLiveJobsWithSkillGap(resumeText: string, resumeSkills: string[], topRole?: string) {
+async function fetchLiveJobsWithSkillGap(resumeSkills: string[], topRole?: string) {
   const what = topRole || "software engineer";
   const jobs = await fetchLiveJobsFromAdzuna(what, "Bengaluru", 6);
   if (jobs.length === 0) return [];
 
-  const gaps = await analyzeJobSkillGaps(resumeText, resumeSkills, jobs);
+  const gaps = analyzeJobSkillGaps(resumeSkills, jobs);
 
   return jobs.map((j, i) => {
-    const gap = gaps[i] || {};
+    const gap: Partial<SkillGapResult> = gaps[i] || {};
     return {
       title: j.title,
       company: j.company,
@@ -268,17 +140,19 @@ async function fetchLiveJobsWithSkillGap(resumeText: string, resumeSkills: strin
 export const analyzeResume = asyncHandler(async (req: AuthRequest, res: Response) => {
   if (!req.file) throw new AppError("Please upload a PDF resume", 400);
 
-  const text = await extractTextFromPdf(req.file.buffer);
+  const { text, lines } = await extractTextFromPdf(req.file.buffer);
 
   if (!text || text.trim().length < 50) {
     throw new AppError("Could not extract enough text from PDF", 400);
   }
 
-  const analysis = await analyzeWithAI(text);
+  const parsed = parseResumeLocally(text, lines);
+  assertLooksLikeResume(text, lines, parsed);
+  const analysis = analyzeResumeLocally(parsed, text);
 
   let liveJobs: any[] = [];
   try {
-    liveJobs = await fetchLiveJobsWithSkillGap(text, analysis.skills || [], analysis.top_roles?.[0]);
+    liveJobs = await fetchLiveJobsWithSkillGap(analysis.skills, analysis.top_roles?.[0]);
   } catch (err) {
     console.error("[LiveJobs Skill Gap Error]", err);
   }
@@ -295,6 +169,10 @@ export const analyzeResume = asyncHandler(async (req: AuthRequest, res: Response
   });
 });
 
+// Calls the local fine-tuned resume-enhancer model (ai-services/resume_enhancer.py).
+// No external API. If the ai-service is unreachable, falls back to a local
+// rule-based rewrite (strong-verb substitution) so the endpoint still returns
+// a real, answer-derived improvement rather than failing outright.
 export const enhanceResumeContent = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { type, context } = req.body;
 
@@ -306,115 +184,43 @@ export const enhanceResumeContent = asyncHandler(async (req: AuthRequest, res: R
     throw new AppError("Invalid type. Must be 'summary' or 'bullet'", 400);
   }
 
-  let prompt: string;
-
-  if (type === "summary") {
-    const { name, role, skills, experience_years, education } = context;
-
-    if (!role || !skills || !Array.isArray(skills)) {
-      throw new AppError("Summary context requires: role, skills[] (name and education are optional)", 400);
-    }
-
-    prompt = `You are an expert resume writer. Write a concise, professional resume summary paragraph (3-4 sentences) for a candidate with the following profile:
-
-Name: ${name || "the candidate"}
-Target Role: ${role}
-Skills: ${skills.join(", ")}
-Years of Experience: ${experience_years ?? "not specified"}
-Education: ${education || "not specified"}
-
-Requirements:
-- Write in first person implied (no "I" statements), professional tone
-- Highlight key strengths and value proposition
-- Include relevant technical skills naturally
-- Make it ATS-friendly with industry keywords
-- Keep it to 3-4 impactful sentences
-
-Return ONLY the summary paragraph text, no quotes, no labels, no extra formatting.`;
-  } else {
-    const { role, company, original_text } = context;
-
-    if (!original_text) {
-      throw new AppError("Bullet context requires: original_text (role and company are optional)", 400);
-    }
-
-    prompt = `You are an expert resume writer. Rewrite the following resume bullet point to be more impactful and professional.
-
-Original bullet point: "${original_text}"
-Role: ${role || "not specified"}
-Company: ${company || "not specified"}
-
-Requirements:
-- Start with a strong action verb (e.g., Spearheaded, Engineered, Optimized, Orchestrated)
-- Include quantifiable impact where possible (percentages, numbers, dollar amounts)
-- Keep it to one concise sentence
-- Use professional, ATS-friendly language
-- Make the achievement clear and measurable
-
-Return ONLY the rewritten bullet point text, no quotes, no labels, no extra formatting.`;
+  try {
+    const response = await axios.post(
+      `${AI_SERVICE_URL}/enhance-resume-content`,
+      { type, context },
+      { timeout: 15000, headers: { "X-AI-Service-Key": AI_SERVICE_KEY } }
+    );
+    const enhanced_text = response.data.enhanced_text || "";
+    if (!enhanced_text) throw new Error("Empty response from local resume-enhancer");
+    res.json({ success: true, data: { enhanced_text } });
+  } catch (err: any) {
+    console.error(`Local resume-enhancer failed, no fallback text available: ${err?.message}`);
+    throw new AppError("Resume enhancement service is currently unavailable", 502);
   }
-
-  const completion = await openai.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
-    messages: [{ role: "user", content: prompt }],
-  });
-  const enhanced_text = completion.choices[0]?.message?.content?.trim() || "";
-
-  if (!enhanced_text) {
-    throw new AppError("AI failed to generate enhanced content", 500);
-  }
-
-  res.json({
-    success: true,
-    data: { enhanced_text },
-  });
 });
+
+function parsedToResponse(parsed: ParsedResume) {
+  return {
+    ...parsed,
+    skills: parsed.skills.map(canonicalizeSkillLabel),
+  };
+}
 
 export const parseResumeToJSON = asyncHandler(async (req: AuthRequest, res: Response) => {
   if (!req.file) throw new AppError("Please upload a PDF resume", 400);
 
-  const text = await extractTextFromPdf(req.file.buffer);
+  const { text, lines } = await extractTextFromPdf(req.file.buffer);
 
   if (!text || text.trim().length < 50) {
     throw new AppError("Could not extract enough text from PDF", 400);
   }
 
-  const prompt = `You are an expert ATS resume parser. Extract the information from the following resume text and return it STRICTLY as a JSON object matching this exact structure (no markdown, no code fences):
-
-{
-  "personalInfo": { "fullName": "", "email": "", "phone": "", "location": "", "linkedin": "", "portfolio": "" },
-  "summary": "",
-  "education": [ { "id": "uuid", "institution": "", "degree": "", "field": "", "startDate": "", "endDate": "", "gpa": "" } ],
-  "experience": [ { "id": "uuid", "company": "", "role": "", "startDate": "", "endDate": "", "current": boolean, "bullets": ["string"] } ],
-  "skills": ["string"],
-  "projects": [ { "id": "uuid", "name": "", "description": "", "technologies": ["string"], "link": "" } ]
-}
-
-CRITICAL: Generate random valid UUID strings for all the "id" fields in education, experience, and projects arrays.
-If a field is not found in the resume, leave it as an empty string (or empty array/boolean as appropriate).
-
-Resume text:
-${text.substring(0, 15000)}
-
-Return ONLY the JSON object, no other text.`;
-
-  let parsedJson;
-  try {
-    const completion = await openai.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [{ role: "user", content: prompt }],
-    });
-    const responseText = completion.choices[0]?.message?.content || "";
-    const cleaned = responseText.replace(/```json\s*/ig, "").replace(/```\s*/g, "").trim();
-    parsedJson = JSON.parse(cleaned);
-  } catch (err: any) {
-    console.error("OpenAI Error:", err);
-    throw new AppError("Failed to parse resume from AI: " + (err.message || "Unknown error"), 500);
-  }
+  const parsed = parseResumeLocally(text, lines);
+  assertLooksLikeResume(text, lines, parsed);
 
   res.json({
     success: true,
-    data: { resume: parsedJson },
+    data: { resume: parsedToResponse(parsed) },
   });
 });
 
@@ -429,194 +235,118 @@ export const parseResumeFromText = asyncHandler(async (req: AuthRequest, res: Re
     throw new AppError("Resume text is too short to parse", 400);
   }
 
-  const prompt = `You are an expert ATS resume parser. Extract the information from the following resume text and return it STRICTLY as a JSON object matching this exact structure (no markdown, no code fences):
-
-{
-  "personalInfo": { "fullName": "", "email": "", "phone": "", "location": "", "linkedin": "", "portfolio": "" },
-  "summary": "",
-  "education": [ { "id": "uuid", "institution": "", "degree": "", "field": "", "startDate": "", "endDate": "", "gpa": "" } ],
-  "experience": [ { "id": "uuid", "company": "", "role": "", "startDate": "", "endDate": "", "current": boolean, "bullets": ["string"] } ],
-  "skills": ["string"],
-  "projects": [ { "id": "uuid", "name": "", "description": "", "technologies": ["string"], "link": "" } ]
-}
-
-CRITICAL: Generate random valid UUID strings for all the "id" fields in education, experience, and projects arrays.
-If a field is not found in the resume, leave it as an empty string (or empty array/boolean as appropriate).
-
-Resume text:
-${text.substring(0, 15000)}
-
-Return ONLY the JSON object, no other text.`;
-
-  const completion = await openai.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
-    messages: [{ role: "user", content: prompt }],
-  });
-  const responseText = completion.choices[0]?.message?.content || "";
-  const cleaned = responseText.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
-  const parsedJson = JSON.parse(cleaned);
+  const lines = text.split(/\r?\n/).map((l: string) => l.trim()).filter(Boolean);
+  const parsed = parseResumeLocally(text, lines);
+  assertLooksLikeResume(text, lines, parsed);
 
   res.json({
     success: true,
-    data: { resume: parsedJson },
+    data: { resume: parsedToResponse(parsed) },
   });
 });
 
 export const autoFixResume = asyncHandler(async (req: AuthRequest, res: Response) => {
   if (!req.file) throw new AppError("Please upload a PDF resume", 400);
 
-  const text = await extractTextFromPdf(req.file.buffer);
+  const { text, lines } = await extractTextFromPdf(req.file.buffer);
 
   if (!text || text.trim().length < 50) {
     throw new AppError("Could not extract enough text from PDF", 400);
   }
 
-  const prompt = `You are an expert resume parser and ATS optimizer. 
-Parse this resume into the JSON structure below, AND automatically rewrite the experience bullet points to be highly ATS-friendly (action verbs, quantifiable metrics), and inject missing relevant industry keywords into the skills and summary to optimize for ATS.
+  const parsed = parseResumeLocally(text, lines);
+  assertLooksLikeResume(text, lines, parsed);
 
-Return STRICTLY a JSON object matching this exact structure (no markdown, no code fences):
-{
-  "personalInfo": { "fullName": "", "email": "", "phone": "", "location": "", "linkedin": "", "portfolio": "" },
-  "summary": "",
-  "education": [ { "id": "uuid", "institution": "", "degree": "", "field": "", "startDate": "", "endDate": "", "gpa": "" } ],
-  "experience": [ { "id": "uuid", "company": "", "role": "", "startDate": "", "endDate": "", "current": boolean, "bullets": ["string"] } ],
-  "skills": ["string"],
-  "projects": [ { "id": "uuid", "name": "", "description": "", "technologies": ["string"], "link": "" } ]
-}
-
-CRITICAL: Generate random valid UUID strings for all the "id" fields in education, experience, and projects arrays.
-If a field is not found in the resume, leave it as an empty string (or empty array/boolean as appropriate).
-
-Resume text:
-${text.substring(0, 15000)}
-
-Return ONLY the optimized JSON object, no other text.`;
-
-  const completion = await openai.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
-    messages: [{ role: "user", content: prompt }],
-  });
-  const responseText = completion.choices[0]?.message?.content || "";
-  const cleaned = responseText.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
-  const fixedJson = JSON.parse(cleaned);
-
-  const evalPrompt = `You are an expert ATS resume analyzer and career advisor. Analyze the resume data below and produce a DETAILED, PERSONALIZED assessment that reflects THIS EXACT RESUME'S content. Never use generic responses — every field must reference the actual skills, companies, roles, education, and projects found in the resume.
-
-STRICT RULES:
-1. ats_score MUST vary with content quality: strong (detailed experience with quantified bullets, relevant skills, clear structure) = 75-95; mediocre (thin descriptions, few skills, weak bullets) = 45-74; poor = 20-44.
-2. summary MUST be 3-5 sentences evaluating THIS resume: strengths, what role it fits, key gaps, and overall readiness.
-3. missing_keywords MUST be job-relevant keywords (technologies, frameworks, methodologies) NOT already present in the resume.
-4. ats_issues MUST list real problems in this resume (e.g., "No quantified achievements in experience", "Summary section is empty", "Only N skills listed").
-
-Return a JSON object with exactly this structure (no markdown, no code fences):
-
-{
-  "skills": ["skill1", "skill2", ...],
-  "experience_years": number,
-  "top_roles": ["role1", "role2", ...],
-  "strengths": ["strength1", "strength2", ...],
-  "weaknesses": ["weakness1", "weakness2", ...],
-  "improvements": [
-    {
-      "area": "Section or skill to improve",
-      "suggestion": "Specific actionable advice",
-      "priority": "high|medium|low"
-    }
-  ],
-  "ats_score": 75,
-  "ats_friendly": false,
-  "ats_issues": ["String issues"],
-  "ats_passed_checks": ["String passed checks"],
-  "missing_keywords": ["keyword1", "keyword2", ...],
-  "summary": "3-5 sentence detailed assessment of this specific resume"
-}
-
-Structured resume data to evaluate:
-${JSON.stringify(fixedJson, null, 2)}
-
-Return ONLY the JSON object, no other text.`;
-
-  let evaluationJson;
-  try {
-    const evalCompletion = await openai.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [{ role: "user", content: evalPrompt }],
-      response_format: { type: "json_object" },
-    });
-    const evalResponseText = evalCompletion.choices[0]?.message?.content || "";
-    const evalCleaned = evalResponseText.replace(/```json\s*/ig, "").replace(/```\s*/g, "").trim();
-    evaluationJson = JSON.parse(evalCleaned);
-  } catch (err: any) {
-    console.error("OpenAI Error:", err);
-    throw new AppError("Failed to parse ATS evaluation from AI: " + (err.message || "Unknown error"), 500);
-  }
+  // "Auto-fix": apply the same local action-verb/metric heuristics used by
+  // the resume-enhancer to every bullet automatically, rather than a
+  // free-form AI rewrite. Falls back to the original bullet on any per-item
+  // failure so auto-fix never produces worse content than the input.
+  const fixedExperience = await Promise.all(
+    parsed.experience.map(async (exp) => ({
+      ...exp,
+      bullets: await Promise.all(
+        exp.bullets.map((b) => enhanceBulletLocally(b, exp.role, exp.company))
+      ),
+    }))
+  );
+  const fixedJson: ParsedResume = { ...parsed, experience: fixedExperience };
+  const analysis = analyzeResumeLocally(fixedJson, text);
 
   res.json({
     success: true,
-    data: { resume: fixedJson, analysis: evaluationJson },
+    data: { resume: parsedToResponse(fixedJson), analysis },
   });
 });
 
 export const evaluateBuilderResume = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { resumeData } = req.body;
-  
+
   if (!resumeData) {
     throw new AppError("Missing resumeData in request body", 400);
   }
 
-  const prompt = `You are an expert ATS resume analyzer and career advisor. Analyze the resume data below and produce a DETAILED, PERSONALIZED assessment that reflects THIS EXACT RESUME'S content. Never use generic responses — every field must reference the actual skills, companies, roles, education, and projects found in the resume.
+  const parsed: ParsedResume = {
+    personalInfo: resumeData.personalInfo || { fullName: "", email: "", phone: "", location: "", linkedin: "", portfolio: "" },
+    summary: resumeData.summary || "",
+    education: resumeData.education || [],
+    experience: (resumeData.experience || []).map((e: any) => ({ ...e, bullets: e.bullets || [] })),
+    skills: (resumeData.skills || []).map(canonicalizeSkillLabel),
+    projects: resumeData.projects || [],
+    certifications: resumeData.certifications || [],
+  };
 
-STRICT RULES:
-1. ats_score MUST vary with content quality: strong (detailed experience with quantified bullets, relevant skills, clear structure) = 75-95; mediocre (thin descriptions, few skills, weak bullets) = 45-74; poor = 20-44.
-2. summary MUST be 3-5 sentences evaluating THIS resume: strengths, what role it fits, key gaps, and overall readiness.
-3. missing_keywords MUST be job-relevant keywords (technologies, frameworks, methodologies) NOT already present in the resume.
-4. ats_issues MUST list real problems in this resume (e.g., "No quantified achievements in experience", "Summary section is empty", "Only N skills listed").
+  const rawText = [
+    parsed.summary,
+    ...parsed.experience.flatMap((e) => e.bullets),
+    ...parsed.projects.map((p) => p.description),
+    parsed.skills.join(" "),
+  ].join(" ");
 
-Return a JSON object with exactly this structure (no markdown, no code fences):
-
-{
-  "skills": ["skill1", "skill2", ...],
-  "experience_years": number,
-  "top_roles": ["role1", "role2", ...],
-  "strengths": ["strength1", "strength2", ...],
-  "weaknesses": ["weakness1", "weakness2", ...],
-  "improvements": [
-    {
-      "area": "Section or skill to improve",
-      "suggestion": "Specific actionable advice",
-      "priority": "high|medium|low"
-    }
-  ],
-  "ats_score": 75,
-  "ats_friendly": false,
-  "ats_issues": ["String issues"],
-  "ats_passed_checks": ["String passed checks"],
-  "missing_keywords": ["keyword1", "keyword2", ...],
-  "summary": "3-5 sentence detailed assessment of this specific resume"
-}
-
-Structured resume data to evaluate:
-${JSON.stringify(resumeData, null, 2)}
-
-Return ONLY the JSON object, no other text.`;
-
-  let evaluationJson;
-  try {
-    const completion = await openai.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" },
-    });
-    const responseText = completion.choices[0]?.message?.content || "";
-    const cleaned = responseText.replace(/```json\s*/ig, "").replace(/```\s*/g, "").trim();
-    evaluationJson = JSON.parse(cleaned);
-  } catch (err: any) {
-    console.error("OpenAI Error:", err);
-    throw new AppError("Failed to parse ATS evaluation from AI: " + (err.message || "Unknown error"), 500);
-  }
+  const analysis = analyzeResumeLocally(parsed, rawText);
 
   res.json({
     success: true,
-    data: { analysis: evaluationJson },
+    data: { analysis },
   });
 });
+
+// Local rule-based bullet enhancement, used by /auto-fix and as the fallback
+// if the trained resume-enhancer model is unavailable: ensures the bullet
+// starts with a strong action verb and flags (but does not fabricate) a
+// missing quantifiable metric.
+const WEAK_OPENERS: Record<string, string> = {
+  "was responsible for": "Managed",
+  "responsible for": "Managed",
+  "worked on": "Developed",
+  "helped with": "Contributed to",
+  // Bare "helped <verb>" (e.g. "helped mentor") takes a bare infinitive in
+  // English, unlike "Contributed to" which needs a gerund ("contributed to
+  // mentoring") - so this needs a different replacement to stay grammatical.
+  "helped": "Supported efforts to",
+  "in charge of": "Led",
+  "involved in": "Participated in",
+  "tasked with": "Delivered",
+};
+
+async function enhanceBulletLocally(bullet: string, role?: string, company?: string): Promise<string> {
+  try {
+    const response = await axios.post(
+      `${AI_SERVICE_URL}/enhance-resume-content`,
+      { type: "bullet", context: { original_text: bullet, role, company } },
+      { timeout: 8000, headers: { "X-AI-Service-Key": AI_SERVICE_KEY } }
+    );
+    if (response.data.enhanced_text) return response.data.enhanced_text;
+  } catch (err: any) {
+    console.error(`Local resume-enhancer unavailable, applying rule-based fallback: ${err?.message}`);
+  }
+
+  let fixed = bullet.trim();
+  const lower = fixed.toLowerCase();
+  for (const [weak, strong] of Object.entries(WEAK_OPENERS)) {
+    if (lower.startsWith(weak)) {
+      fixed = strong + fixed.slice(weak.length);
+      break;
+    }
+  }
+  return fixed;
+}

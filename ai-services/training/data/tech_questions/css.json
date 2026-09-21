@@ -1,0 +1,3027 @@
+[
+  {
+    "id": "css_001",
+    "technology": "CSS",
+    "topic": "CSS Basics",
+    "difficulty": "Easy",
+    "question": "What does CSS stand for?",
+    "answer": "Cascading Style Sheets",
+    "explanation": "'Cascading' refers to the algorithm that resolves which of multiple conflicting style rules applies to an element, based on specificity, source order, and origin.",
+    "question_type": "MCQ",
+    "keywords": [
+      "css",
+      "cascading style sheets"
+    ],
+    "options": [
+      "Cascading Style Sheets",
+      "Creative Style System",
+      "Computer Style Sheets",
+      "Colorful Style Sheets"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "css_002",
+    "technology": "CSS",
+    "topic": "CSS Basics",
+    "difficulty": "Easy",
+    "question": "What are the three ways to apply CSS to an HTML document?",
+    "answer": "Inline (a `style` attribute on an element), internal (a <style> block in the document's <head>), and external (a separate .css file linked via <link>).",
+    "explanation": "External stylesheets are generally preferred for maintainability and caching across pages; inline styles have the highest specificity and are hardest to override or reuse.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "inline css",
+      "internal css",
+      "external css"
+    ]
+  },
+  {
+    "id": "css_003",
+    "technology": "CSS",
+    "topic": "CSS Basics",
+    "difficulty": "Easy",
+    "question": "Which CSS property changes the text color of an element?",
+    "answer": "color",
+    "explanation": "`color` sets the foreground/text color; it's easy to confuse with `background-color`, which sets the element's background fill instead.",
+    "question_type": "MCQ",
+    "keywords": [
+      "color",
+      "text color"
+    ],
+    "options": [
+      "text-color",
+      "font-color",
+      "color",
+      "foreground-color"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "css_004",
+    "technology": "CSS",
+    "topic": "CSS Basics",
+    "difficulty": "Medium",
+    "question": "What is the difference between `class` and `id` selectors in terms of specificity?",
+    "answer": "An `id` selector (`#name`) has higher specificity than a `class` selector (`.name`), meaning a style targeted by ID will override a conflicting style targeted by class, regardless of source order.",
+    "explanation": "This specificity hierarchy (inline > id > class/attribute/pseudo-class > element/pseudo-element) is why relying heavily on IDs for styling makes overriding styles later much harder.",
+    "question_type": "Technical",
+    "keywords": [
+      "specificity",
+      "id selector",
+      "class selector"
+    ]
+  },
+  {
+    "id": "css_005",
+    "technology": "CSS",
+    "topic": "CSS Basics",
+    "difficulty": "Medium",
+    "question": "What is a CSS shorthand property? Give an example.",
+    "answer": "A shorthand property lets you set several related longhand properties in a single declaration; for example `margin: 10px 20px 10px 20px` sets `margin-top`, `margin-right`, `margin-bottom`, and `margin-left` in one line.",
+    "explanation": "Shorthands follow a defined order (often top-right-bottom-left, clockwise) and can also reset any longhand property not explicitly specified back to its initial value, which is a common source of accidental overrides.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "shorthand property",
+      "margin",
+      "css syntax"
+    ]
+  },
+  {
+    "id": "css_006",
+    "technology": "CSS",
+    "topic": "Selectors & Specificity",
+    "difficulty": "Easy",
+    "question": "Which CSS selector selects all <p> elements that are direct children of a <div>?",
+    "answer": "div > p",
+    "explanation": "The `>` combinator selects only direct (immediate) children, unlike the descendant combinator (a plain space), which selects any nested descendant at any depth.",
+    "question_type": "MCQ",
+    "keywords": [
+      "child combinator",
+      "selectors"
+    ],
+    "options": [
+      "div p",
+      "div > p",
+      "div + p",
+      "div ~ p"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_007",
+    "technology": "CSS",
+    "topic": "Selectors & Specificity",
+    "difficulty": "Easy",
+    "question": "What is the difference between the descendant combinator (space) and the child combinator (>)?",
+    "answer": "`div p` selects any <p> nested anywhere inside a <div> at any depth; `div > p` selects only <p> elements that are direct children of a <div>.",
+    "explanation": "This distinction matters a lot in deeply nested markup, where a descendant selector can unintentionally match elements many levels deep that a child selector would correctly exclude.",
+    "question_type": "Technical",
+    "keywords": [
+      "descendant combinator",
+      "child combinator"
+    ]
+  },
+  {
+    "id": "css_008",
+    "technology": "CSS",
+    "topic": "Selectors & Specificity",
+    "difficulty": "Medium",
+    "question": "Given two conflicting rules `.btn { color: blue; }` and `button { color: red; }` applied to the same <button class=\"btn\">, which color wins and why?",
+    "answer": "Blue wins, because a class selector (`.btn`) has higher specificity than an element/type selector (`button`), regardless of the order the rules appear in the stylesheet.",
+    "explanation": "CSS specificity is calculated independently of source order for rules of different specificity; source order only acts as the tie-breaker when specificity is EQUAL.",
+    "question_type": "Technical",
+    "keywords": [
+      "specificity",
+      "class vs element selector"
+    ]
+  },
+  {
+    "id": "css_009",
+    "technology": "CSS",
+    "topic": "Selectors & Specificity",
+    "difficulty": "Medium",
+    "question": "What does the `!important` declaration do, and why is it generally discouraged?",
+    "answer": "It forces that single declaration to override any other conflicting declaration regardless of specificity (except another `!important` of equal/higher priority); it's discouraged because it breaks the normal cascade, making styles unpredictable and hard to override later without resorting to `!important` everywhere.",
+    "explanation": "Overuse of `!important` creates a specificity arms race where developers must keep adding it to override previous `!important` rules, ultimately defeating the purpose of a predictable cascade.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "important",
+      "specificity",
+      "best practice"
+    ]
+  },
+  {
+    "id": "css_010",
+    "technology": "CSS",
+    "topic": "Selectors & Specificity",
+    "difficulty": "Hard",
+    "question": "Given `#nav .item { color: black; }` and `.nav-item.active { color: blue; }` applied to the same element that matches both selectors, which wins, and how is specificity actually calculated?",
+    "answer": "The first rule wins (black), because CSS specificity is calculated as a tuple of (ID count, class/attribute/pseudo-class count, element/pseudo-element count): `#nav .item` scores (1 ID, 1 class, 0 elements) = (1,1,0), while `.nav-item.active` scores (0 IDs, 2 classes, 0 elements) = (0,2,0); comparing left-to-right, 1 ID beats any number of classes.",
+    "explanation": "Specificity is compared digit-by-digit from the most significant category (IDs) down, not by simply summing 'points' — a single ID always outweighs any number of classes, and a single class always outweighs any number of element selectors.",
+    "question_type": "Technical",
+    "keywords": [
+      "specificity calculation",
+      "id vs class"
+    ]
+  },
+  {
+    "id": "css_011",
+    "technology": "CSS",
+    "topic": "Box Model",
+    "difficulty": "Easy",
+    "question": "List the four layers of the CSS box model from innermost to outermost.",
+    "answer": "Content, padding, border, margin.",
+    "explanation": "Every rendered element is a rectangular box built from these four concentric layers; `width`/`height` by default apply only to the content box unless `box-sizing` changes that.",
+    "question_type": "Technical",
+    "keywords": [
+      "box model",
+      "padding",
+      "border",
+      "margin"
+    ]
+  },
+  {
+    "id": "css_012",
+    "technology": "CSS",
+    "topic": "Box Model",
+    "difficulty": "Easy",
+    "question": "What is the difference between `box-sizing: content-box` (the default) and `box-sizing: border-box`?",
+    "answer": "With `content-box`, `width`/`height` apply only to the content area, so padding and border are added ON TOP, making the element visually larger than the specified width; with `border-box`, `width`/`height` include padding and border, so the element's total rendered size matches the specified value exactly.",
+    "explanation": "`border-box` is widely adopted (often applied globally via `*, *::before, *::after { box-sizing: border-box; }`) because it makes sizing math far more predictable when padding/borders are involved.",
+    "question_type": "MCQ",
+    "keywords": [
+      "box-sizing",
+      "border-box",
+      "content-box"
+    ],
+    "options": [
+      "They are identical",
+      "content-box includes padding/border in width; border-box excludes them",
+      "border-box includes padding/border in the specified width/height; content-box excludes them",
+      "Neither affects element sizing"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "css_013",
+    "technology": "CSS",
+    "topic": "Box Model",
+    "difficulty": "Medium",
+    "question": "Why can two adjacent elements with `margin-bottom: 20px` and `margin-top: 30px` end up with only 30px of vertical gap between them instead of 50px?",
+    "answer": "This is 'margin collapsing' — adjacent vertical margins between block-level elements in normal flow collapse into a single margin equal to the larger of the two, rather than summing.",
+    "explanation": "Margin collapsing only applies to vertical margins of block-level elements in normal document flow (not to horizontal margins, and not to elements that are floated, absolutely positioned, flex/grid items, or have padding/border/overflow between them).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "margin collapsing",
+      "box model"
+    ]
+  },
+  {
+    "id": "css_014",
+    "technology": "CSS",
+    "topic": "Box Model",
+    "difficulty": "Medium",
+    "question": "What CSS property and value prevents an element's background from extending underneath its border (clips it to the padding edge instead)?",
+    "answer": "`background-clip: padding-box`",
+    "explanation": "By default `background-clip` is `border-box`, meaning the background paints under a (semi-)transparent or dashed border; setting it to `padding-box` stops the background at the inner edge of the border.",
+    "question_type": "Technical",
+    "keywords": [
+      "background-clip",
+      "box model"
+    ]
+  },
+  {
+    "id": "css_015",
+    "technology": "CSS",
+    "topic": "Box Model",
+    "difficulty": "Hard",
+    "question": "An element has `width: 200px`, `padding: 20px`, `border: 5px solid`, and `box-sizing: content-box`. What is its total rendered width, and how would that change if `box-sizing: border-box` were applied instead?",
+    "answer": "With `content-box`: total width = 200 (content) + 2×20 (padding) + 2×5 (border) = 250px. With `border-box`: the specified 200px already INCLUDES padding and border, so the content area shrinks to 200 − 2×20 − 2×5 = 150px, and the total rendered width stays exactly 200px.",
+    "explanation": "This is the core practical consequence of the `box-sizing` property: it changes what the `width`/`height` value actually measures, not the presence of padding/border themselves.",
+    "question_type": "Technical",
+    "keywords": [
+      "box-sizing",
+      "box model calculation"
+    ]
+  },
+  {
+    "id": "css_016",
+    "technology": "CSS",
+    "topic": "Positioning",
+    "difficulty": "Easy",
+    "question": "What is the default value of the CSS `position` property?",
+    "answer": "static",
+    "explanation": "`position: static` means the element follows normal document flow and ignores `top`/`left`/`right`/`bottom`/`z-index`; any other position value (relative, absolute, fixed, sticky) is required before those offset properties take effect.",
+    "question_type": "MCQ",
+    "keywords": [
+      "position",
+      "static"
+    ],
+    "options": [
+      "relative",
+      "absolute",
+      "static",
+      "fixed"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "css_017",
+    "technology": "CSS",
+    "topic": "Positioning",
+    "difficulty": "Easy",
+    "question": "What is the difference between `position: relative` and `position: absolute`?",
+    "answer": "`relative` positions the element relative to its own normal position in the flow (and it still occupies its original space), while `absolute` removes the element from normal flow entirely and positions it relative to its nearest positioned (non-static) ancestor.",
+    "explanation": "This is why `position: relative` is so often applied to a container with no offset values at all — purely to establish it as the positioning context (containing block) for an absolutely positioned child.",
+    "question_type": "Technical",
+    "keywords": [
+      "position relative",
+      "position absolute",
+      "positioning context"
+    ]
+  },
+  {
+    "id": "css_018",
+    "technology": "CSS",
+    "topic": "Positioning",
+    "difficulty": "Medium",
+    "question": "What does `position: sticky` do, and what condition must be met for it to work?",
+    "answer": "It behaves like `position: relative` until the element crosses a specified threshold (e.g. `top: 0`) during scrolling, at which point it 'sticks' and behaves like `position: fixed` relative to its nearest scrolling ancestor for as long as that ancestor is in view.",
+    "explanation": "A sticky element requires at least one of `top`/`right`/`bottom`/`left` to be set (otherwise it behaves exactly like `relative`), and it will stop sticking once its parent container scrolls out of view — it's not truly viewport-fixed like `position: fixed`.",
+    "question_type": "Technical",
+    "keywords": [
+      "position sticky",
+      "scroll behavior"
+    ]
+  },
+  {
+    "id": "css_019",
+    "technology": "CSS",
+    "topic": "Positioning",
+    "difficulty": "Medium",
+    "question": "Why does an absolutely positioned element sometimes end up positioned relative to the entire page (viewport) instead of its intended parent container?",
+    "answer": "Because `position: absolute` positions relative to the nearest ANCESTOR that has a `position` value other than `static`; if no ancestor is positioned, it falls back to the initial containing block, which is effectively the viewport/root element.",
+    "explanation": "The fix is to add `position: relative` (with no offsets) to the intended containing element, establishing it as the positioning context so the absolutely positioned child is anchored to it instead of the page.",
+    "question_type": "Debugging",
+    "keywords": [
+      "position absolute",
+      "containing block"
+    ],
+    "buggy_code": ".card { }\n.badge { position: absolute; top: 0; right: 0; }",
+    "fixed_code": ".card { position: relative; }\n.badge { position: absolute; top: 0; right: 0; }"
+  },
+  {
+    "id": "css_020",
+    "technology": "CSS",
+    "topic": "Positioning",
+    "difficulty": "Hard",
+    "question": "What does the CSS `z-index` property control, and why can a high `z-index` on an element sometimes fail to bring it above another element that has a much lower `z-index`?",
+    "answer": "`z-index` controls the stacking order of positioned elements along the axis perpendicular to the screen (which overlaps on top of which); a high `z-index` can still lose if the two elements belong to different 'stacking contexts' — z-index values only compete directly against siblings within the SAME stacking context, so an element trapped inside a low/negative-z-index (or otherwise stacking-context-creating) ancestor can never visually escape above content outside that ancestor, no matter how high its own z-index is set.",
+    "explanation": "Certain CSS properties (a `position` other than static combined with a z-index value, `opacity` less than 1, `transform`, `filter`, and others) each create a NEW stacking context, effectively 'sealing' the z-index comparisons of descendants inside it relative to the outside world.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "z-index",
+      "stacking context"
+    ]
+  },
+  {
+    "id": "css_021",
+    "technology": "CSS",
+    "topic": "Display Property",
+    "difficulty": "Easy",
+    "question": "What is the default `display` value of a <div> element?",
+    "answer": "block",
+    "explanation": "Block-level elements take the full available width and start on a new line by default, which is exactly the default rendering behavior of a <div> before any CSS is applied.",
+    "question_type": "MCQ",
+    "keywords": [
+      "display",
+      "block"
+    ],
+    "options": [
+      "inline",
+      "block",
+      "inline-block",
+      "flex"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_022",
+    "technology": "CSS",
+    "topic": "Display Property",
+    "difficulty": "Easy",
+    "question": "What does `display: none` do, and how is it different from `visibility: hidden`?",
+    "answer": "`display: none` completely removes the element from the rendered layout (it takes up no space and is unreachable by assistive technology); `visibility: hidden` keeps the element's space reserved in the layout but makes it invisible.",
+    "explanation": "Because `display: none` removes the box entirely, surrounding elements reflow to fill the gap; `visibility: hidden` leaves a visible gap where the element used to be, since its layout box still exists.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "display none",
+      "visibility hidden"
+    ]
+  },
+  {
+    "id": "css_023",
+    "technology": "CSS",
+    "topic": "Display Property",
+    "difficulty": "Medium",
+    "question": "What is `display: inline-block`, and why is it useful compared to plain `inline`?",
+    "answer": "It makes an element flow inline with surrounding content (like `inline`) while still allowing `width`, `height`, and vertical `margin`/`padding` to take effect (like `block`), which plain `inline` elements ignore for width/height.",
+    "explanation": "This was historically the go-to technique for laying out horizontal navigation items or button-like elements before Flexbox became widely supported.",
+    "question_type": "Technical",
+    "keywords": [
+      "inline-block",
+      "display property"
+    ]
+  },
+  {
+    "id": "css_024",
+    "technology": "CSS",
+    "topic": "Display Property",
+    "difficulty": "Medium",
+    "question": "What layout behavior does `display: flex` give to the direct children of the element it's applied to?",
+    "answer": "It turns the element into a flex container, causing its direct children to become flex items arranged along a single flex line (row or column by default row) that can grow, shrink, and align according to additional flex properties (`justify-content`, `align-items`, `flex-grow`, etc.).",
+    "explanation": "Unlike float-based layouts, flex items can be evenly distributed, reordered visually, and made to fill or share available space without manual width calculations.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "display flex",
+      "flex container"
+    ]
+  },
+  {
+    "id": "css_025",
+    "technology": "CSS",
+    "topic": "Display Property",
+    "difficulty": "Hard",
+    "question": "Why can setting `display: flex` on a container unexpectedly change the behavior of a child's `float` or `vertical-align` properties?",
+    "answer": "Once an element becomes a flex container, its direct children become flex items, and flex items ignore `float`, `clear`, and `vertical-align` entirely — the flex layout algorithm takes over their positioning completely, so those older layout properties simply have no effect anymore.",
+    "explanation": "This is a common source of confusion when migrating older float-based layouts to Flexbox incrementally: leftover `float`/`vertical-align` rules on now-flex-item children become dead code rather than causing an error, silently doing nothing.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "display flex",
+      "float",
+      "vertical-align"
+    ]
+  },
+  {
+    "id": "css_026",
+    "technology": "CSS",
+    "topic": "Flexbox",
+    "difficulty": "Easy",
+    "question": "Which CSS property, applied to a flex container, controls the direction items are laid out (row vs column)?",
+    "answer": "flex-direction",
+    "explanation": "`flex-direction: row` (the default) lays items left-to-right, `column` lays them top-to-bottom, and `row-reverse`/`column-reverse` reverse the respective order.",
+    "question_type": "MCQ",
+    "keywords": [
+      "flex-direction",
+      "flexbox"
+    ],
+    "options": [
+      "flex-flow",
+      "flex-direction",
+      "flex-wrap",
+      "justify-content"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_027",
+    "technology": "CSS",
+    "topic": "Flexbox",
+    "difficulty": "Easy",
+    "question": "What does `justify-content` control in a flex container?",
+    "answer": "It controls how flex items are distributed and aligned along the main axis (the direction set by `flex-direction`) — options include `flex-start`, `flex-end`, `center`, `space-between`, and `space-around`.",
+    "explanation": "It's easy to confuse with `align-items`, which does the equivalent alignment but along the perpendicular CROSS axis instead.",
+    "question_type": "Technical",
+    "keywords": [
+      "justify-content",
+      "main axis",
+      "flexbox"
+    ]
+  },
+  {
+    "id": "css_028",
+    "technology": "CSS",
+    "topic": "Flexbox",
+    "difficulty": "Medium",
+    "question": "What is the difference between `align-items` and `align-content` in Flexbox?",
+    "answer": "`align-items` aligns individual flex items along the cross axis WITHIN their single flex line; `align-content` aligns entire flex LINES relative to each other along the cross axis, and only has a visible effect when the container has multiple wrapped lines (`flex-wrap: wrap`) and extra cross-axis space.",
+    "explanation": "This is why `align-content` appears to 'do nothing' on a single-line flex container — with only one line, there's no multi-line space distribution for it to affect.",
+    "question_type": "Technical",
+    "keywords": [
+      "align-items",
+      "align-content",
+      "flexbox"
+    ]
+  },
+  {
+    "id": "css_029",
+    "technology": "CSS",
+    "topic": "Flexbox",
+    "difficulty": "Medium",
+    "question": "What do the three components of the `flex` shorthand property (`flex-grow`, `flex-shrink`, `flex-basis`) each control?",
+    "answer": "`flex-grow` is a unitless ratio controlling how much of the container's EXTRA free space an item absorbs relative to siblings; `flex-shrink` is a unitless ratio controlling how much an item shrinks relative to siblings when there ISN'T enough space; `flex-basis` sets the item's initial main-axis size before growing/shrinking is applied.",
+    "explanation": "A very common pattern, `flex: 1`, expands to `flex-grow: 1; flex-shrink: 1; flex-basis: 0%`, meaning all such items ignore their content size and just split the available space equally.",
+    "question_type": "Technical",
+    "keywords": [
+      "flex shorthand",
+      "flex-grow",
+      "flex-shrink",
+      "flex-basis"
+    ]
+  },
+  {
+    "id": "css_030",
+    "technology": "CSS",
+    "topic": "Flexbox",
+    "difficulty": "Hard",
+    "question": "Three flex items have `flex-grow: 1`, `flex-grow: 2`, and `flex-grow: 1` respectively, and the container has 120px of extra free space after accounting for their base sizes. How is that extra space distributed among them?",
+    "answer": "The extra space is divided proportionally to each item's flex-grow value out of the total (1+2+1=4 parts, so 120px / 4 = 30px per part): the first item gets +30px, the second gets +60px, and the third gets +30px, added on top of each item's flex-basis.",
+    "explanation": "flex-grow values are RATIOS, not absolute pixel amounts or percentages of the container — only their relative proportion to each other (and to the total across all items) matters for how leftover space is shared.",
+    "question_type": "Coding",
+    "keywords": [
+      "flex-grow",
+      "flexbox calculation"
+    ],
+    "starter_code": "/* container has 3 flex items with flex-grow 1, 2, 1 and 120px extra space */",
+    "expected_solution": ".item1 { flex-grow: 1; } /* +30px */\n.item2 { flex-grow: 2; } /* +60px */\n.item3 { flex-grow: 1; } /* +30px */",
+    "test_cases": [
+      {
+        "input": "120px extra space, flex-grow ratios 1:2:1",
+        "expected_output": "item1 +30px, item2 +60px, item3 +30px"
+      },
+      {
+        "input": "200px extra space, flex-grow ratios 1:2:1",
+        "expected_output": "item1 +50px, item2 +100px, item3 +50px"
+      }
+    ]
+  },
+  {
+    "id": "css_031",
+    "technology": "CSS",
+    "topic": "Grid",
+    "difficulty": "Easy",
+    "question": "Which CSS property turns an element into a grid container?",
+    "answer": "display: grid",
+    "explanation": "Once an element has `display: grid`, its direct children become grid items placed into the grid tracks defined by properties like `grid-template-columns` and `grid-template-rows`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "display grid",
+      "css grid"
+    ],
+    "options": [
+      "display: flex",
+      "display: grid",
+      "display: table",
+      "display: block"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_032",
+    "technology": "CSS",
+    "topic": "Grid",
+    "difficulty": "Easy",
+    "question": "What does `grid-template-columns: 1fr 2fr 1fr` define?",
+    "answer": "Three columns whose widths are distributed proportionally out of the available space in a 1:2:1 ratio (the middle column gets twice the width of each outer column).",
+    "explanation": "The `fr` (fraction) unit represents a share of the remaining free space in the grid container, similar in spirit to flex-grow ratios but applied directly to track sizing.",
+    "question_type": "Technical",
+    "keywords": [
+      "fr unit",
+      "grid-template-columns"
+    ]
+  },
+  {
+    "id": "css_033",
+    "technology": "CSS",
+    "topic": "Grid",
+    "difficulty": "Medium",
+    "question": "What is the difference between `grid-gap` (`gap`) and using margins on grid items to create spacing?",
+    "answer": "`gap` creates spacing ONLY between grid tracks (rows/columns), never adding extra space at the outer edges of the grid; margins on individual items add space around each item, including at the grid's outer boundary, and can cause uneven spacing if not applied consistently to every item.",
+    "explanation": "Using `gap` is generally preferred for uniform grid spacing because it's declared once on the container and automatically applies consistently between every row/column without per-item margin bookkeeping.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "grid gap",
+      "grid spacing"
+    ]
+  },
+  {
+    "id": "css_034",
+    "technology": "CSS",
+    "topic": "Grid",
+    "difficulty": "Medium",
+    "question": "What does the `grid-template-areas` property let you do?",
+    "answer": "It lets you define a visual, named layout for the grid using a text-based ASCII-art-like syntax, then assign each grid item to a named area via `grid-area`, making complex layouts easy to read directly from the CSS.",
+    "explanation": "For example, defining areas `\"header header\" \"sidebar main\" \"footer footer\"` immediately communicates the page's layout structure without having to mentally map row/column line numbers.",
+    "question_type": "Technical",
+    "keywords": [
+      "grid-template-areas",
+      "grid-area"
+    ]
+  },
+  {
+    "id": "css_035",
+    "technology": "CSS",
+    "topic": "Grid",
+    "difficulty": "Hard",
+    "question": "Why might `grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))` be preferred over `repeat(auto-fill, minmax(200px, 1fr))` for a responsive card layout, and what's the actual difference between them?",
+    "answer": "`auto-fit` collapses any empty (unfilled) tracks to zero width and lets the existing items stretch to fill the leftover space, so a row with fewer items than would fill the row still looks intentionally full-width; `auto-fill` keeps those empty tracks at their minimum size (as invisible placeholders), which can leave visible gaps rather than letting fewer items expand to fill the row.",
+    "explanation": "Both compute how many columns of at least 200px fit in the available width, but they diverge specifically when there are FEWER actual items than the number of columns that would fit — auto-fit reclaims that leftover track space for the real items, auto-fill does not.",
+    "question_type": "Technical",
+    "keywords": [
+      "auto-fit",
+      "auto-fill",
+      "responsive grid"
+    ]
+  },
+  {
+    "id": "css_036",
+    "technology": "CSS",
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Easy",
+    "question": "What CSS at-rule is used to apply styles conditionally based on device characteristics like viewport width?",
+    "answer": "@media",
+    "explanation": "A media query like `@media (max-width: 600px) { ... }` applies its enclosed rules only when the current viewport matches the specified condition, forming the basis of responsive design.",
+    "question_type": "MCQ",
+    "keywords": [
+      "media query",
+      "responsive design"
+    ],
+    "options": [
+      "@responsive",
+      "@media",
+      "@viewport",
+      "@screen"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_037",
+    "technology": "CSS",
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Easy",
+    "question": "What is the difference between `max-width` and `min-width` in a media query?",
+    "answer": "`(max-width: 600px)` matches when the viewport is 600px or narrower (commonly used for mobile-specific overrides); `(min-width: 600px)` matches when the viewport is 600px or wider (commonly used as the entry point for progressively larger layouts).",
+    "explanation": "A 'mobile-first' responsive strategy typically writes base styles for small screens, then layers on `min-width` media queries to add complexity as the viewport grows, rather than starting from desktop and using `max-width` to strip things away.",
+    "question_type": "Technical",
+    "keywords": [
+      "max-width",
+      "min-width",
+      "media queries"
+    ]
+  },
+  {
+    "id": "css_038",
+    "technology": "CSS",
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Medium",
+    "question": "Why does a page that looks correctly responsive in desktop browser dev tools sometimes render as a tiny, zoomed-out desktop layout on an actual mobile device?",
+    "answer": "The page is missing the viewport meta tag (`<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">`); without it, mobile browsers assume a wide desktop-like virtual viewport (often 980px) and shrink the whole page to fit the screen, which media queries alone cannot fix since they measure that same (wrong) virtual viewport width.",
+    "explanation": "Media queries evaluate against the CSS viewport width, which the viewport meta tag is what actually sets equal to the device's real width in the first place — without it, `(max-width: 600px)` may simply never match on a phone because the virtual viewport reports a much larger width.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "viewport meta tag",
+      "media queries",
+      "mobile rendering"
+    ]
+  },
+  {
+    "id": "css_039",
+    "technology": "CSS",
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Medium",
+    "question": "What is the difference between fixed units like `px` and relative units like `rem` when building a responsive layout?",
+    "answer": "`px` is an absolute unit that doesn't change based on any surrounding context, while `rem` is relative to the root (<html>) element's font size, so scaling the root font size (e.g. via a user's browser zoom/accessibility settings, or a media query that changes root font size) proportionally scales every `rem`-based measurement across the page at once.",
+    "explanation": "Using `rem` for spacing/typography is a common responsive technique because a single media query change to the root font-size can rescale an entire design's spacing/text proportionally, which would require touching many individual `px` values otherwise.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "rem",
+      "px",
+      "relative units"
+    ]
+  },
+  {
+    "id": "css_040",
+    "technology": "CSS",
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Hard",
+    "question": "What is 'container queries' and how do they differ from traditional media queries for building reusable responsive components?",
+    "answer": "Container queries (`@container`) let an element's styles respond to the size of its nearest ANCESTOR CONTAINER rather than the entire viewport, which media queries are limited to; this means the same component can adapt its layout differently depending on where it's placed (e.g. a sidebar vs a main content area) rather than only reacting to the overall screen size.",
+    "explanation": "This solves a long-standing limitation of component-based responsive design: a card component that should look different when it's narrow (in a sidebar) versus wide (in a main grid) couldn't previously know its own rendered width via CSS alone — only the viewport's width via `@media` — forcing that logic into JavaScript instead.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "container queries",
+      "responsive components"
+    ]
+  },
+  {
+    "id": "css_041",
+    "technology": "CSS",
+    "topic": "Colors & Units",
+    "difficulty": "Easy",
+    "question": "Which CSS color function lets you specify a color with an alpha (transparency) channel using RGB values?",
+    "answer": "rgba()",
+    "explanation": "`rgba(255, 0, 0, 0.5)` specifies red at 50% opacity; the equivalent for HSL-based colors with alpha is `hsla()`, and modern CSS also allows a slash syntax like `rgb(255 0 0 / 50%)`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "rgba",
+      "color functions",
+      "transparency"
+    ],
+    "options": [
+      "rgb()",
+      "rgba()",
+      "hex()",
+      "opacity()"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_042",
+    "technology": "CSS",
+    "topic": "Colors & Units",
+    "difficulty": "Easy",
+    "question": "What is the difference between an absolute length unit like `px` and a relative length unit like `em`?",
+    "answer": "`px` always represents the same fixed physical-ish size regardless of context; `em` is relative to the FONT SIZE of the current element (or its parent, for some properties), so the same `em` value renders differently depending on the surrounding font size.",
+    "explanation": "Because `em` compounds with nested elements that each set their own font-size (each `em` is relative to its own element's computed font-size), unexpected multiplicative scaling in deeply nested components is a common `em` pitfall that `rem` (always relative to the root) avoids.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "em",
+      "px",
+      "relative units"
+    ]
+  },
+  {
+    "id": "css_043",
+    "technology": "CSS",
+    "topic": "Colors & Units",
+    "difficulty": "Medium",
+    "question": "What is the difference between the `rem` and `em` units?",
+    "answer": "`rem` is always relative to the root (<html>) element's font size, regardless of nesting depth; `em` is relative to the font size of the CURRENT element (which itself may be inherited/scaled from its parent), so `em` values can compound unpredictably in deeply nested structures while `rem` values stay consistent and predictable.",
+    "explanation": "This is why `rem` is generally preferred for global spacing/typography scales, while `em` remains useful specifically when you WANT a value to scale relative to its own element's font size (e.g. padding that should grow/shrink along with a button's own text size).",
+    "question_type": "Technical",
+    "keywords": [
+      "rem",
+      "em",
+      "units"
+    ]
+  },
+  {
+    "id": "css_044",
+    "technology": "CSS",
+    "topic": "Colors & Units",
+    "difficulty": "Medium",
+    "question": "What does the `vw` and `vh` unit each represent?",
+    "answer": "`1vw` equals 1% of the current viewport's width, and `1vh` equals 1% of the current viewport's height; both update dynamically if the viewport is resized.",
+    "explanation": "These units are commonly used for full-viewport layouts (e.g. `height: 100vh` for a hero section that always fills the visible screen), though on mobile browsers `vh` can behave unexpectedly due to the address bar showing/hiding and changing the effective viewport height.",
+    "question_type": "Technical",
+    "keywords": [
+      "vw",
+      "vh",
+      "viewport units"
+    ]
+  },
+  {
+    "id": "css_045",
+    "technology": "CSS",
+    "topic": "Colors & Units",
+    "difficulty": "Hard",
+    "question": "A component sets `font-size: 1.5em` and is nested three levels deep inside other elements that each also set `font-size: 1.5em`. Why does its rendered text end up much larger than 1.5× the base size, and how would using `rem` instead avoid this?",
+    "answer": "Because `em` is relative to the immediately enclosing element's font size, each nested `1.5em` COMPOUNDS with the one above it: after three levels the effective scale is 1.5 × 1.5 × 1.5 ≈ 3.375× the root size, not 1.5×; using `rem` instead would make every one of those declarations relative to the fixed root font-size directly, so each would independently render at exactly 1.5× the root regardless of nesting depth.",
+    "explanation": "This compounding behavior is one of the most common real-world `em` bugs in component-based UIs where the same class/style might get applied at varying nesting depths.",
+    "question_type": "Technical",
+    "keywords": [
+      "em compounding",
+      "rem",
+      "units"
+    ]
+  },
+  {
+    "id": "css_046",
+    "technology": "CSS",
+    "topic": "Typography",
+    "difficulty": "Easy",
+    "question": "Which CSS property controls the space between lines of text within an element?",
+    "answer": "line-height",
+    "explanation": "`line-height` sets the height of each line box; a unitless value (e.g. `line-height: 1.5`) is generally recommended because it scales proportionally with the element's own font-size rather than compounding like some other relative units.",
+    "question_type": "MCQ",
+    "keywords": [
+      "line-height",
+      "typography"
+    ],
+    "options": [
+      "letter-spacing",
+      "line-height",
+      "word-spacing",
+      "text-indent"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_047",
+    "technology": "CSS",
+    "topic": "Typography",
+    "difficulty": "Easy",
+    "question": "What does the `font-weight` property control?",
+    "answer": "The thickness/boldness of the rendered text, using either keywords (`normal`, `bold`) or numeric values from 100 (thin) to 900 (black/heavy) if the font family provides those weights.",
+    "explanation": "If a numeric weight isn't actually available in the loaded font file, browsers will typically substitute the closest available weight or synthetically embolden the text, which can look different across browsers/OSes.",
+    "question_type": "Technical",
+    "keywords": [
+      "font-weight",
+      "typography"
+    ]
+  },
+  {
+    "id": "css_048",
+    "technology": "CSS",
+    "topic": "Typography",
+    "difficulty": "Medium",
+    "question": "What is the CSS `font-family` fallback stack for, e.g. `font-family: \"Helvetica Neue\", Arial, sans-serif`?",
+    "answer": "It lists fonts in order of preference; the browser tries each one in sequence and uses the first that is actually available/installed/loaded, falling back to the next if not, ending in a generic family (like `sans-serif`) as a guaranteed final fallback.",
+    "explanation": "This ensures reasonable typography even if a specific custom or licensed font fails to load (e.g. slow network, blocked request), rather than falling back to an arbitrary, possibly ugly, browser default.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "font-family",
+      "font fallback"
+    ]
+  },
+  {
+    "id": "css_049",
+    "technology": "CSS",
+    "topic": "Typography",
+    "difficulty": "Medium",
+    "question": "What does `@font-face` allow you to do, and what is `font-display: swap` used for alongside it?",
+    "answer": "`@font-face` lets you load and register a custom web font file so it can be referenced by name in `font-family`; `font-display: swap` tells the browser to render text immediately using a fallback font and then swap in the custom font once it finishes loading, rather than leaving text invisible (a 'flash of invisible text') while waiting.",
+    "explanation": "Without `font-display: swap` (or similar), many browsers historically hid text for a short timeout while a custom web font downloaded, which hurts perceived performance; `swap` prioritizes showing SOME text immediately over waiting for the exact intended font.",
+    "question_type": "Technical",
+    "keywords": [
+      "font-face",
+      "font-display",
+      "web fonts"
+    ]
+  },
+  {
+    "id": "css_050",
+    "technology": "CSS",
+    "topic": "Typography",
+    "difficulty": "Hard",
+    "question": "Why can setting `line-height: 20px` (an absolute value) on a base/body style cause subtle layout bugs in child elements that use different font sizes, compared to using a unitless `line-height: 1.5`?",
+    "answer": "An absolute `line-height` is INHERITED as that fixed computed pixel value, so a child with a much larger font-size (e.g. a heading) will inherit the same fixed 20px line-height, which can be too small for its larger text and cause lines to visually overlap; a unitless `line-height` is inherited as the RATIO itself, so each descendant computes its own proportional line-height based on its own font-size.",
+    "explanation": "This is one of the most cited reasons unitless line-height is the recommended default in CSS style guides — it inherits as a scale factor rather than a fixed cascaded pixel value, correctly adapting to descendants with different font sizes.",
+    "question_type": "Technical",
+    "keywords": [
+      "line-height inheritance",
+      "unitless values"
+    ]
+  },
+  {
+    "id": "css_051",
+    "technology": "CSS",
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Easy",
+    "question": "What is the difference between a pseudo-class (like `:hover`) and a pseudo-element (like `::before`)?",
+    "answer": "A pseudo-class selects an element based on a special STATE or position it's in (e.g. being hovered, being the first child), while a pseudo-element lets you style/insert a specific SUB-PART of an element that doesn't exist as its own node in the DOM (e.g. the generated content before an element's actual content).",
+    "explanation": "The modern CSS spec formalizes this by using a single colon for pseudo-classes (`:hover`) and a double colon for pseudo-elements (`::before`), though browsers still accept the older single-colon syntax for the original four pseudo-elements for backward compatibility.",
+    "question_type": "MCQ",
+    "keywords": [
+      "pseudo-class",
+      "pseudo-element"
+    ],
+    "options": [
+      "They are the same thing with different syntax",
+      "Pseudo-classes select element states; pseudo-elements target sub-parts of an element",
+      "Pseudo-elements select element states; pseudo-classes target sub-parts",
+      "Pseudo-classes only work with JavaScript"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_052",
+    "technology": "CSS",
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Easy",
+    "question": "What does the `:hover` pseudo-class match?",
+    "answer": "An element while the user's pointer is positioned over it.",
+    "explanation": "It's commonly used for interactive feedback like changing a button's background color, but on touch devices without a true pointer, `:hover` behavior can be inconsistent or 'sticky' after a tap.",
+    "question_type": "Technical",
+    "keywords": [
+      ":hover",
+      "pseudo-class"
+    ]
+  },
+  {
+    "id": "css_053",
+    "technology": "CSS",
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Medium",
+    "question": "What is the difference between `:nth-child(2)` and `:nth-of-type(2)`?",
+    "answer": "`:nth-child(2)` matches an element if it is the 2nd child of its parent, counting ALL sibling elements regardless of tag name; `:nth-of-type(2)` matches an element if it is the 2nd sibling of its SPECIFIC tag type, ignoring siblings of other tag names in the count.",
+    "explanation": "This distinction matters when siblings of mixed tag types are interleaved — e.g. `p:nth-child(2)` might match nothing if the 2nd child overall happens to be a <div>, whereas `p:nth-of-type(2)` would still correctly find the 2nd <p> regardless of what's interspersed between the <p> elements.",
+    "question_type": "Technical",
+    "keywords": [
+      "nth-child",
+      "nth-of-type"
+    ]
+  },
+  {
+    "id": "css_054",
+    "technology": "CSS",
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Medium",
+    "question": "What must the `content` property be set to for a `::before` or `::after` pseudo-element to actually render, and why?",
+    "answer": "The `content` property must be explicitly set (even to an empty string `content: \"\"`), because `::before`/`::after` generate entirely new, otherwise-nonexistent boxes whose content is undefined until `content` supplies it — without it, the pseudo-element simply doesn't render at all.",
+    "explanation": "This is a common beginner mistake: adding styles like `background` or `border` to a `::before` selector has no visible effect if `content` was never set, since there's no generated box to apply those styles to yet.",
+    "question_type": "Debugging",
+    "keywords": [
+      "::before",
+      "content property",
+      "pseudo-element"
+    ],
+    "buggy_code": ".tooltip::before {\n  background: black;\n  width: 10px;\n  height: 10px;\n}",
+    "fixed_code": ".tooltip::before {\n  content: \"\";\n  background: black;\n  width: 10px;\n  height: 10px;\n}"
+  },
+  {
+    "id": "css_055",
+    "technology": "CSS",
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Hard",
+    "question": "What is the practical difference between `:focus` and `:focus-visible`, and why was `:focus-visible` introduced?",
+    "answer": "`:focus` matches ANY focused element regardless of how it was focused (mouse click, tap, or keyboard); `:focus-visible` only matches when the browser's heuristics determine the focus indicator should be shown — typically for keyboard navigation, not for a mouse click — letting you show a visible focus ring only when it's actually useful (keyboard users) without an unwanted ring appearing every time a mouse user clicks a button.",
+    "explanation": "`:focus-visible` was introduced specifically to resolve the long-standing tension between accessibility (keyboard users NEED a visible focus indicator to know where they are) and visual design preference (many designers disliked the focus ring appearing on every mouse click), letting both needs be met without JavaScript workarounds that used to be common (like adding a 'user-is-tabbing' class via JS).",
+    "question_type": "Scenario Based",
+    "keywords": [
+      ":focus-visible",
+      "accessibility",
+      "keyboard navigation"
+    ]
+  },
+  {
+    "id": "css_056",
+    "technology": "CSS",
+    "topic": "Animations & Transitions",
+    "difficulty": "Easy",
+    "question": "What CSS property specifies which property changes should animate smoothly over time when their value changes, and how long that should take?",
+    "answer": "transition",
+    "explanation": "`transition: background-color 0.3s ease;` means changes to `background-color` (e.g. triggered by `:hover` or a class toggle) animate smoothly over 0.3 seconds instead of changing instantly.",
+    "question_type": "MCQ",
+    "keywords": [
+      "transition",
+      "css animation"
+    ],
+    "options": [
+      "animation",
+      "transition",
+      "transform",
+      "keyframes"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_057",
+    "technology": "CSS",
+    "topic": "Animations & Transitions",
+    "difficulty": "Easy",
+    "question": "What is the main difference between CSS `transition` and CSS `animation`?",
+    "answer": "`transition` only animates a property between two states (its starting value and an end value triggered by some change, like `:hover`), requiring an external trigger; `animation` (with `@keyframes`) can define multiple intermediate steps and can run automatically, repeat, or reverse without needing a state-change trigger.",
+    "explanation": "This makes `animation` the right tool for self-running, looping, or multi-step effects (like a loading spinner), while `transition` is simpler and better suited for one-off state-change feedback (like a button's hover color change).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "transition",
+      "animation",
+      "keyframes"
+    ]
+  },
+  {
+    "id": "css_058",
+    "technology": "CSS",
+    "topic": "Animations & Transitions",
+    "difficulty": "Medium",
+    "question": "Why are `transform` and `opacity` considered the most performance-friendly properties to animate, compared to properties like `width` or `top`?",
+    "answer": "Animating `transform` and `opacity` can typically be handled entirely by the browser's compositor on the GPU without triggering layout (reflow) or paint recalculation, whereas animating `width`, `height`, `top`, or `left` forces the browser to recompute layout for the element (and often its siblings) on every frame, which is far more expensive.",
+    "explanation": "This is why smooth 60fps animations (like sliding/scaling a modal in) are typically implemented with `transform: translateX()`/`scale()` rather than animating `left`/`width` directly, even though they can achieve visually similar effects.",
+    "question_type": "Technical",
+    "keywords": [
+      "transform",
+      "opacity",
+      "animation performance"
+    ]
+  },
+  {
+    "id": "css_059",
+    "technology": "CSS",
+    "topic": "Animations & Transitions",
+    "difficulty": "Medium",
+    "question": "What do the percentage values inside an `@keyframes` rule represent?",
+    "answer": "Each percentage represents a point in the animation's total duration (0% = the start, 100% = the end), at which the specified property values should be reached; the browser interpolates smoothly between each defined keyframe.",
+    "explanation": "You can define any number of intermediate keyframes (e.g. `0%`, `50%`, `100%`) to create multi-step animations, not just a simple start/end transition.",
+    "question_type": "Technical",
+    "keywords": [
+      "keyframes",
+      "animation percentages"
+    ]
+  },
+  {
+    "id": "css_060",
+    "technology": "CSS",
+    "topic": "Animations & Transitions",
+    "difficulty": "Hard",
+    "question": "A CSS transition is applied via `transition: all 0.3s;` on hover, but the element's size visibly 'jumps' instantly when its `display` changes from `none` to `block` as part of the same hover state change, instead of fading in smoothly. Why can't `display` be transitioned?",
+    "answer": "`display` is not an animatable/interpolatable property — it has discrete values (`none`, `block`, `flex`, etc.) with no meaningful intermediate state for the browser to interpolate between, so it always changes instantly regardless of any `transition` declaration; to fade an element in/out, you typically transition `opacity` (and sometimes `visibility` with a delay) instead, keeping `display` changes separate or avoided entirely.",
+    "explanation": "This is a common gotcha: `transition: all` gives the illusion that every property will animate, but only properties with a defined, continuous interpolation path between two values (like numbers, colors, lengths, transforms) can actually be transitioned — discrete/keyword-only properties like `display` cannot.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "display transition",
+      "animatable properties"
+    ]
+  },
+  {
+    "id": "css_061",
+    "technology": "CSS",
+    "topic": "Transforms",
+    "difficulty": "Easy",
+    "question": "Which CSS `transform` function resizes an element without affecting the document's layout flow?",
+    "answer": "scale()",
+    "explanation": "`transform: scale(1.5)` visually enlarges an element by 1.5x, but — like all transform functions — it does so purely visually, without changing the space the element reserves in the surrounding layout, unlike changing `width`/`height` directly.",
+    "question_type": "MCQ",
+    "keywords": [
+      "scale",
+      "transform"
+    ],
+    "options": [
+      "resize()",
+      "scale()",
+      "zoom()",
+      "grow()"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_062",
+    "technology": "CSS",
+    "topic": "Transforms",
+    "difficulty": "Easy",
+    "question": "What does `transform: rotate(45deg)` do to an element?",
+    "answer": "It visually rotates the element 45 degrees clockwise around its transform origin (by default, the element's center).",
+    "explanation": "Because it's a transform, the rotation is purely visual and doesn't affect how the element participates in layout — surrounding elements are unaffected by the rotation, even if the rotated box now visually overlaps them.",
+    "question_type": "Technical",
+    "keywords": [
+      "rotate",
+      "transform"
+    ]
+  },
+  {
+    "id": "css_063",
+    "technology": "CSS",
+    "topic": "Transforms",
+    "difficulty": "Medium",
+    "question": "What is the `transform-origin` property, and what does changing it affect?",
+    "answer": "It sets the point around which transform functions like `rotate()` and `scale()` are applied (the default is the center of the element, `50% 50%`); changing it — for example to `top left` — makes rotations/scaling pivot around that corner instead of the center.",
+    "explanation": "This matters a lot for animations like a 'flip' or 'grow from a button' effect, where the pivot point needs to visually match where the effect should appear to originate from.",
+    "question_type": "Technical",
+    "keywords": [
+      "transform-origin",
+      "transform"
+    ]
+  },
+  {
+    "id": "css_064",
+    "technology": "CSS",
+    "topic": "Transforms",
+    "difficulty": "Medium",
+    "question": "Why is `transform: translateX(20px)` generally preferred over `margin-left: 20px` for animating an element's horizontal position?",
+    "answer": "`translateX` is a compositor-only operation the browser can typically run on the GPU without triggering layout recalculation, while animating `margin-left` forces a layout reflow on every frame since it changes the element's actual box position in the flow, which is significantly more expensive for smooth animation performance.",
+    "explanation": "This is the same category of performance advantage `transform`/`opacity` have over layout-affecting properties in general — `translate` moves the already-painted layer around visually rather than recalculating where the box sits in the document.",
+    "question_type": "Technical",
+    "keywords": [
+      "translatex",
+      "transform performance"
+    ]
+  },
+  {
+    "id": "css_065",
+    "technology": "CSS",
+    "topic": "Transforms",
+    "difficulty": "Hard",
+    "question": "An element has `transform: translate(20px, 0)` applied. Does this affect the space it occupies in the document layout, and would a sibling element positioned right after it visually shift to accommodate the move?",
+    "answer": "No — `transform` never affects layout at all; the element's ORIGINAL layout box (the space it reserves among its siblings) stays exactly where it would have been without the transform, and only its painted, visual appearance is shifted. A sibling immediately after it will NOT shift to accommodate the translated position, and the translated element may end up visually overlapping that sibling.",
+    "explanation": "This is a fundamental and often-misunderstood property of CSS transforms: they operate purely in the paint/compositing stage, after layout has already been calculated, which is exactly what makes them cheap to animate but also means they cannot be used as a substitute for actually repositioning elements within the flow (that's what changing `margin`, `position` offsets, or flex/grid properties is for).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "transform",
+      "layout vs paint"
+    ]
+  },
+  {
+    "id": "css_066",
+    "technology": "CSS",
+    "topic": "CSS Variables",
+    "difficulty": "Easy",
+    "question": "What is the correct syntax to define a custom CSS property (CSS variable) named `--main-color`?",
+    "answer": "--main-color: #3498db;",
+    "explanation": "Custom properties are declared with a double-hyphen prefix inside a rule (commonly on `:root` for global scope) and are read elsewhere using the `var()` function, e.g. `color: var(--main-color);`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "css variables",
+      "custom properties"
+    ],
+    "options": [
+      "$main-color: #3498db;",
+      "--main-color: #3498db;",
+      "@main-color: #3498db;",
+      "var main-color = #3498db;"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_067",
+    "technology": "CSS",
+    "topic": "CSS Variables",
+    "difficulty": "Easy",
+    "question": "How do you read the value of a CSS custom property named `--spacing`?",
+    "answer": "var(--spacing)",
+    "explanation": "`var()` can also take a second argument as a fallback value, e.g. `var(--spacing, 16px)`, which is used if `--spacing` is not defined (or is invalid) in the current scope.",
+    "question_type": "Technical",
+    "keywords": [
+      "var function",
+      "css variables"
+    ]
+  },
+  {
+    "id": "css_068",
+    "technology": "CSS",
+    "topic": "CSS Variables",
+    "difficulty": "Medium",
+    "question": "Why are CSS custom properties (`--variable`) considered more powerful than Sass/SCSS variables for theming, despite Sass variables predating them?",
+    "answer": "CSS custom properties are LIVE and resolved at runtime in the browser based on the actual cascade/DOM, meaning they can be reassigned dynamically per-element or per-media-query and read/written from JavaScript (`element.style.setProperty`) without recompiling any stylesheet; Sass variables are compiled away entirely at BUILD time into static values, so changing a theme at runtime (e.g. a dark-mode toggle) requires re-shipping different compiled CSS or JS-driven class swapping instead.",
+    "explanation": "This runtime nature is exactly why CSS custom properties are the standard modern approach for things like light/dark theme toggles — you can flip a handful of `--variable` values on `:root` (or scope them differently per component) and every rule referencing them updates immediately, live, in the browser.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "css variables vs sass",
+      "theming"
+    ]
+  },
+  {
+    "id": "css_069",
+    "technology": "CSS",
+    "topic": "CSS Variables",
+    "difficulty": "Medium",
+    "question": "What does it mean that CSS custom properties are inherited and can be overridden at different scopes in the DOM?",
+    "answer": "A custom property defined on an ancestor (commonly `:root` for a global default) is inherited by descendants and can be redeclared with a different value on any descendant element/selector, and everything further nested under THAT element will then see the new, more specific value instead — following the normal CSS cascade/inheritance rules.",
+    "explanation": "This lets you build component-scoped theming, e.g. a `.dark-panel { --text-color: white; }` rule that changes `--text-color` only within that panel's subtree, without affecting the rest of the page that still uses the root-level default.",
+    "question_type": "Technical",
+    "keywords": [
+      "css variable scope",
+      "inheritance"
+    ]
+  },
+  {
+    "id": "css_070",
+    "technology": "CSS",
+    "topic": "CSS Variables",
+    "difficulty": "Hard",
+    "question": "A page toggles dark mode by changing a class on the <body>, but a CSS custom property defined inside a deeply nested component's own stylesheet (with a hardcoded fallback) doesn't update. What's the likely cause?",
+    "answer": "The component is using `var(--theme-color, someHardcodedFallback)` where `--theme-color` is never actually redefined for the dark-mode class selector, so the fallback value is always used regardless of theme; the fix is to ensure the dark-mode class selector (e.g. `body.dark { --theme-color: white; }`) actually redeclares the SAME custom property name that the component consumes.",
+    "explanation": "The `var()` fallback only activates when the referenced custom property is truly undefined/invalid in that element's scope — if it resolves to SOME value (even an old/default one from `:root`) rather than being undefined, the fallback is never used, so a 'doesn't update' symptom is more likely a missing redeclaration for the dark theme scope than a fallback issue.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "css variables",
+      "dark mode",
+      "var fallback"
+    ]
+  },
+  {
+    "id": "css_071",
+    "technology": "CSS",
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Easy",
+    "question": "Which of these properties is typically INHERITED by default from a parent to its children?",
+    "answer": "color",
+    "explanation": "Text-related properties like `color`, `font-family`, `font-size`, and `line-height` are inherited by default, while box-model properties like `margin`, `padding`, `border`, and `background` are NOT inherited by default.",
+    "question_type": "MCQ",
+    "keywords": [
+      "inheritance",
+      "inherited properties"
+    ],
+    "options": [
+      "margin",
+      "border",
+      "color",
+      "padding"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "css_072",
+    "technology": "CSS",
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Easy",
+    "question": "What CSS keyword value can be used on any property to explicitly force it to inherit its parent's computed value?",
+    "answer": "inherit",
+    "explanation": "This is useful for properties that are NOT inherited by default (like `border` or `background-color`), when you specifically want a child to match its parent's value rather than using the property's normal initial value.",
+    "question_type": "Technical",
+    "keywords": [
+      "inherit keyword",
+      "cascade"
+    ]
+  },
+  {
+    "id": "css_073",
+    "technology": "CSS",
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Medium",
+    "question": "What are the four main factors CSS uses, in order, to resolve which of several conflicting declarations wins (the 'cascade')?",
+    "answer": "Origin & importance (e.g. user !important > author !important > author normal > user-agent default), then specificity, then order of appearance (later rules win ties), and inheritance/proximity is considered separately for property resolution when no direct declaration applies at all.",
+    "explanation": "Understanding this order explains counter-intuitive outcomes like a lower-specificity but `!important` rule beating a higher-specificity normal rule — importance is checked before specificity, not after.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "cascade algorithm",
+      "specificity",
+      "important"
+    ]
+  },
+  {
+    "id": "css_074",
+    "technology": "CSS",
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Medium",
+    "question": "What does the `initial` keyword do when used as a CSS property value, and how is it different from `unset`?",
+    "answer": "`initial` resets a property to its specification-defined default value (ignoring any inheritance or cascade), regardless of whether that property is normally inherited; `unset` resets a property to `inherit` if it's normally an inherited property, or to `initial` if it's normally a non-inherited property — effectively acting as if no rule had ever been applied to it at all.",
+    "explanation": "`unset` is often more intuitive to reach for because it 'does the right thing' automatically based on the property's own default inheritance behavior, rather than requiring you to remember whether a given property is inherited or not.",
+    "question_type": "Technical",
+    "keywords": [
+      "initial keyword",
+      "unset keyword"
+    ]
+  },
+  {
+    "id": "css_075",
+    "technology": "CSS",
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Hard",
+    "question": "A deeply nested <span> unexpectedly renders with a `color` the developer never explicitly set on it or any of its direct ancestors up to a certain point. Tracing the cascade, what's the most likely explanation?",
+    "answer": "`color` is an inherited property, so the <span> is inheriting its computed value from the nearest ANCESTOR that DOES explicitly declare (or itself inherits) a non-default `color` — the actual source of the value could be several levels up the DOM tree, not necessarily the immediate parent, since inheritance passes the computed value down through every intermediate level that doesn't override it.",
+    "explanation": "This is a common debugging trap: because inheritance silently passes values down through any number of intermediate elements that don't redeclare the property, the actual 'culprit' rule can be far removed from the element exhibiting the unexpected style, requiring you to walk up the DOM in devtools to find where `color` was actually set.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "inheritance",
+      "cascade debugging",
+      "color"
+    ]
+  },
+  {
+    "id": "css_076",
+    "technology": "CSS",
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Easy",
+    "question": "What is the purpose of a vendor prefix like `-webkit-` or `-moz-` on a CSS property?",
+    "answer": "It lets a browser engine ship an experimental or not-yet-standardized implementation of a CSS feature under a prefixed name, so it doesn't conflict with a potentially different final standardized behavior once the feature is finalized under its unprefixed name.",
+    "explanation": "For example `-webkit-transform` historically had to be used alongside the standard `transform` for older WebKit-based browsers before the unprefixed property was universally supported.",
+    "question_type": "MCQ",
+    "keywords": [
+      "vendor prefix",
+      "browser compatibility"
+    ],
+    "options": [
+      "To make CSS load faster",
+      "To let browsers ship experimental feature implementations without conflicting with the final standard",
+      "To minify CSS files",
+      "To target only mobile browsers"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "css_077",
+    "technology": "CSS",
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Easy",
+    "question": "What tool/service is commonly used to check which browsers support a given CSS feature before using it in production?",
+    "answer": "caniuse.com",
+    "explanation": "It provides up-to-date compatibility tables (including partial-support caveats) for CSS, HTML, and JS features across current and historical browser versions, which is essential for deciding whether a feature needs a fallback or prefix.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "caniuse",
+      "browser support"
+    ]
+  },
+  {
+    "id": "css_078",
+    "technology": "CSS",
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Medium",
+    "question": "What does the tool Autoprefixer do, and why is it usually preferred over manually writing vendor-prefixed CSS?",
+    "answer": "It's a build tool (often run via PostCSS) that automatically adds the necessary vendor-prefixed versions of CSS rules based on a configured browser support target (e.g. via a browserslist config), so developers write plain standard CSS and let tooling handle prefix maintenance.",
+    "explanation": "Manually maintaining prefixes is error-prone and becomes outdated as browser support changes over time; automating it via a build step keeps the source CSS clean and ensures prefixes are added/removed consistently as support requirements evolve.",
+    "question_type": "Technical",
+    "keywords": [
+      "autoprefixer",
+      "postcss",
+      "vendor prefixes"
+    ]
+  },
+  {
+    "id": "css_079",
+    "technology": "CSS",
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Medium",
+    "question": "What is a CSS `@supports` rule used for?",
+    "answer": "It lets you conditionally apply a block of CSS only if the browser supports a specified property/value pair, allowing you to provide a fallback for browsers that don't support a newer feature (progressive enhancement) without relying on JavaScript feature detection.",
+    "explanation": "For example `@supports (display: grid) { ... }` lets you write Grid-based layout rules that only activate in Grid-supporting browsers, while a simpler fallback layout (e.g. using floats or flexbox) can be defined outside the `@supports` block for older browsers.",
+    "question_type": "Technical",
+    "keywords": [
+      "@supports",
+      "progressive enhancement"
+    ]
+  },
+  {
+    "id": "css_080",
+    "technology": "CSS",
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Hard",
+    "question": "A CSS feature works in Chrome and Edge during development but silently fails in Safari, with no console error at all. What is the most likely category of cause, and how would you diagnose it?",
+    "answer": "The feature (or a specific value/syntax variant of it) simply isn't supported in the version of Safari being tested, and CSS doesn't throw errors for unsupported/invalid declarations — the browser just silently ignores that one declaration and falls back to whatever value the property already had; diagnosing it means checking the feature's support table (e.g. on caniuse.com) for Safari specifically, and inspecting the computed styles in Safari's devtools to see the property was never applied at all.",
+    "explanation": "This 'silent failure' behavior is a deliberate part of CSS's error-recovery design — unrecognized declarations are simply skipped rather than breaking the rest of the stylesheet — which is exactly why cross-browser CSS bugs are so often invisible in the console and require checking computed styles per-browser instead.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "safari compatibility",
+      "silent css failure",
+      "debugging"
+    ]
+  },
+  {
+    "topic": "CSS Basics",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which of these is the correct CSS syntax to set an element's text to red?",
+    "options": [
+      "color: red;",
+      "text-color: red;",
+      "font-color: red;",
+      "text: red;"
+    ],
+    "correct_option": 0,
+    "answer": "color: red;",
+    "explanation": "The `color` property controls text color in CSS; there is no `text-color` or `font-color` property.",
+    "keywords": [
+      "color property",
+      "syntax"
+    ],
+    "id": "css_081",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Basics",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between an inline style, an internal <style> block, and an external stylesheet?",
+    "answer": "An inline style is set via the `style` attribute directly on one element; an internal <style> block lives in the document's <head> and applies to that one page; an external stylesheet is a separate .css file linked via <link> and reusable across many pages.",
+    "explanation": "External stylesheets are generally preferred for maintainability and caching; inline styles have the highest specificity and are hardest to override or reuse.",
+    "keywords": [
+      "inline style",
+      "internal style",
+      "external stylesheet"
+    ],
+    "id": "css_082",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Basics",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does 'Cascading' in Cascading Style Sheets actually refer to?",
+    "answer": "It refers to the algorithm the browser uses to resolve conflicting style declarations for the same element/property, based on origin, specificity, and source order.",
+    "explanation": "Multiple stylesheets (browser default, user, author) and multiple rules can all target the same element; the cascade is the deterministic process that decides which one wins.",
+    "keywords": [
+      "cascade algorithm",
+      "conflict resolution"
+    ],
+    "id": "css_083",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Basics",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which CSS at-rule is used to import one stylesheet into another?",
+    "options": [
+      "@import",
+      "@include",
+      "@require",
+      "@use"
+    ],
+    "correct_option": 0,
+    "answer": "@import",
+    "explanation": "`@import url(\"other.css\");` pulls in another stylesheet, though it's generally discouraged for performance since it blocks parallel downloading.",
+    "keywords": [
+      "@import",
+      "at-rules"
+    ],
+    "id": "css_084",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Basics",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why is `@import` at the top of a CSS file generally discouraged for production performance compared to multiple <link> tags in HTML?",
+    "answer": "`@import`-ed stylesheets are only discovered and requested after the importing stylesheet itself has been downloaded and parsed, creating a request waterfall, whereas multiple <link> tags in HTML can all be discovered and downloaded in parallel by the browser's preload scanner.",
+    "explanation": "This sequential-versus-parallel loading difference can meaningfully delay first paint on pages with several imported stylesheets.",
+    "keywords": [
+      "@import performance",
+      "request waterfall",
+      "parallel loading"
+    ],
+    "id": "css_085",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Selectors & Specificity",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which selector targets an element with a specific attribute value, e.g. all <input> elements with type=\"text\"?",
+    "options": [
+      "input[type=\"text\"]",
+      "input.type(text)",
+      "input:type(text)",
+      "input#type=text"
+    ],
+    "correct_option": 0,
+    "answer": "input[type=\"text\"]",
+    "explanation": "Square-bracket attribute selectors match elements by the presence or exact/partial value of an HTML attribute.",
+    "keywords": [
+      "attribute selector"
+    ],
+    "id": "css_086",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Selectors & Specificity",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between the CSS selectors `.item ~ .item` and `.item + .item`?",
+    "answer": "`+` (adjacent sibling) matches only an element immediately following another sibling with the given selector; `~` (general sibling) matches ANY later sibling that shares the same parent, not just the immediate next one.",
+    "explanation": "`.item + .item` would style only the second of two directly adjacent `.item`s, while `.item ~ .item` styles every `.item` after the first one, regardless of what's in between.",
+    "keywords": [
+      "sibling combinators",
+      "adjacent vs general"
+    ],
+    "id": "css_087",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Selectors & Specificity",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the CSS specificity value (in the a-b-c-d model) of the selector `#header .nav a:hover`?",
+    "answer": "0 ID (1), 2 classes/pseudo-classes (.nav and :hover), 1 element (a) - specificity (0,1,2,1).",
+    "explanation": "ID selectors count in the second-highest tier, classes/attribute-selectors/pseudo-classes in the third tier, and element/pseudo-element selectors in the lowest tier; specificity is compared tier by tier, not added as one number.",
+    "keywords": [
+      "specificity calculation",
+      "id class element"
+    ],
+    "id": "css_088",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Selectors & Specificity",
+    "difficulty": "Hard",
+    "question_type": "Output Prediction",
+    "question": "Given `a { color: blue; }` and `a:visited { color: purple; }` both applying to a visited link, which color wins and why?",
+    "code_snippet": "a { color: blue; }\na:visited { color: purple; }",
+    "answer": "Purple - `a:visited` has equal specificity to `a` plus one pseudo-class, making it MORE specific, so it wins regardless of source order here.",
+    "explanation": "Both rules target the same element type, but `:visited` adds a pseudo-class to the specificity count, giving it precedence over the bare `a` selector.",
+    "keywords": [
+      "visited pseudo-class",
+      "specificity comparison"
+    ],
+    "id": "css_089",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Selectors & Specificity",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `:not()` pseudo-class do, and does it add to a selector's specificity?",
+    "answer": "`:not(selector)` matches elements that do NOT match the given inner selector; its own specificity contribution equals the specificity of whatever selector is passed inside it (not a flat pseudo-class weight).",
+    "explanation": "For example, `:not(.active)` contributes the specificity of a class selector, while `:not(#main)` contributes the specificity of an ID selector.",
+    "keywords": [
+      ":not pseudo-class",
+      "negation"
+    ],
+    "id": "css_090",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Box Model",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which CSS box-model layer sits directly outside the border and creates space between an element and its siblings?",
+    "options": [
+      "padding",
+      "margin",
+      "outline",
+      "gap"
+    ],
+    "correct_option": 1,
+    "answer": "margin",
+    "explanation": "Order from inside out is: content, padding, border, margin - margin is the outermost layer, controlling spacing to neighboring elements.",
+    "keywords": [
+      "margin",
+      "box model layers"
+    ],
+    "id": "css_091",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Box Model",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does `margin: 0 auto;` commonly accomplish on a block-level element with a fixed width?",
+    "answer": "It horizontally centers the element within its parent, by setting top/bottom margin to 0 and letting the browser distribute the remaining horizontal space equally on the left and right.",
+    "explanation": "This only centers horizontally (not vertically) and only works because the element has a defined width smaller than its parent's - a full-width block has no space left to distribute.",
+    "keywords": [
+      "margin auto",
+      "horizontal centering"
+    ],
+    "id": "css_092",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Box Model",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is 'margin collapsing' and which margins are affected by it?",
+    "answer": "When two block-level elements' vertical margins meet (e.g. one element's bottom margin touches the next element's top margin, or a parent and its first/last child's margins), the browser collapses them into a single margin equal to the LARGER of the two, rather than adding them.",
+    "explanation": "This applies only to vertical margins in normal flow, not horizontal margins, and not to elements using flexbox/grid layout or with padding/borders separating the margins.",
+    "keywords": [
+      "margin collapsing",
+      "vertical margins"
+    ],
+    "id": "css_093",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Box Model",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A parent <div> with only floated children inside it collapses to zero height, even though the floated children clearly have visible content. What CSS technique fixes this?",
+    "buggy_code": ".parent { border: 1px solid black; }\n.child { float: left; width: 100px; height: 100px; }",
+    "fixed_code": ".parent { border: 1px solid black; overflow: auto; } /* or use a clearfix / display: flow-root */\n.child { float: left; width: 100px; height: 100px; }",
+    "answer": "Floated elements are removed from normal document flow, so their parent doesn't automatically expand to contain their height; adding `overflow: auto` (or `display: flow-root`, or a clearfix) to the parent forces it to include floated content in its height calculation.",
+    "explanation": "This is the classic 'collapsing parent' problem that predates flexbox/grid, and `display: flow-root` is the modern, side-effect-free fix purpose-built for it.",
+    "keywords": [
+      "float clearing",
+      "collapsed parent",
+      "flow-root"
+    ],
+    "id": "css_094",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Box Model",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Can padding have a negative value in CSS?",
+    "answer": "No - unlike margin, `padding` values must be zero or positive; negative padding is invalid and ignored by browsers.",
+    "explanation": "Margin can be negative (to pull elements closer together or overlap them), but padding conceptually represents space inside the border, which can't be negative.",
+    "keywords": [
+      "negative padding",
+      "invalid value"
+    ],
+    "id": "css_095",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Positioning",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which `position` value removes an element from normal document flow and positions it relative to the browser viewport, staying fixed even when the page scrolls?",
+    "options": [
+      "relative",
+      "absolute",
+      "fixed",
+      "static"
+    ],
+    "correct_option": 2,
+    "answer": "fixed",
+    "explanation": "`position: fixed` anchors to the viewport (not the document), so the element stays in the same screen position during scrolling, unlike `absolute` which is anchored to its positioned ancestor.",
+    "keywords": [
+      "position fixed",
+      "viewport anchoring"
+    ],
+    "id": "css_096",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Positioning",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What CSS property/value combination establishes a 'stacking context' that affects how `z-index` is interpreted for an element's descendants?",
+    "answer": "Several trigger it, including `position` with a value other than `static` combined with a `z-index` other than `auto`, `opacity` less than 1, and `transform`/`filter` with a non-none value.",
+    "explanation": "Once a stacking context is created, z-index comparisons for its children are scoped WITHIN that context - a child with `z-index: 9999` still can't visually escape above elements outside a lower-z-index parent stacking context.",
+    "keywords": [
+      "stacking context",
+      "z-index scoping"
+    ],
+    "id": "css_097",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Positioning",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the effect of `position: relative` on an element if no `top`/`left`/`right`/`bottom` offsets are specified?",
+    "answer": "Visually nothing changes (the element stays in its normal-flow position) but it now establishes a positioning context for any absolutely-positioned descendants and is affected by `z-index`.",
+    "explanation": "This 'do-nothing-visually but change positioning context' behavior is a very common CSS pattern used specifically to scope a child's `position: absolute` to that container.",
+    "keywords": [
+      "relative without offsets",
+      "positioning context"
+    ],
+    "id": "css_098",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Positioning",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A `position: sticky` element is supposed to stick to the top of the viewport while scrolling within a container, but it never sticks at all - it just scrolls away like a normal static element. What are two common causes?",
+    "answer": "(1) An ancestor has `overflow: hidden/scroll/auto` which clips the sticky context, or (2) the sticky element's container isn't tall enough for scrolling within it to ever leave room for the 'stuck' state, or (3) no `top`/`bottom` offset was specified at all.",
+    "explanation": "`position: sticky` requires an explicit threshold offset (like `top: 0`) and can be silently broken by any ancestor that clips overflow between the sticky element and the actual scrolling container.",
+    "keywords": [
+      "sticky positioning bugs",
+      "overflow clipping"
+    ],
+    "id": "css_099",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Positioning",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does `position: absolute` position an element relative to, if no ancestor has a non-static position?",
+    "answer": "The initial containing block, which is effectively the viewport/document's root, if no positioned (`relative`/`absolute`/`fixed`/`sticky`) ancestor exists.",
+    "explanation": "This is why developers often add `position: relative` to a wrapping container - to intentionally scope where an absolutely positioned child anchors, instead of it escaping to the whole page.",
+    "keywords": [
+      "absolute positioning fallback",
+      "containing block"
+    ],
+    "id": "css_100",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Display Property",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which `display` value hides an element completely while still preserving screen-reader-relevant semantics like ARIA live announcements for elements around it (though the hidden element itself is excluded)?",
+    "options": [
+      "display: none",
+      "visibility: hidden",
+      "opacity: 0",
+      "position: absolute; left: -9999px;"
+    ],
+    "correct_option": 0,
+    "answer": "display: none",
+    "explanation": "`display: none` removes the element from layout AND the accessibility tree entirely; `visibility: hidden` still occupies layout space and is treated slightly differently by some AT; `opacity: 0` keeps it fully interactive and in the accessibility tree.",
+    "keywords": [
+      "display none",
+      "layout removal"
+    ],
+    "id": "css_101",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Display Property",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the key layout difference between `display: inline` and `display: inline-block`?",
+    "answer": "`inline-block` allows an element to have an explicit width/height and respects vertical margin/padding for layout purposes, while plain `inline` ignores width/height and doesn't affect vertical layout spacing the same way.",
+    "explanation": "This is why `inline-block` was historically used for building horizontal navigation items or button-like elements that needed a fixed size while still flowing inline with text.",
+    "keywords": [
+      "inline vs inline-block"
+    ],
+    "id": "css_102",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Display Property",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does `display: contents` do to an element?",
+    "answer": "It makes the element itself disappear from the box-generation/rendering tree entirely (no box of its own), while its children are 'promoted' to render as if they were direct children of the element's own parent.",
+    "explanation": "This is useful for wrapper elements needed for JS/semantic reasons that would otherwise interfere with a parent's grid/flex layout of its 'real' children.",
+    "keywords": [
+      "display contents",
+      "box removal"
+    ],
+    "id": "css_103",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Display Property",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "An element with `display: contents` is expected to still respond to its own `background-color` and `border` styles, but they simply don't appear. Why?",
+    "buggy_code": ".wrapper { display: contents; background: red; border: 2px solid black; }",
+    "fixed_code": "/* display: contents removes the box entirely - background/border must go on the children or a different wrapping approach must be used */",
+    "answer": "`display: contents` removes the element's own box entirely, so properties that only make sense on a box (background, border, padding, size) have no box left to apply to and are simply not rendered.",
+    "explanation": "Only properties that don't depend on having a box (like `color`, which is inherited) still take effect on the contents; anything requiring an actual rendered box is a no-op.",
+    "keywords": [
+      "display contents limitation",
+      "box-dependent properties"
+    ],
+    "id": "css_104",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Flexbox",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which flex container property controls whether flex items wrap onto multiple lines when they don't fit?",
+    "options": [
+      "flex-wrap",
+      "flex-flow",
+      "flex-direction",
+      "wrap"
+    ],
+    "correct_option": 0,
+    "answer": "flex-wrap",
+    "explanation": "`flex-wrap: wrap` allows items to flow onto new lines; the default `nowrap` forces them to shrink/overflow onto one line.",
+    "keywords": [
+      "flex-wrap"
+    ],
+    "id": "css_105",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Flexbox",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does `align-self` do on an individual flex item, and how does it relate to the container's `align-items`?",
+    "answer": "`align-self` overrides the container's `align-items` value for that ONE specific item on the cross axis, letting a single item align differently from its siblings.",
+    "explanation": "This is the per-item escape hatch for cross-axis alignment, exactly analogous to how `justify-self` works for individual grid items.",
+    "keywords": [
+      "align-self",
+      "cross-axis override"
+    ],
+    "id": "css_106",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Flexbox",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the difference between the 'main axis' and 'cross axis' in Flexbox?",
+    "answer": "The main axis is the direction items are laid out along (set by `flex-direction`, e.g. horizontal for `row`), and the cross axis is perpendicular to it - `justify-content` aligns along the main axis, `align-items`/`align-content` align along the cross axis.",
+    "explanation": "Understanding which property controls which axis is the most common source of Flexbox confusion, especially after switching `flex-direction` from row to column (which swaps which axis is which visually).",
+    "keywords": [
+      "main axis",
+      "cross axis",
+      "flex-direction"
+    ],
+    "id": "css_107",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Flexbox",
+    "difficulty": "Hard",
+    "question_type": "Output Prediction",
+    "question": "A flex container has `flex-direction: column` and its child has `align-items: center` set incorrectly on the CHILD instead of the container. What visual effect, if any, does this misplaced property have?",
+    "code_snippet": ".container { display: flex; flex-direction: column; }\n.child { align-items: center; }",
+    "answer": "None - `align-items` only has an effect when set on a flex CONTAINER (it controls how that container aligns its own children); setting it on a flex item that isn't itself a flex container with children of its own does nothing.",
+    "explanation": "This is a common beginner mistake: `align-items`/`justify-content` are container-level properties, while `align-self` is the item-level equivalent for cross-axis alignment.",
+    "keywords": [
+      "align-items misuse",
+      "container vs item properties"
+    ],
+    "id": "css_108",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Flexbox",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does setting `flex: 1` as shorthand actually expand to?",
+    "answer": "`flex-grow: 1; flex-shrink: 1; flex-basis: 0%;` - meaning the item can grow and shrink freely, starting from an effective zero base size before growth is distributed.",
+    "explanation": "This differs subtly from `flex: auto` (basis: auto, using the item's content size as the starting point before growth/shrink) - `flex: 1` is the common 'take equal available space' pattern.",
+    "keywords": [
+      "flex shorthand",
+      "flex-basis 0"
+    ],
+    "id": "css_109",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Grid",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which CSS Grid property defines the size of the gap between rows and columns simultaneously?",
+    "options": [
+      "gap",
+      "grid-gap",
+      "Both `gap` and `grid-gap` work (gap is the modern name)",
+      "spacing"
+    ],
+    "correct_option": 2,
+    "answer": "Both `gap` and `grid-gap` work (gap is the modern name)",
+    "explanation": "`grid-gap` was the original property name; `gap` is now the standardized, unprefixed name that also works for Flexbox, and is preferred in new code.",
+    "keywords": [
+      "gap property",
+      "grid-gap alias"
+    ],
+    "id": "css_110",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Grid",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `grid-column: 1 / 3;` shorthand do to a grid item?",
+    "answer": "It makes the item span from grid column line 1 to grid column line 3, meaning it occupies two column tracks (columns 1 and 2) instead of just one.",
+    "explanation": "Grid line numbers refer to the lines BETWEEN tracks, not the tracks themselves, so `1 / 3` spans across two tracks, not three.",
+    "keywords": [
+      "grid-column shorthand",
+      "grid lines"
+    ],
+    "id": "css_111",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Grid",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the difference between explicit and implicit grid tracks?",
+    "answer": "Explicit tracks are the rows/columns you define directly with `grid-template-columns`/`grid-template-rows`; implicit tracks are automatically created by the browser to hold extra items that don't fit into the explicitly defined grid, sized by `grid-auto-rows`/`grid-auto-columns`.",
+    "explanation": "This matters when a grid has more items than defined cells - the browser doesn't discard the overflow, it silently creates new implicit tracks (defaulting to `auto` size unless configured otherwise).",
+    "keywords": [
+      "explicit grid",
+      "implicit grid",
+      "grid-auto-rows"
+    ],
+    "id": "css_112",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Grid",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "Two grid items are given overlapping `grid-area` placements by mistake. What happens visually, and how would you detect this bug using browser devtools?",
+    "buggy_code": ".item-a { grid-area: 1 / 1 / 2 / 2; }\n.item-b { grid-area: 1 / 1 / 2 / 2; }",
+    "fixed_code": ".item-a { grid-area: 1 / 1 / 2 / 2; }\n.item-b { grid-area: 1 / 2 / 2 / 3; }",
+    "answer": "Both items render stacked on top of each other in the same cell (CSS Grid allows overlap by design, unlike a table); this is easiest to spot using the browser's Grid Inspector overlay, which visually outlines each named/numbered track and area.",
+    "explanation": "Grid doesn't prevent or warn about overlapping placements - it's a valid, sometimes intentional feature (e.g. layering a caption over an image), so accidental overlaps require visual/devtools inspection to catch.",
+    "keywords": [
+      "grid overlap",
+      "devtools grid inspector"
+    ],
+    "id": "css_113",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Grid",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `minmax(100px, 1fr)` function do when used inside `grid-template-columns`?",
+    "answer": "It sets a track's size to be at least 100px but allowed to grow up to take an equal fractional share (`1fr`) of remaining space - never smaller than the minimum, never larger than the flexible maximum allows.",
+    "explanation": "This is the core building block of the common responsive-grid pattern `repeat(auto-fit, minmax(200px, 1fr))`, which lets columns reflow automatically at different viewport widths.",
+    "keywords": [
+      "minmax function",
+      "responsive grid tracks"
+    ],
+    "id": "css_114",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which media feature targets styles based on the device's orientation (portrait vs landscape)?",
+    "options": [
+      "orientation",
+      "rotation",
+      "aspect",
+      "direction"
+    ],
+    "correct_option": 0,
+    "answer": "orientation",
+    "explanation": "`@media (orientation: portrait) { ... }` applies styles only when the viewport is taller than it is wide.",
+    "keywords": [
+      "orientation media feature"
+    ],
+    "id": "css_115",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between 'mobile-first' and 'desktop-first' responsive design approaches, in terms of how media queries are typically written?",
+    "answer": "Mobile-first writes base styles for small screens, then uses `min-width` media queries to progressively add complexity for larger screens; desktop-first writes base styles for large screens, then uses `max-width` queries to simplify/adjust for smaller ones.",
+    "explanation": "Mobile-first is generally preferred because it forces prioritizing essential content/layout first and tends to produce leaner CSS for the most constrained devices.",
+    "keywords": [
+      "mobile-first",
+      "desktop-first",
+      "min-width vs max-width"
+    ],
+    "id": "css_116",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does the CSS `clamp()` function do, and how does it relate to responsive design without media queries?",
+    "answer": "`clamp(min, preferred, max)` picks a value that scales fluidly with something like viewport width, but never goes below `min` or above `max` - letting a single declaration handle what might otherwise require several media-query breakpoints.",
+    "explanation": "For example, `font-size: clamp(1rem, 2vw, 1.5rem)` scales fluidly between two bounds instead of jumping abruptly at fixed breakpoints.",
+    "keywords": [
+      "clamp function",
+      "fluid typography"
+    ],
+    "id": "css_117",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A responsive layout looks correct at every width when manually resizing the desktop browser window, but breaks on an actual phone even though matching media queries exist. The `<meta viewport>` tag is present and correct. What's another common culprit?",
+    "answer": "Content wider than the viewport forcing horizontal scroll - most commonly a fixed-width element (an image without `max-width: 100%`, a table, or a hardcoded `width: 600px` box) that doesn't shrink, which stretches the whole layout's effective viewport width beyond the device's actual screen width.",
+    "explanation": "A single overflowing element can silently widen the entire page's layout viewport, making every media query 'think' it's at a wider breakpoint than the physical screen actually is.",
+    "keywords": [
+      "horizontal overflow",
+      "fixed-width elements",
+      "responsive debugging"
+    ],
+    "id": "css_118",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the purpose of `prefers-color-scheme` as a media feature?",
+    "answer": "It lets CSS detect and respond to the user's OS-level light/dark mode preference, e.g. `@media (prefers-color-scheme: dark) { ... }`, without any JavaScript.",
+    "explanation": "This is one of several 'user preference' media features (alongside `prefers-reduced-motion`, `prefers-contrast`) that let sites respect system-level accessibility/comfort settings automatically.",
+    "keywords": [
+      "prefers-color-scheme",
+      "dark mode detection"
+    ],
+    "id": "css_119",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Colors & Units",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which CSS unit is always relative to the root (<html>) element's font size, regardless of nesting depth?",
+    "options": [
+      "em",
+      "rem",
+      "%",
+      "vh"
+    ],
+    "correct_option": 1,
+    "answer": "rem",
+    "explanation": "`rem` ('root em') always resolves against the <html> element's font-size, unlike `em` which is relative to the current element's own (possibly inherited/compounded) font-size.",
+    "keywords": [
+      "rem unit",
+      "root relative"
+    ],
+    "id": "css_120",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Colors & Units",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the CSS color keyword `currentColor` refer to when used as a value for another property, e.g. `border-color: currentColor`?",
+    "answer": "It refers to the computed value of that same element's `color` property, letting properties like `border`, `box-shadow`, or SVG `fill` automatically match the element's text color without repeating a color value.",
+    "explanation": "This is especially useful for icons/borders that should always match whatever text color is currently in effect, including through hover states or theme changes.",
+    "keywords": [
+      "currentColor",
+      "color inheritance trick"
+    ],
+    "id": "css_121",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Colors & Units",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the difference between an absolute length unit and a relative length unit in CSS, and give one example of each?",
+    "answer": "An absolute unit (like `px`, `pt`, `cm`) always represents a fixed physical/pixel size regardless of context; a relative unit (like `em`, `rem`, `%`, `vw`) is computed relative to some other value (parent font-size, viewport size, etc.).",
+    "explanation": "Relative units are generally preferred for responsive/accessible design since they adapt to user zoom settings and different screen sizes automatically.",
+    "keywords": [
+      "absolute units",
+      "relative units"
+    ],
+    "id": "css_122",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Colors & Units",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A user increases their browser's default font size for accessibility, but a component styled entirely in `px` for font-size and padding doesn't visually scale at all, unlike the rest of the page. Why, and what's the fix?",
+    "answer": "`px` values are fixed absolute units that ignore the user's font-size preference entirely; switching the component's font-size/padding/margins to `rem` (or `em`) makes them scale proportionally with the user's chosen base font size.",
+    "explanation": "This is a real accessibility issue - users who rely on larger default text sizes for readability get an inconsistent, sometimes illegibly small experience in px-styled components.",
+    "keywords": [
+      "px accessibility issue",
+      "rem scaling"
+    ],
+    "id": "css_123",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Colors & Units",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What do the `hsl()` color function's three arguments represent?",
+    "answer": "Hue (a degree on the color wheel, 0-360), Saturation (a percentage, 0% = gray to 100% = full color), and Lightness (a percentage, 0% = black to 100% = white).",
+    "explanation": "HSL is often more intuitive for programmatically generating color variations (like a lighter/darker shade) than RGB, since you can just adjust the Lightness value directly.",
+    "keywords": [
+      "hsl color model",
+      "hue saturation lightness"
+    ],
+    "id": "css_124",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Typography",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which CSS property controls whether text is displayed in uppercase, lowercase, or capitalized, without changing the underlying HTML content?",
+    "options": [
+      "text-transform",
+      "font-variant",
+      "text-case",
+      "font-style"
+    ],
+    "correct_option": 0,
+    "answer": "text-transform",
+    "explanation": "`text-transform: uppercase` (etc.) is purely a visual/display transformation - the actual text content and its case remain unchanged in the DOM/source.",
+    "keywords": [
+      "text-transform"
+    ],
+    "id": "css_125",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Typography",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `letter-spacing` property control, and what's a common use case for a small negative value?",
+    "answer": "It controls the extra space added between characters; a small negative value (e.g. `-0.02em`) is commonly used to tighten large display headings, which can otherwise look loosely spaced at big font sizes.",
+    "explanation": "Positive values are more common for improving legibility in all-caps or small text; negative values are a typographic refinement typically reserved for large headline text.",
+    "keywords": [
+      "letter-spacing",
+      "negative tracking"
+    ],
+    "id": "css_126",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Typography",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is a 'web-safe font', and why does it matter less today than it used to?",
+    "answer": "A web-safe font is one assumed to be pre-installed on most operating systems (like Arial, Times New Roman, Georgia), so it renders consistently without needing to be downloaded; it matters less today because `@font-face` lets any site reliably deliver custom web fonts to virtually all users.",
+    "explanation": "Before widespread @font-face support, designers were largely limited to a small shared pool of fonts guaranteed to already be on a user's system.",
+    "keywords": [
+      "web-safe fonts",
+      "@font-face history"
+    ],
+    "id": "css_127",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Typography",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A custom web font loaded via `@font-face` causes a noticeable flash where text is invisible for a second before the font appears (FOIT - flash of invisible text). What `font-display` value fixes this by showing a fallback font immediately instead?",
+    "buggy_code": "@font-face { font-family: 'Custom'; src: url('custom.woff2'); }",
+    "fixed_code": "@font-face { font-family: 'Custom'; src: url('custom.woff2'); font-display: swap; }",
+    "answer": "`font-display: swap;` - this tells the browser to render text immediately using a fallback font, then swap to the custom font once it finishes loading, instead of hiding text while waiting.",
+    "explanation": "Without `font-display`, browsers historically defaulted to a 'block' period where text is invisible until the custom font loads or a timeout is hit - `swap` eliminates that invisible period entirely.",
+    "keywords": [
+      "font-display swap",
+      "FOIT",
+      "font loading"
+    ],
+    "id": "css_128",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Typography",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `white-space: nowrap` and `overflow-wrap: break-word`?",
+    "answer": "`white-space: nowrap` prevents text from wrapping onto a new line at all (it overflows or requires scrolling instead); `overflow-wrap: break-word` still allows wrapping but permits breaking in the MIDDLE of an unbreakable long word if needed to avoid overflow.",
+    "explanation": "They solve different problems: nowrap forces single-line text, while overflow-wrap is a safety net for wrapping text that still contains one very long unbreakable token (like a URL).",
+    "keywords": [
+      "white-space nowrap",
+      "overflow-wrap break-word"
+    ],
+    "id": "css_129",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which pseudo-class matches an element that is the only child of its parent?",
+    "options": [
+      ":only-child",
+      ":first-child",
+      ":single",
+      ":lone-child"
+    ],
+    "correct_option": 0,
+    "answer": ":only-child",
+    "explanation": "`:only-child` matches an element that has no sibling elements at all, distinct from `:first-child` which matches even when siblings exist.",
+    "keywords": [
+      ":only-child"
+    ],
+    "id": "css_130",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `:first-child` and `:first-of-type`?",
+    "answer": "`:first-child` matches an element only if it is literally the first child (of any type) of its parent; `:first-of-type` matches the first occurrence of that specific element type among its siblings, regardless of what other element types come before it.",
+    "explanation": "E.g. `p:first-of-type` matches the first <p> even if a <div> comes before it in the same parent, but `p:first-child` would NOT match in that case since the <p> isn't literally the first child.",
+    "keywords": [
+      "first-child vs first-of-type"
+    ],
+    "id": "css_131",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does the `:is()` pseudo-class function do, and how does it simplify writing selectors?",
+    "answer": "`:is()` lets you group a list of selectors so a shared trailing part of the selector doesn't need to be repeated - e.g. `:is(header, main, footer) a` instead of writing `header a, main a, footer a` separately.",
+    "explanation": "A key detail: `:is()` takes on the specificity of its MOST specific argument, which can matter when comparing against other rules.",
+    "keywords": [
+      ":is pseudo-class",
+      "selector grouping"
+    ],
+    "id": "css_132",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A `::before` pseudo-element is added to inject a decorative icon before some text, but the icon never appears even though the CSS rule seems correctly targeted and has no typos in the property names. What single required property/value is most likely missing?",
+    "answer": "The `content` property - `::before`/`::after` pseudo-elements are not generated at all unless `content` is explicitly set (even `content: \"\";` for an empty string is enough), regardless of any other styling applied.",
+    "explanation": "This is the single most common mistake with generated content pseudo-elements: every other style (background, size, position) is irrelevant if `content` is omitted, since the pseudo-element box simply doesn't exist without it.",
+    "keywords": [
+      "content property required",
+      "::before generation"
+    ],
+    "id": "css_133",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `:target` and `:focus` pseudo-classes?",
+    "answer": "`:target` matches an element whose `id` matches the current URL fragment (e.g. `#section2`), useful for styling a linked-to section; `:focus` matches whatever element currently has keyboard/programmatic focus, unrelated to the URL.",
+    "explanation": "`:target` is driven entirely by navigation/URL state, while `:focus` is driven by user interaction or scripted `.focus()` calls.",
+    "keywords": [
+      ":target",
+      ":focus",
+      "url fragment styling"
+    ],
+    "id": "css_134",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Animations & Transitions",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which property controls the acceleration curve (e.g. ease, linear, ease-in-out) of a CSS transition or animation?",
+    "options": [
+      "transition-timing-function",
+      "transition-curve",
+      "animation-speed",
+      "transition-style"
+    ],
+    "correct_option": 0,
+    "answer": "transition-timing-function",
+    "explanation": "This (or `animation-timing-function` for @keyframes animations) controls the rate of change over the transition's duration, not just its overall speed.",
+    "keywords": [
+      "timing-function",
+      "easing"
+    ],
+    "id": "css_135",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Animations & Transitions",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does `animation-fill-mode: forwards` do to an element after a CSS @keyframes animation completes?",
+    "answer": "It makes the element retain the computed style values from the animation's LAST keyframe, instead of snapping back to its original pre-animation styles once the animation ends.",
+    "explanation": "Without `forwards` (the default is `none`), an element visually reverts to its original CSS state the instant the animation finishes, which can look like a jarring 'snap back'.",
+    "keywords": [
+      "animation-fill-mode",
+      "forwards"
+    ],
+    "id": "css_136",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Animations & Transitions",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the purpose of the `prefers-reduced-motion` media feature in the context of animations?",
+    "answer": "It detects a user's OS-level accessibility setting requesting minimal motion, letting a site disable or simplify animations/transitions for users prone to motion sickness or vestibular disorders.",
+    "explanation": "`@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }` is a common pattern to respect this preference site-wide.",
+    "keywords": [
+      "prefers-reduced-motion",
+      "accessibility animation"
+    ],
+    "id": "css_137",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Animations & Transitions",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A `transition: width 0.3s;` is added to an element whose width changes via a class toggle, but the transition never visibly animates - the width just jumps instantly. The class toggle logic itself is confirmed working. What's a common cause?",
+    "buggy_code": ".box { width: 100px; transition: width 0.3s; }\n.box.expanded { width: auto; }",
+    "fixed_code": ".box { width: 100px; transition: width 0.3s; }\n.box.expanded { width: 300px; }",
+    "answer": "Transitioning to/from `width: auto` doesn't animate in most browsers, because `auto` isn't a fixed, interpolatable value the browser can compute a smooth intermediate size for - the fix is to transition between two explicit pixel/percentage values instead.",
+    "explanation": "This is a well-known CSS transition limitation: `auto`, and a handful of other keyword values, can't be smoothly interpolated, so the browser just jumps directly to the final computed value.",
+    "keywords": [
+      "width auto transition bug",
+      "non-interpolable values"
+    ],
+    "id": "css_138",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Animations & Transitions",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `animation-iteration-count: infinite` and setting a specific number like `3`?",
+    "answer": "`infinite` repeats the animation forever with no natural end; a specific number like `3` plays the animation exactly that many times and then stops (applying `animation-fill-mode` rules, if any, after the last iteration).",
+    "explanation": "This property only controls repetition count - it says nothing about direction (use `animation-direction` for alternating/reverse playback across iterations).",
+    "keywords": [
+      "animation-iteration-count"
+    ],
+    "id": "css_139",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Transforms",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which `transform` function skews an element along the X and/or Y axis?",
+    "options": [
+      "skew()",
+      "shear()",
+      "slant()",
+      "warp()"
+    ],
+    "correct_option": 0,
+    "answer": "skew()",
+    "explanation": "`skew(xAngle, yAngle)` (or `skewX()`/`skewY()` individually) distorts an element's shape along an axis, unlike `rotate()` which turns it rigidly.",
+    "keywords": [
+      "skew function"
+    ],
+    "id": "css_140",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Transforms",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `transform: scale(2)` and setting `width`/`height` to double an element's original size?",
+    "answer": "`scale(2)` visually enlarges the rendered element (including its content) without changing its actual layout box size that siblings react to, while changing `width`/`height` genuinely resizes the box and can push/reflow surrounding content.",
+    "explanation": "This is why `transform` is preferred for animations - it doesn't trigger layout recalculation for the rest of the page, only a compositing-layer visual change.",
+    "keywords": [
+      "scale transform vs resize",
+      "layout impact"
+    ],
+    "id": "css_141",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Transforms",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does `transform-style: preserve-3d` do, and in what context does it matter?",
+    "answer": "It tells child elements to render in true 3D space relative to their parent (preserving perspective/depth for nested 3D transforms), instead of the default `flat` behavior where children are flattened into the plane of the parent.",
+    "explanation": "This matters for effects like 3D card flips or cube rotations where multiple nested transformed elements need to maintain real 3D relationships with each other, not just each independently.",
+    "keywords": [
+      "preserve-3d",
+      "3d transform context"
+    ],
+    "id": "css_142",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Transforms",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "An element with `transform: translateZ(0)` was added purely as a hack with no other 3D transform needed, and the developer isn't sure why it's there or if it's safe to remove. What was it likely doing?",
+    "answer": "It was likely forcing the browser to promote the element onto its own GPU-composited layer ('hardware acceleration hack'), historically used to fix janky scrolling/animation performance on that element - removing it may or may not still be necessary depending on current browser optimization heuristics and whether the original performance issue still exists.",
+    "explanation": "Modern browsers are much better at automatically deciding what to composite, so this once-common trick is less necessary than it used to be, but it can still occasionally help with specific animation jank.",
+    "keywords": [
+      "translateZ(0) hack",
+      "gpu compositing layer"
+    ],
+    "id": "css_143",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Transforms",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Does applying `transform: rotate(45deg)` to an element change the space it occupies in the normal document flow, affecting where sibling elements are positioned?",
+    "answer": "No - `transform` never affects layout/flow; siblings are positioned exactly as if the transform wasn't applied, even though the element visually now overlaps or extends beyond its original box.",
+    "explanation": "This is a defining characteristic of the `transform` property (shared with `translate`/`scale`/`rotate`) - it's purely a visual/paint-time effect, computed after layout has already been determined.",
+    "keywords": [
+      "transform and layout",
+      "visual-only effect"
+    ],
+    "id": "css_144",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Variables",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What is the correct way to provide a fallback value if a CSS custom property is undefined?",
+    "options": [
+      "var(--color, blue)",
+      "var(--color) || blue",
+      "var(--color ?? blue)",
+      "var(--color, default: blue)"
+    ],
+    "correct_option": 0,
+    "answer": "var(--color, blue)",
+    "explanation": "The second argument to `var()` is the fallback value used only if `--color` is not defined (or is an invalid value) in the current cascade.",
+    "keywords": [
+      "var() fallback"
+    ],
+    "id": "css_145",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Variables",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Can a CSS custom property's value be a partial value, like just a number used later inside a `calc()`?",
+    "answer": "Yes - custom properties can hold arbitrary token sequences, not just full valid CSS values, so `--gap: 8;` used as `margin: calc(var(--gap) * 1px)` is valid.",
+    "explanation": "This flexibility (custom properties are essentially just substituted text tokens at computed-value time) is part of why they're more powerful than preprocessor variables, which are resolved at compile time into fixed values.",
+    "keywords": [
+      "custom property flexibility",
+      "calc with variables"
+    ],
+    "id": "css_146",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Variables",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "Why can CSS custom properties respond to media queries or class toggles at runtime in the browser, unlike Sass/SCSS variables?",
+    "answer": "CSS custom properties are resolved live by the browser as part of the normal cascade (inheritance, specificity, and being redefined per selector), so redefining `--theme-color` inside a media query or a `.dark-mode` class selector genuinely changes it at runtime; Sass variables are compiled away into fixed literal values before the browser ever sees the CSS.",
+    "explanation": "This is the single biggest practical advantage of native CSS variables for things like dark-mode theming or responsive value swaps without a build step or JS re-render.",
+    "keywords": [
+      "runtime vs compile-time variables",
+      "theming"
+    ],
+    "id": "css_147",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Variables",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "A custom property `--main-color` is defined on `:root`, but a deeply nested component redefines it locally for a specific section, and an unrelated sibling component elsewhere on the page unexpectedly also picks up the new color. What CSS mechanism explains this, and what's the fix?",
+    "buggy_code": ".sidebar { --main-color: green; }\n.sidebar .widget { color: var(--main-color); }\n.footer .widget { color: var(--main-color); }",
+    "fixed_code": ".sidebar { --main-color: green; }\n.sidebar .widget { color: var(--main-color); }\n.footer .widget { color: var(--main-color); } /* footer .widget correctly still gets :root's value, UNLESS .footer is nested inside .sidebar in the DOM - fix by scoping selectors correctly to actual DOM structure */",
+    "answer": "Custom properties are inherited down the DOM tree from wherever they're (re)defined - if `.footer` happens to be a DOM descendant of `.sidebar` (even if not visually 'inside' it in the page design), it inherits the redefined `--main-color`; the fix is to ensure the override is scoped to a selector that only wraps the intended DOM subtree, not a broader ancestor.",
+    "explanation": "This is a common trap: custom property scoping follows the actual DOM tree structure, which doesn't always match a developer's mental model of 'visually separate' components.",
+    "keywords": [
+      "custom property inheritance scope",
+      "unintended inheritance"
+    ],
+    "id": "css_148",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between the `inherit`, `initial`, and `unset` CSS keyword values?",
+    "answer": "`inherit` forces a property to take its parent's computed value even if not normally inherited; `initial` resets it to the property's specification-defined default value; `unset` acts like `inherit` for naturally-inherited properties or `initial` for naturally-non-inherited ones.",
+    "explanation": "`unset` is essentially 'do what would happen if no CSS at all targeted this property,' which is a convenient way to reset without needing to know whether a property is normally inherited.",
+    "keywords": [
+      "inherit initial unset",
+      "css-wide keywords"
+    ],
+    "id": "css_149",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What are the four main tie-breaking factors CSS uses, in priority order, to resolve which of several conflicting declarations applies to an element?",
+    "answer": "1) Origin and importance (e.g. author !important beats author normal, which beats user-agent default), 2) specificity of the selector, 3) order of appearance (later wins if specificity ties), and proximity/inheritance distance is considered separately for inherited values vs directly-targeting rules.",
+    "explanation": "Understanding this ordered list (rather than just 'specificity' alone) explains cases where a seemingly less-specific but `!important` or later-declared rule wins.",
+    "keywords": [
+      "cascade tie-breaking",
+      "origin importance specificity order"
+    ],
+    "id": "css_150",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A component library ships with `* { box-sizing: border-box; }` as a global reset, but a specific third-party widget embedded on the page needs `box-sizing: content-box` and setting it directly on the widget's own class doesn't seem to override the universal selector rule. What's actually going on?",
+    "answer": "It almost certainly IS overriding correctly by specificity (a class selector beats the universal `*` selector), so the real cause is more likely rule order (a later stylesheet re-applying the universal reset) or the widget's own inline/shadow-DOM styles taking precedence - specificity math itself favors the class selector here.",
+    "explanation": "This scenario is a common 'my fix isn't working' debugging trap where the assumption about which rule should win is correct, so the actual bug lies in load order, a later overriding rule, or encapsulated styles (e.g. Shadow DOM) rather than specificity itself.",
+    "keywords": [
+      "universal selector specificity",
+      "debugging cascade issues"
+    ],
+    "id": "css_151",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which vendor prefix is historically associated with Internet Explorer/older Microsoft browsers?",
+    "options": [
+      "-webkit-",
+      "-moz-",
+      "-ms-",
+      "-o-"
+    ],
+    "correct_option": 2,
+    "answer": "-ms-",
+    "explanation": "-webkit- is Chrome/Safari (WebKit/Blink), -moz- is Firefox (Gecko), -ms- is Internet Explorer/Edge Legacy, and -o- was the old Opera Presto engine.",
+    "keywords": [
+      "-ms- prefix",
+      "vendor prefix history"
+    ],
+    "id": "css_152",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why do modern build tools typically add vendor prefixes automatically (e.g. via Autoprefixer) rather than developers writing them by hand?",
+    "answer": "The set of properties needing prefixes, and which browsers/versions need which prefix, changes constantly as browsers implement and later drop prefix requirements - an automated tool driven by a live browser-support database (like caniuse data) stays accurate without manual upkeep.",
+    "explanation": "Manually maintained prefixes tend to rot: either missing new cases, or shipping unnecessary prefixes for browsers that no longer need them, bloating the CSS.",
+    "keywords": [
+      "autoprefixer rationale",
+      "browser support data"
+    ],
+    "id": "css_153",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What does progressive enhancement mean in the context of CSS feature support across browsers?",
+    "answer": "It means building a baseline experience that works everywhere using well-supported features, then layering on enhancements (like a new CSS feature) for browsers that support them, via feature detection (e.g. `@supports`) - rather than requiring the newest feature for the page to work at all.",
+    "explanation": "This is the opposite of 'graceful degradation,' which starts from the fullest experience and strips features down for older browsers - both are valid strategies with different starting assumptions.",
+    "keywords": [
+      "progressive enhancement",
+      "feature detection strategy"
+    ],
+    "id": "css_154",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A CSS feature is used with a `@supports (display: grid) { ... }` guard, but a very old browser that doesn't understand `@supports` at all (not even to evaluate it as false) still somehow applies the styles inside it. Why, and is this actually a bug?",
+    "answer": "This isn't really possible for a spec-compliant browser - browsers that don't understand `@supports` are required to simply ignore the entire unknown at-rule block, not apply its contents; if styles seem to 'leak through' anyway, the real cause is more likely a different code path (inline styles, a separate stylesheet without the guard) accidentally styling the same elements.",
+    "explanation": "CSS's error-handling model is 'ignore what you don't understand' at the rule/block level, so an unsupported at-rule silently disappears rather than executing its contents unconditionally - a genuinely broken feature-detection guard would point to a different bug.",
+    "keywords": [
+      "@supports fallback behavior",
+      "css error handling model"
+    ],
+    "id": "css_155",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the purpose of a CSS reset or normalize stylesheet (like normalize.css) at the top of a project's styles?",
+    "answer": "It neutralizes small, inconsistent default styling differences that browsers apply to elements out of the box (margins on headings, list bullet styles, form element fonts, etc.), giving a more consistent starting point across browsers before a project's own styles are applied.",
+    "explanation": "A 'reset' aggressively zeroes out almost all default styling, while a 'normalize' approach preserves useful defaults and only fixes inconsistencies - both aim at the same underlying cross-browser consistency problem.",
+    "keywords": [
+      "css reset",
+      "normalize.css",
+      "cross-browser defaults"
+    ],
+    "id": "css_156",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Basics",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which CSS property is a shorthand that sets font-style, font-weight, font-size, line-height, and font-family all at once?",
+    "options": [
+      "font",
+      "text",
+      "typography",
+      "font-set"
+    ],
+    "correct_option": 0,
+    "answer": "font",
+    "explanation": "The `font` shorthand requires at least font-size and font-family to be valid, with the other sub-properties optional in a specific order.",
+    "keywords": [
+      "font shorthand"
+    ],
+    "id": "css_157",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Basics",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why can using the `font` shorthand property accidentally reset properties you didn't intend to change, like `font-variant` or `line-height`?",
+    "answer": "CSS shorthand properties reset every sub-property they cover to its initial value if not explicitly specified in the shorthand, even if that sub-property was set by an earlier, more specific rule - so `font: 16px Arial;` silently resets `line-height` to `normal` even if a separate rule had set it.",
+    "explanation": "This 'shorthand resets everything' behavior is a common source of subtle bugs when shorthand and longhand declarations for the same properties are mixed carelessly.",
+    "keywords": [
+      "shorthand reset behavior",
+      "font shorthand gotcha"
+    ],
+    "id": "css_158",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Selectors & Specificity",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What is the specificity weight of a single class selector like `.button` in the standard specificity model?",
+    "options": [
+      "(0,0,1,0)",
+      "(0,1,0,0)",
+      "(1,0,0,0)",
+      "(0,0,0,1)"
+    ],
+    "correct_option": 1,
+    "answer": "(0,1,0,0)",
+    "explanation": "Using the (inline, ID, class/attribute/pseudo-class, element) 4-part model, a single class contributes exactly one point in the third position.",
+    "keywords": [
+      "specificity weight",
+      "class selector"
+    ],
+    "id": "css_159",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Selectors & Specificity",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the universal selector `*` match, and what is its specificity?",
+    "answer": "`*` matches every element on the page, and it has zero specificity - it's the weakest possible selector, easily overridden by any other selector type.",
+    "explanation": "This makes `*` useful for broad resets (like `* { box-sizing: border-box; }`) precisely because almost anything else can override it without a fight.",
+    "keywords": [
+      "universal selector",
+      "zero specificity"
+    ],
+    "id": "css_160",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Box Model",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "With `box-sizing: border-box`, does setting `width: 200px` include or exclude padding and border in that 200px?",
+    "options": [
+      "Includes padding and border",
+      "Excludes padding and border",
+      "Includes padding only",
+      "Includes border only"
+    ],
+    "correct_option": 0,
+    "answer": "Includes padding and border",
+    "explanation": "`border-box` makes the declared width/height represent the TOTAL rendered box size, with content area shrinking to accommodate padding/border - the opposite of the default `content-box` behavior.",
+    "keywords": [
+      "border-box sizing"
+    ],
+    "id": "css_161",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Box Model",
+    "difficulty": "Hard",
+    "question_type": "Output Prediction",
+    "question": "An element has `box-sizing: content-box` (default), `width: 100px`, `padding: 10px`, and `border: 2px solid`. What is its total rendered width?",
+    "code_snippet": ".box { box-sizing: content-box; width: 100px; padding: 10px; border: 2px solid; }",
+    "answer": "124px (100px content + 10px left padding + 10px right padding + 2px left border + 2px right border)",
+    "explanation": "Under `content-box`, padding and border are added ON TOP of the declared width, so the total occupied width is always larger than the `width` value itself.",
+    "keywords": [
+      "content-box math",
+      "total width calculation"
+    ],
+    "id": "css_162",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Positioning",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which `position` value keeps an element positioned relative to its normal position in the document flow, still occupying its original space?",
+    "options": [
+      "static",
+      "relative",
+      "absolute",
+      "fixed"
+    ],
+    "correct_option": 1,
+    "answer": "relative",
+    "explanation": "`relative` positioning offsets an element visually via top/left/etc. but leaves a 'ghost' gap in the layout where it would have been, unlike `absolute`/`fixed` which remove it from flow entirely.",
+    "keywords": [
+      "relative positioning",
+      "layout space preserved"
+    ],
+    "id": "css_163",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Positioning",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Do `top`, `left`, `right`, and `bottom` have any effect on an element with the default `position: static`?",
+    "answer": "No - offset properties are entirely ignored on statically positioned elements; they only take effect once `position` is set to `relative`, `absolute`, `fixed`, or `sticky`.",
+    "explanation": "This is a common beginner mistake: adding `top: 10px` to an element expecting it to move, without realizing `position: static` (the default) makes offset properties inert.",
+    "keywords": [
+      "static position offsets ignored"
+    ],
+    "id": "css_164",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Display Property",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which value makes an element behave as a table-like grid without using actual <table> HTML markup?",
+    "options": [
+      "display: table",
+      "display: grid-table",
+      "display: table-layout",
+      "display: matrix"
+    ],
+    "correct_option": 0,
+    "answer": "display: table",
+    "explanation": "`display: table` (with children set to `display: table-row`/`table-cell`) mimics HTML table layout purely via CSS on any elements, though Grid/Flexbox are generally preferred today.",
+    "keywords": [
+      "display table"
+    ],
+    "id": "css_165",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Display Property",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the default `display` value of the <img> element?",
+    "answer": "`inline` - which is why images can have unexpected extra space below them (treated like inline text with descender space) unless changed to `display: block` or `vertical-align` is adjusted.",
+    "explanation": "This 'phantom gap under images' is a very common beginner CSS puzzle traced directly back to `<img>`'s default inline display type.",
+    "keywords": [
+      "img default display",
+      "inline image gap"
+    ],
+    "id": "css_166",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Flexbox",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which property, applied to flex ITEMS (not the container), controls their order of appearance independent of their order in the HTML source?",
+    "options": [
+      "order",
+      "position",
+      "sequence",
+      "flex-order"
+    ],
+    "correct_option": 0,
+    "answer": "order",
+    "explanation": "`order` accepts any integer; items are laid out from lowest to highest order value, with ties broken by source order - purely a visual reordering, the DOM/source order (and thus tab order) is unaffected.",
+    "keywords": [
+      "order property",
+      "visual reordering"
+    ],
+    "id": "css_167",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Flexbox",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A developer uses the flex `order` property to visually reorder items for a specific layout, but keyboard/tab users navigate through them in a confusing sequence that doesn't match what they see on screen. Why, and what's the takeaway?",
+    "answer": "`order` only changes VISUAL rendering order, not the underlying DOM order that keyboard Tab navigation follows, so a mismatch between what's seen and what's tabbed through is expected, not a bug; the fix is to either match visual and DOM order, or accept `order` should be used sparingly for accessibility-sensitive layouts.",
+    "explanation": "This is a well-documented Flexbox accessibility pitfall: visual reordering via CSS can silently create a confusing disconnect from the actual interaction/reading order.",
+    "keywords": [
+      "flex order accessibility issue",
+      "tab order mismatch"
+    ],
+    "id": "css_168",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Grid",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which property on a grid ITEM aligns it horizontally within its own grid cell, analogous to `align-self` for vertical alignment?",
+    "options": [
+      "justify-self",
+      "align-self",
+      "place-self",
+      "self-align"
+    ],
+    "correct_option": 0,
+    "answer": "justify-self",
+    "explanation": "`justify-self` controls inline-axis (horizontal, in a standard writing mode) alignment of one item within its cell; `place-self` is shorthand for `align-self justify-self` together.",
+    "keywords": [
+      "justify-self",
+      "grid item alignment"
+    ],
+    "id": "css_169",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Grid",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does naming grid lines (e.g. `grid-template-columns: [start] 1fr [middle] 2fr [end]`) let you do?",
+    "answer": "It lets you reference those named lines directly in `grid-column`/`grid-row` (e.g. `grid-column: start / middle`) instead of using bare line numbers, making grid placement more self-documenting and resilient to structural changes.",
+    "explanation": "Named lines are purely a readability/maintainability aid - they don't change layout behavior, just how you refer to the same underlying grid structure.",
+    "keywords": [
+      "named grid lines"
+    ],
+    "id": "css_170",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which logical operator in a media query requires ALL listed conditions to be true?",
+    "options": [
+      "and",
+      "or",
+      "not",
+      "only"
+    ],
+    "correct_option": 0,
+    "answer": "and",
+    "explanation": "`@media (min-width: 600px) and (orientation: landscape) { ... }` applies only when both conditions hold; commas between queries act as OR instead.",
+    "keywords": [
+      "media query and operator"
+    ],
+    "id": "css_171",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Responsive Design & Media Queries",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between using a comma and using `and` to combine multiple conditions in a media query?",
+    "answer": "A comma acts as a logical OR (the query matches if ANY listed condition is true); `and` acts as a logical AND (all conditions in that clause must be true simultaneously).",
+    "explanation": "`@media (max-width: 600px), (orientation: portrait)` matches if either condition holds, while `@media (max-width: 600px) and (orientation: portrait)` requires both.",
+    "keywords": [
+      "media query comma or",
+      "and vs or"
+    ],
+    "id": "css_172",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Colors & Units",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which CSS function allows mathematical expressions combining different units, like `calc(100% - 50px)`?",
+    "options": [
+      "calc()",
+      "math()",
+      "expr()",
+      "compute()"
+    ],
+    "correct_option": 0,
+    "answer": "calc()",
+    "explanation": "`calc()` is the only built-in CSS function for mixed-unit arithmetic, and it's valid almost anywhere a length, percentage, or number value is expected.",
+    "keywords": [
+      "calc function"
+    ],
+    "id": "css_173",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Colors & Units",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does the `ch` unit represent in CSS?",
+    "answer": "The advance width (roughly the width) of the '0' (zero) character in the element's current font - often used to size text-related boxes (like limiting a paragraph to `65ch` for readable line length).",
+    "explanation": "Since it's tied to the actual rendered font's character width, `ch` scales appropriately if the font size or font family changes, unlike a hardcoded pixel width.",
+    "keywords": [
+      "ch unit",
+      "character width"
+    ],
+    "id": "css_174",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Typography",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which CSS property controls whether consecutive white-space characters in HTML are collapsed into a single space when rendered?",
+    "options": [
+      "white-space",
+      "text-space",
+      "spacing",
+      "text-collapse"
+    ],
+    "correct_option": 0,
+    "answer": "white-space",
+    "explanation": "The default `white-space: normal` collapses runs of whitespace into one space and allows wrapping; `pre` preserves whitespace exactly, similar to a <pre> tag.",
+    "keywords": [
+      "white-space property"
+    ],
+    "id": "css_175",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Typography",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `word-break: break-all` and `overflow-wrap: break-word`?",
+    "answer": "`break-all` allows breaking between ANY two characters wherever needed to prevent overflow, even in the middle of normally-breakable words; `overflow-wrap: break-word` only breaks a word mid-way as a last resort, when the word alone is too long to fit even on its own line.",
+    "explanation": "`break-all` produces more aggressive, sometimes awkward mid-word breaks even for short words, while `overflow-wrap` is more conservative and only intervenes for genuinely unbreakable long tokens.",
+    "keywords": [
+      "word-break vs overflow-wrap"
+    ],
+    "id": "css_176",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which pseudo-class matches a form input currently failing its HTML5 validation constraints?",
+    "options": [
+      ":invalid",
+      ":error",
+      ":failed",
+      ":bad-input"
+    ],
+    "correct_option": 0,
+    "answer": ":invalid",
+    "explanation": "`:invalid` (paired with `:valid` for the opposite case) lets you style form fields based on live constraint-validation state, entirely in CSS.",
+    "keywords": [
+      ":invalid pseudo-class",
+      "form validation styling"
+    ],
+    "id": "css_177",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Pseudo-classes & Pseudo-elements",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is the difference between `::placeholder` and using the `placeholder` HTML attribute?",
+    "answer": "`placeholder` (the HTML attribute) sets WHAT hint text appears in an empty input; `::placeholder` (the CSS pseudo-element) styles HOW that hint text looks (color, font, opacity), and has no effect without the attribute actually being set.",
+    "explanation": "They work together: one supplies the content, the other styles it - `::placeholder` alone with no `placeholder` attribute styles nothing since there's no placeholder text to target.",
+    "keywords": [
+      "::placeholder styling",
+      "placeholder attribute vs pseudo-element"
+    ],
+    "id": "css_178",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Animations & Transitions",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which property lets you specify a delay before a CSS transition begins after its triggering property change?",
+    "options": [
+      "transition-delay",
+      "transition-wait",
+      "animation-delay",
+      "delay"
+    ],
+    "correct_option": 0,
+    "answer": "transition-delay",
+    "explanation": "`transition-delay: 0.5s;` postpones the START of the transition; it doesn't affect how long the transition itself takes once it begins (that's `transition-duration`).",
+    "keywords": [
+      "transition-delay"
+    ],
+    "id": "css_179",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Animations & Transitions",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Can you transition or animate the `display` property directly to fade an element in while also making it participate in layout again?",
+    "answer": "Not smoothly with `transition` alone (display isn't interpolable), but modern browsers support animating `display` via `@keyframes` combined with `transition-behavior: allow-discrete` (or historically via a `display: none` swap timed with `setTimeout`/`animationend` in JS).",
+    "explanation": "This has long been a genuine CSS limitation; the newer `transition-behavior: allow-discrete` property is specifically designed to let discrete properties like `display` participate in an otherwise-smooth transition sequence.",
+    "keywords": [
+      "display animation limitation",
+      "transition-behavior allow-discrete"
+    ],
+    "id": "css_180",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Transforms",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which `transform` function moves an element along the X and Y axes without affecting layout flow?",
+    "options": [
+      "translate()",
+      "move()",
+      "position()",
+      "shift()"
+    ],
+    "correct_option": 0,
+    "answer": "translate()",
+    "explanation": "`translate(x, y)` shifts the rendered position visually; `translateX()`/`translateY()` do it along a single axis only.",
+    "keywords": [
+      "translate function"
+    ],
+    "id": "css_181",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Transforms",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why is animating `transform: translateX()` generally considered more performant than animating the `left` property for the same visual movement?",
+    "answer": "Changing `left` triggers layout recalculation (reflow) on every frame since it affects the element's box position in the flow model, while `transform` is handled purely at the compositing stage on the GPU, skipping layout and paint entirely for that change.",
+    "explanation": "This is why `transform`/`opacity` are often called the 'cheap' properties to animate, while properties affecting box geometry (`width`, `left`, `margin`) are comparatively expensive.",
+    "keywords": [
+      "transform performance",
+      "left vs translateX"
+    ],
+    "id": "css_182",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Variables",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What happens if you reference a custom property that was never defined anywhere, with no fallback provided, e.g. `color: var(--undefined-color);`?",
+    "options": [
+      "The declaration is treated as invalid and the property falls back to its inherited or initial value",
+      "The browser throws a JavaScript error",
+      "It renders as black by default",
+      "It's treated as `unset` specifically"
+    ],
+    "correct_option": 0,
+    "answer": "The declaration is treated as invalid and the property falls back to its inherited or initial value",
+    "explanation": "An undefined custom property with no fallback makes the whole declaration 'invalid at computed-value time,' which CSS handles by falling back to the property's inherited (or initial) value, not by erroring.",
+    "keywords": [
+      "undefined custom property behavior"
+    ],
+    "id": "css_183",
+    "technology": "CSS"
+  },
+  {
+    "topic": "CSS Variables",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Can CSS custom properties be changed dynamically via JavaScript, and if so how?",
+    "answer": "Yes, via `element.style.setProperty('--my-var', 'newValue')`, which updates the property's value live and triggers the browser to recompute any styles referencing it via `var()`.",
+    "explanation": "This is a common bridge pattern between JS application state and CSS-driven visuals, avoiding the need to toggle many individual class names for value-based (not just boolean) style changes.",
+    "keywords": [
+      "setProperty javascript",
+      "dynamic css variables"
+    ],
+    "id": "css_184",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which of these correctly lists CSS's origin priority from LOWEST to HIGHEST precedence (ignoring !important)?",
+    "options": [
+      "User-agent (browser default) -> User -> Author",
+      "Author -> User -> User-agent",
+      "User -> Author -> User-agent",
+      "They all have equal precedence"
+    ],
+    "correct_option": 0,
+    "answer": "User-agent (browser default) -> User -> Author",
+    "explanation": "Normally author styles (the website's own CSS) win over user and browser-default styles - though `!important` flips this order specifically for user-origin declarations, which can override even author `!important` in some specs.",
+    "keywords": [
+      "cascade origin order"
+    ],
+    "id": "css_185",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Cascade & Inheritance",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "If two `!important` declarations from the same author origin conflict, how is the tie broken?",
+    "answer": "The normal cascade rules (specificity, then source order) still apply AMONG declarations marked `!important` - `!important` only elevates a whole tier above non-important declarations, it doesn't remove the need for further tie-breaking within that tier.",
+    "explanation": "This is a common misconception: `!important` isn't an absolute trump card that ends all further comparison, it just changes which normal-cascade tier the declaration competes within.",
+    "keywords": [
+      "important tie-breaking",
+      "specificity still applies"
+    ],
+    "id": "css_186",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which resource is most commonly used by developers to check real-time cross-browser support percentages for a specific CSS feature?",
+    "options": [
+      "caniuse.com",
+      "w3.org",
+      "MDN alone",
+      "Stack Overflow"
+    ],
+    "correct_option": 0,
+    "answer": "caniuse.com",
+    "explanation": "caniuse.com aggregates up-to-date browser support data (including specific version numbers and known partial-support caveats) for web platform features, and is the data source many automated tools like Autoprefixer rely on.",
+    "keywords": [
+      "caniuse.com",
+      "browser support lookup"
+    ],
+    "id": "css_187",
+    "technology": "CSS"
+  },
+  {
+    "topic": "Browser Compatibility & Vendor Prefixes",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does `@supports not (display: grid) { ... }` let you write styles for?",
+    "answer": "Styles that should apply ONLY to browsers that do NOT support CSS Grid, typically used to provide a fallback layout (e.g. floats or inline-block) for older browsers while the main styles use Grid unconditionally elsewhere.",
+    "explanation": "This inverts the more common 'if supported, enhance' pattern into an explicit 'if NOT supported, provide fallback' pattern, both built on the same `@supports` feature-detection mechanism.",
+    "keywords": [
+      "@supports not",
+      "fallback for unsupported feature"
+    ],
+    "id": "css_188",
+    "technology": "CSS"
+  }
+]

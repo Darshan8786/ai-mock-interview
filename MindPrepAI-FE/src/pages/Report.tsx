@@ -1,351 +1,275 @@
-import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
-import { BACKEND_URL } from "../config/config";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 import { Chatbot } from "../components/Chatbot";
+import {
+  errorMessage,
+  getMyAnalytics,
+  type AreaStat,
+  type StudentAnalytics,
+  type TrendPoint,
+} from "../services/analyticsApi";
 
-type ScoreEntry = {
-  category: string;
-  score: number;
-  sessionId?: string;
-  createdAt: string;
-  type: "role" | "company" | "subject";
-};
+const COLORS = { aptitude: "#7C3AED", tech: "#06B6D4", interview: "#F59E0B" };
 
-type AttemptSummary = {
-  total: number;
-  correct: number;
-  accuracy: number;
-};
+const card = "rounded-2xl border-2 border-white bg-slate-900 p-5 text-white shadow-lg";
 
-type SubjectAttempt = {
-  subject: string;
-  correctCount: number;
-  totalCount: number;
-};
+const barColor = (pct: number) => (pct < 60 ? "#EF4444" : pct < 75 ? "#F59E0B" : "#10B981");
 
-type ReportResponse = {
-  scores: ScoreEntry[];
-  subjectBars: { subject: string; averageScore: number }[];
-  attempts: AttemptSummary;
-};
+function StatCard({ label, value, hint }: { label: string; value: string; hint: string }) {
+  return (
+    <div className={card}>
+      <p className="text-sm text-white/70">{label}</p>
+      <h3 className="mt-2 text-4xl font-bold">{value}</h3>
+      <p className="mt-1 text-sm text-white/60">{hint}</p>
+    </div>
+  );
+}
 
-type SubjectAttemptsResponse = {
-  subjectAttempts: SubjectAttempt[];
-};
+function AreaBars({ areas, empty }: { areas: AreaStat[]; empty: string }) {
+  if (!areas.length) return <p className="text-sm text-white/50">{empty}</p>;
+  return (
+    <ul className="space-y-3">
+      {areas.map((a) => (
+        <li key={`${a.source}-${a.group}-${a.name}`}>
+          <div className="mb-1 flex items-baseline justify-between gap-3 text-sm">
+            <span className="truncate">
+              {a.name}
+              <span className="ml-2 text-xs text-white/40">{a.source === "tech" ? `${a.group} quiz` : a.group}</span>
+            </span>
+            <span className="shrink-0 font-semibold" style={{ color: barColor(a.accuracy) }}>
+              {a.accuracy}%
+              <span className="ml-1 text-xs font-normal text-white/40">
+                ({a.correct}/{a.total})
+              </span>
+            </span>
+          </div>
+          <div className="h-2 w-full rounded-full bg-white/10">
+            <div className="h-full rounded-full transition-all" style={{ width: `${a.accuracy}%`, backgroundColor: barColor(a.accuracy) }} />
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
-const palette = ["#7C3AED", "#06B6D4", "#F59E0B", "#10B981", "#3B82F6", "#EF4444"];
+/** Merge the three per-module trends into one date-ordered series for a single chart. */
+function mergeTrends(d: StudentAnalytics) {
+  const rows = new Map<string, { date: string; aptitude?: number; tech?: number; interview?: number }>();
+  const add = (points: TrendPoint[], key: "aptitude" | "tech" | "interview") =>
+    points.forEach((p, i) => {
+      // Two results on the same day must stay separate points, so key on the exact timestamp.
+      const k = `${p.date}#${key}#${i}`;
+      rows.set(k, { date: p.date, [key]: p.score });
+    });
+  add(d.aptitude.trend, "aptitude");
+  add(d.techQuiz.trend, "tech");
+  add(d.interview.trend, "interview");
+  return [...rows.values()].sort((a, b) => a.date.localeCompare(b.date));
+}
 
-const capitalizeSubject = (subject: string) => {
-  // Handle special cases
-  const specialCases: { [key: string]: string } = {
-    "dbms": "DBMS",
-    "oops": "OOPS",
-    "os": "OS",
-    "dsa": "DSA",
-  };
-
-  const lowerSubject = subject.toLowerCase();
-  if (specialCases[lowerSubject]) {
-    return specialCases[lowerSubject];
-  }
-
-  // Default: capitalize each word
-  return subject
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-};
-
-const EmptyState = ({ message }: { message: string }) => (
-  <div className="w-full rounded-2xl border-2 border-white bg-slate-900 p-6 text-center text-white">
-    {message}
-  </div>
-);
+const shortDate = (iso: string) => new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short" });
 
 export function Report() {
-  const [data, setData] = useState<ReportResponse | null>(null);
-  const [subjectAttempts, setSubjectAttempts] = useState<SubjectAttempt[]>([]);
+  const [data, setData] = useState<StudentAnalytics | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
-  const [allSubjects, setAllSubjects] = useState<string[]>([]);
-  const [carouselIndex, setCarouselIndex] = useState(0);
-  const ITEMS_PER_CAROUSEL = 3;
 
-  useEffect(() => {
-    const fetchReport = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setData({
-          scores: [],
-          subjectBars: [],
-          attempts: { total: 0, correct: 0, accuracy: 0 },
-        });
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const [reportRes, attemptsRes, syncRes] = await Promise.all([
-          axios.get<ReportResponse>(
-            `${BACKEND_URL}/v1/report/personalized`,
-            { headers: { token } }
-          ),
-          axios.get<SubjectAttemptsResponse>(
-            `${BACKEND_URL}/v1/report/subject-attempts`,
-            { headers: { token } }
-          ),
-          axios.post(
-            `${BACKEND_URL}/v1/vectordb/sync-attempts`,
-            {},
-            { headers: { token } }
-          ),
-        ]);
-
-        console.log("Report Response:", reportRes.data);
-        console.log("Attempts Response:", attemptsRes.data);
-        console.log("Vector DB Sync Response:", syncRes.data);
-
-        setData(reportRes.data);
-        const attempts = attemptsRes.data.subjectAttempts || [];
-        console.log("Processed Subject Attempts Data:", attempts);
-        setSubjectAttempts(attempts);
-
-        const subjects = attempts.map((item) => item.subject);
-        console.log("Extracted Subjects:", subjects);
-        setAllSubjects(subjects);
-        setSelectedSubjects(subjects);
-      } catch (err: any) {
-        console.error("Report fetch failed:", err);
-        console.error("Error details:", err.response?.data);
-        setData({
-          scores: [],
-          subjectBars: [],
-          attempts: { total: 0, correct: 0, accuracy: 0 },
-        });
-        setSubjectAttempts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReport();
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      setData(await getMyAnalytics());
+    } catch (err) {
+      console.error("Failed to load analytics:", err);
+      setError(errorMessage(err, "Couldn't load your analytics."));
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const filteredSubjectAttempts = useMemo(() => {
-    if (selectedSubjects.length === 0) {
-      return subjectAttempts;
-    }
-    return subjectAttempts.filter((subject) =>
-      selectedSubjects.includes(subject.subject)
-    );
-  }, [subjectAttempts, selectedSubjects]);
-
-  // Sync selectedSubjects with allSubjects when allSubjects changes
   useEffect(() => {
-    if (allSubjects.length > 0 && selectedSubjects.length === 0) {
-      // Show only first 3 subjects by default
-      setSelectedSubjects(allSubjects.slice(0, 3));
-    }
-  }, [allSubjects, selectedSubjects]);
+    load();
+  }, [load]);
+
+  const trend = useMemo(() => (data ? mergeTrends(data) : []), [data]);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
+      <div className="flex min-h-screen items-center justify-center text-white">
         <div className="animate-pulse text-2xl font-semibold">Building your report...</div>
       </div>
     );
   }
 
-  if (!data) return null;
-
   return (
     <div className="min-h-screen px-4 py-10">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
         <div className="flex flex-col gap-3 text-white">
-          <p className="text-sm uppercase tracking-[0.35em] text-indigo-300/80 text-center">
-            Personalized Insights
-          </p>
-          <h1 className="text-4xl font-bold leading-tight sm:text-5xl text-center">
-            Your Performance Dashboard
-          </h1>
+          <p className="text-center text-sm uppercase tracking-[0.35em] text-indigo-300/80">Personalized Insights</p>
+          <h1 className="text-center text-4xl font-bold leading-tight sm:text-5xl">Your Performance Dashboard</h1>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border-2 border-white bg-slate-900 p-5 text-white shadow-lg">
-            <p className="text-sm text-white/70">Attempts</p>
-            <h3 className="text-4xl font-bold mt-2">{data.attempts.total}</h3>
-            <p className="text-sm text-white/60 mt-1">Questions attempted</p>
+        {error && (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-red-400/60 bg-red-500/10 p-5 text-red-100">
+            <p className="text-sm">{error}</p>
+            <button onClick={load} className="rounded-lg bg-red-500/80 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-500">
+              Try again
+            </button>
           </div>
-          <div className="rounded-2xl border-2 border-white bg-slate-900 p-5 text-white shadow-lg">
-            <p className="text-sm text-white/70">Correct Answers</p>
-            <h3 className="text-4xl font-bold mt-2">{data.attempts.correct}</h3>
-            <p className="text-sm text-white/60 mt-1">Across all attempts</p>
-          </div>
-          <div className="rounded-2xl border-2 border-white bg-slate-900 p-5 text-white shadow-lg">
-            <p className="text-sm text-white/80">Accuracy</p>
-            <h3 className="text-4xl font-bold mt-2">{data.attempts.accuracy}%</h3>
-            <p className="text-sm text-white/70 mt-1">Overall precision</p>
-          </div>
-        </div>
+        )}
 
-        <section className="rounded-2xl border-2 border-white bg-slate-900 p-5 text-white shadow-lg">
-          <div className="mb-6">
-            <p className="text-sm text-white/60">Subject Performance</p>
-            <h2 className="text-2xl font-bold">Correct Answers by Categories</h2>
+        {data && !data.hasData && (
+          <div className={`${card} text-center`}>
+            <h2 className="text-xl font-bold">No results yet</h2>
+            <p className="mx-auto mt-2 max-w-xl text-sm text-white/70">
+              Complete an aptitude test, a tech quiz or a mock interview and your scores, trends and weak areas will appear here.
+            </p>
+            <div className="mt-4 flex flex-wrap justify-center gap-3 text-sm">
+              <Link to="/aptitude" className="rounded-lg bg-indigo-600 px-4 py-2 font-medium hover:bg-indigo-700">Aptitude</Link>
+              <Link to="/tech-practice" className="rounded-lg bg-indigo-600 px-4 py-2 font-medium hover:bg-indigo-700">Tech Practice</Link>
+              <Link to="/mock-interview/setup" className="rounded-lg bg-indigo-600 px-4 py-2 font-medium hover:bg-indigo-700">Mock Interview</Link>
+            </div>
           </div>
+        )}
 
-          {subjectAttempts.length === 0 ? (
-            <>
-              <EmptyState message="No subject attempts recorded yet. Start answering questions to see your progress." />
-              <div className="mt-6 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-lg text-indigo-200 text-sm">
-                📊 Tip: Answer questions in the quiz to populate this chart with your performance data.
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="mb-6">
-                <label className="text-sm text-white/70 mb-3 block">Filter Subjects:</label>
-                <div className="flex flex-wrap gap-2">
-                  {allSubjects.map((subject) => (
-                    <button
-                      key={subject}
-                      onClick={() => {
-                        console.log("Clicking subject:", subject);
-                        console.log("Currently selected:", selectedSubjects);
-                        setSelectedSubjects((prev) => {
-                          const newSelected = prev.includes(subject)
-                            ? prev.filter((s) => s !== subject)
-                            : [...prev, subject];
-                          console.log("New selected:", newSelected);
-                          return newSelected;
-                        });
-                      }}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedSubjects.includes(subject)
-                        ? "bg-indigo-500 text-white"
-                        : "bg-white/10 text-white/70 hover:bg-white/20"
-                        }`}
-                    >
-                      {capitalizeSubject(subject)}
-                    </button>
+        {data && data.hasData && (
+          <>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <StatCard
+                label="Readiness"
+                value={data.overview.readiness !== null ? `${data.overview.readiness}%` : "—"}
+                hint="Average of the areas you've practised"
+              />
+              <StatCard
+                label="Aptitude tests"
+                value={String(data.overview.aptitudeTests)}
+                hint={data.aptitude.attempts ? `Avg ${data.aptitude.avgScore}% · best ${data.aptitude.bestScore}%` : "None completed yet"}
+              />
+              <StatCard
+                label="Tech quizzes"
+                value={String(data.overview.techQuizzes)}
+                hint={data.techQuiz.attempts ? `Avg ${data.techQuiz.avgScore}% · best ${data.techQuiz.bestScore}%` : "None completed yet"}
+              />
+              <StatCard
+                label="Mock interviews"
+                value={String(data.overview.interviews)}
+                hint={
+                  data.interview.attempts
+                    ? `Avg ${data.interview.avgOverall}%${data.interview.terminated ? ` · ${data.interview.terminated} ended early` : ""}`
+                    : "None completed yet"
+                }
+              />
+            </div>
+
+            {trend.length > 1 && (
+              <section className={card}>
+                <p className="text-sm text-white/60">Progress over time</p>
+                <h2 className="mb-4 text-2xl font-bold">Score Trend</h2>
+                <div className="h-72 w-full">
+                  <ResponsiveContainer>
+                    <LineChart data={trend} margin={{ top: 5, right: 16, left: -16, bottom: 0 }}>
+                      <CartesianGrid stroke="rgba(255,255,255,0.08)" />
+                      <XAxis dataKey="date" tickFormatter={shortDate} stroke="rgba(255,255,255,0.5)" fontSize={12} />
+                      <YAxis domain={[0, 100]} stroke="rgba(255,255,255,0.5)" fontSize={12} />
+                      <Tooltip
+                        labelFormatter={(v) => new Date(v as string).toLocaleString()}
+                        contentStyle={{ background: "#0f172a", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 8 }}
+                      />
+                      <Legend />
+                      <Line type="monotone" dataKey="aptitude" name="Aptitude" stroke={COLORS.aptitude} strokeWidth={2} connectNulls dot />
+                      <Line type="monotone" dataKey="tech" name="Tech quiz" stroke={COLORS.tech} strokeWidth={2} connectNulls dot />
+                      <Line type="monotone" dataKey="interview" name="Interview" stroke={COLORS.interview} strokeWidth={2} connectNulls dot />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </section>
+            )}
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              <section className={card}>
+                <p className="text-sm text-white/60">Needs attention</p>
+                <h2 className="mb-4 text-2xl font-bold">Weak Areas</h2>
+                <AreaBars
+                  areas={data.weakAreas}
+                  empty="Nothing below 60% with enough answers yet — or not enough questions answered per topic to judge."
+                />
+              </section>
+              <section className={card}>
+                <p className="text-sm text-white/60">Going well</p>
+                <h2 className="mb-4 text-2xl font-bold">Strengths</h2>
+                <AreaBars areas={data.strengths} empty="No topic at 75%+ with enough answers yet. Keep practising." />
+              </section>
+            </div>
+
+            {data.aptitude.categories.length > 0 && (
+              <section className={card}>
+                <p className="text-sm text-white/60">Aptitude</p>
+                <h2 className="mb-4 text-2xl font-bold">Accuracy by Category</h2>
+                <AreaBars areas={data.aptitude.categories} empty="" />
+              </section>
+            )}
+
+            {data.techQuiz.attempts > 0 && (
+              <section className={card}>
+                <p className="text-sm text-white/60">Tech Practice</p>
+                <h2 className="mb-4 text-2xl font-bold">By Technology</h2>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {data.techQuiz.technologies.map((t) => (
+                    <div key={t.technology} className="rounded-xl border border-white/20 bg-slate-800 p-4">
+                      <h3 className="font-semibold" style={{ color: COLORS.tech }}>{t.technology}</h3>
+                      <p className="mt-1 text-sm text-white/70">
+                        {t.attempts} quiz{t.attempts === 1 ? "" : "zes"} · avg {t.avgScore}% · best {t.bestScore}%
+                      </p>
+                    </div>
                   ))}
                 </div>
-              </div>
+              </section>
+            )}
 
-              <div className="mt-8">
-                <h3 className="text-lg font-semibold mb-6 text-white">Subject-wise Performance</h3>
-
-                {filteredSubjectAttempts.length > 0 && (
-                  <div className="relative">
-                    <div className="grid gap-4 grid-cols-1 md:grid-cols-3 overflow-hidden">
-                      {filteredSubjectAttempts
-                        .slice(carouselIndex, carouselIndex + ITEMS_PER_CAROUSEL)
-                        .map((attempt, idx) => {
-                          const actualIdx = carouselIndex + idx;
-                          return (
-                            <div
-                              key={attempt.subject}
-                              className="rounded-xl border-2 border-white bg-slate-800 p-6 hover:border-white transition-all"
-                            >
-                              <div className="mb-4">
-                                <h4
-                                  className="text-lg font-semibold"
-                                  style={{ color: palette[actualIdx % palette.length] }}
-                                >
-                                  {capitalizeSubject(attempt.subject)}
-                                </h4>
-                              </div>
-
-                              <div className="space-y-3">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm text-white/70">Questions Attempted:</span>
-                                  <span className="text-2xl font-bold text-white">
-                                    {attempt.totalCount}
-                                  </span>
-                                </div>
-                                <div className="w-full bg-white/10 rounded-full h-2">
-                                  <div
-                                    className="h-full rounded-full transition-all"
-                                    style={{
-                                      width: `${(attempt.totalCount / Math.max(...filteredSubjectAttempts.map(a => a.totalCount), 1)) * 100}%`,
-                                      backgroundColor: palette[actualIdx % palette.length]
-                                    }}
-                                  />
-                                </div>
-
-                                <div className="flex items-center justify-between pt-2">
-                                  <span className="text-sm text-white/70">Correct Answers:</span>
-                                  <span
-                                    className="text-2xl font-bold"
-                                    style={{ color: palette[actualIdx % palette.length] }}
-                                  >
-                                    {attempt.correctCount}
-                                  </span>
-                                </div>
-                                <div className="w-full bg-white/10 rounded-full h-2">
-                                  <div
-                                    className="h-full rounded-full transition-all"
-                                    style={{
-                                      width: `${(attempt.correctCount / Math.max(...filteredSubjectAttempts.map(a => a.correctCount), 1)) * 100}%`,
-                                      backgroundColor: palette[actualIdx % palette.length]
-                                    }}
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="mt-4 pt-4 border-t border-white/10">
-                                <div className="text-center">
-                                  <span className="text-white/60 text-sm">Accuracy</span>
-                                  <p className="text-3xl font-bold mt-1" style={{ color: palette[actualIdx % palette.length] }}>
-                                    {attempt.totalCount > 0
-                                      ? Math.round((attempt.correctCount / attempt.totalCount) * 100)
-                                      : 0}%
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                    </div>
-
-                    {filteredSubjectAttempts.length > ITEMS_PER_CAROUSEL && (
-                      <div className="flex justify-between items-center mt-6">
-                        <button
-                          onClick={() =>
-                            setCarouselIndex((prev) =>
-                              prev - ITEMS_PER_CAROUSEL < 0 ? 0 : prev - ITEMS_PER_CAROUSEL
-                            )
-                          }
-                          className="px-4 py-2 rounded-lg bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition-all disabled:opacity-50"
-                          disabled={carouselIndex === 0}
-                        >
-                          ← Previous
-                        </button>
-                        <span className="text-white/70 text-sm">
-                          {carouselIndex + 1} - {Math.min(carouselIndex + ITEMS_PER_CAROUSEL, filteredSubjectAttempts.length)} of {filteredSubjectAttempts.length}
-                        </span>
-                        <button
-                          onClick={() =>
-                            setCarouselIndex((prev) =>
-                              prev + ITEMS_PER_CAROUSEL >= filteredSubjectAttempts.length
-                                ? prev
-                                : prev + ITEMS_PER_CAROUSEL
-                            )
-                          }
-                          className="px-4 py-2 rounded-lg bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition-all disabled:opacity-50"
-                          disabled={carouselIndex + ITEMS_PER_CAROUSEL >= filteredSubjectAttempts.length}
-                        >
-                          Next →
-                        </button>
+            {data.interview.attempts > 0 && (
+              <section className={card}>
+                <p className="text-sm text-white/60">Mock interviews</p>
+                <h2 className="mb-4 text-2xl font-bold">Interview Skills</h2>
+                <ul className="space-y-3">
+                  {data.interview.skills.map((s) => (
+                    <li key={s.key}>
+                      <div className="mb-1 flex justify-between text-sm">
+                        <span>{s.label}</span>
+                        <span className="font-semibold" style={{ color: barColor(s.score) }}>{s.score}%</span>
                       </div>
-                    )}
+                      <div className="h-2 w-full rounded-full bg-white/10">
+                        <div className="h-full rounded-full" style={{ width: `${s.score}%`, backgroundColor: barColor(s.score) }} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                {data.interview.improvementAreas.length > 0 && (
+                  <div className="mt-5 border-t border-white/10 pt-4">
+                    <p className="mb-2 text-sm font-semibold text-white/80">Feedback that keeps coming up</p>
+                    <ul className="list-disc space-y-1 pl-5 text-sm text-white/70">
+                      {data.interview.improvementAreas.map((i) => (
+                        <li key={i.text}>
+                          {i.text} <span className="text-white/40">×{i.count}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
-              </div>
-            </>
-          )}
-        </section>
+              </section>
+            )}
+          </>
+        )}
 
-        {/* Chatbot Section */}
         <Chatbot />
       </div>
     </div>

@@ -55,7 +55,11 @@ const objectId = (s: any) => new mongoose.Types.ObjectId(String(s));
 const selectQuestions = async (
   userId: mongoose.Types.ObjectId,
   filter: Record<string, any>,
-  needed: number
+  needed: number,
+  // Topic-wise practice must only ever contain that topic, so when its unseen
+  // pool runs low it reuses the user's oldest-seen questions of the SAME topic
+  // instead of borrowing other topics from the category.
+  strictTopic = false
 ): Promise<{ questions: any[]; repeated: boolean }> => {
   if (needed <= 0) return { questions: [], repeated: false };
   const seenIds = await AptitudeQuestionHistory.distinct("question", { user: userId });
@@ -66,7 +70,7 @@ const selectQuestions = async (
     isActive: true,
   }).lean();
 
-  if (base.length < needed) {
+  if (base.length < needed && !strictTopic) {
     const relaxed = { ...filter };
     delete relaxed.topic;
     const wider: any[] = await AptitudeQuestion.find({
@@ -82,7 +86,7 @@ const selectQuestions = async (
   if (base.length < needed) {
     const oldHistory: any[] = await AptitudeQuestionHistory.find({ user: userId })
       .sort({ shownAt: 1 })
-      .select("question")
+      .select("question shownAt")
       .lean();
     const oldIds = oldHistory.map((h) => h.question);
     if (oldIds.length) {
@@ -244,6 +248,7 @@ const resolveStartMeta = async (body: any) => {
     difficulty: body.difficulty || "",
     curatedIds: null,
     distribution: null,
+    strictTopic: !!body.topic,
   };
 };
 
@@ -278,7 +283,7 @@ const prepareSession = async (
       if (rep) repeated = true;
     }
   } else {
-    const { questions, repeated: rep } = await selectQuestions(user._id, meta.filter, meta.count);
+    const { questions, repeated: rep } = await selectQuestions(user._id, meta.filter, meta.count, !!meta.strictTopic);
     docs = questions;
     repeated = rep;
   }
@@ -296,6 +301,10 @@ const prepareSession = async (
 export const startAptitudeTest = asyncHandler(async (req: AuthRequest, res: Response) => {
   const meta = await resolveStartMeta(req.body || {});
   const { prepared, poolSize } = await prepareSession(req.user, meta);
+
+  if (prepared.length === 0) {
+    throw new AppError("No questions are available for this selection yet.", 404);
+  }
 
   const attempt = await AptitudeAttempt.create({
     user: req.user._id,
@@ -383,12 +392,14 @@ export const submitAptitudeTest = asyncHandler(async (req: AuthRequest, res: Res
   if (!attempt) throw new AppError("Attempt not found", 404);
 
   if (attempt.status === "completed") {
-    return res.json({ status: "success", data: buildResultResponse(attempt, attempt.questions || []) });
+    const review = await buildCompletedReview(attempt, req.user._id);
+    return res.json({ status: "success", data: buildResultResponse(attempt, review) });
   }
 
   const answers: Record<string, number> = req.body.answers || {};
   const timeTaken = Number(req.body.timeTaken || 0);
   const tabWarnings = Number(req.body.tabWarnings || 0);
+  const terminationReason = String(req.body.terminationReason || "");
 
   const byId = new Map<string, any>(attempt.questions.map((s: any) => [s.question.toString(), s]));
   const docs: any[] = await AptitudeQuestion.find({
@@ -410,6 +421,7 @@ export const submitAptitudeTest = asyncHandler(async (req: AuthRequest, res: Res
       marks: scored.marks,
       timeTaken,
       tabWarnings,
+      terminationReason,
       completedAt: new Date(),
       categoryScores: scored.categoryScores,
       answers: scored.review.map((r: any) => ({
@@ -427,7 +439,7 @@ export const submitAptitudeTest = asyncHandler(async (req: AuthRequest, res: Res
 
   res.status(200).json({
     status: "success",
-    data: buildResultResponse(attemptDoc, attempt.questions || [], { answers, timeTaken, tabWarnings }),
+    data: buildResultResponse(attemptDoc, scored.review, { timeTaken, tabWarnings }),
   });
 });
 
@@ -478,26 +490,46 @@ const scoreSession = (attempt: any, answers: Record<string, number>, byId: Map<s
   return { correct, wrong, unattempted, score, accuracy, marks, totalQuestions, categoryScores, review };
 };
 
-const buildResultResponse = (attempt: any, snapshots: any[], extra?: { answers: Record<string, number>; timeTaken: number; tabWarnings: number }) => {
-  const answers = extra?.answers || {};
-  const byId = new Map(snapshots.map((s: any) => [s.question.toString(), s]));
-  const review = snapshots.map((s: any) => {
-    const selected = answers[s.question.toString()];
+/**
+ * Rebuilds the full per-question review (question text, options as served, the
+ * student's answer, the correct answer and the explanation) for an attempt that
+ * has already been scored - used when a completed attempt is submitted again.
+ */
+const buildCompletedReview = async (attempt: any, userId: mongoose.Types.ObjectId) => {
+  const snapshots: any[] = attempt.questions || [];
+  const docs: any[] = await AptitudeQuestion.find({
+    _id: { $in: snapshots.map((s: any) => s.question) },
+  }).lean();
+  const fullById = new Map<string, any>(docs.map((d: any) => [d._id.toString(), d]));
+  const historyRows: any[] = await AptitudeQuestionHistory.find({ user: userId, attempt: attempt._id }).lean();
+  const historyById = new Map<string, any>(historyRows.map((h: any) => [h.question.toString(), h]));
+
+  return snapshots.map((s: any) => {
+    const id = s.question.toString();
+    const fullQ = fullById.get(id) || {};
+    const h = historyById.get(id);
+    const selected = h?.answered ? h.selected : undefined;
     return {
-      id: s.question.toString(),
-      question: "",
-      category: "",
-      topic: "",
-      difficulty: "",
+      id,
+      question: fullQ.question || "",
+      category: fullQ.category || "",
+      topic: fullQ.topic || "",
+      difficulty: fullQ.difficulty || "",
       options: s.servedOptions,
-      selected: selected === undefined ? undefined : selected,
+      selected,
       correct: s.servedCorrect,
       isCorrect: selected !== undefined && selected === s.servedCorrect,
-      explanation: "",
+      explanation: fullQ.explanation || "",
     };
   });
+};
+
+/** `review` is the full per-question review (see scoreSession / buildCompletedReview). */
+const buildResultResponse = (attempt: any, review: any[], extra?: { timeTaken: number; tabWarnings: number }) => {
   return {
     attemptId: attempt._id,
+    title: attempt.title || "",
+    testType: attempt.testType || "",
     totalQuestions: attempt.totalQuestions,
     correctAnswers: attempt.correctAnswers,
     wrongAnswers: attempt.wrongAnswers,
@@ -511,6 +543,7 @@ const buildResultResponse = (attempt: any, snapshots: any[], extra?: { answers: 
     passed: (attempt.score ?? 0) >= (attempt.passingScore ?? 50),
     timeTaken: extra?.timeTaken ?? attempt.timeTaken,
     tabWarnings: extra?.tabWarnings ?? attempt.tabWarnings,
+    terminationReason: attempt.terminationReason || "",
     categoryScores: attempt.categoryScores || [],
     questions: review,
   };
@@ -520,17 +553,40 @@ const markHistoryAnswered = async (
   userId: mongoose.Types.ObjectId,
   attemptId: mongoose.Types.ObjectId,
   answers: Record<string, number>,
-  byId: Map<string, any>
+  /**
+   * question id → what was served. The session flow passes the attempt's
+   * question snapshots ({ servedCorrect, ... }); the fetch-then-submit flows
+   * (practice / configured tests) pass the served-correct index directly.
+   */
+  byId: Map<string, any>,
+  testType = ""
 ) => {
   const entries = Object.entries(answers);
   if (!entries.length) return;
   for (const [qid, selected] of entries) {
     const snap = byId.get(qid);
-    if (!snap) continue;
-    await AptitudeQuestionHistory.updateMany(
-      { user: userId, attempt: attemptId, question: objectId(qid) },
-      { answered: true, selected, correct: selected === snap.servedCorrect }
+    const servedCorrect: number | undefined = typeof snap === "number" ? snap : snap?.servedCorrect;
+    if (servedCorrect === undefined) continue;
+
+    const patch = { attempt: attemptId, answered: true, selected, correct: selected === servedCorrect };
+    // Rows are written when questions are served. In the session flow they already
+    // carry this attempt's id; in the fetch-then-submit flows the attempt only exists
+    // at submit time, so the rows are unlinked (attempt: null) and must be claimed here.
+    const claimed = await AptitudeQuestionHistory.findOneAndUpdate(
+      { user: userId, question: objectId(qid), answered: false, $or: [{ attempt: attemptId }, { attempt: null }] },
+      patch,
+      { sort: { shownAt: -1 } }
     );
+    if (!claimed) {
+      // Practice never logs "shown" rows, so record the answer itself.
+      await AptitudeQuestionHistory.create({
+        user: userId,
+        question: objectId(qid),
+        testType,
+        servedCorrect,
+        ...patch,
+      });
+    }
   }
 };
 
@@ -816,6 +872,20 @@ export const getAptitudeTopics = asyncHandler(async (_req: Request, res: Respons
   res.json({ status: "success", data: grouped });
 });
 
+/** Companies that have tagged questions, with how many active questions each has. */
+export const getAptitudeCompanies = asyncHandler(async (_req: Request, res: Response) => {
+  const rows = await AptitudeQuestion.aggregate([
+    { $match: { isActive: true } },
+    { $unwind: "$companyTags" },
+    { $group: { _id: "$companyTags.name", questionCount: { $sum: 1 } } },
+    { $sort: { questionCount: -1, _id: 1 } },
+  ]);
+  res.json({
+    status: "success",
+    data: rows.map((r: any) => ({ name: r._id, questionCount: r.questionCount })),
+  });
+});
+
 export const getAptitudeTests = asyncHandler(async (_req: Request, res: Response) => {
   const tests = await AptitudeTestConfig.find({ isActive: true })
     .sort({ createdAt: -1 })
@@ -904,6 +974,7 @@ export const submitTest = asyncHandler(async (req: AuthRequest, res: Response) =
   const answers: Record<string, number> = req.body.answers || {};
   const timeTaken = Number(req.body.timeTaken || 0);
   const tabWarnings = Number(req.body.tabWarnings || 0);
+  const terminationReason = String(req.body.terminationReason || "");
 
   const { docs, servedCorrectById } = await loadMappingForAnswers(req.user._id, answers);
   const attempt: any = {
@@ -944,12 +1015,13 @@ export const submitTest = asyncHandler(async (req: AuthRequest, res: Response) =
     marks: result.marks,
     timeTaken,
     tabWarnings,
+    terminationReason,
     completedAt: new Date(),
     categoryScores: result.categoryScores,
     answers: result.review.map((r: any) => ({ question: r.question, selected: r.selected, correct: r.correct, isCorrect: r.isCorrect, category: r.category })),
   });
 
-  await markHistoryAnswered(req.user._id, created._id, answers, servedCorrectById);
+  await markHistoryAnswered(req.user._id, created._id, answers, servedCorrectById, test.testType || "mock");
 
   res.status(201).json({
     status: "success",
@@ -967,6 +1039,7 @@ export const submitTest = asyncHandler(async (req: AuthRequest, res: Response) =
       passingScore: test.passingScore,
       timeTaken,
       tabWarnings,
+      terminationReason,
       categoryScores: result.categoryScores,
       questions: result.review,
     },
@@ -999,6 +1072,7 @@ export const submitPractice = asyncHandler(async (req: AuthRequest, res: Respons
   const answers: Record<string, number> = req.body.answers || {};
   const timeTaken = Number(req.body.timeTaken || 0);
   const tabWarnings = Number(req.body.tabWarnings || 0);
+  const terminationReason = String(req.body.terminationReason || "");
   const marksPerQuestion = Number(req.body.marksPerQuestion || 1);
   const negativeMarksPerQuestion = Number(req.body.negativeMarksPerQuestion || 0);
 
@@ -1041,12 +1115,13 @@ export const submitPractice = asyncHandler(async (req: AuthRequest, res: Respons
     marks: result.marks,
     timeTaken,
     tabWarnings,
+    terminationReason,
     completedAt: new Date(),
     categoryScores: result.categoryScores,
     answers: result.review.map((r: any) => ({ question: r.question, selected: r.selected, correct: r.correct, isCorrect: r.isCorrect, category: r.category })),
   });
 
-  await markHistoryAnswered(req.user._id, created._id, answers, servedCorrectById);
+  await markHistoryAnswered(req.user._id, created._id, answers, servedCorrectById, "practice");
 
   res.status(201).json({
     status: "success",
@@ -1062,6 +1137,7 @@ export const submitPractice = asyncHandler(async (req: AuthRequest, res: Respons
       negativeMarksPerQuestion,
       timeTaken,
       tabWarnings,
+      terminationReason,
       categoryScores: result.categoryScores,
       questions: result.review,
     },

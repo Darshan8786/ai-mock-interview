@@ -8,10 +8,6 @@ class Settings:
     PORT: int = int(os.getenv("PROCTOR_PORT", "8001"))
     AI_SERVICE_KEY: str = os.getenv("AI_SERVICE_KEY", "mindprep-ai-key-2026")
 
-    NIM_API_URL: str = os.getenv("NIM_API_URL", "https://integrate.api.nvidia.com/v1")
-    NIM_API_KEY: str = os.getenv("NIM_API_KEY", "")
-    NIM_MODEL: str = os.getenv("NIM_MODEL", "meta/llama-3.1-405b-instruct")
-
     RIVA_ENABLED: bool = os.getenv("RIVA_ENABLED", "false").lower() == "true"
     RIVA_SERVER: str = os.getenv("RIVA_SERVER", "localhost:50051")
 

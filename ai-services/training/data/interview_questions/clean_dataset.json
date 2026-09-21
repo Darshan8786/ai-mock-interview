@@ -1,0 +1,6022 @@
+[
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a parameter and an argument in a Python function?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you define a function with default parameter values in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the return statement do in a Python function?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you use a lambda function in Python, and when is it useful?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a normal function and a lambda function in Python."
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What are *args and **kwargs used for in Python function definitions?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between positional arguments and keyword arguments."
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between mutable and immutable default arguments in Python functions."
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Python closures work and give an example use case."
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is a decorator in Python, and how would you write one that logs a function's execution time?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the pitfall of using a mutable default argument in a Python function."
+  },
+  {
+    "skill": "Python",
+    "topic": "Functions",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement a simple memoization decorator for a Python function?"
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a class and an object in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you create a constructor in a Python class?"
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of the self keyword in Python classes?"
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is inheritance in Python and how do you implement it?"
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between instance variables and class variables in Python."
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is method overriding in Python, and how is it implemented?"
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the concept of encapsulation in Python and how it is enforced by convention."
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a classmethod and a staticmethod in Python."
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain Python's Method Resolution Order (MRO) and how it applies to multiple inheritance."
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are metaclasses in Python and when would you use one?"
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between __new__ and __init__ in Python."
+  },
+  {
+    "skill": "Python",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Python's __slots__ can be used to optimize memory usage in a class."
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a list and a tuple in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you remove duplicate elements from a Python list?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a dictionary in Python and how do you access its values?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you check if a key exists in a Python dictionary?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the time complexity of common operations on a Python list versus a dictionary."
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a set in Python, and when would you use it over a list?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "How does Python implement dictionaries internally to achieve fast lookups?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how Python's list comprehension differs from a generator expression."
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Python's list implementation handles dynamic resizing internally."
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between deepcopy and copy when working with nested data structures in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement an LRU cache using Python's built-in data structures?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Data Structures",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement a custom hashable class to use as a dictionary key in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of a try-except block in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you raise a custom exception in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the finally block do in Python exception handling?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between an error and an exception in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between catching a specific exception versus a bare except clause."
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "How do you create a custom exception class in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between except Exception as e and a bare except?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "How do you chain exceptions in Python using the 'raise ... from' syntax?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how exception chaining works in Python using raise ... from ..."
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you design a robust error-handling strategy for a Python app calling multiple external services?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between exceptions and errors in Python's exception hierarchy."
+  },
+  {
+    "skill": "Python",
+    "topic": "Exception Handling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how context managers relate to exception handling and how to write one using the 'with' statement."
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a generator in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What keyword is used to create a generator function in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the benefit of using a generator instead of returning a list?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the @staticmethod decorator do in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how the yield keyword changes the behavior of a function in Python."
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a decorator in Python and how do you apply one to a function?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between an iterator and a generator in Python."
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you write a decorator that accepts its own arguments in Python?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how generator expressions differ from list comprehensions in terms of memory usage."
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement a context manager using a generator and the contextmanager decorator?"
+  },
+  {
+    "skill": "Python",
+    "topic": "Decorators and Generators",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a coroutine and a generator in Python."
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a class and an object in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a constructor in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the this keyword used for in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of the 'this' keyword in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between method overloading and method overriding in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between an abstract class and an interface in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain encapsulation in Java with an example."
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between an interface and an abstract class in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Java's garbage collector interacts with object references, and what causes a memory leak despite garbage collection."
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between composition and inheritance in Java, and why might you prefer composition?"
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Java achieves runtime polymorphism internally using the virtual method table concept."
+  },
+  {
+    "skill": "Java",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Java achieves runtime polymorphism through dynamic method dispatch."
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between an ArrayList and an array in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the Java Collections Framework?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you iterate over a HashMap in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between an ArrayList and a LinkedList in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between HashMap, LinkedHashMap, and TreeMap in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between ArrayList and LinkedList in terms of performance?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between Comparable and Comparator in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between HashMap and TreeMap in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how HashMap resolves hash collisions internally in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between fail-fast and fail-safe iterators in Java collections?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Collections",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how ConcurrentHashMap achieves thread safety without locking the entire map."
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between checked and unchecked exceptions in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of the finally block in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you create a custom exception in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between throw and throws in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the exception hierarchy in Java starting from Throwable."
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What happens if an exception is thrown inside a finally block in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain try-with-resources and why it is preferred for handling closeable resources."
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a checked and an unchecked exception in Java with examples."
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the performance implications of using exceptions for control flow in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you design a custom exception hierarchy for a multi-module Java application?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between exception chaining and suppressed exceptions in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "Exception Handling",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you design a custom exception hierarchy for a banking application in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a thread in Java and how do you create one?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between Runnable and Thread in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the synchronized keyword do in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between wait() and sleep() in Java."
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a race condition and how does Java's synchronized keyword help prevent it?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the Java Executor framework used for?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the differences between synchronized blocks, ReentrantLock, and atomic variables in Java concurrency."
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "How does the Java Memory Model guarantee visibility of variables across threads?"
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how deadlocks can occur in Java and strategies to prevent them."
+  },
+  {
+    "skill": "Java",
+    "topic": "Multithreading",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the Java Memory Model ensures visibility of changes across threads."
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the JVM and what is its role in running Java programs?"
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between JDK, JRE, and JVM?"
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is garbage collection in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the Java Virtual Machine (JVM) and why is Java called platform-independent?"
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the stack and the heap in Java memory management."
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What are the different memory areas within the JVM?"
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between String, StringBuilder, and StringBuffer in Java?"
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the stack and heap memory in the JVM."
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the Java garbage collector distinguishes between young and old generation objects."
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is a memory leak in Java despite having automatic garbage collection, and how can it occur?"
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain class loading in the JVM and the role of the ClassLoader hierarchy."
+  },
+  {
+    "skill": "Java",
+    "topic": "JVM and Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the G1 garbage collector differs from the older CMS collector in the JVM."
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a pointer in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you declare a pointer variable in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the & operator do in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a pointer in C and how do you declare one?"
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a pointer to a constant and a constant pointer in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a NULL pointer, and why is it used?"
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain pointer arithmetic with an example."
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a pointer to an array and an array of pointers in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is a dangling pointer, and how can it be avoided?"
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how function pointers work in C and give a use case."
+  },
+  {
+    "skill": "C",
+    "topic": "Pointers",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how function pointers can be used to implement callbacks in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between malloc and calloc in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the free() function do in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a memory leak in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between stack and heap memory allocation in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between stack memory and heap memory in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What happens if you forget to free dynamically allocated memory in a long-running C program?"
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a memory leak in C, and how can you detect one?"
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how double free errors occur in C and how to prevent them."
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you detect memory leaks in a C program?"
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how memory fragmentation occurs with repeated malloc/free calls."
+  },
+  {
+    "skill": "C",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a custom memory pool allocator could improve performance in a C application."
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a structure in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a structure and a union in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you access a structure member using a pointer in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you access members of a structure in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain structure padding and alignment in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a nested structure in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the use of typedef with structures in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how structure padding affects the size of a struct in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would implement a linked list using structures and pointers in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "How does the compiler decide the size of a union versus a structure?"
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how bit-fields work inside a structure in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Structures and Unions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would implement a tagged union in C to safely store multiple data types."
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How is a string represented in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between an array and a string in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you find the length of a string in C without using strlen?"
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a 2D array and an array of pointers in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between passing an array by value and by reference in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you reverse a string in C without using a library function?"
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between an array of pointers and a pointer to an array in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how multidimensional arrays are stored in memory in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement your own version of strcpy in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the risks of buffer overflow with fixed-size character arrays in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Arrays and Strings",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement your own version of strcpy(), and what edge cases must you handle?"
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the role of the C preprocessor?"
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a macro in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between #define and const in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of the #include directive in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a macro and a function in C."
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What are header guards and why are they needed in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the compilation stages of a C program from source code to executable."
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the pitfalls of using macros with side-effect arguments in C, and how parentheses help avoid them."
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between static linking and dynamic linking in C?"
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how conditional compilation works using #ifdef and #ifndef."
+  },
+  {
+    "skill": "C",
+    "topic": "Preprocessor and Compilation",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the four stages of C compilation, from preprocessing to linking."
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a class and a struct in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a constructor and a destructor in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of the this pointer in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a constructor in C++ and when is it called?"
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between function overloading and function overriding in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a virtual function in C++ and why is it used?"
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between public, private, and protected inheritance."
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between shallow copy and deep copy in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how virtual function dispatch works internally using a vtable in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the diamond problem in multiple inheritance, and how does C++ resolve it with virtual inheritance?"
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the Rule of Three/Five in modern C++ and why it matters."
+  },
+  {
+    "skill": "C++",
+    "topic": "OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how virtual destructors prevent memory leaks in C++ class hierarchies."
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the STL in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a vector and an array in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an iterator in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between std::vector and std::list in terms of performance."
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between std::map and std::unordered_map?"
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between std::set and std::multiset?"
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between std::map and std::unordered_map in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how std::unordered_map achieves average O(1) lookup internally."
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the time complexity of inserting into the middle of a std::vector versus a std::list, and why?"
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain move semantics and how std::move improves STL container performance."
+  },
+  {
+    "skill": "C++",
+    "topic": "STL",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how iterator invalidation can occur when modifying a std::vector in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the new and delete operator do in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between the new and delete operators in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a raw pointer and a smart pointer in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between std::unique_ptr and std::shared_ptr?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is RAII in C++ and why is it important?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a unique_ptr and a shared_ptr in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how std::shared_ptr manages reference counting internally, and what causes a circular reference issue."
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "How does std::weak_ptr solve the circular reference problem in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how custom deleters work with smart pointers in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a circular reference between two shared_ptr objects can cause a memory leak."
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a template in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a function template and a class template?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Why are templates used in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a function template in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain template specialization in C++ with an example."
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between templates and generics conceptually?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how the compiler handles template instantiation in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between function templates and class templates in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain SFINAE in C++ templates and a practical use case."
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are variadic templates in C++ and when would you use them?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Templates",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between compile-time polymorphism using templates and runtime polymorphism using virtual functions."
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is operator overloading in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Can you overload the + operator for a custom class in C++? How?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between overloading == and < for a class?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Why would you overload the + operator for a custom class in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between overloading an operator as a member function versus a friend function."
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Why can't you overload certain operators like :: or . in C++?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how overloading the assignment operator helps prevent shallow copy issues."
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how overloading the << and >> operators works for custom stream I/O in C++."
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are the pitfalls of overloading the && and || operators regarding short-circuit evaluation?"
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how move assignment operator overloading improves performance for classes managing dynamic resources."
+  },
+  {
+    "skill": "C++",
+    "topic": "Operator Overloading",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the pitfalls of overloading the assignment operator without following the rule of three."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a closure in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between var, let, and const?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is variable hoisting in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how closures are used to create private variables in JavaScript."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between function scope and block scope in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the concept of the temporal dead zone in JavaScript."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how closures can lead to memory leaks in JavaScript if not handled carefully."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you use closures to implement a memoization function in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain lexical scoping and how it affects closures created inside loops."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Closures and Scope",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain a common pitfall with closures inside a loop in JavaScript and how to fix it."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a callback function in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a Promise in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the async keyword do in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between Promise.all and Promise.race."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is callback hell, and how do Promises help solve it?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how async/await works under the hood with Promises."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between Promise.all and Promise.race in JavaScript."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the JavaScript event loop and how the call stack, microtask queue, and macrotask queue interact."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "What is the difference between Promise.allSettled and Promise.all in error handling scenarios?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement a simple debounce function using closures and timers in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Asynchronous JavaScript",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the JavaScript event loop handles microtasks versus macrotasks."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a prototype in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you create an object in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between == and === in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a constructor function in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain prototypal inheritance in JavaScript."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between a class and a constructor function in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What does the Object.create() method do in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how prototypal inheritance differs from classical inheritance."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the prototype chain lookup process when accessing a property on a JavaScript object."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "How does JavaScript's class syntax translate to the underlying prototype-based model?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between Object.freeze() and Object.seal() in JavaScript."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "Prototypes and OOP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the 'class' keyword in JavaScript relates to the underlying prototype chain."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the DOM in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you select an element from the DOM using JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an event listener in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How do you select an HTML element using JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain event bubbling and event capturing in the DOM."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is event delegation and why is it useful?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between preventDefault() and stopPropagation()?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between event bubbling and event capturing."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the browser's rendering pipeline is affected by frequent DOM manipulations."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you optimize a page that adds thousands of event listeners to individual DOM elements?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between synthetic events, as in React, and native DOM events."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "DOM and Events",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how event delegation improves performance when handling events on many child elements."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What are template literals in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is destructuring in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the spread operator used for in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is destructuring assignment in JavaScript?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the spread operator and the rest parameter in JavaScript."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What are arrow functions, and how do they handle this differently from regular functions?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a JavaScript module, and what is the difference between default and named exports?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between map() and forEach() in JavaScript."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how arrow functions' lexical this binding can cause bugs when used as object methods."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are generators and iterators in ES6, and how do they relate to the for...of loop?"
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain optional chaining and nullish coalescing, and how they differ from traditional falsy checks."
+  },
+  {
+    "skill": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how optional chaining and nullish coalescing simplify handling of undefined values."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a JOIN in SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between INNER JOIN and OUTER JOIN?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does a CROSS JOIN do in SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of a JOIN clause in SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between LEFT JOIN and RIGHT JOIN with an example."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a self-join, and when would you use one?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you write a query to find rows that exist in one table but not another using joins?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a self join and a cross join in SQL."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the query optimizer decides between a nested loop join, hash join, and merge join."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you optimize a query with multiple joins across large tables?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a natural join and joining explicitly on a condition, and why natural joins are risky."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Joins",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would write a query to find rows in one table but not another using joins."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the GROUP BY clause do in SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between COUNT(*) and COUNT(column_name)?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What are aggregate functions in SQL? Name a few."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the COUNT() function do in SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between WHERE and HAVING clauses in SQL."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you find the second-highest salary from an employee table using SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how GROUP BY interacts with NULL values in SQL."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between window functions and GROUP BY aggregation in SQL."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you compute a running total using SQL window functions?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how RANK(), DENSE_RANK(), and ROW_NUMBER() differ in SQL."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Aggregation and Grouping",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how window functions differ from GROUP BY aggregation in SQL."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a subquery in SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a subquery and a JOIN?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Can a subquery return multiple rows in SQL? Give an example clause where it's used."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a correlated and a non-correlated subquery."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between EXISTS and IN when used with subqueries?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you use a subquery to find employees earning more than the average salary?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the performance implications of correlated subqueries on large datasets."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you rewrite a correlated subquery as a JOIN to improve performance?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Common Table Expressions can replace complex nested subqueries for readability."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain when you would prefer a subquery over a JOIN for performance reasons."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an index in a database?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a primary key, and does it automatically create an index?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the trade-off of adding too many indexes to a table?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an index in SQL and why is it used?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a clustered index and a non-clustered index."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a composite index, and when would you use one?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "How does an index affect INSERT and UPDATE performance?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a B-tree index structure enables efficient range queries."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you use EXPLAIN ANALYZE to diagnose a slow SQL query?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain covering indexes and how they can eliminate the need for a table lookup."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Indexing and Performance",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a composite index's column order affects query performance in SQL."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a transaction in SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does COMMIT and ROLLBACK do in SQL?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What are the ACID properties of a transaction?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between transaction isolation levels Read Committed and Repeatable Read."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a dirty read, and which isolation level prevents it?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a deadlock in the context of database transactions?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between COMMIT and ROLLBACK in SQL."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how two-phase locking ensures serializability in database transactions."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between optimistic and pessimistic concurrency control?"
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how MVCC allows readers and writers to avoid blocking each other."
+  },
+  {
+    "skill": "SQL",
+    "topic": "Transactions",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the READ COMMITTED and SERIALIZABLE isolation levels."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is normalization in a database?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between 1NF and 2NF?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Why do we normalize database tables?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is redundancy in a database, and why is it a problem?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between 2NF and 3NF with an example."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a partial dependency, and which normal form removes it?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is denormalization, and when might you use it?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between 2NF and 3NF in database normalization."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain Boyce-Codd Normal Form and how it differs from 3NF."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are the trade-offs between normalization and query performance in a high-read system?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain multivalued dependency and its role in 4NF."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Normalization",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "Explain a scenario where denormalization would be preferred over full normalization."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an Entity-Relationship diagram?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between an entity and an attribute?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a relationship in an ER diagram?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an entity in an ER diagram?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between one-to-many and many-to-many relationships in ER modeling."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a weak entity, and how is it represented in an ER diagram?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "How do you resolve a many-to-many relationship when converting an ER diagram to relational tables?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a weak entity and a strong entity in ER modeling."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between generalization and specialization in ER modeling."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you model a recursive relationship, such as an employee managing another employee, in an ER diagram?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how aggregation is used in ER modeling to represent a relationship between relationships."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "ER Modeling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would model a many-to-many relationship and translate it to relational tables."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is concurrency control in a database?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What problem does locking solve in a database?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a shared lock versus an exclusive lock?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the 'C' in ACID stand for, and what does it guarantee?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the lost update problem in database concurrency."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between lock-based and timestamp-based concurrency control?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the phantom read problem and which isolation level prevents it."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between optimistic and pessimistic concurrency control."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a database detects and resolves deadlocks between transactions."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between strict two-phase locking and basic two-phase locking?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how distributed transactions maintain consistency using the two-phase commit protocol."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Transactions and Concurrency",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how two-phase locking prevents conflicting transactions from causing inconsistency."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a database index used for?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a primary index and a secondary index?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a heap file and a sorted file organization?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Why can too many indexes slow down write operations in a database?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a clustered and a non-clustered index at the storage level."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a hash index, and when is it preferable to a B-tree index?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how a full table scan differs from an index scan."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how a B-tree index structure supports efficient range queries."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how B+ trees are used for database indexing and why they are preferred over binary search trees."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the impact of index fragmentation on database performance, and how is it resolved?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how database buffer pools and page caching interact with indexing to improve performance."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Indexing and Storage",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the tradeoffs between a heap-organized table and a clustered index-organized table."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a primary key in a database table?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a foreign key, and what does it enforce?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a unique key and a primary key?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a unique key, and how does it differ from a primary key?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a candidate key and a super key."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a composite key, and when would you use one?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain referential integrity and how foreign key constraints enforce it."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain what a composite key is and when you would use one."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the cascading actions CASCADE, SET NULL, and RESTRICT on foreign key constraints and when to use each."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you design keys for a table with no natural unique attribute?"
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the trade-offs of using a surrogate key versus a natural key as a primary key."
+  },
+  {
+    "skill": "DBMS",
+    "topic": "Keys and Constraints",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a self-referencing foreign key can model a hierarchical relationship in a table."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is encapsulation in object-oriented programming?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is abstraction in OOP, and how does it differ from encapsulation?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Why do we use access modifiers like private and public in OOP?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of access modifiers like private and public in OOP?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how encapsulation improves maintainability of a codebase."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between abstraction achieved through interfaces versus abstract classes?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Give an example of how abstraction hides implementation complexity from the user of a class."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how abstraction differs from encapsulation with a real-world example."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how encapsulation and abstraction work together to support the open-closed principle."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are the risks of breaking encapsulation, for example by exposing mutable internal collections?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you refactor a class with public fields and scattered logic to properly encapsulate its state?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Encapsulation and Abstraction",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how encapsulation supports the open/closed principle in object-oriented design."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is inheritance in OOP?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is polymorphism in OOP?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a parent class and a child class?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is method overriding in object-oriented programming?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between compile-time and runtime polymorphism."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between 'is-a' and 'has-a' relationships in OOP design?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain method overriding and how it enables polymorphism."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain why favoring composition over inheritance often leads to more flexible designs."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the Liskov Substitution Principle, and how does violating it break polymorphism?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how multiple inheritance can cause the diamond problem, and how different languages address it."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Inheritance and Polymorphism",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain why favoring composition over inheritance is often recommended in OOP design."
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the S in SOLID stand for, and what does it mean?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the Single Responsibility Principle?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Why are design principles like SOLID important in software development?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the 'S' in SOLID stand for?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the Open-Closed Principle with an example."
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the Dependency Inversion Principle, and how does it reduce coupling?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the Interface Segregation Principle and why large interfaces are discouraged."
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the Liskov Substitution Principle with an example violation."
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you refactor a class that violates the Single Responsibility Principle by handling both business logic and logging?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the Dependency Inversion Principle enables easier unit testing through mocking."
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Give an example of a design that violates the Liskov Substitution Principle and explain how to fix it."
+  },
+  {
+    "skill": "OOP",
+    "topic": "SOLID and Design Principles",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how violating the Dependency Inversion Principle can make a codebase harder to test."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an interface in object-oriented programming?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an abstract class?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Can you create an instance of an abstract class directly?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Can an abstract class have a constructor? Explain why or why not."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the key differences between an interface and an abstract class."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "When would you choose an interface over an abstract class in a design?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Can an abstract class have both implemented and unimplemented methods? Explain."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "Explain a scenario where you would choose an interface over an abstract class."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how default methods in interfaces blur the line between interfaces and abstract classes."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you design a plugin system using interfaces to allow multiple independent implementations?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the diamond problem in the context of multiple interface inheritance and how it's resolved."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Interfaces vs Abstract Classes",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how default methods in interfaces changed the interface-vs-abstract-class tradeoff."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a design pattern in software engineering?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the Singleton design pattern used for?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the Factory design pattern used for?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What problem does the Singleton design pattern solve?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the Factory pattern and the Abstract Factory pattern."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What problem does the Observer design pattern solve?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the Strategy design pattern with a real-world example."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the Factory and Abstract Factory design patterns."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the drawbacks of the Singleton pattern, particularly in multithreaded or testable systems."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you use the Decorator pattern to add behavior to an object without modifying its class?"
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the Adapter and Facade design patterns."
+  },
+  {
+    "skill": "OOP",
+    "topic": "Design Patterns Basics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the Observer design pattern is used to implement an event-driven system."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between an array and a linked list?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a singly linked list?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the time complexity of accessing an element in an array by index?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the time complexity of accessing an element by index in an array versus a linked list?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between a singly linked list and a doubly linked list."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you reverse a singly linked list?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the time complexity of inserting an element at the beginning of an array versus a linked list?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how a doubly linked list differs from a singly linked list."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you detect and remove a cycle in a linked list?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "Explain how a circular linked list works and a scenario where it's useful."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you merge two sorted linked lists into one sorted linked list?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Arrays and Linked Lists",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would detect and remove a cycle in a linked list."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a stack, and what does LIFO mean?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a queue, and what does FIFO mean?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Name a real-world example each of a stack and a queue."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Give a real-world example of when you would use a queue instead of a stack."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you implement a queue using two stacks?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a circular queue, and why is it used over a simple queue?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how a stack is used to check for balanced parentheses in an expression."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how you would implement a queue using two stacks."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you design a stack that supports retrieving the minimum element in O(1) time?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a priority queue differs from a regular queue and how it's typically implemented."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement an LRU cache using a combination of a queue and a hash map?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Stacks and Queues",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a circular buffer can be used to implement a fixed-size queue efficiently."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a tree data structure?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a binary tree?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a binary tree and a binary search tree?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain in-order, pre-order, and post-order tree traversal."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between a balanced and an unbalanced binary search tree?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the height of a binary tree, and how do you calculate it?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between in-order, pre-order, and post-order tree traversal."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how an AVL tree maintains balance after insertions and deletions."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you find the lowest common ancestor of two nodes in a binary tree?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a B-tree differs from a binary search tree and why it's used in databases."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Trees",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a self-balancing tree like an AVL tree maintains O(log n) operations."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a hash table?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a hash function?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a hash collision?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a hash function, and what makes a good one?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between chaining and open addressing for handling hash collisions."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the average time complexity of insert, delete, and search in a hash table?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What makes a good hash function?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between separate chaining and open addressing for collision handling."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how load factor affects hash table performance and when rehashing occurs."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you design a hash map that also supports O(1) retrieval of a random key?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how consistent hashing works and why it's used in distributed systems."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Hashing",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a hash table's load factor affects when it should be resized."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a graph data structure?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a directed and an undirected graph?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between representing a graph using an adjacency matrix versus an adjacency list?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between BFS and DFS traversal of a graph."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a weighted graph, and when would you use one?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you detect a cycle in a directed graph?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between an adjacency list and an adjacency matrix representation."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Dijkstra's algorithm finds the shortest path in a weighted graph."
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "What is topological sorting, and in what scenarios is it used?"
+  },
+  {
+    "skill": "Data Structures",
+    "topic": "Graphs",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between Prim's and Kruskal's algorithms for finding a minimum spanning tree."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between bubble sort and selection sort?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the time complexity of bubble sort in the worst case?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does it mean for a sorting algorithm to be stable?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how merge sort works and its time complexity."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how quicksort works and why its worst-case time complexity is O(n^2)."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between merge sort and quicksort in terms of space complexity?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain why quicksort's worst-case time complexity is O(n^2) despite average-case O(n log n)."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you choose a pivot in quicksort to avoid worst-case behavior on already sorted data?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how counting sort achieves linear time complexity and its limitations."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would sort a very large dataset that doesn't fit into memory."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Sorting",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a hybrid sorting algorithm like Timsort combines merge sort and insertion sort."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is linear search, and what is its time complexity?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is binary search, and what precondition does it require?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the time complexity of binary search?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What precondition must be true for binary search to work correctly?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you find the first and last occurrence of a target value in a sorted array using binary search?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how binary search can be applied to a rotated sorted array."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between binary search on an array versus a binary search tree?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how you would search for an element in a rotated sorted array."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you search for an element in a 2D matrix that is sorted row-wise and column-wise?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how exponential search works and when it's useful."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you find the k-th smallest element in an unsorted array efficiently?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Searching",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how exponential search combined with binary search improves performance on unbounded lists."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is recursion, and what is a base case?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between recursion and iteration?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What can happen if a recursive function has no base case?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a base case in recursion, and why is it necessary?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how recursion is used to solve the factorial and Fibonacci problems, and their time complexities."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is tail recursion, and how does it differ from regular recursion?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how the call stack is used during recursive function execution."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how backtracking differs from plain recursion using the N-Queens problem as an example."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how backtracking is used to solve the N-Queens problem."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you generate all permutations of a string using backtracking?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how memoization can optimize a naive recursive solution and give an example."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Recursion and Backtracking",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how memoization can be added to a recursive backtracking solution to avoid recomputation."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is dynamic programming?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between overlapping subproblems and optimal substructure?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is memoization?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What are overlapping subproblems in dynamic programming?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between top-down and bottom-up dynamic programming approaches."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Medium",
+    "question_type": "scenario",
+    "question": "How would you solve the 0/1 knapsack problem using dynamic programming?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how dynamic programming solves the longest common subsequence problem."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you optimize a dynamic programming solution from O(n^2) space to O(n) space?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how dynamic programming is used to solve the edit distance problem."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you solve the coin change problem to find the minimum number of coins, using dynamic programming?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Dynamic Programming",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would solve the 0/1 knapsack problem using dynamic programming."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a greedy algorithm?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How does a greedy algorithm differ from dynamic programming?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Give an example of a problem that can be solved using a greedy approach."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the greedy choice property in algorithm design?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how the greedy approach solves the activity selection problem."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Why does a greedy approach fail for the 0/1 knapsack problem but work for the fractional knapsack problem?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how Huffman coding uses a greedy algorithm for data compression."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain why a greedy approach works for coin change with standard currency but fails for arbitrary denominations."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain why Dijkstra's algorithm is considered a greedy algorithm and under what condition it fails."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you prove that a greedy algorithm produces an optimal solution for a given problem?"
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the greedy approach is used in Kruskal's algorithm and why it always produces a minimum spanning tree."
+  },
+  {
+    "skill": "Algorithms",
+    "topic": "Greedy Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how Huffman coding uses a greedy strategy to build an optimal prefix code."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the OSI model, and how many layers does it have?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the TCP/IP model, and how does it differ from the OSI model?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What layer does IP operate at in the OSI model?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "How many layers does the OSI model have, and can you name a few?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the role of the transport layer in the OSI model."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is encapsulation in the context of network protocol layers?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the data link layer and the network layer."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain which OSI layers correspond to the TCP/IP model's application layer."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how data flows through each OSI layer when a browser sends an HTTP request."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between a router and a switch in terms of the OSI layers they operate on?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how NAT works at the network layer."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "OSI and TCP/IP Model",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how encapsulation works as data moves down the OSI layers during transmission."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between TCP and UDP?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Is TCP connection-oriented or connectionless?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Give an example application that uses UDP and explain why."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Which protocol, TCP or UDP, guarantees delivery of packets?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the TCP three-way handshake process."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the sliding window mechanism in TCP used for?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Why is UDP preferred for real-time applications like video calls over TCP?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how TCP congestion control algorithms like slow start and congestion avoidance work."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the TCP four-way termination process, and what is the TIME_WAIT state for?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how TCP ensures reliable delivery despite packet loss and reordering."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "TCP vs UDP",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain why UDP is preferred over TCP for real-time video calls despite being unreliable."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between HTTP and HTTPS?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a status code in HTTP? Give an example of a 4xx and a 5xx code."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between GET and POST HTTP methods?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the 'S' in HTTPS stand for?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain what happens during an HTTPS/TLS handshake at a high level."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What are HTTP cookies, and how are they used to maintain session state?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the HTTP GET and POST methods."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how HTTPS achieves both encryption and authentication using certificates and public key cryptography."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is HTTP/2 multiplexing, and how does it solve the head-of-line blocking problem in HTTP/1.1?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a man-in-the-middle attack is prevented by proper TLS certificate validation."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "HTTP and HTTPS",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the TLS handshake establishes a secure connection in HTTPS."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is DNS, and what problem does it solve?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an IP address?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a public and a private IP address?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of DNS?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the DNS resolution process from typing a domain name to getting an IP address."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between a recursive and an iterative DNS query?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the purpose of a default gateway in a network?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how DNS caching and TTL values affect how quickly DNS changes propagate."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between static and dynamic routing protocols, and give an example of each?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a CDN uses DNS to route users to the nearest edge server."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "DNS and Routing",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how BGP is used for routing between different autonomous systems on the internet."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a firewall, and what does it do?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between authentication and authorization in networking?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a VPN, and why is it used?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of a firewall?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between symmetric and asymmetric encryption."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a DDoS attack, and how does it differ from a DoS attack?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the purpose of SSL/TLS certificates in network communication?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how public key infrastructure establishes trust between parties on the internet."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is an SQL injection attack, and how can it be prevented at the network/application boundary?"
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a reverse proxy can help mitigate certain types of network attacks."
+  },
+  {
+    "skill": "Computer Networks",
+    "topic": "Network Security",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a man-in-the-middle attack works and how HTTPS helps prevent it."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a process in an operating system?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a thread, and how does it differ from a process?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between multitasking and multithreading?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a process and a thread?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the different states a process can be in during its lifecycle."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is context switching, and why does it have overhead?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between a user-level thread and a kernel-level thread?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain what a context switch is and why it has overhead."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how inter-process communication mechanisms like pipes, shared memory, and message queues differ."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is a zombie process, and how does it differ from an orphan process?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the operating system schedules threads versus processes."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Process and Threads",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how inter-process communication mechanisms like pipes and shared memory differ."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is CPU scheduling, and why is it needed?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between preemptive and non-preemptive scheduling?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the First-Come-First-Served scheduling algorithm?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the goal of a CPU scheduling algorithm?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the Round Robin scheduling algorithm and the effect of time quantum size."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between Shortest Job First and Shortest Remaining Time First?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is priority scheduling, and what problem, starvation, can it cause?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how aging is used to prevent starvation in priority scheduling."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is a multilevel feedback queue scheduler, and how does it adapt to process behavior?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how real-time scheduling algorithms differ from general-purpose scheduling algorithms."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Scheduling",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the Completely Fair Scheduler (CFS) in Linux decides which process to run next."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is virtual memory?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is paging in an operating system?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between internal and external fragmentation?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is virtual memory, and why is it used?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how paging solves the problem of external fragmentation."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a page fault, and what happens when one occurs?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between paging and segmentation."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the working set model and how it relates to thrashing."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between the FIFO, LRU, and Optimal page replacement algorithms?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a translation lookaside buffer speeds up virtual-to-physical address translation."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a page replacement algorithm like LRU decides which page to evict."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a deadlock in an operating system?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What are the four necessary conditions for a deadlock to occur?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between deadlock prevention and deadlock avoidance?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how the Banker's algorithm is used for deadlock avoidance."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a resource allocation graph, and how is it used to detect deadlocks?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between deadlock detection and deadlock recovery."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how the Banker's algorithm helps avoid deadlocks."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how breaking the circular wait condition can prevent deadlocks."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Compare the trade-offs between deadlock prevention, avoidance, and detection-and-recovery strategies."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a distributed system detects deadlocks across multiple nodes."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "Deadlocks",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between deadlock prevention, avoidance, and detection strategies."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a file system, and what does it manage?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a file and a directory?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an inode in a file system?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an inode in a Unix-like file system?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between contiguous, linked, and indexed file allocation methods."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between a hard link and a symbolic link?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how journaling file systems help recover from crashes."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between hard links and symbolic links."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a file system uses indexed allocation with multi-level index blocks for large files."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between FAT, NTFS, and ext4 file systems in terms of design goals?"
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how file system caching and write-back policies affect data durability after a crash."
+  },
+  {
+    "skill": "Operating Systems",
+    "topic": "File Systems",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how journaling file systems help recover from crashes without corrupting data."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between supervised and unsupervised learning?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a labeled dataset?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Give an example each of a classification and a regression problem."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Give an example of a supervised learning task and an unsupervised learning task."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between classification and clustering."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is semi-supervised learning, and when is it useful?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between regression and classification evaluation metrics."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between classification and regression in supervised learning."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how self-supervised learning differs from traditional supervised learning."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are the challenges of applying supervised learning when labeled data is scarce?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how transfer learning can help when you have limited labeled data for a new task."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Supervised vs Unsupervised",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how semi-supervised learning combines labeled and unlabeled data."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is overfitting in machine learning?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of a validation set?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does it mean for a model to overfit the training data?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between L1 and L2 regularization."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is dropout, and how does it help prevent overfitting in neural networks?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the bias-variance tradeoff."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how dropout helps prevent overfitting in neural networks."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how early stopping acts as a form of regularization during training."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you diagnose whether a model is overfitting or underfitting using learning curves?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how cross-validation helps in selecting a model that generalizes well."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Overfitting and Regularization",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the bias-variance tradeoff and how it relates to model complexity."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is accuracy as an evaluation metric?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between precision and recall?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a confusion matrix?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is accuracy, and when can it be a misleading metric?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain what the F1 score represents and why it's useful when classes are imbalanced."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the ROC curve, and what does the AUC value represent?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between mean squared error and mean absolute error for regression."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain why accuracy can be a misleading metric on an imbalanced dataset, and what metrics you would use instead."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you choose an evaluation metric for a fraud detection model?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the difference between micro-averaged and macro-averaged F1 scores in multi-class classification."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Model Evaluation Metrics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain why AUC-ROC is preferred over accuracy for imbalanced classification problems."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is feature engineering in machine learning?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is feature scaling, and why is it needed?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is one-hot encoding used for?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is feature scaling, and why is it important for some algorithms?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between normalization and standardization of features."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is feature selection, and why is it important?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how you would handle missing values in a dataset before training a model."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between one-hot encoding and label encoding for categorical variables."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how dimensionality reduction techniques like PCA help with the curse of dimensionality."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you engineer features from a timestamp column for a machine learning model?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how target leakage can occur during feature engineering and how to prevent it."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Feature Engineering",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how principal component analysis (PCA) reduces dimensionality while preserving variance."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is linear regression used for?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a decision tree?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is k-nearest neighbors used for?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the 'k' represent in the k-nearest neighbors algorithm?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how a decision tree decides where to split, using concepts like Gini impurity or entropy."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between bagging and boosting?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how a random forest reduces overfitting compared to a single decision tree."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how a decision tree decides which feature to split on at each node."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how gradient boosting builds an ensemble of weak learners sequentially."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the kernel trick in support vector machines, and why is it useful?"
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the choice of k affects the bias-variance tradeoff in a k-nearest neighbors model."
+  },
+  {
+    "skill": "Machine Learning",
+    "topic": "Common Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how random forests reduce the variance of individual decision trees through bagging."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a search problem in AI?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between uninformed and informed search?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is breadth-first search used for in AI?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how the A* search algorithm uses heuristics to find an optimal path."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between depth-first search and iterative deepening search?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the concept of an admissible heuristic in A* search."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how minimax search works for two-player games like chess or tic-tac-toe."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is alpha-beta pruning, and how does it improve minimax search efficiency?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how local search algorithms like hill climbing can get stuck in local optima, and how simulated annealing addresses this."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Search Algorithms",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how minimax search with alpha-beta pruning reduces the search space in game-playing AI."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is knowledge representation in AI?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a rule-based system?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a semantic network used for in AI?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a fact-based rule in a rule-based expert system?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between propositional logic and first-order logic."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is a knowledge graph, and how is it used in AI systems?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain what an ontology is in the context of AI knowledge representation."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between forward chaining and backward chaining in inference systems."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how forward chaining and backward chaining differ in rule-based inference systems."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are the limitations of purely symbolic knowledge representation compared to learned representations?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how description logics balance expressiveness and computational tractability in knowledge representation."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Knowledge Representation",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a semantic network represents relationships between concepts compared to a rule list."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between AI and machine learning?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between machine learning and deep learning?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Give an example of an AI application that does not rely on machine learning."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Is all AI machine learning? Explain the relationship between the two fields."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between narrow AI and general AI."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What role does machine learning play as a subset of artificial intelligence?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between rule-based AI systems and learning-based AI systems."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between symbolic AI and statistical machine learning approaches."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain why achieving Artificial General Intelligence is considered fundamentally harder than narrow AI tasks."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "How do symbolic AI and connectionist neural network approaches differ philosophically and practically?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how neuro-symbolic AI attempts to combine the strengths of symbolic reasoning and deep learning."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "AI vs Machine Learning",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how deep learning fits within the broader hierarchy of AI and machine learning."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a neural network?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a perceptron?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an activation function used for in a neural network?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is an activation function, and why is it needed in a neural network?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the sigmoid, ReLU, and tanh activation functions."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is backpropagation, and what is it used for?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the vanishing gradient problem in deep neural networks."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how batch normalization helps stabilize and speed up training of deep neural networks."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between a convolutional neural network and a recurrent neural network, and when would you use each?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the attention mechanism improves upon traditional RNN-based sequence models."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Neural Networks Basics",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how backpropagation computes gradients to update weights in a neural network."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is bias in an AI system?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "Why is fairness important when deploying AI systems?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a black-box model in AI?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is bias in an AI system, and where can it come from?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how biased training data can lead to a biased AI model."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is explainable AI, and why is it important?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between individual fairness and group fairness in AI systems."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain why a facial recognition model trained mostly on one demographic can perform poorly on others."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how techniques like adversarial debiasing attempt to reduce bias in trained models."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What are the trade-offs between model accuracy and interpretability in high-stakes AI applications like healthcare or criminal justice?"
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how data privacy concerns intersect with training large-scale AI models on user data."
+  },
+  {
+    "skill": "Artificial Intelligence",
+    "topic": "Ethics and Bias in AI",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the tradeoff between model explainability and predictive accuracy in high-stakes AI decisions."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between HTML and CSS?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the box model in CSS?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a block-level and an inline element in HTML?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between an HTML block-level element and an inline element?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between Flexbox and CSS Grid layout."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between position relative, absolute, and fixed in CSS?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain CSS specificity and how conflicting styles are resolved."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the CSS box model and its components."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how the browser's critical rendering path works from HTML/CSS parsing to painting the page."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement a fully responsive layout without using a CSS framework?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how CSS containment and will-change can improve rendering performance."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "HTML and CSS Fundamentals",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how CSS specificity determines which style rule applies when multiple rules conflict."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a REST API?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between a GET and a POST request?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does the term stateless mean in the context of REST APIs?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What does 'stateless' mean in the context of a REST API?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between PUT and PATCH HTTP methods."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What are the key constraints that make an API RESTful?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how HTTP status codes are used to communicate the outcome of an API request."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between the PUT and PATCH HTTP methods in a REST API."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would design pagination for a REST API returning a large dataset."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is HATEOAS in REST, and why is it rarely fully implemented in practice?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would version a REST API without breaking existing clients."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "REST APIs",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how HATEOAS relates to the maturity levels of a truly RESTful API."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a component in React?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is JSX in React?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between props and state in React?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a component in a modern frontend framework like React?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the React component lifecycle or the equivalent hooks in functional components."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the virtual DOM, and how does it improve rendering performance?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between controlled and uncontrolled components in React."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how React's reconciliation algorithm decides what to re-render when state changes."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is the difference between useMemo and useCallback, and when would you use each?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how React Context can lead to unnecessary re-renders, and how you would mitigate it."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Frontend Frameworks",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how React's virtual DOM diffing algorithm minimizes real DOM updates."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between authentication and authorization in a web application?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is a session in web development?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is HTTPS, and why is it important for a web application?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the difference between authentication and authorization?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how JWT-based authentication works in a web application."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is Cross-Site Scripting, and how can it be prevented?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is CSRF, and how do CSRF tokens help prevent it?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how a JWT (JSON Web Token) is structured and validated."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain the security trade-offs of storing JWTs in localStorage versus HttpOnly cookies."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Hard",
+    "question_type": "scenario",
+    "question": "How would you implement secure password storage using hashing and salting?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how OAuth 2.0's authorization code flow works for third-party login."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Authentication and Security",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how CSRF attacks work and how a CSRF token helps prevent them."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is caching in the context of a web application?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is the purpose of a CDN?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is lazy loading in web development?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Easy",
+    "question_type": "conceptual",
+    "question": "What is browser caching, and why does it improve page load speed?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between browser caching and server-side caching."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "What is the difference between cache-first and network-first caching strategies?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain how HTTP cache headers like Cache-Control and ETag work."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Medium",
+    "question_type": "conceptual",
+    "question": "Explain the difference between client-side and server-side caching."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how you would design a caching strategy for an API with frequently changing but read-heavy data."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "What is cache invalidation, and why is it considered a hard problem?"
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how service workers enable offline-first web applications through caching."
+  },
+  {
+    "skill": "Web Development",
+    "topic": "Performance and Caching",
+    "difficulty": "Hard",
+    "question_type": "conceptual",
+    "question": "Explain how a CDN (Content Delivery Network) reduces latency for users across geographic regions."
+  }
+]

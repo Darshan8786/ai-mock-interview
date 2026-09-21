@@ -1,0 +1,302 @@
+[
+ {
+  "q": "what is the difference between the stack and the heap",
+  "expect": "mem-stack-heap"
+ },
+ {
+  "q": "is java a compiled language",
+  "expect": "lang-compiler-interpreter"
+ },
+ {
+  "q": "what does a dangling pointer mean",
+  "expect": "lang-pointers"
+ },
+ {
+  "q": "why does my recursive function crash with stack overflow",
+  "expect": "algo-recursion"
+ },
+ {
+  "q": "what is a parameterized constructor",
+  "expect": "oop-constructors-static"
+ },
+ {
+  "q": "explain virtual functions in cpp",
+  "expect": "oop-virtual-diamond"
+ },
+ {
+  "q": "explain the solid principles",
+  "expect": "oop-solid-patterns"
+ },
+ {
+  "q": "arraylist or linkedlist which is faster",
+  "expect": "java-collections"
+ },
+ {
+  "q": "what is the use of the finally block",
+  "expect": "java-exceptions-threads"
+ },
+ {
+  "q": "sql query for nth highest salary",
+  "expect": "sql-query-patterns"
+ },
+ {
+  "q": "what is a database trigger",
+  "expect": "sql-objects"
+ },
+ {
+  "q": "explain read committed and serializable",
+  "expect": "dbms-isolation"
+ },
+ {
+  "q": "why is caching used in web applications",
+  "expect": "sys-caching"
+ },
+ {
+  "q": "how does quicksort partition an array",
+  "expect": "algo-sorting"
+ },
+ {
+  "q": "can binary search be used on unsorted data",
+  "expect": "algo-binary-search"
+ },
+ {
+  "q": "how to find kth largest element using a heap",
+  "expect": "dsa-heap"
+ },
+ {
+  "q": "how to use the sliding window approach",
+  "expect": "algo-patterns"
+ },
+ {
+  "q": "reverse a singly linked list",
+  "expect": "dsa-linkedlist-ops"
+ },
+ {
+  "q": "kruskal algorithm explained",
+  "expect": "dsa-graph-algos"
+ },
+ {
+  "q": "which data structure gives fast prefix search",
+  "expect": "dsa-choose-structure"
+ },
+ {
+  "q": "what is horizontal scaling",
+  "expect": "sys-design-basics"
+ },
+ {
+  "q": "what are the benefits of microservices",
+  "expect": "sys-microservices"
+ },
+ {
+  "q": "why use docker containers",
+  "expect": "tools-docker-cloud"
+ },
+ {
+  "q": "what is the difference between 401 and 403 errors",
+  "expect": "web-api-graphql"
+ },
+ {
+  "q": "cookies vs localstorage",
+  "expect": "web-storage-mvc"
+ },
+ {
+  "q": "how does this behave in arrow functions",
+  "expect": "js-more"
+ },
+ {
+  "q": "what are kwargs in python",
+  "expect": "python-more"
+ },
+ {
+  "q": "flexbox or css grid",
+  "expect": "web-css-layout"
+ },
+ {
+  "q": "what is regression testing",
+  "expect": "test-basics"
+ },
+ {
+  "q": "what is overfitting in machine learning",
+  "expect": "ml-basics"
+ },
+ {
+  "q": "what is a system call",
+  "expect": "os-kernel-interrupts"
+ },
+ {
+  "q": "what does dhcp do",
+  "expect": "cn-misc"
+ },
+ {
+  "q": "explain bodmas rule",
+  "expect": "apt-simplification"
+ },
+ {
+  "q": "how to multiply two digit numbers by 11 quickly",
+  "expect": "apt-speed-math"
+ },
+ {
+  "q": "venn diagram problem with three sets",
+  "expect": "apt-venn-sets"
+ },
+ {
+  "q": "rank from left and right total students",
+  "expect": "apt-ranking"
+ },
+ {
+  "q": "approach for statement and assumption reasoning",
+  "expect": "apt-logic-statements"
+ },
+ {
+  "q": "describe a situation where you failed",
+  "expect": "hr-failure"
+ },
+ {
+  "q": "how to answer a question about working in a team",
+  "expect": "hr-teamwork-leadership"
+ },
+ {
+  "q": "what is the achievement you are proud of",
+  "expect": "hr-achievement"
+ },
+ {
+  "q": "how do you deal with pressure",
+  "expect": "hr-pressure"
+ },
+ {
+  "q": "how to explain a year gap in my education",
+  "expect": "hr-why-field-gap"
+ },
+ {
+  "q": "would you be willing to relocate",
+  "expect": "hr-relocation-bond"
+ },
+ {
+  "q": "what mistakes should i avoid in interviews",
+  "expect": "hr-strategy-mistakes"
+ },
+ {
+  "q": "how to learn about a company before an interview",
+  "expect": "hr-company-research"
+ },
+ {
+  "q": "thank you mail after interview",
+  "expect": "hr-followup"
+ },
+ {
+  "q": "how can i find jobs outside campus",
+  "expect": "career-offcampus"
+ },
+ {
+  "q": "tips for a good linkedin profile",
+  "expect": "career-linkedin-github"
+ },
+ {
+  "q": "how to clear a coding assessment",
+  "expect": "career-coding-round"
+ },
+ {
+  "q": "how do i land an internship",
+  "expect": "career-internship"
+ },
+ {
+  "q": "can i be placed with a low cgpa",
+  "expect": "career-low-cgpa"
+ },
+ {
+  "q": "i got two offers which one should i take",
+  "expect": "career-offers"
+ },
+ {
+  "q": "how to stay motivated while preparing",
+  "expect": "career-study-plan-motivation"
+ },
+ {
+  "q": "masters or job after btech",
+  "expect": "career-higher-studies"
+ },
+ {
+  "q": "how do i work out simple interest",
+  "expect": "apt-simple-interest"
+ },
+ {
+  "q": "trains crossing each other relative speed",
+  "expect": "apt-time-speed-distance"
+ },
+ {
+  "q": "how does a hash table handle collisions",
+  "expect": "dsa-hashing"
+ },
+ {
+  "q": "what is the difference between a process and a thread",
+  "expect": "os-process-thread"
+ },
+ {
+  "q": "what is an inner join",
+  "expect": "dbms-joins"
+ },
+ {
+  "q": "what are the layers of osi",
+  "expect": "cn-osi"
+ },
+ {
+  "q": "introduce yourself for an interview",
+  "expect": "hr-tell-me-about-yourself"
+ },
+ {
+  "q": "resume tips for engineering students",
+  "expect": "resume-tips"
+ },
+ {
+  "q": "how do i check which topics i am bad at",
+  "expect": "my_weak_areas"
+ },
+ {
+  "q": "how is my performance so far",
+  "expect": "my_progress"
+ },
+ {
+  "q": "good evening",
+  "expect": "greeting"
+ },
+ {
+  "q": "what is the distance to the moon",
+  "expect": null
+ },
+ {
+  "q": "who is the best football player",
+  "expect": null
+ },
+ {
+  "q": "how do i bake bread",
+  "expect": null
+ },
+ {
+  "q": "what is the latest movie release",
+  "expect": null
+ },
+ {
+  "q": "how do i fix my bike",
+  "expect": null
+ },
+ {
+  "q": "tell me a riddle",
+  "expect": null
+ },
+ {
+  "q": "what should i wear today",
+  "expect": null
+ },
+ {
+  "q": "how much is a plane ticket to london",
+  "expect": null
+ },
+ {
+  "q": "who painted starry night",
+  "expect": null
+ },
+ {
+  "q": "is it safe to swim in the sea today",
+  "expect": null
+ }
+]

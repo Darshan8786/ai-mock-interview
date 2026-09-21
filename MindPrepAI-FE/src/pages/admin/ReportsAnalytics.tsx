@@ -219,7 +219,6 @@ export function ReportsAnalytics() {
                 <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
                 <Line type="monotone" dataKey="logins" name="Logins" stroke={chartColors.blue} strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.emerald} strokeWidth={2} dot={false} />
-                <Line type="monotone" dataKey="quizzes" name="Quizzes" stroke={chartColors.purple} strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </ChartCard>

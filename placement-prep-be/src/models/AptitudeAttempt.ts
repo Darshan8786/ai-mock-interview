@@ -29,6 +29,9 @@ const aptitudeAttemptSchema = new mongoose.Schema(
     marks: { type: Number, default: 0 },
     timeTaken: { type: Number, default: 0 },   // seconds
     tabWarnings: { type: Number, default: 0 },
+    // Set when the attempt was auto-submitted by a proctoring guard rather
+    // than a normal user submission (currently only the tab-switch limit).
+    terminationReason: { type: String, default: "" },
     startedAt: { type: Date, default: Date.now },
     completedAt: { type: Date, default: null },
     categoryScores: { type: [categoryScoreSchema], default: [] },

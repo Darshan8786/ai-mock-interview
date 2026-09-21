@@ -1,6 +1,11 @@
 export const BACKEND_URL =
   (import.meta.env.VITE_BACKEND_URL as string | undefined) || "http://localhost:3001";
 
+// placement-admin-be (Alumni management + public alumni openings) — port 5001.
+// It has its own admin accounts/tokens, separate from the main backend above.
+export const ADMIN_API_URL =
+  ((import.meta.env.VITE_ADMIN_API_URL as string | undefined) || "http://localhost:5001").replace(/\/+$/, "");
+
 // Legacy Flask AI service (LLM question gen / evaluation / STT / TTS) — port 8000.
 export const AI_SERVICE_URL =
   (import.meta.env.VITE_AI_SERVICE_URL as string | undefined) || "http://127.0.0.1:8000";

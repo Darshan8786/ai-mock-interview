@@ -1,0 +1,107 @@
+MindPrep-AI Interview Question Dataset - Statistics Report
+============================================================
+Total raw examples:        900
+Rejected during cleaning:  40
+  - exact_duplicate: 20
+  - near_duplicate: 20
+Total clean examples:      860
+Training examples:         757
+Validation examples:       103
+
+Questions per skill:
+  DBMS                 60
+  OOP                  59
+  Python               59
+  Web Development      59
+  Algorithms           58
+  Machine Learning     58
+  Artificial Intelligence 57
+  Data Structures      57
+  Java                 57
+  JavaScript           57
+  Operating Systems    57
+  C                    56
+  Computer Networks    56
+  C++                  55
+  SQL                  55
+
+Questions per difficulty:
+  Hard                 296
+  Easy                 285
+  Medium               279
+
+Questions per topic:
+  OOP                                      36
+  Memory Management                        32
+  Exception Handling                       24
+  AI vs Machine Learning                   12
+  Arrays and Linked Lists                  12
+  Authentication and Security              12
+  Common Algorithms                        12
+  DOM and Events                           12
+  Data Structures                          12
+  Design Patterns Basics                   12
+  ER Modeling                              12
+  ES6+ Features                            12
+  Encapsulation and Abstraction            12
+  Ethics and Bias in AI                    12
+  Feature Engineering                      12
+  File Systems                             12
+  Functions                                12
+  Greedy Algorithms                        12
+  HTML and CSS Fundamentals                12
+  Hashing                                  12
+  Indexing and Storage                     12
+  Interfaces vs Abstract Classes           12
+  JVM and Memory Management                12
+  Joins                                    12
+  Keys and Constraints                     12
+  Knowledge Representation                 12
+  Normalization                            12
+  OSI and TCP/IP Model                     12
+  Performance and Caching                  12
+  Process and Threads                      12
+  Prototypes and OOP                       12
+  REST APIs                                12
+  Recursion and Backtracking               12
+  SOLID and Design Principles              12
+  Searching                                12
+  Stacks and Queues                        12
+  Structures and Unions                    12
+  Supervised vs Unsupervised               12
+  Transactions and Concurrency             12
+  Aggregation and Grouping                 11
+  Arrays and Strings                       11
+  Asynchronous JavaScript                  11
+  Collections                              11
+  DNS and Routing                          11
+  Deadlocks                                11
+  Decorators and Generators                11
+  Dynamic Programming                      11
+  Frontend Frameworks                      11
+  HTTP and HTTPS                           11
+  Indexing and Performance                 11
+  Inheritance and Polymorphism             11
+  Model Evaluation Metrics                 11
+  Network Security                         11
+  Neural Networks Basics                   11
+  Operator Overloading                     11
+  Overfitting and Regularization           11
+  Pointers                                 11
+  Preprocessor and Compilation             11
+  STL                                      11
+  Scheduling                               11
+  Sorting                                  11
+  TCP vs UDP                               11
+  Templates                                11
+  Transactions                             11
+  Trees                                    11
+  Closures and Scope                       10
+  Graphs                                   10
+  Multithreading                           10
+  Search Algorithms                        10
+  Subqueries                               10
+
+Questions per question_type:
+  conceptual           804
+  scenario             56

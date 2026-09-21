@@ -5,7 +5,6 @@ import { Interview } from "../../models/Interview";
 import { InterviewReport } from "../../models/InterviewReport";
 import { CheatingEvent } from "../../models/CheatingEvent";
 import { AptitudeAttempt } from "../../models/AptitudeAttempt";
-import { AttemptModel } from "../../db";
 import { Notification } from "../../models/Notification";
 import { Announcement } from "../../models/Announcement";
 import { Job } from "../../models/Job";
@@ -15,7 +14,7 @@ import { Application } from "../../models/Application";
  * Aggregate dashboard stats for the Training & Placement Officer.
  */
 export const getDashboardStats = asyncHandler(async (_req: Request, res: Response) => {
-  const [students, verifiedStudents, companies, interviews, reports, aptitudes, attempts, cheating] =
+  const [students, verifiedStudents, companies, interviews, reports, aptitudes, cheating] =
     await Promise.all([
       User.find({ role: "user" }).lean(),
       User.countDocuments({ role: "user", verificationStatus: "verified" }),
@@ -23,7 +22,6 @@ export const getDashboardStats = asyncHandler(async (_req: Request, res: Respons
       Interview.find().lean(),
       InterviewReport.find().lean(),
       AptitudeAttempt.find().lean(),
-      AttemptModel.find().lean(),
       CheatingEvent.countDocuments(),
     ]);
 
@@ -93,11 +91,6 @@ export const getDashboardStats = asyncHandler(async (_req: Request, res: Respons
     : 0;
   const highestAptitudeScore = aptitudeScores.length ? Math.max(...aptitudeScores) : 0;
 
-  // Quiz stats (AttemptModel has one row per question answered)
-  const quizAttempts = attempts.length;
-  const quizCorrect = attempts.filter((a: any) => a.correct).length;
-  const avgQuizScore = quizAttempts ? Math.round((quizCorrect / quizAttempts) * 100) : 0;
-
   // Placement pipeline
   const byPlacement: Record<string, number> = {};
   students.forEach((s) => {
@@ -118,11 +111,6 @@ export const getDashboardStats = asyncHandler(async (_req: Request, res: Respons
     .sort({ createdAt: -1 })
     .limit(5)
     .populate("user", "name email usn department")
-    .lean();
-  const recentQuiz = await AttemptModel.find()
-    .sort({ createdAt: -1 })
-    .limit(5)
-    .populate("userId", "name email")
     .lean();
   const recentNotifications = await Notification.find()
     .sort({ createdAt: -1 })
@@ -146,8 +134,6 @@ export const getDashboardStats = asyncHandler(async (_req: Request, res: Respons
         aptitudeTestsCompleted: aptitudes.length,
         averageAptitudeScore: avgAptitudeScore,
         highestAptitudeScore,
-        quizAttempts,
-        averageQuizScore: avgQuizScore,
         totalCheatingEvents: cheating,
         announcements: await Announcement.countDocuments(),
         totalJobs,
@@ -167,7 +153,6 @@ export const getDashboardStats = asyncHandler(async (_req: Request, res: Respons
         students: recentStudents,
         interviews: recentInterviews,
         aptitude: recentAptitudes,
-        quiz: recentQuiz,
         notifications: recentNotifications,
       },
     },

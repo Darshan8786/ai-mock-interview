@@ -1,0 +1,12 @@
+MindPrep-AI Resume Enhancement Dataset - Statistics Report
+============================================================
+Total raw examples:        119
+Rejected during cleaning:  12
+  - exact_duplicate: 12
+Total clean examples:      107
+Training examples:         91
+Validation examples:       16
+
+Examples per task:
+  bullet               95
+  summary              12

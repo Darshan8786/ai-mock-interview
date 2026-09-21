@@ -42,3 +42,12 @@ pywin32==306; platform_system == "Windows"
 # ── Utilities ────────────────────────────────────────────────────
 requests==2.32.3
 python-dotenv==1.1.0
+
+# ── Local interview-question generator (training + inference) ────
+# Fully offline, no external LLM API key. See ai-services/training/ and
+# ai-services/docs/MODEL_TRAINING.md.
+torch==2.13.0
+transformers==5.16.1
+datasets==5.0.1
+accelerate==1.14.0
+peft==0.20.0

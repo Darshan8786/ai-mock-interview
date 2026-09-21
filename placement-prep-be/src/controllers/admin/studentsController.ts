@@ -85,12 +85,11 @@ export const getStudents = asyncHandler(async (req: Request, res: Response) => {
 
   const data = await Promise.all(
     docs.map(async (s) => {
-      const [interviews, aptitudes, quizAttempts] = await Promise.all([
+      const [interviews, aptitudes] = await Promise.all([
         Interview.countDocuments({ user: s._id, status: { $in: ["completed", "terminated"] } }),
         AptitudeAttempt.countDocuments({ user: s._id }),
-        AttemptModel.countDocuments({ userId: s._id }),
       ]);
-      return { ...shapeStudent(s), interviewsTaken: interviews, aptitudeAttempts: aptitudes, quizAttempts };
+      return { ...shapeStudent(s), interviewsTaken: interviews, aptitudeAttempts: aptitudes };
     })
   );
 
@@ -111,10 +110,9 @@ export const getStudent = asyncHandler(async (req: Request, res: Response) => {
   const student = await User.findOne({ _id: req.params.id, role: "user" }).lean();
   if (!student) throw new AppError("Student not found", 404);
 
-  const [interviews, aptitudes, attempts, reports] = await Promise.all([
+  const [interviews, aptitudes, reports] = await Promise.all([
     Interview.find({ user: student._id }).sort({ createdAt: -1 }).limit(50).lean(),
     AptitudeAttempt.find({ user: student._id }).sort({ createdAt: -1 }).limit(50).lean(),
-    AttemptModel.find({ userId: student._id }).sort({ createdAt: -1 }).limit(200).lean(),
     null,
   ]);
   void reports;
@@ -125,7 +123,6 @@ export const getStudent = asyncHandler(async (req: Request, res: Response) => {
       student: shapeStudent(student),
       interviews,
       aptitudes,
-      quizAttempts: attempts,
     },
   });
 });

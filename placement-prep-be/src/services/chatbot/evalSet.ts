@@ -1,0 +1,91 @@
+/**
+ * Held-out test set. None of these phrasings appear in the training data
+ * (kb/*.ts, intents.ts) — they are what real students might type. `expect` is
+ * the KB / intent id that should answer, or null when the bot must decline.
+ *
+ * Add a line here whenever the bot mis-answers something in production, then
+ * re-run `npm run eval:chatbot`; add a matching phrasing to the KB and re-train.
+ */
+export interface EvalCase {
+  q: string;
+  expect: string | null;
+}
+
+export const evalSet: EvalCase[] = [
+  // Aptitude formulas
+  { q: "formula to find percentage increase", expect: "apt-percentage" },
+  { q: "how do i calculate profit percent", expect: "apt-profit-loss" },
+  { q: "SI formula", expect: "apt-simple-interest" },
+  { q: "compound interest for 3 years", expect: "apt-compound-interest" },
+  { q: "trick for train speed questions", expect: "apt-time-speed-distance" },
+  { q: "two people working together how many days", expect: "apt-time-work" },
+  { q: "tank with inlet and leak", expect: "apt-pipes-cisterns" },
+  { q: "speed of boat upstream downstream", expect: "apt-boats-streams" },
+  { q: "how to find hcf and lcm", expect: "apt-number-system" },
+  { q: "nCr formula", expect: "apt-permutation-combination" },
+  { q: "chance of getting a head when tossing a coin", expect: "apt-probability" },
+  { q: "sum of gp", expect: "apt-progressions" },
+  { q: "roots of ax2+bx+c", expect: "apt-quadratic" },
+  { q: "volume of a sphere", expect: "apt-mensuration" },
+  { q: "angle between clock hands at 3:15", expect: "apt-clock-calendar" },
+  { q: "tips for pie chart questions", expect: "apt-data-interpretation" },
+  { q: "how to manage time during aptitude exam", expect: "apt-time-management" },
+  { q: "percentge formula", expect: "apt-percentage" },
+  // Core CS
+  { q: "explain the pillars of object oriented programming", expect: "oop-pillars" },
+  { q: "process and thread difference", expect: "os-process-thread" },
+  { q: "deadlok conditions", expect: "os-deadlock" },
+  { q: "round robin", expect: "os-scheduling" },
+  { q: "explain paging and virtual memory", expect: "os-memory" },
+  { q: "mutex or semaphore which one", expect: "os-sync" },
+  { q: "what does acid stand for", expect: "dbms-acid" },
+  { q: "1nf 2nf 3nf", expect: "dbms-normalization" },
+  { q: "left join versus inner join", expect: "dbms-joins" },
+  { q: "why do we create indexes on a table", expect: "dbms-index" },
+  { q: "mongodb or mysql", expect: "dbms-sql-nosql" },
+  { q: "tcp vs udp", expect: "cn-tcp-udp" },
+  { q: "seven layer network model", expect: "cn-osi" },
+  { q: "time complexity of merge sort", expect: "dsa-bigo" },
+  { q: "linked list versus array", expect: "dsa-array-linkedlist" },
+  { q: "how are hash collisions resolved", expect: "dsa-hashing" },
+  { q: "bfs or dfs", expect: "dsa-bfs-dfs" },
+  { q: "how do i recognise a dynamic programming problem", expect: "dsa-dp" },
+  { q: "where should i start with dsa", expect: "dsa-prepare" },
+  { q: "closures in js", expect: "js-basics" },
+  { q: "how does jwt authentication work", expect: "web-rest-jwt" },
+  { q: "merge or rebase in git", expect: "git-basics" },
+  // Career
+  { q: "how should i introduce myself", expect: "hr-tell-me-about-yourself" },
+  { q: "what to say when asked about weaknesses", expect: "hr-strengths-weaknesses" },
+  { q: "explain star technique", expect: "hr-star-method" },
+  { q: "i feel very nervous before interviews", expect: "hr-dont-know" },
+  { q: "how do i make a fresher resume", expect: "resume-tips" },
+  { q: "resume is not passing ats screening", expect: "resume-ats" },
+  { q: "how to crack group discussions", expect: "gd-tips" },
+  { q: "steps in a campus drive", expect: "placement-process" },
+  // Platform help
+  { q: "what all can i do on this site", expect: "platform-overview" },
+  { q: "my test got submitted automatically", expect: "platform-proctoring" },
+  { q: "how do i begin a mock interview", expect: "platform-mock-interview-how" },
+  // Personal
+  { q: "which subjects am i weakest in", expect: "my_weak_areas" },
+  { q: "tell me what i am good at", expect: "my_strengths" },
+  { q: "how have i performed overall", expect: "my_progress" },
+  { q: "what did i score in my last mock test", expect: "my_aptitude" },
+  { q: "feedback from my last interview", expect: "my_interview" },
+  { q: "what should i practise now", expect: "next_steps" },
+  { q: "resources to improve my weak subjects", expect: "my_resources" },
+  // Small talk
+  { q: "hello there", expect: "greeting" },
+  { q: "thanks a ton", expect: "thanks" },
+  { q: "are you a robot", expect: "identity" },
+  // Must decline
+  { q: "what is the population of india", expect: null },
+  { q: "who is your favourite cricketer", expect: null },
+  { q: "how do i bake a cake", expect: null },
+  { q: "tell me a story", expect: null },
+  { q: "what is the price of gold today", expect: null },
+  { q: "which is the tallest building", expect: null },
+  { q: "can you book a flight for me", expect: null },
+  { q: "how is the stock market doing", expect: null },
+];

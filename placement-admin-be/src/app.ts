@@ -18,6 +18,7 @@ import jobRoutes from "./routes/job.routes";
 import applicationRoutes from "./routes/application.routes";
 import interviewRoutes from "./routes/interview.routes";
 import aptitudeRoutes from "./routes/aptitude.routes";
+import alumniRoutes, { publicAlumniOpeningsRouter } from "./routes/alumni.routes";
 
 const app: Application = express();
 
@@ -64,6 +65,10 @@ app.use("/api/admin/jobs", jobRoutes);
 app.use("/api/admin/applications", applicationRoutes);
 app.use("/api/admin/interviews", interviewRoutes);
 app.use("/api/admin/aptitude-tests", aptitudeRoutes);
+app.use("/api/admin/alumni", alumniRoutes);
+
+// Public (student-facing) read-only endpoint
+app.use("/api/alumni-openings", publicAlumniOpeningsRouter);
 
 // 404 handler
 app.use(notFound);

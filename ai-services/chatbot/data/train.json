@@ -1,0 +1,4282 @@
+[
+ {
+  "target": "apt-percentage",
+  "text": "percentage formulas"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "how to calculate percentage quickly"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "how do i find percentage change"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "what is percentage increase and decrease"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "successive percentage change formula"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "x percent of y trick"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "what is 35 percent of 240"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "a price rises from 80 to 100 what is the percentage increase"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "by what percent did the value change"
+ },
+ {
+  "target": "apt-percentage",
+  "text": "Percentage formulas"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "profit and loss formulas"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "how to calculate profit percentage"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "what is the formula for discount"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "cost price selling price marked price relation"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "successive discount formula"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "profit loss tricks"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "an article bought for 500 is sold for 600 find the gain percent"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "a shopkeeper gives 10 percent discount on the marked price"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "cost price of 12 articles equals selling price of 10 articles"
+ },
+ {
+  "target": "apt-profit-loss",
+  "text": "Profit, loss and discount"
+ },
+ {
+  "target": "apt-simple-interest",
+  "text": "simple interest formula"
+ },
+ {
+  "target": "apt-simple-interest",
+  "text": "how to calculate simple interest"
+ },
+ {
+  "target": "apt-simple-interest",
+  "text": "si formula principal rate time"
+ },
+ {
+  "target": "apt-simple-interest",
+  "text": "interest on a loan without compounding"
+ },
+ {
+  "target": "apt-simple-interest",
+  "text": "find the interest on 8000 at 5 percent per annum for 3 years"
+ },
+ {
+  "target": "apt-simple-interest",
+  "text": "at what rate will a sum double in 10 years"
+ },
+ {
+  "target": "apt-simple-interest",
+  "text": "Simple interest"
+ },
+ {
+  "target": "apt-compound-interest",
+  "text": "compound interest formula"
+ },
+ {
+  "target": "apt-compound-interest",
+  "text": "how to calculate compound interest"
+ },
+ {
+  "target": "apt-compound-interest",
+  "text": "difference between simple interest and compound interest"
+ },
+ {
+  "target": "apt-compound-interest",
+  "text": "ci minus si for 2 years"
+ },
+ {
+  "target": "apt-compound-interest",
+  "text": "half yearly compounding formula"
+ },
+ {
+  "target": "apt-compound-interest",
+  "text": "find the compound interest on 5000 for 2 years at 8 percent"
+ },
+ {
+  "target": "apt-compound-interest",
+  "text": "what will 10000 amount to after 3 years compounded annually"
+ },
+ {
+  "target": "apt-compound-interest",
+  "text": "Compound interest"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "speed distance time formula"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "how to solve time speed and distance problems"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "average speed formula"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "relative speed formula"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "how to convert kmph to m/s"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "train crossing a platform problem"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "train speed problems"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "speed of a car and distance travelled"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "how long does a train take to cross a bridge"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "a train 150 m long passes a pole in 15 seconds find its speed"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "a man walks at 5 kmph for 2 hours how much distance does he cover"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "two trains run towards each other when will they meet"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "a person travels 60 km at 30 kmph and returns at 20 kmph find average speed"
+ },
+ {
+  "target": "apt-time-speed-distance",
+  "text": "Time, speed and distance"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "time and work formula"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "how to solve work problems"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "a can do a work in 10 days b in 15 days together"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "men days hours work formula"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "lcm method for time and work"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "efficiency and work problems"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "two workers finishing a job together"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "how long will a and b take to complete work together"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "work done per day"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "a can finish a task in 20 days and b in 30 days in how many days together"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "15 workers build a wall in 8 days how many workers to build it in 5 days"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "a and b together complete a project in 6 days if a alone takes 10 days find b"
+ },
+ {
+  "target": "apt-time-work",
+  "text": "Time and work"
+ },
+ {
+  "target": "apt-pipes-cisterns",
+  "text": "pipes and cisterns formula"
+ },
+ {
+  "target": "apt-pipes-cisterns",
+  "text": "how to solve tank filling problems"
+ },
+ {
+  "target": "apt-pipes-cisterns",
+  "text": "inlet and outlet pipe problem method"
+ },
+ {
+  "target": "apt-pipes-cisterns",
+  "text": "leak in a tank problem"
+ },
+ {
+  "target": "apt-pipes-cisterns",
+  "text": "pipe a fills a tank in 6 hours and pipe b in 9 hours how long together"
+ },
+ {
+  "target": "apt-pipes-cisterns",
+  "text": "a tank has a leak that empties it in 12 hours while a pipe fills it in 4 hours"
+ },
+ {
+  "target": "apt-pipes-cisterns",
+  "text": "Pipes and cisterns"
+ },
+ {
+  "target": "apt-boats-streams",
+  "text": "boats and streams formula"
+ },
+ {
+  "target": "apt-boats-streams",
+  "text": "upstream and downstream speed"
+ },
+ {
+  "target": "apt-boats-streams",
+  "text": "speed of boat in still water formula"
+ },
+ {
+  "target": "apt-boats-streams",
+  "text": "how to solve boat and stream problems"
+ },
+ {
+  "target": "apt-boats-streams",
+  "text": "a boat covers 24 km upstream in 6 hours and downstream in 4 hours find the speed of the stream"
+ },
+ {
+  "target": "apt-boats-streams",
+  "text": "a rower can row 8 kmph in still water and the river flows at 2 kmph"
+ },
+ {
+  "target": "apt-boats-streams",
+  "text": "Boats and streams"
+ },
+ {
+  "target": "apt-ratio",
+  "text": "ratio and proportion basics"
+ },
+ {
+  "target": "apt-ratio",
+  "text": "how to divide an amount in a given ratio"
+ },
+ {
+  "target": "apt-ratio",
+  "text": "what is direct and inverse proportion"
+ },
+ {
+  "target": "apt-ratio",
+  "text": "ratio problems shortcut"
+ },
+ {
+  "target": "apt-ratio",
+  "text": "divide 1200 among a b and c in the ratio 2 3 5"
+ },
+ {
+  "target": "apt-ratio",
+  "text": "two numbers are in the ratio 3 to 5 and their sum is 64 find them"
+ },
+ {
+  "target": "apt-ratio",
+  "text": "Ratio and proportion"
+ },
+ {
+  "target": "apt-averages",
+  "text": "average formula"
+ },
+ {
+  "target": "apt-averages",
+  "text": "how to calculate weighted average"
+ },
+ {
+  "target": "apt-averages",
+  "text": "average when a new person joins the group"
+ },
+ {
+  "target": "apt-averages",
+  "text": "average problems tricks"
+ },
+ {
+  "target": "apt-averages",
+  "text": "the average of 6 numbers is 20 and one number is 26 find the average of the rest"
+ },
+ {
+  "target": "apt-averages",
+  "text": "the average age of a class of 30 students is 15 years"
+ },
+ {
+  "target": "apt-averages",
+  "text": "Averages"
+ },
+ {
+  "target": "apt-ages",
+  "text": "problems on ages tricks"
+ },
+ {
+  "target": "apt-ages",
+  "text": "how to solve age problems"
+ },
+ {
+  "target": "apt-ages",
+  "text": "father is 3 times as old as son age problem"
+ },
+ {
+  "target": "apt-ages",
+  "text": "age ratio problem method"
+ },
+ {
+  "target": "apt-ages",
+  "text": "five years ago a was twice as old as b find their present ages"
+ },
+ {
+  "target": "apt-ages",
+  "text": "the sum of the ages of a father and son is 60 years"
+ },
+ {
+  "target": "apt-ages",
+  "text": "Problems on ages"
+ },
+ {
+  "target": "apt-mixtures",
+  "text": "alligation formula"
+ },
+ {
+  "target": "apt-mixtures",
+  "text": "how to solve mixture problems"
+ },
+ {
+  "target": "apt-mixtures",
+  "text": "alligation rule method"
+ },
+ {
+  "target": "apt-mixtures",
+  "text": "mixing two solutions of different concentration"
+ },
+ {
+  "target": "apt-mixtures",
+  "text": "Mixtures and alligation"
+ },
+ {
+  "target": "apt-partnership",
+  "text": "partnership problems formula"
+ },
+ {
+  "target": "apt-partnership",
+  "text": "how to divide profit between partners"
+ },
+ {
+  "target": "apt-partnership",
+  "text": "profit sharing ratio with different investment time"
+ },
+ {
+  "target": "apt-partnership",
+  "text": "Partnership"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "permutation and combination formula"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "difference between permutation and combination"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "ncr and npr formulas"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "circular permutation formula"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "how many ways to arrange letters of a word"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "in how many ways can 5 people be seated in a row"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "how many committees of 3 can be formed from 8 people"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "how many words can be formed from the letters of the word listen"
+ },
+ {
+  "target": "apt-permutation-combination",
+  "text": "Permutations and combinations"
+ },
+ {
+  "target": "apt-probability",
+  "text": "probability formula"
+ },
+ {
+  "target": "apt-probability",
+  "text": "how to solve probability problems"
+ },
+ {
+  "target": "apt-probability",
+  "text": "probability of drawing cards or balls"
+ },
+ {
+  "target": "apt-probability",
+  "text": "or and and rule in probability"
+ },
+ {
+  "target": "apt-probability",
+  "text": "chance of an event happening"
+ },
+ {
+  "target": "apt-probability",
+  "text": "coin toss and dice probability"
+ },
+ {
+  "target": "apt-probability",
+  "text": "odds of drawing a card"
+ },
+ {
+  "target": "apt-probability",
+  "text": "likelihood of getting heads"
+ },
+ {
+  "target": "apt-probability",
+  "text": "a bag has 4 red and 6 blue balls what is the probability of drawing red"
+ },
+ {
+  "target": "apt-probability",
+  "text": "two dice are thrown find the probability that the sum is 7"
+ },
+ {
+  "target": "apt-probability",
+  "text": "a card is drawn from a pack of 52 what is the probability of a king"
+ },
+ {
+  "target": "apt-probability",
+  "text": "Probability"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "divisibility rules"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "how to check if a number is divisible by 11"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "hcf and lcm relation"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "find remainder trick"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "number system tricks"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "find the remainder when 2345 is divided by 7"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "find the hcf and lcm of 12 and 18"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "what is the smallest number divisible by 4 6 and 8"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "find the unit digit of 7 raised to the power 45"
+ },
+ {
+  "target": "apt-number-system",
+  "text": "Divisibility and number system"
+ },
+ {
+  "target": "apt-progressions",
+  "text": "ap and gp formulas"
+ },
+ {
+  "target": "apt-progressions",
+  "text": "sum of arithmetic progression"
+ },
+ {
+  "target": "apt-progressions",
+  "text": "geometric progression sum formula"
+ },
+ {
+  "target": "apt-progressions",
+  "text": "nth term of an ap"
+ },
+ {
+  "target": "apt-progressions",
+  "text": "sum of series formula"
+ },
+ {
+  "target": "apt-progressions",
+  "text": "find sum of first n terms of gp"
+ },
+ {
+  "target": "apt-progressions",
+  "text": "Arithmetic and geometric progressions"
+ },
+ {
+  "target": "apt-quadratic",
+  "text": "quadratic equation formula"
+ },
+ {
+  "target": "apt-quadratic",
+  "text": "how to find roots of a quadratic equation"
+ },
+ {
+  "target": "apt-quadratic",
+  "text": "what is the discriminant"
+ },
+ {
+  "target": "apt-quadratic",
+  "text": "sum and product of roots"
+ },
+ {
+  "target": "apt-quadratic",
+  "text": "roots of an equation"
+ },
+ {
+  "target": "apt-quadratic",
+  "text": "solving x squared equations"
+ },
+ {
+  "target": "apt-quadratic",
+  "text": "factorise quadratic"
+ },
+ {
+  "target": "apt-quadratic",
+  "text": "Quadratic equations"
+ },
+ {
+  "target": "apt-mensuration",
+  "text": "mensuration formulas"
+ },
+ {
+  "target": "apt-mensuration",
+  "text": "area and volume formulas"
+ },
+ {
+  "target": "apt-mensuration",
+  "text": "volume of cylinder cone sphere"
+ },
+ {
+  "target": "apt-mensuration",
+  "text": "area of circle triangle formula"
+ },
+ {
+  "target": "apt-mensuration",
+  "text": "geometry angle sum formulas"
+ },
+ {
+  "target": "apt-mensuration",
+  "text": "find the area of a rectangle with length 12 cm and breadth 8 cm"
+ },
+ {
+  "target": "apt-mensuration",
+  "text": "a cylinder has radius 7 cm and height 10 cm find its volume"
+ },
+ {
+  "target": "apt-mensuration",
+  "text": "Mensuration and geometry formulas"
+ },
+ {
+  "target": "apt-data-interpretation",
+  "text": "data interpretation tips"
+ },
+ {
+  "target": "apt-data-interpretation",
+  "text": "how to solve di questions faster"
+ },
+ {
+  "target": "apt-data-interpretation",
+  "text": "bar graph pie chart table questions strategy"
+ },
+ {
+  "target": "apt-data-interpretation",
+  "text": "data interpretation approximation"
+ },
+ {
+  "target": "apt-data-interpretation",
+  "text": "Data interpretation strategy"
+ },
+ {
+  "target": "apt-number-series",
+  "text": "number series tricks"
+ },
+ {
+  "target": "apt-number-series",
+  "text": "how to find the missing number in a series"
+ },
+ {
+  "target": "apt-number-series",
+  "text": "series pattern types in aptitude"
+ },
+ {
+  "target": "apt-number-series",
+  "text": "alphabet series tricks"
+ },
+ {
+  "target": "apt-number-series",
+  "text": "what comes next in the series 3 6 11 18"
+ },
+ {
+  "target": "apt-number-series",
+  "text": "find the wrong number in the series 2 5 10 17 26 37"
+ },
+ {
+  "target": "apt-number-series",
+  "text": "Number series"
+ },
+ {
+  "target": "apt-coding-decoding",
+  "text": "coding decoding tricks"
+ },
+ {
+  "target": "apt-coding-decoding",
+  "text": "how to solve letter coding questions"
+ },
+ {
+  "target": "apt-coding-decoding",
+  "text": "if cat is coded as dbu then what is dog"
+ },
+ {
+  "target": "apt-coding-decoding",
+  "text": "coding decoding methods"
+ },
+ {
+  "target": "apt-coding-decoding",
+  "text": "Coding and decoding"
+ },
+ {
+  "target": "apt-blood-relations",
+  "text": "blood relation tricks"
+ },
+ {
+  "target": "apt-blood-relations",
+  "text": "how to solve blood relation puzzles"
+ },
+ {
+  "target": "apt-blood-relations",
+  "text": "family tree reasoning questions"
+ },
+ {
+  "target": "apt-blood-relations",
+  "text": "pointing to a photograph relation problem"
+ },
+ {
+  "target": "apt-blood-relations",
+  "text": "Blood relations"
+ },
+ {
+  "target": "apt-direction-sense",
+  "text": "direction sense test tricks"
+ },
+ {
+  "target": "apt-direction-sense",
+  "text": "how to solve direction problems"
+ },
+ {
+  "target": "apt-direction-sense",
+  "text": "shortest distance after walking north east"
+ },
+ {
+  "target": "apt-direction-sense",
+  "text": "left and right turn direction question"
+ },
+ {
+  "target": "apt-direction-sense",
+  "text": "Direction sense"
+ },
+ {
+  "target": "apt-syllogism",
+  "text": "syllogism tricks"
+ },
+ {
+  "target": "apt-syllogism",
+  "text": "how to solve syllogism questions"
+ },
+ {
+  "target": "apt-syllogism",
+  "text": "all some no statements conclusion"
+ },
+ {
+  "target": "apt-syllogism",
+  "text": "venn diagram method for syllogism"
+ },
+ {
+  "target": "apt-syllogism",
+  "text": "Syllogisms"
+ },
+ {
+  "target": "apt-seating-arrangement",
+  "text": "seating arrangement tricks"
+ },
+ {
+  "target": "apt-seating-arrangement",
+  "text": "how to solve circular seating arrangement"
+ },
+ {
+  "target": "apt-seating-arrangement",
+  "text": "puzzle reasoning method"
+ },
+ {
+  "target": "apt-seating-arrangement",
+  "text": "linear arrangement questions strategy"
+ },
+ {
+  "target": "apt-seating-arrangement",
+  "text": "five friends sit in a row a is to the left of b and c sits at the end"
+ },
+ {
+  "target": "apt-seating-arrangement",
+  "text": "six persons are sitting around a circular table facing the centre"
+ },
+ {
+  "target": "apt-seating-arrangement",
+  "text": "Seating arrangements and puzzles"
+ },
+ {
+  "target": "apt-clock-calendar",
+  "text": "clock angle formula"
+ },
+ {
+  "target": "apt-clock-calendar",
+  "text": "angle between hour hand and minute hand"
+ },
+ {
+  "target": "apt-clock-calendar",
+  "text": "how to find the day of the week for a date"
+ },
+ {
+  "target": "apt-clock-calendar",
+  "text": "calendar odd days trick"
+ },
+ {
+  "target": "apt-clock-calendar",
+  "text": "leap year rules"
+ },
+ {
+  "target": "apt-clock-calendar",
+  "text": "Clock and calendar problems"
+ },
+ {
+  "target": "apt-verbal-reading",
+  "text": "reading comprehension tips"
+ },
+ {
+  "target": "apt-verbal-reading",
+  "text": "how to improve reading comprehension speed"
+ },
+ {
+  "target": "apt-verbal-reading",
+  "text": "rc passage strategy"
+ },
+ {
+  "target": "apt-verbal-reading",
+  "text": "how to solve passage questions in aptitude"
+ },
+ {
+  "target": "apt-verbal-reading",
+  "text": "Reading comprehension"
+ },
+ {
+  "target": "apt-verbal-grammar",
+  "text": "error detection tips"
+ },
+ {
+  "target": "apt-verbal-grammar",
+  "text": "how to solve sentence correction questions"
+ },
+ {
+  "target": "apt-verbal-grammar",
+  "text": "subject verb agreement rules"
+ },
+ {
+  "target": "apt-verbal-grammar",
+  "text": "common grammar mistakes in aptitude tests"
+ },
+ {
+  "target": "apt-verbal-grammar",
+  "text": "para jumbles strategy"
+ },
+ {
+  "target": "apt-verbal-grammar",
+  "text": "Error detection and sentence correction"
+ },
+ {
+  "target": "apt-time-management",
+  "text": "how to manage time in aptitude test"
+ },
+ {
+  "target": "apt-time-management",
+  "text": "how many minutes per question in aptitude"
+ },
+ {
+  "target": "apt-time-management",
+  "text": "should i skip difficult questions"
+ },
+ {
+  "target": "apt-time-management",
+  "text": "how to attempt more questions in less time"
+ },
+ {
+  "target": "apt-time-management",
+  "text": "how to avoid negative marking mistakes"
+ },
+ {
+  "target": "apt-time-management",
+  "text": "Time management in aptitude tests"
+ },
+ {
+  "target": "apt-improve-accuracy",
+  "text": "how to improve accuracy in aptitude"
+ },
+ {
+  "target": "apt-improve-accuracy",
+  "text": "how do i get better at quantitative aptitude"
+ },
+ {
+  "target": "apt-improve-accuracy",
+  "text": "how to prepare for aptitude test in 30 days"
+ },
+ {
+  "target": "apt-improve-accuracy",
+  "text": "aptitude preparation plan"
+ },
+ {
+  "target": "apt-improve-accuracy",
+  "text": "how to increase my aptitude score"
+ },
+ {
+  "target": "apt-improve-accuracy",
+  "text": "How to improve aptitude accuracy"
+ },
+ {
+  "target": "oop-pillars",
+  "text": "what are the four pillars of oop"
+ },
+ {
+  "target": "oop-pillars",
+  "text": "explain oops concepts"
+ },
+ {
+  "target": "oop-pillars",
+  "text": "what is object oriented programming"
+ },
+ {
+  "target": "oop-pillars",
+  "text": "encapsulation inheritance polymorphism abstraction"
+ },
+ {
+  "target": "oop-pillars",
+  "text": "oop interview questions"
+ },
+ {
+  "target": "oop-pillars",
+  "text": "Four pillars of OOP"
+ },
+ {
+  "target": "oop-abstraction-vs-encapsulation",
+  "text": "difference between abstraction and encapsulation"
+ },
+ {
+  "target": "oop-abstraction-vs-encapsulation",
+  "text": "abstraction versus encapsulation"
+ },
+ {
+  "target": "oop-abstraction-vs-encapsulation",
+  "text": "encapsulation vs abstraction with example"
+ },
+ {
+  "target": "oop-abstraction-vs-encapsulation",
+  "text": "Abstraction vs encapsulation"
+ },
+ {
+  "target": "oop-overloading-overriding",
+  "text": "difference between method overloading and overriding"
+ },
+ {
+  "target": "oop-overloading-overriding",
+  "text": "overloading versus overriding"
+ },
+ {
+  "target": "oop-overloading-overriding",
+  "text": "what is method overriding"
+ },
+ {
+  "target": "oop-overloading-overriding",
+  "text": "what is compile time and run time polymorphism"
+ },
+ {
+  "target": "oop-overloading-overriding",
+  "text": "Overloading vs overriding"
+ },
+ {
+  "target": "oop-interface-abstract",
+  "text": "difference between abstract class and interface"
+ },
+ {
+  "target": "oop-interface-abstract",
+  "text": "abstract class versus interface in java"
+ },
+ {
+  "target": "oop-interface-abstract",
+  "text": "when to use interface instead of abstract class"
+ },
+ {
+  "target": "oop-interface-abstract",
+  "text": "Abstract class vs interface"
+ },
+ {
+  "target": "os-process-thread",
+  "text": "difference between process and thread"
+ },
+ {
+  "target": "os-process-thread",
+  "text": "process versus thread"
+ },
+ {
+  "target": "os-process-thread",
+  "text": "what is a thread in operating system"
+ },
+ {
+  "target": "os-process-thread",
+  "text": "what is a process"
+ },
+ {
+  "target": "os-process-thread",
+  "text": "what is context switching"
+ },
+ {
+  "target": "os-process-thread",
+  "text": "Process vs thread"
+ },
+ {
+  "target": "os-deadlock",
+  "text": "what is deadlock"
+ },
+ {
+  "target": "os-deadlock",
+  "text": "necessary conditions for deadlock"
+ },
+ {
+  "target": "os-deadlock",
+  "text": "how to prevent deadlock"
+ },
+ {
+  "target": "os-deadlock",
+  "text": "coffman conditions"
+ },
+ {
+  "target": "os-deadlock",
+  "text": "deadlock avoidance bankers algorithm"
+ },
+ {
+  "target": "os-deadlock",
+  "text": "Deadlock"
+ },
+ {
+  "target": "os-scheduling",
+  "text": "cpu scheduling algorithms"
+ },
+ {
+  "target": "os-scheduling",
+  "text": "fcfs sjf round robin priority scheduling"
+ },
+ {
+  "target": "os-scheduling",
+  "text": "what is round robin scheduling"
+ },
+ {
+  "target": "os-scheduling",
+  "text": "which scheduling algorithm is best"
+ },
+ {
+  "target": "os-scheduling",
+  "text": "what is starvation and aging"
+ },
+ {
+  "target": "os-scheduling",
+  "text": "CPU scheduling algorithms"
+ },
+ {
+  "target": "os-memory",
+  "text": "what is virtual memory"
+ },
+ {
+  "target": "os-memory",
+  "text": "difference between paging and segmentation"
+ },
+ {
+  "target": "os-memory",
+  "text": "what is paging in os"
+ },
+ {
+  "target": "os-memory",
+  "text": "page replacement algorithms"
+ },
+ {
+  "target": "os-memory",
+  "text": "what is thrashing"
+ },
+ {
+  "target": "os-memory",
+  "text": "what is a page fault"
+ },
+ {
+  "target": "os-memory",
+  "text": "Paging, segmentation and virtual memory"
+ },
+ {
+  "target": "os-sync",
+  "text": "difference between mutex and semaphore"
+ },
+ {
+  "target": "os-sync",
+  "text": "what is a semaphore"
+ },
+ {
+  "target": "os-sync",
+  "text": "what is a race condition"
+ },
+ {
+  "target": "os-sync",
+  "text": "what is critical section problem"
+ },
+ {
+  "target": "os-sync",
+  "text": "process synchronization"
+ },
+ {
+  "target": "os-sync",
+  "text": "Mutex vs semaphore"
+ },
+ {
+  "target": "dbms-acid",
+  "text": "what are acid properties"
+ },
+ {
+  "target": "dbms-acid",
+  "text": "explain acid in dbms"
+ },
+ {
+  "target": "dbms-acid",
+  "text": "what is a transaction in database"
+ },
+ {
+  "target": "dbms-acid",
+  "text": "atomicity consistency isolation durability"
+ },
+ {
+  "target": "dbms-acid",
+  "text": "what does acid stand for in databases"
+ },
+ {
+  "target": "dbms-acid",
+  "text": "acid meaning"
+ },
+ {
+  "target": "dbms-acid",
+  "text": "ACID properties"
+ },
+ {
+  "target": "dbms-normalization",
+  "text": "what is normalization"
+ },
+ {
+  "target": "dbms-normalization",
+  "text": "explain 1nf 2nf 3nf and bcnf"
+ },
+ {
+  "target": "dbms-normalization",
+  "text": "why do we normalize a database"
+ },
+ {
+  "target": "dbms-normalization",
+  "text": "what is denormalization"
+ },
+ {
+  "target": "dbms-normalization",
+  "text": "Normalization"
+ },
+ {
+  "target": "dbms-keys",
+  "text": "difference between primary key and foreign key"
+ },
+ {
+  "target": "dbms-keys",
+  "text": "types of keys in dbms"
+ },
+ {
+  "target": "dbms-keys",
+  "text": "primary key vs unique key"
+ },
+ {
+  "target": "dbms-keys",
+  "text": "what is candidate key and super key"
+ },
+ {
+  "target": "dbms-keys",
+  "text": "Keys in DBMS"
+ },
+ {
+  "target": "dbms-joins",
+  "text": "types of sql joins"
+ },
+ {
+  "target": "dbms-joins",
+  "text": "difference between inner join and left join"
+ },
+ {
+  "target": "dbms-joins",
+  "text": "what is a full outer join"
+ },
+ {
+  "target": "dbms-joins",
+  "text": "explain joins in sql with example"
+ },
+ {
+  "target": "dbms-joins",
+  "text": "what is a self join"
+ },
+ {
+  "target": "dbms-joins",
+  "text": "SQL joins"
+ },
+ {
+  "target": "dbms-sql-misc",
+  "text": "difference between where and having"
+ },
+ {
+  "target": "dbms-sql-misc",
+  "text": "difference between delete truncate and drop"
+ },
+ {
+  "target": "dbms-sql-misc",
+  "text": "what is group by in sql"
+ },
+ {
+  "target": "dbms-sql-misc",
+  "text": "delete vs truncate"
+ },
+ {
+  "target": "dbms-sql-misc",
+  "text": "SQL: WHERE vs HAVING, DELETE vs TRUNCATE"
+ },
+ {
+  "target": "dbms-index",
+  "text": "what is an index in database"
+ },
+ {
+  "target": "dbms-index",
+  "text": "how does indexing improve performance"
+ },
+ {
+  "target": "dbms-index",
+  "text": "what is a b tree index"
+ },
+ {
+  "target": "dbms-index",
+  "text": "clustered vs non clustered index"
+ },
+ {
+  "target": "dbms-index",
+  "text": "Indexing"
+ },
+ {
+  "target": "dbms-sql-nosql",
+  "text": "difference between sql and nosql"
+ },
+ {
+  "target": "dbms-sql-nosql",
+  "text": "when to use mongodb instead of mysql"
+ },
+ {
+  "target": "dbms-sql-nosql",
+  "text": "sql versus nosql databases"
+ },
+ {
+  "target": "dbms-sql-nosql",
+  "text": "SQL vs NoSQL"
+ },
+ {
+  "target": "cn-osi",
+  "text": "what are the layers of the osi model"
+ },
+ {
+  "target": "cn-osi",
+  "text": "explain osi model"
+ },
+ {
+  "target": "cn-osi",
+  "text": "difference between osi and tcp ip"
+ },
+ {
+  "target": "cn-osi",
+  "text": "seven layers of networking"
+ },
+ {
+  "target": "cn-osi",
+  "text": "OSI model"
+ },
+ {
+  "target": "cn-tcp-udp",
+  "text": "difference between tcp and udp"
+ },
+ {
+  "target": "cn-tcp-udp",
+  "text": "tcp versus udp"
+ },
+ {
+  "target": "cn-tcp-udp",
+  "text": "what is the tcp three way handshake"
+ },
+ {
+  "target": "cn-tcp-udp",
+  "text": "when to use udp"
+ },
+ {
+  "target": "cn-tcp-udp",
+  "text": "TCP vs UDP"
+ },
+ {
+  "target": "cn-http-dns",
+  "text": "difference between http and https"
+ },
+ {
+  "target": "cn-http-dns",
+  "text": "what is dns and how does it work"
+ },
+ {
+  "target": "cn-http-dns",
+  "text": "what happens when you type a url in the browser"
+ },
+ {
+  "target": "cn-http-dns",
+  "text": "what is ssl tls"
+ },
+ {
+  "target": "cn-http-dns",
+  "text": "HTTP, HTTPS and DNS"
+ },
+ {
+  "target": "cn-ip",
+  "text": "ipv4 vs ipv6"
+ },
+ {
+  "target": "cn-ip",
+  "text": "what is a subnet mask"
+ },
+ {
+  "target": "cn-ip",
+  "text": "difference between hub switch and router"
+ },
+ {
+  "target": "cn-ip",
+  "text": "what is arp"
+ },
+ {
+  "target": "cn-ip",
+  "text": "what is an ip address"
+ },
+ {
+  "target": "cn-ip",
+  "text": "IP addressing and devices"
+ },
+ {
+  "target": "dsa-bigo",
+  "text": "what is big o notation"
+ },
+ {
+  "target": "dsa-bigo",
+  "text": "time complexity of sorting algorithms"
+ },
+ {
+  "target": "dsa-bigo",
+  "text": "what is time and space complexity"
+ },
+ {
+  "target": "dsa-bigo",
+  "text": "complexity of bubble sort merge sort quick sort"
+ },
+ {
+  "target": "dsa-bigo",
+  "text": "best average worst case complexity"
+ },
+ {
+  "target": "dsa-bigo",
+  "text": "Big-O notation and common complexities"
+ },
+ {
+  "target": "dsa-array-linkedlist",
+  "text": "difference between array and linked list"
+ },
+ {
+  "target": "dsa-array-linkedlist",
+  "text": "array versus linked list"
+ },
+ {
+  "target": "dsa-array-linkedlist",
+  "text": "when to use linked list"
+ },
+ {
+  "target": "dsa-array-linkedlist",
+  "text": "what is a linked list"
+ },
+ {
+  "target": "dsa-array-linkedlist",
+  "text": "Array vs linked list"
+ },
+ {
+  "target": "dsa-stack-queue",
+  "text": "difference between stack and queue"
+ },
+ {
+  "target": "dsa-stack-queue",
+  "text": "stack versus queue"
+ },
+ {
+  "target": "dsa-stack-queue",
+  "text": "what is lifo and fifo"
+ },
+ {
+  "target": "dsa-stack-queue",
+  "text": "applications of stack and queue"
+ },
+ {
+  "target": "dsa-stack-queue",
+  "text": "what is a priority queue"
+ },
+ {
+  "target": "dsa-stack-queue",
+  "text": "Stack vs queue"
+ },
+ {
+  "target": "dsa-hashing",
+  "text": "how does a hash table work"
+ },
+ {
+  "target": "dsa-hashing",
+  "text": "what is hashing"
+ },
+ {
+  "target": "dsa-hashing",
+  "text": "how are collisions handled in hashing"
+ },
+ {
+  "target": "dsa-hashing",
+  "text": "hashmap internal working"
+ },
+ {
+  "target": "dsa-hashing",
+  "text": "chaining vs open addressing"
+ },
+ {
+  "target": "dsa-hashing",
+  "text": "Hash tables and collisions"
+ },
+ {
+  "target": "dsa-trees",
+  "text": "what is a binary search tree"
+ },
+ {
+  "target": "dsa-trees",
+  "text": "tree traversal inorder preorder postorder"
+ },
+ {
+  "target": "dsa-trees",
+  "text": "what is an avl tree"
+ },
+ {
+  "target": "dsa-trees",
+  "text": "what is a balanced binary tree"
+ },
+ {
+  "target": "dsa-trees",
+  "text": "difference between binary tree and bst"
+ },
+ {
+  "target": "dsa-trees",
+  "text": "Binary trees and BSTs"
+ },
+ {
+  "target": "dsa-bfs-dfs",
+  "text": "difference between bfs and dfs"
+ },
+ {
+  "target": "dsa-bfs-dfs",
+  "text": "breadth first search versus depth first search"
+ },
+ {
+  "target": "dsa-bfs-dfs",
+  "text": "what is dijkstra algorithm"
+ },
+ {
+  "target": "dsa-bfs-dfs",
+  "text": "shortest path algorithms"
+ },
+ {
+  "target": "dsa-bfs-dfs",
+  "text": "graph traversal"
+ },
+ {
+  "target": "dsa-bfs-dfs",
+  "text": "BFS vs DFS"
+ },
+ {
+  "target": "dsa-dp",
+  "text": "what is dynamic programming"
+ },
+ {
+  "target": "dsa-dp",
+  "text": "difference between recursion and dynamic programming"
+ },
+ {
+  "target": "dsa-dp",
+  "text": "memoization vs tabulation"
+ },
+ {
+  "target": "dsa-dp",
+  "text": "greedy versus dynamic programming"
+ },
+ {
+  "target": "dsa-dp",
+  "text": "how to identify a dp problem"
+ },
+ {
+  "target": "dsa-dp",
+  "text": "Dynamic programming and recursion"
+ },
+ {
+  "target": "dsa-prepare",
+  "text": "how to prepare dsa for placements"
+ },
+ {
+  "target": "dsa-prepare",
+  "text": "dsa roadmap for campus interviews"
+ },
+ {
+  "target": "dsa-prepare",
+  "text": "which data structures should i learn first"
+ },
+ {
+  "target": "dsa-prepare",
+  "text": "how many leetcode problems should i solve"
+ },
+ {
+  "target": "dsa-prepare",
+  "text": "how to start coding practice"
+ },
+ {
+  "target": "dsa-prepare",
+  "text": "where should i begin with data structures"
+ },
+ {
+  "target": "dsa-prepare",
+  "text": "how to start learning dsa from scratch"
+ },
+ {
+  "target": "dsa-prepare",
+  "text": "How to prepare DSA for placements"
+ },
+ {
+  "target": "java-jdk-jvm",
+  "text": "difference between jdk jre and jvm"
+ },
+ {
+  "target": "java-jdk-jvm",
+  "text": "what is jvm"
+ },
+ {
+  "target": "java-jdk-jvm",
+  "text": "how does java achieve platform independence"
+ },
+ {
+  "target": "java-jdk-jvm",
+  "text": "what is garbage collection in java"
+ },
+ {
+  "target": "java-jdk-jvm",
+  "text": "JDK, JRE and JVM"
+ },
+ {
+  "target": "java-equals-string",
+  "text": "difference between equals and == in java"
+ },
+ {
+  "target": "java-equals-string",
+  "text": "why is string immutable in java"
+ },
+ {
+  "target": "java-equals-string",
+  "text": "string vs stringbuilder"
+ },
+ {
+  "target": "java-equals-string",
+  "text": "string pool in java"
+ },
+ {
+  "target": "java-equals-string",
+  "text": "== vs equals(), String immutability"
+ },
+ {
+  "target": "python-basics",
+  "text": "difference between list and tuple in python"
+ },
+ {
+  "target": "python-basics",
+  "text": "what is the gil in python"
+ },
+ {
+  "target": "python-basics",
+  "text": "what are decorators in python"
+ },
+ {
+  "target": "python-basics",
+  "text": "what is a python list comprehension"
+ },
+ {
+  "target": "python-basics",
+  "text": "shallow copy vs deep copy"
+ },
+ {
+  "target": "python-basics",
+  "text": "Python: list vs tuple, GIL, decorators"
+ },
+ {
+  "target": "js-basics",
+  "text": "difference between var let and const"
+ },
+ {
+  "target": "js-basics",
+  "text": "what is a closure in javascript"
+ },
+ {
+  "target": "js-basics",
+  "text": "difference between == and === in javascript"
+ },
+ {
+  "target": "js-basics",
+  "text": "what is hoisting"
+ },
+ {
+  "target": "js-basics",
+  "text": "what is the event loop"
+ },
+ {
+  "target": "js-basics",
+  "text": "JavaScript: var/let/const, closures, ==="
+ },
+ {
+  "target": "js-async",
+  "text": "what is a promise in javascript"
+ },
+ {
+  "target": "js-async",
+  "text": "async await vs promises"
+ },
+ {
+  "target": "js-async",
+  "text": "what is callback hell"
+ },
+ {
+  "target": "js-async",
+  "text": "how does async await work"
+ },
+ {
+  "target": "js-async",
+  "text": "Promises and async/await"
+ },
+ {
+  "target": "react-basics",
+  "text": "what is the virtual dom"
+ },
+ {
+  "target": "react-basics",
+  "text": "difference between props and state in react"
+ },
+ {
+  "target": "react-basics",
+  "text": "what are react hooks"
+ },
+ {
+  "target": "react-basics",
+  "text": "usestate and useeffect explained"
+ },
+ {
+  "target": "react-basics",
+  "text": "why use react"
+ },
+ {
+  "target": "react-basics",
+  "text": "React basics"
+ },
+ {
+  "target": "web-rest-jwt",
+  "text": "what is rest api"
+ },
+ {
+  "target": "web-rest-jwt",
+  "text": "what is jwt and how does it work"
+ },
+ {
+  "target": "web-rest-jwt",
+  "text": "what is cors"
+ },
+ {
+  "target": "web-rest-jwt",
+  "text": "difference between get and post"
+ },
+ {
+  "target": "web-rest-jwt",
+  "text": "put vs patch"
+ },
+ {
+  "target": "web-rest-jwt",
+  "text": "authentication vs authorization"
+ },
+ {
+  "target": "web-rest-jwt",
+  "text": "REST, JWT and CORS"
+ },
+ {
+  "target": "web-security",
+  "text": "what is sql injection"
+ },
+ {
+  "target": "web-security",
+  "text": "what is xss attack"
+ },
+ {
+  "target": "web-security",
+  "text": "how to prevent sql injection"
+ },
+ {
+  "target": "web-security",
+  "text": "what is csrf"
+ },
+ {
+  "target": "web-security",
+  "text": "SQL injection and XSS"
+ },
+ {
+  "target": "git-basics",
+  "text": "difference between git fetch and git pull"
+ },
+ {
+  "target": "git-basics",
+  "text": "git merge vs rebase"
+ },
+ {
+  "target": "git-basics",
+  "text": "what is a pull request"
+ },
+ {
+  "target": "git-basics",
+  "text": "basic git commands"
+ },
+ {
+  "target": "git-basics",
+  "text": "difference between git and github"
+ },
+ {
+  "target": "git-basics",
+  "text": "Git basics"
+ },
+ {
+  "target": "sdlc-agile",
+  "text": "difference between agile and waterfall"
+ },
+ {
+  "target": "sdlc-agile",
+  "text": "what is sdlc"
+ },
+ {
+  "target": "sdlc-agile",
+  "text": "what is scrum"
+ },
+ {
+  "target": "sdlc-agile",
+  "text": "software development life cycle phases"
+ },
+ {
+  "target": "sdlc-agile",
+  "text": "Agile vs Waterfall"
+ },
+ {
+  "target": "hr-tell-me-about-yourself",
+  "text": "how to answer tell me about yourself"
+ },
+ {
+  "target": "hr-tell-me-about-yourself",
+  "text": "tell me about yourself sample answer"
+ },
+ {
+  "target": "hr-tell-me-about-yourself",
+  "text": "how do i introduce myself in an interview"
+ },
+ {
+  "target": "hr-tell-me-about-yourself",
+  "text": "self introduction for freshers"
+ },
+ {
+  "target": "hr-tell-me-about-yourself",
+  "text": "Tell me about yourself"
+ },
+ {
+  "target": "hr-strengths-weaknesses",
+  "text": "what are your strengths and weaknesses"
+ },
+ {
+  "target": "hr-strengths-weaknesses",
+  "text": "how to answer what is your weakness"
+ },
+ {
+  "target": "hr-strengths-weaknesses",
+  "text": "best answer for greatest weakness in interview"
+ },
+ {
+  "target": "hr-strengths-weaknesses",
+  "text": "how to talk about my strengths"
+ },
+ {
+  "target": "hr-strengths-weaknesses",
+  "text": "how to answer the weakness question in an interview"
+ },
+ {
+  "target": "hr-strengths-weaknesses",
+  "text": "what to say about my weakness"
+ },
+ {
+  "target": "hr-strengths-weaknesses",
+  "text": "interview question what is your biggest weakness"
+ },
+ {
+  "target": "hr-strengths-weaknesses",
+  "text": "Strengths and weaknesses"
+ },
+ {
+  "target": "hr-why-hire",
+  "text": "why should we hire you"
+ },
+ {
+  "target": "hr-why-hire",
+  "text": "why do you want to join this company"
+ },
+ {
+  "target": "hr-why-hire",
+  "text": "why do you want this job"
+ },
+ {
+  "target": "hr-why-hire",
+  "text": "how to answer why us in interview"
+ },
+ {
+  "target": "hr-why-hire",
+  "text": "Why should we hire you / why this company"
+ },
+ {
+  "target": "hr-five-years",
+  "text": "where do you see yourself in 5 years"
+ },
+ {
+  "target": "hr-five-years",
+  "text": "how to answer five year goal question"
+ },
+ {
+  "target": "hr-five-years",
+  "text": "what are your career goals"
+ },
+ {
+  "target": "hr-five-years",
+  "text": "Where do you see yourself in five years"
+ },
+ {
+  "target": "hr-star-method",
+  "text": "what is the star method"
+ },
+ {
+  "target": "hr-star-method",
+  "text": "how to answer behavioural interview questions"
+ },
+ {
+  "target": "hr-star-method",
+  "text": "tell me about a time you faced a challenge"
+ },
+ {
+  "target": "hr-star-method",
+  "text": "how to describe a conflict with a teammate"
+ },
+ {
+  "target": "hr-star-method",
+  "text": "how to answer situational questions"
+ },
+ {
+  "target": "hr-star-method",
+  "text": "STAR method for behavioural questions"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "what if i do not know the answer in an interview"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "how to handle a question i can't answer"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "how to stay calm when i get stuck in interview"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "how to deal with interview nervousness"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "how to overcome interview anxiety"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "i get nervous before interviews"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "how to overcome fear of interviews"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "how to stay confident during an interview"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "i am scared of facing interviews"
+ },
+ {
+  "target": "hr-dont-know",
+  "text": "What to do when you don't know an answer"
+ },
+ {
+  "target": "hr-ask-interviewer",
+  "text": "what questions should i ask the interviewer"
+ },
+ {
+  "target": "hr-ask-interviewer",
+  "text": "do you have any questions for us"
+ },
+ {
+  "target": "hr-ask-interviewer",
+  "text": "good questions to ask at the end of an interview"
+ },
+ {
+  "target": "hr-ask-interviewer",
+  "text": "Questions to ask the interviewer"
+ },
+ {
+  "target": "hr-salary",
+  "text": "how to answer expected salary question"
+ },
+ {
+  "target": "hr-salary",
+  "text": "what are your salary expectations as a fresher"
+ },
+ {
+  "target": "hr-salary",
+  "text": "how to negotiate salary in campus placement"
+ },
+ {
+  "target": "hr-salary",
+  "text": "Salary expectations"
+ },
+ {
+  "target": "interview-virtual-tips",
+  "text": "tips for online video interview"
+ },
+ {
+  "target": "interview-virtual-tips",
+  "text": "how to prepare for a virtual interview"
+ },
+ {
+  "target": "interview-virtual-tips",
+  "text": "what to do before an interview"
+ },
+ {
+  "target": "interview-virtual-tips",
+  "text": "interview day checklist"
+ },
+ {
+  "target": "interview-virtual-tips",
+  "text": "how to dress for an interview"
+ },
+ {
+  "target": "interview-virtual-tips",
+  "text": "Virtual / online interview tips"
+ },
+ {
+  "target": "interview-technical-prep",
+  "text": "how to prepare for technical interview"
+ },
+ {
+  "target": "interview-technical-prep",
+  "text": "how to crack a campus placement interview"
+ },
+ {
+  "target": "interview-technical-prep",
+  "text": "how to prepare for placements in 3 months"
+ },
+ {
+  "target": "interview-technical-prep",
+  "text": "study plan for placements"
+ },
+ {
+  "target": "interview-technical-prep",
+  "text": "placement preparation roadmap"
+ },
+ {
+  "target": "interview-technical-prep",
+  "text": "Preparing for a technical interview"
+ },
+ {
+  "target": "interview-projects",
+  "text": "how to explain my project in an interview"
+ },
+ {
+  "target": "interview-projects",
+  "text": "what questions are asked about projects"
+ },
+ {
+  "target": "interview-projects",
+  "text": "how to present a final year project"
+ },
+ {
+  "target": "interview-projects",
+  "text": "project explanation tips"
+ },
+ {
+  "target": "interview-projects",
+  "text": "Explaining your project"
+ },
+ {
+  "target": "resume-tips",
+  "text": "how to write a good resume for freshers"
+ },
+ {
+  "target": "resume-tips",
+  "text": "resume tips for campus placement"
+ },
+ {
+  "target": "resume-tips",
+  "text": "what should i include in my resume"
+ },
+ {
+  "target": "resume-tips",
+  "text": "how long should a fresher resume be"
+ },
+ {
+  "target": "resume-tips",
+  "text": "resume format for freshers"
+ },
+ {
+  "target": "resume-tips",
+  "text": "Resume tips"
+ },
+ {
+  "target": "resume-ats",
+  "text": "what is an ats resume"
+ },
+ {
+  "target": "resume-ats",
+  "text": "how to improve my ats score"
+ },
+ {
+  "target": "resume-ats",
+  "text": "how to make my resume ats friendly"
+ },
+ {
+  "target": "resume-ats",
+  "text": "why is my resume rejected by ats"
+ },
+ {
+  "target": "resume-ats",
+  "text": "ats keywords in resume"
+ },
+ {
+  "target": "resume-ats",
+  "text": "ATS-friendly resume"
+ },
+ {
+  "target": "gd-tips",
+  "text": "how to perform well in group discussion"
+ },
+ {
+  "target": "gd-tips",
+  "text": "group discussion tips for placements"
+ },
+ {
+  "target": "gd-tips",
+  "text": "how to start a group discussion"
+ },
+ {
+  "target": "gd-tips",
+  "text": "gd topics for freshers"
+ },
+ {
+  "target": "gd-tips",
+  "text": "Group discussion tips"
+ },
+ {
+  "target": "placement-process",
+  "text": "what is the campus placement process"
+ },
+ {
+  "target": "placement-process",
+  "text": "rounds in campus recruitment"
+ },
+ {
+  "target": "placement-process",
+  "text": "stages of a placement drive"
+ },
+ {
+  "target": "placement-process",
+  "text": "how does campus hiring work"
+ },
+ {
+  "target": "placement-process",
+  "text": "steps in a placement drive"
+ },
+ {
+  "target": "placement-process",
+  "text": "what happens in a campus recruitment drive"
+ },
+ {
+  "target": "placement-process",
+  "text": "Typical campus placement process"
+ },
+ {
+  "target": "placement-eligibility",
+  "text": "why am i not eligible for a job"
+ },
+ {
+  "target": "placement-eligibility",
+  "text": "cgpa cutoff for placements"
+ },
+ {
+  "target": "placement-eligibility",
+  "text": "do backlogs affect placements"
+ },
+ {
+  "target": "placement-eligibility",
+  "text": "how to check job eligibility"
+ },
+ {
+  "target": "placement-eligibility",
+  "text": "Eligibility criteria"
+ },
+ {
+  "target": "communication-skills",
+  "text": "how to improve communication skills"
+ },
+ {
+  "target": "communication-skills",
+  "text": "how to speak fluently in english for interviews"
+ },
+ {
+  "target": "communication-skills",
+  "text": "how to reduce filler words"
+ },
+ {
+  "target": "communication-skills",
+  "text": "how can i improve my confidence while speaking"
+ },
+ {
+  "target": "communication-skills",
+  "text": "Improve communication skills"
+ },
+ {
+  "target": "platform-overview",
+  "text": "what can you do"
+ },
+ {
+  "target": "platform-overview",
+  "text": "what features does this platform have"
+ },
+ {
+  "target": "platform-overview",
+  "text": "how do i use mindprep"
+ },
+ {
+  "target": "platform-overview",
+  "text": "help me get started"
+ },
+ {
+  "target": "platform-overview",
+  "text": "what is mindprep ai"
+ },
+ {
+  "target": "platform-overview",
+  "text": "how does this website work"
+ },
+ {
+  "target": "platform-overview",
+  "text": "what can i do on this platform"
+ },
+ {
+  "target": "platform-overview",
+  "text": "what all features are available here"
+ },
+ {
+  "target": "platform-overview",
+  "text": "what services does this website offer"
+ },
+ {
+  "target": "platform-overview",
+  "text": "What can MindPrep AI do"
+ },
+ {
+  "target": "platform-aptitude-how",
+  "text": "how do i start an aptitude test"
+ },
+ {
+  "target": "platform-aptitude-how",
+  "text": "how to take a mock test here"
+ },
+ {
+  "target": "platform-aptitude-how",
+  "text": "where can i practice aptitude questions"
+ },
+ {
+  "target": "platform-aptitude-how",
+  "text": "how do company wise aptitude tests work"
+ },
+ {
+  "target": "platform-aptitude-how",
+  "text": "what is the difference between practice and mock test"
+ },
+ {
+  "target": "platform-aptitude-how",
+  "text": "How to take an aptitude test"
+ },
+ {
+  "target": "platform-proctoring",
+  "text": "what happens if i switch tabs during a test"
+ },
+ {
+  "target": "platform-proctoring",
+  "text": "why was my test auto submitted"
+ },
+ {
+  "target": "platform-proctoring",
+  "text": "how does proctoring work"
+ },
+ {
+  "target": "platform-proctoring",
+  "text": "why is my camera not working in the interview"
+ },
+ {
+  "target": "platform-proctoring",
+  "text": "does the interview use my webcam"
+ },
+ {
+  "target": "platform-proctoring",
+  "text": "Proctoring, tab switching and camera"
+ },
+ {
+  "target": "platform-mock-interview-how",
+  "text": "how do i start a mock interview"
+ },
+ {
+  "target": "platform-mock-interview-how",
+  "text": "how does the ai mock interview work"
+ },
+ {
+  "target": "platform-mock-interview-how",
+  "text": "how is my interview scored"
+ },
+ {
+  "target": "platform-mock-interview-how",
+  "text": "what does the interview report show"
+ },
+ {
+  "target": "platform-mock-interview-how",
+  "text": "can i do a resume based interview"
+ },
+ {
+  "target": "platform-mock-interview-how",
+  "text": "How the mock interview works"
+ },
+ {
+  "target": "platform-tech-practice-how",
+  "text": "what is tech practice"
+ },
+ {
+  "target": "platform-tech-practice-how",
+  "text": "how do technology quizzes work"
+ },
+ {
+  "target": "platform-tech-practice-how",
+  "text": "how do i practice java or python questions here"
+ },
+ {
+  "target": "platform-tech-practice-how",
+  "text": "why did the difficulty change in tech quiz"
+ },
+ {
+  "target": "platform-tech-practice-how",
+  "text": "How Tech Practice works"
+ },
+ {
+  "target": "platform-analytics-how",
+  "text": "how do i see my progress"
+ },
+ {
+  "target": "platform-analytics-how",
+  "text": "where can i see my scores"
+ },
+ {
+  "target": "platform-analytics-how",
+  "text": "how is my readiness score calculated"
+ },
+ {
+  "target": "platform-analytics-how",
+  "text": "what does the analytics page show"
+ },
+ {
+  "target": "platform-analytics-how",
+  "text": "How Analytics works"
+ },
+ {
+  "target": "mem-stack-heap",
+  "text": "difference between stack and heap memory"
+ },
+ {
+  "target": "mem-stack-heap",
+  "text": "what is stack memory"
+ },
+ {
+  "target": "mem-stack-heap",
+  "text": "what is heap memory"
+ },
+ {
+  "target": "mem-stack-heap",
+  "text": "where are local variables stored"
+ },
+ {
+  "target": "mem-stack-heap",
+  "text": "stack overflow versus memory leak"
+ },
+ {
+  "target": "mem-stack-heap",
+  "text": "Stack vs heap memory"
+ },
+ {
+  "target": "lang-compiler-interpreter",
+  "text": "difference between compiler and interpreter"
+ },
+ {
+  "target": "lang-compiler-interpreter",
+  "text": "what is a compiler"
+ },
+ {
+  "target": "lang-compiler-interpreter",
+  "text": "what is an interpreter"
+ },
+ {
+  "target": "lang-compiler-interpreter",
+  "text": "is python compiled or interpreted"
+ },
+ {
+  "target": "lang-compiler-interpreter",
+  "text": "what is jit compilation"
+ },
+ {
+  "target": "lang-compiler-interpreter",
+  "text": "Compiler vs interpreter"
+ },
+ {
+  "target": "lang-pointers",
+  "text": "what is a pointer in c"
+ },
+ {
+  "target": "lang-pointers",
+  "text": "what is a dangling pointer"
+ },
+ {
+  "target": "lang-pointers",
+  "text": "what is a memory leak"
+ },
+ {
+  "target": "lang-pointers",
+  "text": "difference between malloc and calloc"
+ },
+ {
+  "target": "lang-pointers",
+  "text": "what is a null pointer"
+ },
+ {
+  "target": "lang-pointers",
+  "text": "pointer versus reference in c plus plus"
+ },
+ {
+  "target": "lang-pointers",
+  "text": "Pointers and memory management"
+ },
+ {
+  "target": "algo-recursion",
+  "text": "what is recursion"
+ },
+ {
+  "target": "algo-recursion",
+  "text": "difference between recursion and iteration"
+ },
+ {
+  "target": "algo-recursion",
+  "text": "what is a base case"
+ },
+ {
+  "target": "algo-recursion",
+  "text": "what causes stack overflow in recursion"
+ },
+ {
+  "target": "algo-recursion",
+  "text": "what is tail recursion"
+ },
+ {
+  "target": "algo-recursion",
+  "text": "Recursion vs iteration"
+ },
+ {
+  "target": "oop-constructors-static",
+  "text": "what is a constructor"
+ },
+ {
+  "target": "oop-constructors-static",
+  "text": "types of constructors"
+ },
+ {
+  "target": "oop-constructors-static",
+  "text": "what is a destructor"
+ },
+ {
+  "target": "oop-constructors-static",
+  "text": "what does the static keyword mean"
+ },
+ {
+  "target": "oop-constructors-static",
+  "text": "what is the this keyword"
+ },
+ {
+  "target": "oop-constructors-static",
+  "text": "what is a copy constructor"
+ },
+ {
+  "target": "oop-constructors-static",
+  "text": "Constructors, destructors and static"
+ },
+ {
+  "target": "oop-virtual-diamond",
+  "text": "what is a virtual function"
+ },
+ {
+  "target": "oop-virtual-diamond",
+  "text": "what is a vtable"
+ },
+ {
+  "target": "oop-virtual-diamond",
+  "text": "what is a pure virtual function"
+ },
+ {
+  "target": "oop-virtual-diamond",
+  "text": "what is the diamond problem"
+ },
+ {
+  "target": "oop-virtual-diamond",
+  "text": "does java support multiple inheritance"
+ },
+ {
+  "target": "oop-virtual-diamond",
+  "text": "Virtual functions and multiple inheritance"
+ },
+ {
+  "target": "oop-solid-patterns",
+  "text": "what are solid principles"
+ },
+ {
+  "target": "oop-solid-patterns",
+  "text": "what is the singleton pattern"
+ },
+ {
+  "target": "oop-solid-patterns",
+  "text": "what is the factory design pattern"
+ },
+ {
+  "target": "oop-solid-patterns",
+  "text": "what is the observer pattern"
+ },
+ {
+  "target": "oop-solid-patterns",
+  "text": "common design patterns asked in interviews"
+ },
+ {
+  "target": "oop-solid-patterns",
+  "text": "SOLID principles and design patterns"
+ },
+ {
+  "target": "java-collections",
+  "text": "difference between arraylist and linkedlist"
+ },
+ {
+  "target": "java-collections",
+  "text": "difference between hashmap and hashset"
+ },
+ {
+  "target": "java-collections",
+  "text": "difference between hashmap and hashtable"
+ },
+ {
+  "target": "java-collections",
+  "text": "what is the java collections framework"
+ },
+ {
+  "target": "java-collections",
+  "text": "how does hashmap work internally"
+ },
+ {
+  "target": "java-collections",
+  "text": "Java collections"
+ },
+ {
+  "target": "java-exceptions-threads",
+  "text": "difference between checked and unchecked exceptions"
+ },
+ {
+  "target": "java-exceptions-threads",
+  "text": "difference between final finally and finalize"
+ },
+ {
+  "target": "java-exceptions-threads",
+  "text": "how to create a thread in java"
+ },
+ {
+  "target": "java-exceptions-threads",
+  "text": "what is the synchronized keyword"
+ },
+ {
+  "target": "java-exceptions-threads",
+  "text": "what is the volatile keyword"
+ },
+ {
+  "target": "java-exceptions-threads",
+  "text": "Exceptions and multithreading in Java"
+ },
+ {
+  "target": "sql-query-patterns",
+  "text": "find the second highest salary in sql"
+ },
+ {
+  "target": "sql-query-patterns",
+  "text": "how to find duplicate records in a table"
+ },
+ {
+  "target": "sql-query-patterns",
+  "text": "difference between subquery and join"
+ },
+ {
+  "target": "sql-query-patterns",
+  "text": "how to get top n rows in sql"
+ },
+ {
+  "target": "sql-query-patterns",
+  "text": "group by and aggregate functions"
+ },
+ {
+  "target": "sql-query-patterns",
+  "text": "Common SQL interview queries"
+ },
+ {
+  "target": "sql-objects",
+  "text": "what is a view in sql"
+ },
+ {
+  "target": "sql-objects",
+  "text": "what is a stored procedure"
+ },
+ {
+  "target": "sql-objects",
+  "text": "what is a trigger in database"
+ },
+ {
+  "target": "sql-objects",
+  "text": "types of constraints in sql"
+ },
+ {
+  "target": "sql-objects",
+  "text": "difference between procedure and function in sql"
+ },
+ {
+  "target": "sql-objects",
+  "text": "Views, triggers, procedures and constraints"
+ },
+ {
+  "target": "dbms-isolation",
+  "text": "what are transaction isolation levels"
+ },
+ {
+  "target": "dbms-isolation",
+  "text": "what is a dirty read"
+ },
+ {
+  "target": "dbms-isolation",
+  "text": "what is a phantom read"
+ },
+ {
+  "target": "dbms-isolation",
+  "text": "how does a database handle concurrent transactions"
+ },
+ {
+  "target": "dbms-isolation",
+  "text": "what is mvcc"
+ },
+ {
+  "target": "dbms-isolation",
+  "text": "Isolation levels and concurrency"
+ },
+ {
+  "target": "sys-caching",
+  "text": "what is caching"
+ },
+ {
+  "target": "sys-caching",
+  "text": "what is a cache hit and cache miss"
+ },
+ {
+  "target": "sys-caching",
+  "text": "what is lru cache"
+ },
+ {
+  "target": "sys-caching",
+  "text": "why is cache faster"
+ },
+ {
+  "target": "sys-caching",
+  "text": "what is redis used for"
+ },
+ {
+  "target": "sys-caching",
+  "text": "Caching"
+ },
+ {
+  "target": "algo-sorting",
+  "text": "how does quick sort work"
+ },
+ {
+  "target": "algo-sorting",
+  "text": "how does merge sort work"
+ },
+ {
+  "target": "algo-sorting",
+  "text": "what is a stable sorting algorithm"
+ },
+ {
+  "target": "algo-sorting",
+  "text": "which sorting algorithms are in place"
+ },
+ {
+  "target": "algo-sorting",
+  "text": "quick sort versus merge sort"
+ },
+ {
+  "target": "algo-sorting",
+  "text": "How quick sort and merge sort work"
+ },
+ {
+  "target": "algo-binary-search",
+  "text": "how does binary search work"
+ },
+ {
+  "target": "algo-binary-search",
+  "text": "binary search time complexity"
+ },
+ {
+  "target": "algo-binary-search",
+  "text": "binary search on an unsorted array"
+ },
+ {
+  "target": "algo-binary-search",
+  "text": "binary search implementation tips"
+ },
+ {
+  "target": "algo-binary-search",
+  "text": "Binary search"
+ },
+ {
+  "target": "dsa-heap",
+  "text": "what is a heap data structure"
+ },
+ {
+  "target": "dsa-heap",
+  "text": "difference between min heap and max heap"
+ },
+ {
+  "target": "dsa-heap",
+  "text": "what is heapify"
+ },
+ {
+  "target": "dsa-heap",
+  "text": "how does heap sort work"
+ },
+ {
+  "target": "dsa-heap",
+  "text": "how to find the kth largest element"
+ },
+ {
+  "target": "dsa-heap",
+  "text": "Heaps"
+ },
+ {
+  "target": "algo-patterns",
+  "text": "what is the two pointer technique"
+ },
+ {
+  "target": "algo-patterns",
+  "text": "what is the sliding window technique"
+ },
+ {
+  "target": "algo-patterns",
+  "text": "longest substring without repeating characters approach"
+ },
+ {
+  "target": "algo-patterns",
+  "text": "how to solve subarray sum problems"
+ },
+ {
+  "target": "algo-patterns",
+  "text": "common coding interview patterns"
+ },
+ {
+  "target": "algo-patterns",
+  "text": "Two pointers and sliding window"
+ },
+ {
+  "target": "dsa-linkedlist-ops",
+  "text": "how to reverse a linked list"
+ },
+ {
+  "target": "dsa-linkedlist-ops",
+  "text": "how to detect a cycle in a linked list"
+ },
+ {
+  "target": "dsa-linkedlist-ops",
+  "text": "how to find the middle of a linked list"
+ },
+ {
+  "target": "dsa-linkedlist-ops",
+  "text": "floyd cycle detection algorithm"
+ },
+ {
+  "target": "dsa-linkedlist-ops",
+  "text": "Linked list interview problems"
+ },
+ {
+  "target": "dsa-graph-algos",
+  "text": "adjacency list versus adjacency matrix"
+ },
+ {
+  "target": "dsa-graph-algos",
+  "text": "what is a minimum spanning tree"
+ },
+ {
+  "target": "dsa-graph-algos",
+  "text": "difference between prim and kruskal"
+ },
+ {
+  "target": "dsa-graph-algos",
+  "text": "what is topological sort"
+ },
+ {
+  "target": "dsa-graph-algos",
+  "text": "how to detect a cycle in a graph"
+ },
+ {
+  "target": "dsa-graph-algos",
+  "text": "Graph representation, MST and topological sort"
+ },
+ {
+  "target": "dsa-choose-structure",
+  "text": "which data structure should i use"
+ },
+ {
+  "target": "dsa-choose-structure",
+  "text": "what is a trie"
+ },
+ {
+  "target": "dsa-choose-structure",
+  "text": "which data structure is used for undo"
+ },
+ {
+  "target": "dsa-choose-structure",
+  "text": "when to use hash map versus tree"
+ },
+ {
+  "target": "dsa-choose-structure",
+  "text": "data structure for prefix search"
+ },
+ {
+  "target": "dsa-choose-structure",
+  "text": "Choosing the right data structure"
+ },
+ {
+  "target": "sys-design-basics",
+  "text": "what is scalability"
+ },
+ {
+  "target": "sys-design-basics",
+  "text": "horizontal versus vertical scaling"
+ },
+ {
+  "target": "sys-design-basics",
+  "text": "what is a load balancer"
+ },
+ {
+  "target": "sys-design-basics",
+  "text": "what is the cap theorem"
+ },
+ {
+  "target": "sys-design-basics",
+  "text": "what is database sharding"
+ },
+ {
+  "target": "sys-design-basics",
+  "text": "what is replication in databases"
+ },
+ {
+  "target": "sys-design-basics",
+  "text": "Scalability, load balancing and CAP"
+ },
+ {
+  "target": "sys-microservices",
+  "text": "difference between monolith and microservices"
+ },
+ {
+  "target": "sys-microservices",
+  "text": "what are microservices"
+ },
+ {
+  "target": "sys-microservices",
+  "text": "advantages of microservices architecture"
+ },
+ {
+  "target": "sys-microservices",
+  "text": "what is an api gateway"
+ },
+ {
+  "target": "sys-microservices",
+  "text": "Monolith vs microservices"
+ },
+ {
+  "target": "tools-docker-cloud",
+  "text": "what is docker"
+ },
+ {
+  "target": "tools-docker-cloud",
+  "text": "difference between docker and virtual machine"
+ },
+ {
+  "target": "tools-docker-cloud",
+  "text": "what is a container"
+ },
+ {
+  "target": "tools-docker-cloud",
+  "text": "what are iaas paas and saas"
+ },
+ {
+  "target": "tools-docker-cloud",
+  "text": "what is cloud computing"
+ },
+ {
+  "target": "tools-docker-cloud",
+  "text": "what is ci cd"
+ },
+ {
+  "target": "tools-docker-cloud",
+  "text": "Docker and cloud basics"
+ },
+ {
+  "target": "web-api-graphql",
+  "text": "what is an api"
+ },
+ {
+  "target": "web-api-graphql",
+  "text": "difference between rest and graphql"
+ },
+ {
+  "target": "web-api-graphql",
+  "text": "common http status codes"
+ },
+ {
+  "target": "web-api-graphql",
+  "text": "what does 404 and 500 mean"
+ },
+ {
+  "target": "web-api-graphql",
+  "text": "difference between 401 and 403"
+ },
+ {
+  "target": "web-api-graphql",
+  "text": "API, REST vs GraphQL, status codes"
+ },
+ {
+  "target": "web-storage-mvc",
+  "text": "difference between cookies and local storage"
+ },
+ {
+  "target": "web-storage-mvc",
+  "text": "difference between session and cookie"
+ },
+ {
+  "target": "web-storage-mvc",
+  "text": "what is mvc architecture"
+ },
+ {
+  "target": "web-storage-mvc",
+  "text": "localstorage versus sessionstorage"
+ },
+ {
+  "target": "web-storage-mvc",
+  "text": "what is a middleware"
+ },
+ {
+  "target": "web-storage-mvc",
+  "text": "Cookies, sessions, storage and MVC"
+ },
+ {
+  "target": "js-more",
+  "text": "how does the this keyword work in javascript"
+ },
+ {
+  "target": "js-more",
+  "text": "difference between arrow function and normal function"
+ },
+ {
+  "target": "js-more",
+  "text": "map filter reduce in javascript"
+ },
+ {
+  "target": "js-more",
+  "text": "difference between null and undefined"
+ },
+ {
+  "target": "js-more",
+  "text": "what is prototype in javascript"
+ },
+ {
+  "target": "js-more",
+  "text": "JavaScript: this, arrow functions, map/filter/reduce"
+ },
+ {
+  "target": "python-more",
+  "text": "difference between is and == in python"
+ },
+ {
+  "target": "python-more",
+  "text": "what are args and kwargs"
+ },
+ {
+  "target": "python-more",
+  "text": "what is a generator in python"
+ },
+ {
+  "target": "python-more",
+  "text": "what is a lambda function"
+ },
+ {
+  "target": "python-more",
+  "text": "mutable default argument problem"
+ },
+ {
+  "target": "python-more",
+  "text": "Python: is vs ==, args/kwargs, generators"
+ },
+ {
+  "target": "web-css-layout",
+  "text": "difference between flexbox and grid"
+ },
+ {
+  "target": "web-css-layout",
+  "text": "what is the css box model"
+ },
+ {
+  "target": "web-css-layout",
+  "text": "difference between margin and padding"
+ },
+ {
+  "target": "web-css-layout",
+  "text": "what is responsive design"
+ },
+ {
+  "target": "web-css-layout",
+  "text": "CSS layout basics"
+ },
+ {
+  "target": "test-basics",
+  "text": "difference between unit testing and integration testing"
+ },
+ {
+  "target": "test-basics",
+  "text": "black box versus white box testing"
+ },
+ {
+  "target": "test-basics",
+  "text": "what is regression testing"
+ },
+ {
+  "target": "test-basics",
+  "text": "what is test driven development"
+ },
+ {
+  "target": "test-basics",
+  "text": "Software testing types"
+ },
+ {
+  "target": "ml-basics",
+  "text": "difference between supervised and unsupervised learning"
+ },
+ {
+  "target": "ml-basics",
+  "text": "what is overfitting"
+ },
+ {
+  "target": "ml-basics",
+  "text": "what is machine learning"
+ },
+ {
+  "target": "ml-basics",
+  "text": "what is the difference between classification and regression"
+ },
+ {
+  "target": "ml-basics",
+  "text": "what is a train test split"
+ },
+ {
+  "target": "ml-basics",
+  "text": "Machine learning basics"
+ },
+ {
+  "target": "os-kernel-interrupts",
+  "text": "what is the kernel in an operating system"
+ },
+ {
+  "target": "os-kernel-interrupts",
+  "text": "what is a system call"
+ },
+ {
+  "target": "os-kernel-interrupts",
+  "text": "difference between user mode and kernel mode"
+ },
+ {
+  "target": "os-kernel-interrupts",
+  "text": "what is an interrupt"
+ },
+ {
+  "target": "os-kernel-interrupts",
+  "text": "what is a monolithic kernel"
+ },
+ {
+  "target": "os-kernel-interrupts",
+  "text": "Kernel, system calls and interrupts"
+ },
+ {
+  "target": "cn-misc",
+  "text": "what is dhcp"
+ },
+ {
+  "target": "cn-misc",
+  "text": "what is nat in networking"
+ },
+ {
+  "target": "cn-misc",
+  "text": "what is a firewall"
+ },
+ {
+  "target": "cn-misc",
+  "text": "how does ping work"
+ },
+ {
+  "target": "cn-misc",
+  "text": "what is a proxy server"
+ },
+ {
+  "target": "cn-misc",
+  "text": "DHCP, NAT, firewall and ping"
+ },
+ {
+  "target": "apt-simplification",
+  "text": "what is bodmas"
+ },
+ {
+  "target": "apt-simplification",
+  "text": "order of operations in simplification"
+ },
+ {
+  "target": "apt-simplification",
+  "text": "how to simplify expressions quickly"
+ },
+ {
+  "target": "apt-simplification",
+  "text": "approximation tricks in aptitude"
+ },
+ {
+  "target": "apt-simplification",
+  "text": "Simplification and BODMAS"
+ },
+ {
+  "target": "apt-speed-math",
+  "text": "vedic maths tricks for quick calculation"
+ },
+ {
+  "target": "apt-speed-math",
+  "text": "how to square a number ending in 5"
+ },
+ {
+  "target": "apt-speed-math",
+  "text": "trick to multiply by 11"
+ },
+ {
+  "target": "apt-speed-math",
+  "text": "how to calculate faster without a calculator"
+ },
+ {
+  "target": "apt-speed-math",
+  "text": "mental maths tricks"
+ },
+ {
+  "target": "apt-speed-math",
+  "text": "Quick multiplication and squaring tricks"
+ },
+ {
+  "target": "apt-venn-sets",
+  "text": "venn diagram formula for two sets"
+ },
+ {
+  "target": "apt-venn-sets",
+  "text": "how to solve problems on sets"
+ },
+ {
+  "target": "apt-venn-sets",
+  "text": "n a union b formula"
+ },
+ {
+  "target": "apt-venn-sets",
+  "text": "three set venn diagram problems"
+ },
+ {
+  "target": "apt-venn-sets",
+  "text": "Sets and Venn diagrams"
+ },
+ {
+  "target": "apt-ranking",
+  "text": "ranking and order problems formula"
+ },
+ {
+  "target": "apt-ranking",
+  "text": "position from left and right find total number of students"
+ },
+ {
+  "target": "apt-ranking",
+  "text": "how to solve rank problems in reasoning"
+ },
+ {
+  "target": "apt-ranking",
+  "text": "Ranking and ordering"
+ },
+ {
+  "target": "apt-data-sufficiency",
+  "text": "how to solve data sufficiency questions"
+ },
+ {
+  "target": "apt-data-sufficiency",
+  "text": "data sufficiency strategy"
+ },
+ {
+  "target": "apt-data-sufficiency",
+  "text": "which statement is sufficient to answer the question"
+ },
+ {
+  "target": "apt-data-sufficiency",
+  "text": "Data sufficiency"
+ },
+ {
+  "target": "apt-logic-statements",
+  "text": "how to solve statement and assumption questions"
+ },
+ {
+  "target": "apt-logic-statements",
+  "text": "statement and conclusion reasoning tricks"
+ },
+ {
+  "target": "apt-logic-statements",
+  "text": "how to solve analogy questions"
+ },
+ {
+  "target": "apt-logic-statements",
+  "text": "odd one out questions approach"
+ },
+ {
+  "target": "apt-logic-statements",
+  "text": "course of action reasoning"
+ },
+ {
+  "target": "apt-logic-statements",
+  "text": "Statement–conclusion, assumption, analogy and odd-one-out"
+ },
+ {
+  "target": "hr-failure",
+  "text": "tell me about a time you failed"
+ },
+ {
+  "target": "hr-failure",
+  "text": "what is your biggest mistake"
+ },
+ {
+  "target": "hr-failure",
+  "text": "how to answer a question about failure in an interview"
+ },
+ {
+  "target": "hr-failure",
+  "text": "describe a setback and how you handled it"
+ },
+ {
+  "target": "hr-failure",
+  "text": "Talking about failure or a mistake"
+ },
+ {
+  "target": "hr-teamwork-leadership",
+  "text": "how to answer teamwork questions in an interview"
+ },
+ {
+  "target": "hr-teamwork-leadership",
+  "text": "give an example of leadership"
+ },
+ {
+  "target": "hr-teamwork-leadership",
+  "text": "how do you handle conflict in a team"
+ },
+ {
+  "target": "hr-teamwork-leadership",
+  "text": "tell me about a time you worked in a team"
+ },
+ {
+  "target": "hr-teamwork-leadership",
+  "text": "what role do you play in a team"
+ },
+ {
+  "target": "hr-teamwork-leadership",
+  "text": "Teamwork, conflict and leadership"
+ },
+ {
+  "target": "hr-achievement",
+  "text": "what is your greatest achievement"
+ },
+ {
+  "target": "hr-achievement",
+  "text": "what are you most proud of"
+ },
+ {
+  "target": "hr-achievement",
+  "text": "how to talk about my achievements in an interview"
+ },
+ {
+  "target": "hr-achievement",
+  "text": "Greatest achievement"
+ },
+ {
+  "target": "hr-pressure",
+  "text": "how do you handle pressure"
+ },
+ {
+  "target": "hr-pressure",
+  "text": "how do you manage tight deadlines"
+ },
+ {
+  "target": "hr-pressure",
+  "text": "how do you handle stress at work"
+ },
+ {
+  "target": "hr-pressure",
+  "text": "how do you prioritise tasks"
+ },
+ {
+  "target": "hr-pressure",
+  "text": "Handling pressure and deadlines"
+ },
+ {
+  "target": "hr-why-field-gap",
+  "text": "why did you choose this branch or field"
+ },
+ {
+  "target": "hr-why-field-gap",
+  "text": "how to explain a gap year in an interview"
+ },
+ {
+  "target": "hr-why-field-gap",
+  "text": "i have an education gap how to explain"
+ },
+ {
+  "target": "hr-why-field-gap",
+  "text": "why are you changing career path"
+ },
+ {
+  "target": "hr-why-field-gap",
+  "text": "Why this field, gap year, and career switches"
+ },
+ {
+  "target": "hr-relocation-bond",
+  "text": "are you willing to relocate"
+ },
+ {
+  "target": "hr-relocation-bond",
+  "text": "are you okay with night shifts"
+ },
+ {
+  "target": "hr-relocation-bond",
+  "text": "what is a service agreement or bond"
+ },
+ {
+  "target": "hr-relocation-bond",
+  "text": "how to answer willingness to relocate"
+ },
+ {
+  "target": "hr-relocation-bond",
+  "text": "Relocation, shifts and service agreements"
+ },
+ {
+  "target": "hr-strategy-mistakes",
+  "text": "common mistakes freshers make in interviews"
+ },
+ {
+  "target": "hr-strategy-mistakes",
+  "text": "what should i avoid in an interview"
+ },
+ {
+  "target": "hr-strategy-mistakes",
+  "text": "why do candidates get rejected in interviews"
+ },
+ {
+  "target": "hr-strategy-mistakes",
+  "text": "how to impress the interviewer"
+ },
+ {
+  "target": "hr-strategy-mistakes",
+  "text": "Common interview mistakes"
+ },
+ {
+  "target": "hr-company-research",
+  "text": "how to research a company before an interview"
+ },
+ {
+  "target": "hr-company-research",
+  "text": "what should i know about the company"
+ },
+ {
+  "target": "hr-company-research",
+  "text": "how to prepare for a company specific interview"
+ },
+ {
+  "target": "hr-company-research",
+  "text": "Researching a company"
+ },
+ {
+  "target": "hr-followup",
+  "text": "should i send a thank you email after an interview"
+ },
+ {
+  "target": "hr-followup",
+  "text": "how to follow up after an interview"
+ },
+ {
+  "target": "hr-followup",
+  "text": "what to do after an interview"
+ },
+ {
+  "target": "hr-followup",
+  "text": "how long to wait for interview results"
+ },
+ {
+  "target": "hr-followup",
+  "text": "Follow-up and thank-you email"
+ },
+ {
+  "target": "career-offcampus",
+  "text": "how to find off campus jobs"
+ },
+ {
+  "target": "career-offcampus",
+  "text": "how to get a job without campus placement"
+ },
+ {
+  "target": "career-offcampus",
+  "text": "how to get referrals for a job"
+ },
+ {
+  "target": "career-offcampus",
+  "text": "how to apply for jobs online as a fresher"
+ },
+ {
+  "target": "career-offcampus",
+  "text": "Off-campus job search"
+ },
+ {
+  "target": "career-linkedin-github",
+  "text": "how to make a good linkedin profile"
+ },
+ {
+  "target": "career-linkedin-github",
+  "text": "how to build a github portfolio"
+ },
+ {
+  "target": "career-linkedin-github",
+  "text": "what should i put on my github"
+ },
+ {
+  "target": "career-linkedin-github",
+  "text": "how to network on linkedin"
+ },
+ {
+  "target": "career-linkedin-github",
+  "text": "LinkedIn and GitHub profile"
+ },
+ {
+  "target": "career-coding-round",
+  "text": "tips for online coding assessment"
+ },
+ {
+  "target": "career-coding-round",
+  "text": "how to prepare for a hackerrank test"
+ },
+ {
+  "target": "career-coding-round",
+  "text": "how to manage time in a coding round"
+ },
+ {
+  "target": "career-coding-round",
+  "text": "what to do if my code fails test cases"
+ },
+ {
+  "target": "career-coding-round",
+  "text": "Online coding test tips"
+ },
+ {
+  "target": "career-internship",
+  "text": "how to get an internship"
+ },
+ {
+  "target": "career-internship",
+  "text": "how to find internships as a student"
+ },
+ {
+  "target": "career-internship",
+  "text": "how important are internships for placements"
+ },
+ {
+  "target": "career-internship",
+  "text": "internship application tips"
+ },
+ {
+  "target": "career-internship",
+  "text": "Getting an internship"
+ },
+ {
+  "target": "career-low-cgpa",
+  "text": "how to get placed with low cgpa"
+ },
+ {
+  "target": "career-low-cgpa",
+  "text": "can i get a job with backlogs"
+ },
+ {
+  "target": "career-low-cgpa",
+  "text": "cgpa below the cutoff what can i do"
+ },
+ {
+  "target": "career-low-cgpa",
+  "text": "how to improve chances with a low percentage"
+ },
+ {
+  "target": "career-low-cgpa",
+  "text": "Low CGPA or backlogs"
+ },
+ {
+  "target": "career-offers",
+  "text": "what to do if i get multiple offers"
+ },
+ {
+  "target": "career-offers",
+  "text": "how to compare job offers"
+ },
+ {
+  "target": "career-offers",
+  "text": "what is an offer letter"
+ },
+ {
+  "target": "career-offers",
+  "text": "can a company revoke an offer"
+ },
+ {
+  "target": "career-offers",
+  "text": "what is ctc"
+ },
+ {
+  "target": "career-offers",
+  "text": "Handling offers and joining"
+ },
+ {
+  "target": "career-study-plan-motivation",
+  "text": "how many hours should i study for placements"
+ },
+ {
+  "target": "career-study-plan-motivation",
+  "text": "how to stay motivated during placement preparation"
+ },
+ {
+  "target": "career-study-plan-motivation",
+  "text": "how to make a daily study schedule"
+ },
+ {
+  "target": "career-study-plan-motivation",
+  "text": "i feel demotivated after rejection"
+ },
+ {
+  "target": "career-study-plan-motivation",
+  "text": "how to handle rejection in placements"
+ },
+ {
+  "target": "career-study-plan-motivation",
+  "text": "Daily schedule and staying motivated"
+ },
+ {
+  "target": "career-higher-studies",
+  "text": "should i go for higher studies or a job"
+ },
+ {
+  "target": "career-higher-studies",
+  "text": "gate versus placement"
+ },
+ {
+  "target": "career-higher-studies",
+  "text": "should i do mba or ms after btech"
+ },
+ {
+  "target": "career-higher-studies",
+  "text": "job or masters after engineering"
+ },
+ {
+  "target": "career-higher-studies",
+  "text": "Placement vs higher studies"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "what are my weak areas"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "which topics am i weak in"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "where am i struggling"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "what do i need to improve"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "show my weakest subjects"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "topics i need to work on"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "which topics should i focus on"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "what am i bad at"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "list my weak topics"
+ },
+ {
+  "target": "my_weak_areas",
+  "text": "where do i lose marks"
+ },
+ {
+  "target": "my_strengths",
+  "text": "what are my strengths"
+ },
+ {
+  "target": "my_strengths",
+  "text": "which topics am i good at"
+ },
+ {
+  "target": "my_strengths",
+  "text": "what is my best subject"
+ },
+ {
+  "target": "my_strengths",
+  "text": "what am i strong in"
+ },
+ {
+  "target": "my_strengths",
+  "text": "show my strongest areas"
+ },
+ {
+  "target": "my_strengths",
+  "text": "where do i perform well"
+ },
+ {
+  "target": "my_strengths",
+  "text": "what am i good at"
+ },
+ {
+  "target": "my_strengths",
+  "text": "which subjects am i confident in"
+ },
+ {
+  "target": "my_progress",
+  "text": "how am i doing"
+ },
+ {
+  "target": "my_progress",
+  "text": "show my progress"
+ },
+ {
+  "target": "my_progress",
+  "text": "give me a summary of my performance"
+ },
+ {
+  "target": "my_progress",
+  "text": "how is my preparation going"
+ },
+ {
+  "target": "my_progress",
+  "text": "am i improving"
+ },
+ {
+  "target": "my_progress",
+  "text": "am i ready for placements"
+ },
+ {
+  "target": "my_progress",
+  "text": "what is my readiness score"
+ },
+ {
+  "target": "my_progress",
+  "text": "how prepared am i"
+ },
+ {
+  "target": "my_progress",
+  "text": "my overall performance"
+ },
+ {
+  "target": "my_progress",
+  "text": "analyse my performance"
+ },
+ {
+  "target": "my_progress",
+  "text": "how have i performed"
+ },
+ {
+  "target": "my_progress",
+  "text": "how did i perform overall"
+ },
+ {
+  "target": "my_progress",
+  "text": "how am i performing so far"
+ },
+ {
+  "target": "my_progress",
+  "text": "how have i been doing lately"
+ },
+ {
+  "target": "my_progress",
+  "text": "give me an overview of my results"
+ },
+ {
+  "target": "my_aptitude",
+  "text": "what is my aptitude score"
+ },
+ {
+  "target": "my_aptitude",
+  "text": "how did i do in aptitude tests"
+ },
+ {
+  "target": "my_aptitude",
+  "text": "my mock test results"
+ },
+ {
+  "target": "my_aptitude",
+  "text": "my last aptitude test score"
+ },
+ {
+  "target": "my_aptitude",
+  "text": "show my aptitude performance"
+ },
+ {
+  "target": "my_aptitude",
+  "text": "how many aptitude tests have i taken"
+ },
+ {
+  "target": "my_interview",
+  "text": "my interview feedback"
+ },
+ {
+  "target": "my_interview",
+  "text": "how did my mock interview go"
+ },
+ {
+  "target": "my_interview",
+  "text": "what are my interview scores"
+ },
+ {
+  "target": "my_interview",
+  "text": "what did my interview report say"
+ },
+ {
+  "target": "my_interview",
+  "text": "show my mock interview performance"
+ },
+ {
+  "target": "my_interview",
+  "text": "how is my communication score"
+ },
+ {
+  "target": "my_interview",
+  "text": "feedback on my last interview"
+ },
+ {
+  "target": "my_interview",
+  "text": "what did the interviewer say about me"
+ },
+ {
+  "target": "my_techquiz",
+  "text": "my tech quiz results"
+ },
+ {
+  "target": "my_techquiz",
+  "text": "how did i do in tech practice"
+ },
+ {
+  "target": "my_techquiz",
+  "text": "my technology quiz performance"
+ },
+ {
+  "target": "my_techquiz",
+  "text": "what is my score in java quiz"
+ },
+ {
+  "target": "my_techquiz",
+  "text": "show my tech practice history"
+ },
+ {
+  "target": "next_steps",
+  "text": "what should i study next"
+ },
+ {
+  "target": "next_steps",
+  "text": "what should i practice today"
+ },
+ {
+  "target": "next_steps",
+  "text": "recommend what i should practise"
+ },
+ {
+  "target": "next_steps",
+  "text": "give me a plan based on my performance"
+ },
+ {
+  "target": "next_steps",
+  "text": "suggest my next steps"
+ },
+ {
+  "target": "next_steps",
+  "text": "what should i do next to improve"
+ },
+ {
+  "target": "next_steps",
+  "text": "personalised study plan for me"
+ },
+ {
+  "target": "next_steps",
+  "text": "what to focus on this week"
+ },
+ {
+  "target": "my_resources",
+  "text": "recommend resources for my weak topics"
+ },
+ {
+  "target": "my_resources",
+  "text": "study material for my weak areas"
+ },
+ {
+  "target": "my_resources",
+  "text": "where can i learn my weak topics"
+ },
+ {
+  "target": "my_resources",
+  "text": "links to learn what i am weak in"
+ },
+ {
+  "target": "my_resources",
+  "text": "suggest tutorials for my weak subjects"
+ },
+ {
+  "target": "my_resources",
+  "text": "resources to improve my weak areas"
+ },
+ {
+  "target": "my_resources",
+  "text": "how can i learn my weak subjects"
+ },
+ {
+  "target": "my_resources",
+  "text": "tutorials for topics i am weak in"
+ },
+ {
+  "target": "my_resources",
+  "text": "where to study what i am weak at"
+ },
+ {
+  "target": "my_resources",
+  "text": "learning links for my weak topics"
+ },
+ {
+  "target": "greeting",
+  "text": "hello"
+ },
+ {
+  "target": "greeting",
+  "text": "hi there"
+ },
+ {
+  "target": "greeting",
+  "text": "hey"
+ },
+ {
+  "target": "greeting",
+  "text": "good morning"
+ },
+ {
+  "target": "greeting",
+  "text": "good evening"
+ },
+ {
+  "target": "greeting",
+  "text": "hi bot"
+ },
+ {
+  "target": "greeting",
+  "text": "hello assistant"
+ },
+ {
+  "target": "thanks",
+  "text": "thanks"
+ },
+ {
+  "target": "thanks",
+  "text": "thank you"
+ },
+ {
+  "target": "thanks",
+  "text": "thank you so much"
+ },
+ {
+  "target": "thanks",
+  "text": "thanks a lot"
+ },
+ {
+  "target": "thanks",
+  "text": "that was helpful"
+ },
+ {
+  "target": "thanks",
+  "text": "great thanks"
+ },
+ {
+  "target": "goodbye",
+  "text": "bye"
+ },
+ {
+  "target": "goodbye",
+  "text": "goodbye"
+ },
+ {
+  "target": "goodbye",
+  "text": "see you later"
+ },
+ {
+  "target": "goodbye",
+  "text": "good night"
+ },
+ {
+  "target": "goodbye",
+  "text": "talk to you later"
+ },
+ {
+  "target": "identity",
+  "text": "who are you"
+ },
+ {
+  "target": "identity",
+  "text": "what is your name"
+ },
+ {
+  "target": "identity",
+  "text": "are you a bot"
+ },
+ {
+  "target": "identity",
+  "text": "are you chatgpt"
+ },
+ {
+  "target": "identity",
+  "text": "are you an ai"
+ },
+ {
+  "target": "identity",
+  "text": "which ai model are you"
+ },
+ {
+  "target": "identity",
+  "text": "do you use openai"
+ },
+ {
+  "target": "identity",
+  "text": "are you a robot"
+ },
+ {
+  "target": "identity",
+  "text": "are you human"
+ },
+ {
+  "target": "identity",
+  "text": "are you a real person"
+ },
+ {
+  "target": "identity",
+  "text": "who made you"
+ },
+ {
+  "target": "identity",
+  "text": "what are you"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the weather today"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "who won the cricket match yesterday"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "tell me a joke"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "best pizza near me"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the capital of france"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how to cook pasta"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "recommend a good movie"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the bitcoin price"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "who is the prime minister"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "translate good morning to spanish"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "play some music"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the meaning of life"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how tall is mount everest"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "latest smartphone launch"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "football score today"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what time is it right now"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do i lose weight fast"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "which movie should i watch tonight"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "who is the richest person in the world"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how to train a puppy"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the speed of light"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "write a poem about the ocean"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do i get a girlfriend"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "best places to visit in goa"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how to fix a leaking tap"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "when is the next holiday"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how many players are in a football team"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the score of the ipl match"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "which car should i buy"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "tell me about your day"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "tell me a bedtime story"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "price of petrol today"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how is the share market performing"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the gold rate"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "who is your favourite actor"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the population of china"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do i make tea"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "sing me a song"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the tallest mountain"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "give me a recipe for biryani"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how many days in a year"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the distance between earth and moon"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "is it going to be sunny this weekend"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do i grow tomatoes at home"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "who invented the telephone"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the currency of japan"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how to get a driving licence"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "tell me about the history of rome"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "best smartphone under twenty thousand"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do i pair bluetooth headphones"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what movies are releasing this friday"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what should i cook for dinner"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how to remove a stain from a shirt"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "tell me interesting facts about space"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "which is the biggest ocean"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "when is diwali this year"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how to learn to swim"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what are the symptoms of fever"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how to book a train ticket"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "who is the captain of the indian team"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the price of a laptop"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how many calories in a banana"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "explain the plot of a famous movie"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "can you draw me a picture"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is your favourite colour"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "do you like pizza"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the time in london"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do i start a youtube channel"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how to make a paper plane"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is inflation rate this year"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "tell me about elon musk"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do i get a visa for the usa"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how is my horoscope today"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what shall i wear to a wedding"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do i learn guitar"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "where can i buy shoes online"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how many continents are there"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "who wrote romeo and juliet"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is the boiling point of water"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how do vaccines work"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how far is the sun"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "how is the stock market today"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "tell me something interesting"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what is happening in the news"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "who will win the election"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "give me a fun fact"
+ },
+ {
+  "target": "__out_of_scope__",
+  "text": "what did you eat today"
+ }
+]

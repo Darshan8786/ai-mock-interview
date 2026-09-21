@@ -76,6 +76,7 @@ export function InterviewManagement() {
               <option value="Technical">Technical</option>
               <option value="HR">HR</option>
               <option value="Behavioral">Behavioral</option>
+              <option value="Resume">Resume-Based</option>
             </Select>
             <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
               <option value="all">All Status</option>

@@ -40,13 +40,6 @@ export function Dashboard() {
 
     const features = [
         {
-            icon: "📝",
-            title: "Quiz Preparation",
-            description: "Master placement questions with subject-wise quizzes",
-            path: "/quizpage",
-            color: "from-purple-500 to-indigo-600",
-        },
-        {
             icon: "📊",
             title: "Performance Analytics",
             description: "Track your progress and identify weak areas",
@@ -156,7 +149,7 @@ export function Dashboard() {
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    onClick={() => navigate("/quizpage")}
+                                    onClick={() => navigate("/aptitude")}
                                     className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg"
                                 >
                                     Start Preparing Now
@@ -415,7 +408,7 @@ export function Dashboard() {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                onClick={() => navigate("/quizpage")}
+                                onClick={() => navigate("/aptitude")}
                                 className="px-8 py-3 rounded-lg bg-white text-blue-700 font-semibold hover:bg-blue-50 transition-all shadow-lg"
                             >
                                 Start Your Journey Today
@@ -436,7 +429,7 @@ export function Dashboard() {
                         <div>
                             <h4 className="text-white font-semibold mb-4">Resources</h4>
                             <ul className="space-y-2 text-gray-400 text-sm">
-                                <li><button onClick={() => navigate("/quizpage")} className="hover:text-white transition">Quizzes</button></li>
+                                <li><button onClick={() => navigate("/aptitude")} className="hover:text-white transition">Aptitude</button></li>
                                 <li><button onClick={() => navigate("/personalizedreport")} className="hover:text-white transition">Analytics</button></li>
                                 <li><button onClick={() => navigate("/resume-analyzer")} className="hover:text-white transition">Resume Help</button></li>
                             </ul>

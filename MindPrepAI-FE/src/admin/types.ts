@@ -44,7 +44,6 @@ export interface AdminStudent {
   atsScore: number;
   placementReadiness: number;
   interviewsTaken: number;
-  quizAttempts: number;
   averageInterviewScore: number;
   weakSubjects: string[];
   strongSubjects: string[];
@@ -71,7 +70,7 @@ export interface AdminInterview {
   studentName: string;
   studentEmail: string;
   jobRole: string;
-  interviewType: "HR" | "Technical" | "Behavioral";
+  interviewType: "HR" | "Technical" | "Behavioral" | "Resume";
   difficulty: "Easy" | "Medium" | "Hard";
   status: "pending" | "in-progress" | "completed" | "terminated";
   technicalScore: number;
@@ -85,39 +84,6 @@ export interface AdminInterview {
   finalFeedback: string;
   date: string;
   durationMin: number;
-}
-
-export interface AdminQuiz {
-  id: string;
-  subject: string;
-  title: string;
-  difficulty: "easy" | "medium" | "hard";
-  topic: string;
-  questionCount: number;
-  attempts: number;
-  avgScore: number;
-  status: "published" | "draft" | "archived";
-  createdAt: string;
-  questions: AdminQuestion[];
-}
-
-export interface AdminQuestion {
-  id: string;
-  question: string;
-  topic: string;
-  difficulty: "easy" | "medium" | "hard";
-  options: string[];
-  correctAnswer: string;
-}
-
-export interface QuizAttempt {
-  id: string;
-  studentName: string;
-  score: number;
-  total: number;
-  percentage: number;
-  timeTaken: string;
-  date: string;
 }
 
 export interface JobEligibility {
@@ -324,7 +290,6 @@ export interface AdminSettings {
 export interface AdminStats {
   totalStudents: number;
   totalInterviews: number;
-  totalQuizAttempts: number;
   totalResumeAnalyses: number;
   totalJobs: number;
   activeJobs: number;
@@ -340,7 +305,6 @@ export interface AdminStats {
 export interface PerformancePoint {
   label: string;
   interviews: number;
-  quizzes: number;
 }
 
 export interface AtsDistribution {
@@ -358,12 +322,10 @@ export interface ActivityPoint {
   day: string;
   logins: number;
   interviews: number;
-  quizzes: number;
 }
 
 export interface DashboardCharts {
   interviewPerformance: PerformancePoint[];
-  quizPerformance: PerformancePoint[];
   atsDistribution: AtsDistribution[];
   placementReady: ReadinessSlice[];
   weeklyActivity: ActivityPoint[];

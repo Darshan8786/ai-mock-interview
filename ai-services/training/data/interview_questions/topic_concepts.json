@@ -1,0 +1,107 @@
+{
+  "Python": {
+    "Functions": ["parameter", "argument", "default value", "return", "scope", "local variable", "global variable", "args", "kwargs", "lambda"],
+    "OOP": ["class", "object", "self", "constructor", "__init__", "inheritance", "encapsulation", "polymorphism", "method"],
+    "Data Structures": ["list", "tuple", "dictionary", "set", "mutable", "immutable", "indexing", "slicing", "hashable"],
+    "Exception Handling": ["try", "except", "finally", "raise", "exception", "error handling", "custom exception", "else block"],
+    "Decorators and Generators": ["decorator", "wrapper function", "yield", "generator", "iterator", "lazy evaluation", "closure", "@ syntax"]
+  },
+  "Java": {
+    "OOP": ["class", "object", "inheritance", "polymorphism", "encapsulation", "abstraction", "constructor", "interface"],
+    "Collections": ["list", "set", "map", "arraylist", "hashmap", "iterator", "collection framework", "comparable", "comparator"],
+    "Exception Handling": ["try", "catch", "finally", "throw", "throws", "checked exception", "unchecked exception", "exception hierarchy"],
+    "Multithreading": ["thread", "runnable", "synchronized", "race condition", "deadlock", "thread pool", "concurrency", "lock"],
+    "JVM and Memory Management": ["jvm", "heap", "stack memory", "garbage collection", "class loader", "bytecode", "memory leak"]
+  },
+  "C": {
+    "Pointers": ["pointer", "address", "dereference", "pointer arithmetic", "null pointer", "pointer to pointer", "memory address"],
+    "Memory Management": ["malloc", "calloc", "free", "realloc", "dynamic memory", "memory leak", "heap", "stack"],
+    "Structures and Unions": ["struct", "union", "member", "memory layout", "padding", "nested structure"],
+    "Arrays and Strings": ["array", "string", "null terminator", "char array", "index", "buffer", "array decay"],
+    "Preprocessor and Compilation": ["preprocessor", "macro", "header file", "compilation stages", "linker", "define", "include"]
+  },
+  "C++": {
+    "OOP": ["class", "object", "inheritance", "polymorphism", "virtual function", "encapsulation", "constructor", "destructor"],
+    "STL": ["vector", "map", "set", "iterator", "algorithm", "container", "standard template library"],
+    "Memory Management": ["new", "delete", "memory leak", "smart pointer", "heap", "stack", "dangling pointer"],
+    "Templates": ["template", "generic programming", "function template", "class template", "type parameter"],
+    "Operator Overloading": ["operator overloading", "overload", "operator function", "friend function", "custom operator"]
+  },
+  "JavaScript": {
+    "Closures and Scope": ["closure", "scope", "lexical scope", "hoisting", "block scope", "function scope", "var let const"],
+    "Asynchronous JavaScript": ["callback", "promise", "async await", "event loop", "microtask", "settimeout", "fetch"],
+    "Prototypes and OOP": ["prototype", "prototype chain", "this keyword", "class", "inheritance", "constructor function"],
+    "DOM and Events": ["dom", "event listener", "event bubbling", "event delegation", "document object model", "event handler"],
+    "ES6+ Features": ["arrow function", "destructuring", "spread operator", "template literal", "let const", "module", "default parameter"]
+  },
+  "SQL": {
+    "Joins": ["inner join", "left join", "right join", "outer join", "join condition", "cartesian product"],
+    "Aggregation and Grouping": ["group by", "having", "aggregate function", "sum", "count", "avg", "max", "min"],
+    "Subqueries": ["subquery", "nested query", "correlated subquery", "exists", "in clause"],
+    "Indexing and Performance": ["index", "primary key", "query optimization", "execution plan", "b-tree", "full table scan"],
+    "Transactions": ["transaction", "commit", "rollback", "acid", "isolation level", "atomicity"]
+  },
+  "DBMS": {
+    "Normalization": ["normalization", "normal form", "1nf", "2nf", "3nf", "redundancy", "functional dependency"],
+    "ER Modeling": ["entity", "relationship", "attribute", "er diagram", "cardinality", "primary key"],
+    "Transactions and Concurrency": ["transaction", "concurrency control", "locking", "deadlock", "isolation", "acid"],
+    "Indexing and Storage": ["index", "storage engine", "b-tree", "clustered index", "disk access"],
+    "Keys and Constraints": ["primary key", "foreign key", "unique key", "candidate key", "constraint", "referential integrity"]
+  },
+  "OOP": {
+    "Encapsulation and Abstraction": ["encapsulation", "abstraction", "data hiding", "access modifier", "getter setter"],
+    "Inheritance and Polymorphism": ["inheritance", "polymorphism", "overriding", "overloading", "base class", "derived class"],
+    "SOLID and Design Principles": ["solid", "single responsibility", "open closed", "liskov substitution", "interface segregation", "dependency inversion"],
+    "Interfaces vs Abstract Classes": ["interface", "abstract class", "abstract method", "multiple inheritance", "contract"],
+    "Design Patterns Basics": ["design pattern", "singleton", "factory", "observer", "creational", "structural", "behavioral"]
+  },
+  "Data Structures": {
+    "Arrays and Linked Lists": ["array", "linked list", "node", "pointer", "traversal", "insertion", "deletion", "time complexity"],
+    "Stacks and Queues": ["stack", "queue", "lifo", "fifo", "push", "pop", "enqueue", "dequeue"],
+    "Trees": ["binary tree", "binary search tree", "traversal", "root", "leaf", "height", "balanced tree"],
+    "Hashing": ["hash function", "hash table", "collision", "chaining", "open addressing", "load factor"],
+    "Graphs": ["graph", "vertex", "edge", "adjacency list", "adjacency matrix", "directed", "undirected", "bfs", "dfs"]
+  },
+  "Algorithms": {
+    "Sorting": ["sorting algorithm", "time complexity", "merge sort", "quick sort", "bubble sort", "stability", "in-place"],
+    "Searching": ["binary search", "linear search", "time complexity", "sorted array", "divide and conquer"],
+    "Recursion and Backtracking": ["recursion", "base case", "recursive case", "backtracking", "call stack", "state space"],
+    "Dynamic Programming": ["dynamic programming", "memoization", "tabulation", "overlapping subproblems", "optimal substructure"],
+    "Greedy Algorithms": ["greedy algorithm", "local optimum", "global optimum", "greedy choice property"]
+  },
+  "Computer Networks": {
+    "OSI and TCP/IP Model": ["osi model", "layer", "tcp/ip", "protocol", "application layer", "transport layer", "network layer"],
+    "TCP vs UDP": ["tcp", "udp", "connection oriented", "connectionless", "reliability", "handshake", "packet"],
+    "HTTP and HTTPS": ["http", "https", "ssl", "tls", "request response", "status code", "encryption"],
+    "DNS and Routing": ["dns", "domain name", "routing", "ip address", "resolver", "router"],
+    "Network Security": ["firewall", "encryption", "authentication", "vpn", "network security", "attack"]
+  },
+  "Operating Systems": {
+    "Process and Threads": ["process", "thread", "context switch", "pcb", "multithreading", "process state"],
+    "Scheduling": ["scheduling algorithm", "round robin", "fcfs", "priority scheduling", "context switch", "cpu scheduling"],
+    "Memory Management": ["paging", "segmentation", "virtual memory", "page fault", "memory allocation", "fragmentation"],
+    "Deadlocks": ["deadlock", "mutual exclusion", "circular wait", "resource allocation", "deadlock prevention", "deadlock avoidance"],
+    "File Systems": ["file system", "inode", "directory structure", "file allocation", "disk block"]
+  },
+  "Machine Learning": {
+    "Supervised vs Unsupervised": ["supervised learning", "unsupervised learning", "labeled data", "clustering", "classification", "regression"],
+    "Overfitting and Regularization": ["overfitting", "underfitting", "regularization", "l1 l2", "cross validation", "bias variance"],
+    "Model Evaluation Metrics": ["accuracy", "precision", "recall", "f1 score", "confusion matrix", "roc curve"],
+    "Feature Engineering": ["feature engineering", "feature selection", "normalization", "scaling", "encoding", "dimensionality reduction"],
+    "Common Algorithms": ["linear regression", "logistic regression", "decision tree", "random forest", "svm", "knn"]
+  },
+  "Artificial Intelligence": {
+    "Search Algorithms": ["search algorithm", "bfs", "dfs", "a* search", "heuristic", "state space search"],
+    "Knowledge Representation": ["knowledge representation", "semantic network", "ontology", "logic", "rule based system"],
+    "AI vs Machine Learning": ["artificial intelligence", "machine learning", "deep learning", "subset", "reasoning"],
+    "Neural Networks Basics": ["neural network", "neuron", "activation function", "weights", "backpropagation", "layer"],
+    "Ethics and Bias in AI": ["bias", "fairness", "ethics", "transparency", "accountability", "explainability"]
+  },
+  "Web Development": {
+    "HTML and CSS Fundamentals": ["html", "css", "semantic tag", "box model", "flexbox", "grid", "selector"],
+    "REST APIs": ["rest api", "http method", "endpoint", "status code", "json", "stateless"],
+    "Frontend Frameworks": ["react", "component", "state", "props", "virtual dom", "framework"],
+    "Authentication and Security": ["authentication", "authorization", "jwt", "session", "cookie", "cors", "xss", "csrf"],
+    "Performance and Caching": ["caching", "cdn", "lazy loading", "minification", "performance optimization", "browser cache"]
+  }
+}

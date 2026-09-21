@@ -24,12 +24,6 @@ import {
   getAptitudeStats,
 } from "../controllers/admin/aptitudeController";
 import {
-  getQuizAttempts,
-  getQuizStats,
-  getSubjects,
-} from "../controllers/admin/quizController";
-
-import {
   createNotification,
   getNotifications,
   deleteNotification,
@@ -115,12 +109,6 @@ router.get("/aptitude-tests", getAdminTests);
 router.post("/aptitude-tests", createAdminTest);
 router.patch("/aptitude-tests/:id", updateAdminTest);
 router.delete("/aptitude-tests/:id", deleteAdminTest);
-
-// Quiz
-router.get("/quizzes/attempts", getQuizAttempts);
-router.get("/quizzes/stats", getQuizStats);
-router.get("/quizzes/subjects", getSubjects);
-
 
 // Notifications
 router.get("/notifications", getNotifications);

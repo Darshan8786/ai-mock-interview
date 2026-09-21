@@ -137,6 +137,9 @@ export interface TopicInfo {
 
 export interface ScoredResult {
   attemptId: string;
+  /** e.g. "Geometry Practice" / "TCS Practice"; absent on older results. */
+  title?: string;
+  testType?: string;
   totalQuestions: number;
   correctAnswers: number;
   wrongAnswers: number;
@@ -149,6 +152,7 @@ export interface ScoredResult {
   passingScore?: number;
   timeTaken: number;
   tabWarnings: number;
+  terminationReason?: string;
   categoryScores: { category: string; score: number; correct: number; total: number }[];
   questions: {
     id: string;
@@ -169,6 +173,16 @@ export const getAptitudeTopics = async (): Promise<Record<string, TopicInfo[]>> 
   return res.data.data;
 };
 
+export interface CompanyInfo {
+  name: string;
+  questionCount: number;
+}
+
+export const getAptitudeCompanies = async (): Promise<CompanyInfo[]> => {
+  const res = await api.get("/aptitude/companies");
+  return res.data.data;
+};
+
 export const getAptitudeTests = async (): Promise<AptitudeTestSummary[]> => {
   const res = await api.get("/aptitude/tests");
   return res.data.data;
@@ -183,7 +197,13 @@ export const getTestQuestions = async (
 
 export const submitAptitudeTest = async (
   testId: string,
-  payload: { answers: Record<string, number>; timeTaken: number; tabWarnings: number; drawnQuestionIds?: string[] }
+  payload: {
+    answers: Record<string, number>;
+    timeTaken: number;
+    tabWarnings: number;
+    terminationReason?: string;
+    drawnQuestionIds?: string[];
+  }
 ): Promise<ScoredResult> => {
   const res = await api.post(`/aptitude/tests/${testId}/submit`, payload);
   return res.data.data;
@@ -204,6 +224,7 @@ export const submitPractice = async (payload: {
   answers: Record<string, number>;
   timeTaken: number;
   tabWarnings: number;
+  terminationReason?: string;
   marksPerQuestion?: number;
   negativeMarksPerQuestion?: number;
   drawnQuestionIds?: string[];
@@ -252,7 +273,7 @@ export const getActiveAttempt = async (attemptId: string): Promise<StartedAttemp
 
 export const submitAttempt = async (
   attemptId: string,
-  payload: { answers: Record<string, number>; timeTaken: number; tabWarnings: number }
+  payload: { answers: Record<string, number>; timeTaken: number; tabWarnings: number; terminationReason?: string }
 ): Promise<ScoredResult> => {
   const res = await api.post(`/aptitude/test/${attemptId}/submit`, payload);
   return res.data.data;

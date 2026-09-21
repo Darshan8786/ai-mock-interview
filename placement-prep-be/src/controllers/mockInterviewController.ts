@@ -6,7 +6,6 @@ import { Interview } from "../models/Interview";
 import { CheatingEvent } from "../models/CheatingEvent";
 import { InterviewReport } from "../models/InterviewReport";
 import axios from "axios";
-import OpenAI from "openai";
 import { syncInterviewToVectorDB, getInterviewContext } from "../services/interviewRagService";
 import { pickBankQuestions } from "../data/interviewQuestionBank";
 
@@ -17,15 +16,12 @@ const aiServiceHeaders = {
   "X-AI-Service-Key": AI_SERVICE_KEY,
 };
 
-const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY || "dummy-key",
-  baseURL: "https://api.groq.com/openai/v1",
-  // Without these the SDK default is a 10-minute timeout + 2 retries, which lets
-  // a slow/rate-limited Groq call stall interview creation for minutes.
-  timeout: 12000,
-  maxRetries: 1,
-});
-
+// Question generation runs entirely on the locally fine-tuned model served by
+// the ai-service (see ai-services/interview_question_service.py) - no Groq /
+// OpenAI / Gemini API key is required. If the ai-service is unreachable, slow,
+// or returns nothing, generateFallbackQuestions() below (the static in-repo
+// bank) takes over - still zero external API calls.
+//
 // Overall ceiling for acquiring questions before we fall back to the static
 // pool. Interview creation must never exceed roughly this + DB write time.
 const QUESTION_DEADLINE_MS = 14000;
@@ -39,80 +35,58 @@ function withTimeout<T>(p: Promise<T>, ms: number, fallback: T): Promise<T> {
   ]);
 }
 
-const INTERVIEW_TYPE_GUIDANCE: Record<
-  string,
-  { system: string; note: string; focus: string }
-> = {
-  Technical: {
-    system: "You are an expert technical interviewer at a top tech company.",
-    note:
-      "IMPORTANT: The candidate is a college student preparing for campus placements. Keep every question at a MODERATE level - foundational concepts, common frameworks, and standard placement topics. Avoid advanced, niche, or expert-level questions. Prefer universal core topics (data structures, OOP basics, SQL basics, networking/OS fundamentals) and the most mainstream frameworks only. Avoid deep framework internals or architecture deep-dives.",
-    focus:
-      "Every question MUST be a genuine technical question and specifically about __JOB_ROLE__ (frameworks, concepts, tools, and real scenarios for this exact role). Mix of conceptual and practical questions.",
-  },
-  HR: {
-    system: "You are an experienced HR interviewer at a top tech company.",
-    note:
-      "IMPORTANT: Ask HR-style questions - self-introduction, motivation, strengths and weaknesses, career goals, salary/work expectations, and cultural fit. Keep them at a MODERATE level appropriate for a college student preparing for campus placements.",
-    focus:
-      "Every question MUST be a genuine HR question - NO technical, coding, data-structure, or framework questions. Tailor each question to the __JOB_ROLE__ role but keep it human-resource focused.",
-  },
-  Behavioral: {
-    system: "You are an expert behavioral interviewer at a top tech company.",
-    note:
-      "IMPORTANT: Ask behavioral and situational (STAR method style) questions about past experiences and hypothetical work situations - teamwork, conflict, leadership, deadlines, and adaptation. Keep them at a MODERATE level appropriate for a college student preparing for campus placements.",
-    focus:
-      "Every question MUST be a behavioral or situational question - NO technical, coding, or HR-fit questions. Ask the candidate to describe past behavior or how they would handle a specific scenario relevant to the __JOB_ROLE__ role.",
-  },
-};
-
-async function generateQuestionsWithGroq(
-  jobRole: string,
-  experienceLevel: string,
-  interviewType: string,
-  difficulty: string,
-  count: number,
-  context: string,
-  previousQuestions: string
-): Promise<string[]> {
-  const guidance = INTERVIEW_TYPE_GUIDANCE[interviewType] || INTERVIEW_TYPE_GUIDANCE.Technical;
-  const contextBlock = context
-    ? `\n\nCandidate's past performance (use this to tailor questions to the candidate's weaker areas):\n${context}`
-    : "";
-  const prevBlock = previousQuestions
-    ? `\n\nQuestions already asked before (DO NOT repeat any of these):\n${previousQuestions}`
-    : "";
-  const difficultyNote = `\n\n${guidance.note}`;
-  const focus = guidance.focus.replace(/__JOB_ROLE__/g, jobRole);
-  const prompt = `${guidance.system} Generate ${count} UNIQUE ${difficulty} difficulty ${interviewType} interview questions for a ${experienceLevel} level ${jobRole} position.
-${contextBlock}
-${prevBlock}
-${difficultyNote}
-Requirements:
-- ${focus}
-- Do NOT use generic questions that would fit any role.
-- If the candidate's past performance shows weak areas, include questions that probe those weak areas.
-- Do NOT repeat any question from the "already asked before" list.
-Return ONLY a valid JSON array of exactly ${count} strings. Example: ["Question 1", "Question 2", ...]`;
-
-  const completion = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
-    messages: [{ role: "user", content: prompt }],
-    temperature: 0.9,
-  });
-
-  const rawContent = completion.choices[0]?.message?.content || "";
-  const cleaned = rawContent.replace(/```json/gi, "").replace(/```/g, "").trim();
-  const parsed = JSON.parse(cleaned);
-  const questions = Array.isArray(parsed) ? parsed.map((q: string) => q.trim()) : [];
-  return dedupeQuestions(questions).slice(0, count);
+interface GeneratedQuestion {
+  question: string;
+  skill?: string;
+  topic?: string;
+  concepts?: string[];
 }
 
-function dedupeQuestions(questions: string[]): string[] {
+interface ResumeProfile {
+  skills: string[];
+  projects: Array<{ name: string; description: string; technologies: string[] }>;
+}
+
+const MAX_RESUME_SKILLS = 30;
+const MAX_RESUME_PROJECTS = 5;
+
+function clipText(value: unknown, max: number): string {
+  return typeof value === "string" ? value.trim().slice(0, max) : "";
+}
+
+// The resume arrives from the client (already parsed by /resume/parse), so it
+// is bounded and reshaped here rather than trusted: only the fields the
+// question planner reads are kept, with length/count limits. Returns null when
+// nothing usable is left (no skills and no named project).
+function sanitizeResumeProfile(raw: any): ResumeProfile | null {
+  if (!raw || typeof raw !== "object") return null;
+
+  const skills = (Array.isArray(raw.skills) ? raw.skills : [])
+    .map((s: unknown) => clipText(s, 60))
+    .filter(Boolean)
+    .slice(0, MAX_RESUME_SKILLS);
+
+  const projects = (Array.isArray(raw.projects) ? raw.projects : [])
+    .map((p: any) => ({
+      name: clipText(p?.name, 120),
+      description: clipText(p?.description, 600),
+      technologies: (Array.isArray(p?.technologies) ? p.technologies : [])
+        .map((t: unknown) => clipText(t, 40))
+        .filter(Boolean)
+        .slice(0, 10),
+    }))
+    .filter((p: { name: string }) => p.name)
+    .slice(0, MAX_RESUME_PROJECTS);
+
+  if (skills.length === 0 && projects.length === 0) return null;
+  return { skills, projects };
+}
+
+function dedupeQuestions(questions: GeneratedQuestion[]): GeneratedQuestion[] {
   const seen = new Set<string>();
-  const result: string[] = [];
+  const result: GeneratedQuestion[] = [];
   for (const q of questions) {
-    const key = q.trim().toLowerCase();
+    const key = q.question.trim().toLowerCase();
     if (!seen.has(key)) {
       seen.add(key);
       result.push(q);
@@ -127,6 +101,9 @@ interface QuestionGenInput {
   interviewType: string;
   difficulty: string;
   totalQuestions: number;
+  resumeSkills?: string[];
+  // Only for interviewType "Resume".
+  resumeProfile?: ResumeProfile | null;
 }
 
 // Runs the full AI question pipeline for an already-created interview, then
@@ -143,7 +120,7 @@ async function generateQuestionsForInterview(
   // Hoisted so the catch block can also skip already-asked questions.
   let previousQuestions = "";
   try {
-    let questionTexts: string[];
+    let questions: GeneratedQuestion[];
 
     const [ragContext, prev] = await Promise.all([
       withTimeout(
@@ -177,56 +154,62 @@ async function generateQuestionsForInterview(
     ]);
     previousQuestions = prev;
 
-    const questionRacers: Promise<string[]>[] = [];
-
-    if (process.env.GROQ_API_KEY) {
-      questionRacers.push(
-        generateQuestionsWithGroq(
-          jobRole, experienceLevel, interviewType, difficulty, totalQuestions, ragContext, previousQuestions
-        ).catch((err) => {
-          console.error(
-            `Groq question generation failed (status ${err?.status ?? "n/a"}): ${err?.message}`
+    // Local-model-backed generation (ai-service -> LocalQuestionGenerator ->
+    // fine-tuned model, itself falling back to the offline question bank
+    // internally). No external LLM API key is used anywhere in this call.
+    // userId + interviewId let the ai-service record each shown question in
+    // its GLOBAL, cross-user, persistent history store (never repeat a
+    // question - to anyone, ever) rather than only tracking it per-user here.
+    const localModelQuestions = axios
+      .post(
+        `${AI_SERVICE_URL}/generate-questions`,
+        {
+          jobRole, experienceLevel, interviewType, difficulty, totalQuestions,
+          context: ragContext, previousQuestions, resumeSkills: input.resumeSkills || [],
+          resume: input.resumeProfile || undefined,
+          userId, interviewId,
+        },
+        { timeout: 12000, headers: aiServiceHeaders }
+      )
+      .then((r) => {
+        if (r.data.insufficient) {
+          console.warn(
+            `Interview ${interviewId}: local training dataset/model could not produce ${totalQuestions} ` +
+              `globally-unused questions for role="${jobRole}" type="${interviewType}" difficulty="${difficulty}" ` +
+              `(got ${r.data.questions?.length ?? 0}). The dataset needs more unique examples for this combination.`
           );
-          return [] as string[];
-        })
-      );
-    }
+        }
+        return (r.data.questions as GeneratedQuestion[]) || [];
+      })
+      .catch((err) => {
+        console.error(`Local question-generation service failed: ${err?.message}`);
+        return [] as GeneratedQuestion[];
+      });
 
-    questionRacers.push(
-      axios.post(`${AI_SERVICE_URL}/generate-questions`, {
-        jobRole, experienceLevel, interviewType, difficulty, totalQuestions,
-        context: ragContext, previousQuestions,
-      }, { timeout: 8000, headers: aiServiceHeaders })
-        .then((r) => (r.data.questions as string[]) || [])
-        .catch(() => [] as string[])
-    );
+    questions = await withTimeout(localModelQuestions, QUESTION_DEADLINE_MS, []);
 
-    const raceForQuestions = new Promise<string[]>((resolve) => {
-      let settled = 0;
-      let resolved = false;
-      if (questionRacers.length === 0) { resolve([]); return; }
-      for (const p of questionRacers) {
-        p.then((qs) => {
-          settled++;
-          if (!resolved && qs.length > 0) { resolved = true; resolve(qs); }
-          else if (settled === questionRacers.length && !resolved) { resolve([]); }
-        });
-      }
-    });
-
-    questionTexts = await withTimeout(raceForQuestions, QUESTION_DEADLINE_MS, []);
-
-    if (questionTexts.length === 0) {
+    if (questions.length < totalQuestions) {
       console.warn(
-        `Interview ${interviewId}: question generation fell back to static pool (role="${jobRole}" type="${interviewType}")`
+        `Interview ${interviewId}: topping up with the static fallback pool (role="${jobRole}" type="${interviewType}")`
       );
-      questionTexts = generateFallbackQuestions(jobRole, interviewType, totalQuestions, previousQuestions);
+      const seenTexts = new Set(questions.map((q) => q.question.trim().toLowerCase()));
+      const stillExcluded = previousQuestions + "\n" + questions.map((q) => q.question).join("\n");
+      const fallback = generateFallbackQuestions(
+        jobRole,
+        interviewType,
+        totalQuestions - questions.length,
+        stillExcluded
+      ).filter((q) => !seenTexts.has(q.question.trim().toLowerCase()));
+      questions = questions.concat(fallback);
     }
 
-    questionTexts = dedupeQuestions(questionTexts).slice(0, totalQuestions);
+    questions = dedupeQuestions(questions).slice(0, totalQuestions);
 
-    const questions = questionTexts.map((q: string) => ({
-      question: q,
+    const questionDocs = questions.map((q) => ({
+      question: q.question,
+      skill: q.skill || "",
+      topic: q.topic || "",
+      concepts: q.concepts || [],
       answer: "",
       answerType: "text" as const,
       timeTaken: 0,
@@ -244,7 +227,7 @@ async function generateQuestionsForInterview(
 
     await Interview.updateOne(
       { _id: interviewId },
-      { $set: { questions, questionsStatus: "ready" } }
+      { $set: { questions: questionDocs, questionsStatus: "ready" } }
     );
   } catch (err: any) {
     console.error(`generateQuestionsForInterview crashed for ${interviewId}: ${err?.message}`);
@@ -254,24 +237,24 @@ async function generateQuestionsForInterview(
         interviewType,
         totalQuestions,
         previousQuestions
-      ).map(
-        (q: string) => ({
-          question: q,
-          answer: "",
-          answerType: "text" as const,
-          timeTaken: 0,
-          skipped: false,
-          evaluation: {
-            technicalScore: 0,
-            communicationScore: 0,
-            confidenceScore: 0,
-            grammarScore: 0,
-            fluencyScore: 0,
-            relevanceScore: 0,
-            feedback: "",
-          },
-        })
-      );
+      ).map((q) => ({
+        question: q.question,
+        skill: q.skill || "",
+        topic: q.topic || "",
+        answer: "",
+        answerType: "text" as const,
+        timeTaken: 0,
+        skipped: false,
+        evaluation: {
+          technicalScore: 0,
+          communicationScore: 0,
+          confidenceScore: 0,
+          grammarScore: 0,
+          fluencyScore: 0,
+          relevanceScore: 0,
+          feedback: "",
+        },
+      }));
       await Interview.updateOne(
         { _id: interviewId },
         { $set: { questions, questionsStatus: "ready" } }
@@ -295,6 +278,17 @@ export const createInterview = asyncHandler(async (req: AuthRequest, res: Respon
     throw new AppError("All fields are required", 400);
   }
 
+  let resumeProfile: ResumeProfile | null = null;
+  if (interviewType === "Resume") {
+    resumeProfile = sanitizeResumeProfile(req.body.resume);
+    if (!resumeProfile) {
+      throw new AppError(
+        "A resume-based interview needs a parsed resume with at least one skill or project. Upload your resume and try again.",
+        400
+      );
+    }
+  }
+
   // Create the session immediately and return its id — proctoring binds to this
   // id and must not wait on (or be blocked by) AI question generation, which now
   // runs in the background.
@@ -309,6 +303,7 @@ export const createInterview = asyncHandler(async (req: AuthRequest, res: Respon
     questionsStatus: "generating",
     startedAt: new Date(),
     questions: [],
+    ...(resumeProfile ? { resumeProfile } : {}),
   });
 
   // Detached — must never reject to the process (would trip the global
@@ -316,7 +311,11 @@ export const createInterview = asyncHandler(async (req: AuthRequest, res: Respon
   // internally guarded; this is just belt-and-suspenders.
   generateQuestionsForInterview(
     interview._id.toString(),
-    { jobRole, experienceLevel, interviewType, difficulty, totalQuestions },
+    {
+      jobRole, experienceLevel, interviewType, difficulty, totalQuestions,
+      resumeSkills: resumeProfile ? resumeProfile.skills : req.user.skills || [],
+      resumeProfile,
+    },
     req.user._id.toString()
   ).catch((err) =>
     console.error(`generateQuestionsForInterview rejected for ${interview._id}: ${err?.message}`)
@@ -375,6 +374,12 @@ export const regenerateQuestions = asyncHandler(async (req: AuthRequest, res: Re
       interviewType: interview.interviewType,
       difficulty: interview.difficulty,
       totalQuestions: interview.totalQuestions,
+      resumeSkills: (interview as any).resumeProfile?.skills?.length
+        ? Array.from((interview as any).resumeProfile.skills as string[])
+        : req.user.skills || [],
+      resumeProfile: (interview as any).resumeProfile
+        ? JSON.parse(JSON.stringify((interview as any).resumeProfile))
+        : null,
     },
     req.user._id.toString()
   ).catch((err) =>
@@ -426,6 +431,9 @@ export const submitAnswer = asyncHandler(async (req: AuthRequest, res: Response)
     interviewType: interview.interviewType,
     difficulty: interview.difficulty,
     jobRole: interview.jobRole,
+    skill: (currentQ as any).skill || "",
+    topic: (currentQ as any).topic || "",
+    concepts: Array.from(((currentQ as any).concepts as string[]) || []),
   };
 
   if (isLastQuestion) {
@@ -546,6 +554,10 @@ export const reportCheating = asyncHandler(async (req: AuthRequest, res: Respons
   });
 
   interview.cheatingCount += 1;
+  const isTabSwitch = type === "tab_switch";
+  if (isTabSwitch) {
+    interview.tabSwitchCount += 1;
+  }
   interview.warnings.push({
     type,
     message: description,
@@ -558,6 +570,9 @@ export const reportCheating = asyncHandler(async (req: AuthRequest, res: Respons
     interview.status = "terminated";
     interview.autoTerminated = true;
     interview.completedAt = new Date();
+    if (isTabSwitch && interview.tabSwitchCount >= 3) {
+      interview.terminationReason = "TAB_SWITCH_LIMIT_EXCEEDED";
+    }
     await calculateScores(interview);
     terminated = true;
   }
@@ -569,6 +584,7 @@ export const reportCheating = asyncHandler(async (req: AuthRequest, res: Respons
     data: {
       terminated,
       cheatingCount: interview.cheatingCount,
+      tabSwitchCount: interview.tabSwitchCount,
       warningsRemaining: Math.max(0, 3 - interview.cheatingCount),
       message: terminated
         ? "Interview terminated due to multiple cheating violations."
@@ -826,14 +842,14 @@ function generateFallbackQuestions(
   type: string,
   count: number,
   previousQuestions = ""
-): string[] {
+): GeneratedQuestion[] {
   const exclude = new Set(
     previousQuestions
       .split("\n")
       .map((q) => q.trim().toLowerCase())
       .filter(Boolean)
   );
-  return pickBankQuestions(jobRole, type, count, exclude);
+  return pickBankQuestions(jobRole, type, count, exclude).map((question) => ({ question }));
 }
 
 function generateStrengths(interview: any): string[] {

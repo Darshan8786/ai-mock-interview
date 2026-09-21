@@ -5,6 +5,7 @@ export { Job } from "./Job.model";
 export { Application } from "./Application.model";
 export { Interview } from "./Interview.model";
 export { AptitudeTest, AptitudeAttempt } from "./AptitudeTest.model";
+export { Alumni } from "./Alumni.model";
 
 export type { IAdmin } from "./Admin.model";
 export type { IStudent, StudentStatus } from "./Student.model";
@@ -12,6 +13,7 @@ export type { ICompany, CompanyStatus } from "./Company.model";
 export type { IJob, JobStatus } from "./Job.model";
 export type { IApplication, ApplicationStatus } from "./Application.model";
 export type { IInterview, InterviewStatus, IInterviewScore } from "./Interview.model";
+export type { IAlumni, IAlumniOpening } from "./Alumni.model";
 export type {
   IAptitudeTest,
   IAptitudeAttempt,

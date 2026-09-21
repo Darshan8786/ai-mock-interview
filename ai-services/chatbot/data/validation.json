@@ -1,0 +1,470 @@
+[
+ {
+  "q": "can you give me the formula for percentage change please",
+  "expect": "apt-percentage"
+ },
+ {
+  "q": "how to find profit percent when cost price and selling price are given",
+  "expect": "apt-profit-loss"
+ },
+ {
+  "q": "what is discount percentage on marked price",
+  "expect": "apt-profit-loss"
+ },
+ {
+  "q": "interest calculation on principal for some years",
+  "expect": "apt-simple-interest"
+ },
+ {
+  "q": "amount after compounding annually formula",
+  "expect": "apt-compound-interest"
+ },
+ {
+  "q": "a car travels at 60 kmph how to find distance covered",
+  "expect": "apt-time-speed-distance"
+ },
+ {
+  "q": "average speed when going and returning at different speeds",
+  "expect": "apt-time-speed-distance"
+ },
+ {
+  "q": "work and time questions how to solve fast",
+  "expect": "apt-time-work"
+ },
+ {
+  "q": "pipe a fills the tank and pipe b empties it",
+  "expect": "apt-pipes-cisterns"
+ },
+ {
+  "q": "stream speed and boat speed problem",
+  "expect": "apt-boats-streams"
+ },
+ {
+  "q": "how to divide money in the ratio 2 3",
+  "expect": "apt-ratio"
+ },
+ {
+  "q": "find average of numbers when one number is removed",
+  "expect": "apt-averages"
+ },
+ {
+  "q": "age problem where father is twice son age",
+  "expect": "apt-ages"
+ },
+ {
+  "q": "mixing milk and water in a container",
+  "expect": "apt-mixtures"
+ },
+ {
+  "q": "profit sharing among partners who invested at different times",
+  "expect": "apt-partnership"
+ },
+ {
+  "q": "number of ways to arrange the letters",
+  "expect": "apt-permutation-combination"
+ },
+ {
+  "q": "probability of picking a red ball from a bag",
+  "expect": "apt-probability"
+ },
+ {
+  "q": "is this number divisible by 3 or 9",
+  "expect": "apt-number-system"
+ },
+ {
+  "q": "find nth term and sum of arithmetic series",
+  "expect": "apt-progressions"
+ },
+ {
+  "q": "solve quadratic equation using discriminant",
+  "expect": "apt-quadratic"
+ },
+ {
+  "q": "surface area of cylinder and cone",
+  "expect": "apt-mensuration"
+ },
+ {
+  "q": "how to read bar graphs in di section",
+  "expect": "apt-data-interpretation"
+ },
+ {
+  "q": "find the next number in the series 2 6 12 20",
+  "expect": "apt-number-series"
+ },
+ {
+  "q": "letters coded in a particular way find the code",
+  "expect": "apt-coding-decoding"
+ },
+ {
+  "q": "pointing to a man she said he is the son of my mother's brother",
+  "expect": "apt-blood-relations"
+ },
+ {
+  "q": "a man walks 5 km north then turns right find distance from start",
+  "expect": "apt-direction-sense"
+ },
+ {
+  "q": "all cats are dogs some dogs are birds conclusions",
+  "expect": "apt-syllogism"
+ },
+ {
+  "q": "eight people sitting around a circular table",
+  "expect": "apt-seating-arrangement"
+ },
+ {
+  "q": "what day of the week was 15 august 1947",
+  "expect": "apt-clock-calendar"
+ },
+ {
+  "q": "improve my speed in reading passages",
+  "expect": "apt-verbal-reading"
+ },
+ {
+  "q": "spot the error in the sentence grammar rules",
+  "expect": "apt-verbal-grammar"
+ },
+ {
+  "q": "how to increase score in quant section",
+  "expect": "apt-improve-accuracy"
+ },
+ {
+  "q": "what are encapsulation and polymorphism",
+  "expect": "oop-pillars"
+ },
+ {
+  "q": "interface and abstract class which to use",
+  "expect": "oop-interface-abstract"
+ },
+ {
+  "q": "difference between a thread and a process in os",
+  "expect": "os-process-thread"
+ },
+ {
+  "q": "what causes deadlock in operating systems",
+  "expect": "os-deadlock"
+ },
+ {
+  "q": "which cpu scheduling algorithm gives least waiting time",
+  "expect": "os-scheduling"
+ },
+ {
+  "q": "how does virtual memory and page fault work",
+  "expect": "os-memory"
+ },
+ {
+  "q": "what is atomicity in transactions",
+  "expect": "dbms-acid"
+ },
+ {
+  "q": "why normalise tables in a database",
+  "expect": "dbms-normalization"
+ },
+ {
+  "q": "primary key and foreign key explained",
+  "expect": "dbms-keys"
+ },
+ {
+  "q": "write a query joining two tables",
+  "expect": "dbms-joins"
+ },
+ {
+  "q": "what is the difference between where and having clause",
+  "expect": "dbms-sql-misc"
+ },
+ {
+  "q": "layers in osi reference model",
+  "expect": "cn-osi"
+ },
+ {
+  "q": "what happens when i open a website in browser",
+  "expect": "cn-http-dns"
+ },
+ {
+  "q": "time and space complexity of quicksort",
+  "expect": "dsa-bigo"
+ },
+ {
+  "q": "why use stack instead of queue",
+  "expect": "dsa-stack-queue"
+ },
+ {
+  "q": "inorder preorder postorder traversal of tree",
+  "expect": "dsa-trees"
+ },
+ {
+  "q": "shortest path in a graph",
+  "expect": "dsa-bfs-dfs"
+ },
+ {
+  "q": "memoization and tabulation in dp",
+  "expect": "dsa-dp"
+ },
+ {
+  "q": "difference between jdk and jre",
+  "expect": "java-jdk-jvm"
+ },
+ {
+  "q": "what is list comprehension and the gil",
+  "expect": "python-basics"
+ },
+ {
+  "q": "let const and var in js",
+  "expect": "js-basics"
+ },
+ {
+  "q": "what are hooks in react",
+  "expect": "react-basics"
+ },
+ {
+  "q": "difference between get and post request",
+  "expect": "web-rest-jwt"
+ },
+ {
+  "q": "how to stop sql injection attacks",
+  "expect": "web-security"
+ },
+ {
+  "q": "waterfall versus agile model",
+  "expect": "sdlc-agile"
+ },
+ {
+  "q": "give me a good answer for introduce yourself",
+  "expect": "hr-tell-me-about-yourself"
+ },
+ {
+  "q": "why should the company select me",
+  "expect": "hr-why-hire"
+ },
+ {
+  "q": "what are your career plans for the next five years",
+  "expect": "hr-five-years"
+ },
+ {
+  "q": "situation task action result format",
+  "expect": "hr-star-method"
+ },
+ {
+  "q": "what if the interviewer asks something i have never studied",
+  "expect": "hr-dont-know"
+ },
+ {
+  "q": "what should i ask the hr at the end",
+  "expect": "hr-ask-interviewer"
+ },
+ {
+  "q": "how much salary should i ask for as a fresher",
+  "expect": "hr-salary"
+ },
+ {
+  "q": "things to keep ready before an online interview",
+  "expect": "interview-virtual-tips"
+ },
+ {
+  "q": "roadmap to prepare for placements",
+  "expect": "interview-technical-prep"
+ },
+ {
+  "q": "how do i talk about my college project",
+  "expect": "interview-projects"
+ },
+ {
+  "q": "what should a resume contain",
+  "expect": "resume-tips"
+ },
+ {
+  "q": "keywords for applicant tracking systems",
+  "expect": "resume-ats"
+ },
+ {
+  "q": "tips for gd round",
+  "expect": "gd-tips"
+ },
+ {
+  "q": "what are the rounds in campus placements",
+  "expect": "placement-process"
+ },
+ {
+  "q": "backlogs and cgpa criteria for eligibility",
+  "expect": "placement-eligibility"
+ },
+ {
+  "q": "how to become better at speaking english",
+  "expect": "communication-skills"
+ },
+ {
+  "q": "how do i use this app",
+  "expect": "platform-overview"
+ },
+ {
+  "q": "where do i find aptitude practice",
+  "expect": "platform-aptitude-how"
+ },
+ {
+  "q": "camera permission issue in interview",
+  "expect": "platform-proctoring"
+ },
+ {
+  "q": "how are my interview answers evaluated",
+  "expect": "platform-mock-interview-how"
+ },
+ {
+  "q": "how does the tech quiz choose difficulty",
+  "expect": "platform-tech-practice-how"
+ },
+ {
+  "q": "how is readiness computed on the analytics page",
+  "expect": "platform-analytics-how"
+ },
+ {
+  "q": "tell me my weak topics",
+  "expect": "my_weak_areas"
+ },
+ {
+  "q": "in which areas am i doing well",
+  "expect": "my_strengths"
+ },
+ {
+  "q": "give me a report of my progress so far",
+  "expect": "my_progress"
+ },
+ {
+  "q": "how many mock tests have i completed",
+  "expect": "my_aptitude"
+ },
+ {
+  "q": "what did the ai say about my interview",
+  "expect": "my_interview"
+ },
+ {
+  "q": "my results in python quiz",
+  "expect": "my_techquiz"
+ },
+ {
+  "q": "what should i work on to get placed",
+  "expect": "next_steps"
+ },
+ {
+  "q": "suggest videos and articles for my weak subjects",
+  "expect": "my_resources"
+ },
+ {
+  "q": "hi",
+  "expect": "greeting"
+ },
+ {
+  "q": "good afternoon",
+  "expect": "greeting"
+ },
+ {
+  "q": "thank you very much",
+  "expect": "thanks"
+ },
+ {
+  "q": "ok bye",
+  "expect": "goodbye"
+ },
+ {
+  "q": "what should i call you",
+  "expect": "identity"
+ },
+ {
+  "q": "how is the weather in bangalore",
+  "expect": null
+ },
+ {
+  "q": "who scored the winning goal",
+  "expect": null
+ },
+ {
+  "q": "recipe for chocolate cake",
+  "expect": null
+ },
+ {
+  "q": "what is the exchange rate of dollar",
+  "expect": null
+ },
+ {
+  "q": "suggest a good song to listen",
+  "expect": null
+ },
+ {
+  "q": "how old is the universe",
+  "expect": null
+ },
+ {
+  "q": "tell me something funny",
+  "expect": null
+ },
+ {
+  "q": "what is the best gaming laptop",
+  "expect": null
+ },
+ {
+  "q": "how do i lose belly fat",
+  "expect": null
+ },
+ {
+  "q": "who painted the mona lisa",
+  "expect": null
+ },
+ {
+  "q": "is it going to rain tomorrow",
+  "expect": null
+ },
+ {
+  "q": "which team won the world cup",
+  "expect": null
+ },
+ {
+  "q": "how is my day going",
+  "expect": null
+ },
+ {
+  "q": "what do you think about politics",
+  "expect": null
+ },
+ {
+  "q": "how to make money online",
+  "expect": null
+ },
+ {
+  "q": "what is the price of silver today",
+  "expect": null
+ },
+ {
+  "q": "how do i make a sandwich",
+  "expect": null
+ },
+ {
+  "q": "who is the best cricketer of all time",
+  "expect": null
+ },
+ {
+  "q": "what are the news headlines",
+  "expect": null
+ },
+ {
+  "q": "can you recommend a holiday destination",
+  "expect": null
+ },
+ {
+  "q": "what is the temperature outside",
+  "expect": null
+ },
+ {
+  "q": "tell me a scary story",
+  "expect": null
+ },
+ {
+  "q": "how does a rocket work",
+  "expect": null
+ },
+ {
+  "q": "which phone has the best camera",
+  "expect": null
+ },
+ {
+  "q": "what is the longest river in the world",
+  "expect": null
+ }
+]

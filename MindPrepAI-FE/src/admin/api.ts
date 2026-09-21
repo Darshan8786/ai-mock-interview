@@ -9,8 +9,6 @@ import type {
   AdminStudent,
   AdminResume,
   AdminInterview,
-  AdminQuiz,
-  QuizAttempt,
   AdminJob,
   JobApplicant,
   JobApplicationsResponse,
@@ -51,9 +49,6 @@ export async function adminFetch<T = any>(path: string, init?: RequestInit): Pro
   return res.json();
 }
 
-function delay<T>(data: T, ms = 350): Promise<T> {
-  return new Promise((resolve) => setTimeout(() => resolve(data), ms));
-}
 
 // ── Response shape helpers ────────────────────────────────
 
@@ -100,7 +95,6 @@ const mapStudent = (s: any): AdminStudent => ({
   atsScore: s.atsScore ?? 0,
   placementReadiness: s.profileCompletion ?? 0,
   interviewsTaken: s.interviewsTaken ?? 0,
-  quizAttempts: s.quizAttempts ?? 0,
   averageInterviewScore: s.averageInterviewScore ?? 0,
   weakSubjects: s.weakSubjects ?? [],
   strongSubjects: s.strongSubjects ?? [],
@@ -193,7 +187,6 @@ export const adminApi = {
     return {
       totalStudents: c.totalStudents ?? 0,
       totalInterviews: c.totalInterviews ?? 0,
-      totalQuizAttempts: c.quizAttempts ?? 0,
       totalResumeAnalyses: 0,
       totalJobs: c.totalJobs ?? 0,
       activeJobs: c.activeJobs ?? 0,
@@ -221,18 +214,9 @@ export const adminApi = {
     ).map(([label, value]) => ({
       label,
       interviews: value as number,
-      quizzes: 0,
-    }));
-    const quizPerformance: DashboardCharts["quizPerformance"] = Object.entries(
-      dist.monthlyQuizzes || {}
-    ).map(([label, value]) => ({
-      label,
-      quizzes: value as number,
-      interviews: 0,
     }));
     return {
       interviewPerformance,
-      quizPerformance,
       atsDistribution: [],
       placementReady,
       weeklyActivity: [],
@@ -305,57 +289,6 @@ export const adminApi = {
   async getInterviewDetail(id: string): Promise<any> {
     const r = await adminFetch(`/interviews/${id}`);
     return r.data;
-  },
-
-  // ── Quizzes ──────────────────────────────────────────────
-  async getQuizzes(): Promise<AdminQuiz[]> {
-    const stats = await adminFetch("/quizzes/stats");
-    const bySubject = stats.data?.bySubject || [];
-    return bySubject.map((s: any) => ({
-      id: s.subject,
-      subject: s.subject,
-      title: `${s.subject} Quiz`,
-      difficulty: "medium" as const,
-      topic: s.subject,
-      questionCount: s.attempts,
-      attempts: s.attempts,
-      avgScore: s.accuracy,
-      status: "published" as const,
-      createdAt: new Date().toISOString(),
-      questions: [],
-    }));
-  },
-  async createQuiz(quiz: Omit<AdminQuiz, "id" | "attempts" | "avgScore" | "createdAt" | "questions">): Promise<AdminQuiz> {
-    return delay({ ...quiz, id: `quiz_${Date.now()}`, attempts: 0, avgScore: 0, createdAt: new Date().toISOString(), questions: [] } as AdminQuiz);
-  },
-  async updateQuiz(id: string, patch: Partial<AdminQuiz>): Promise<AdminQuiz> {
-    return delay({ ...(await this.getQuizzes()).find((q) => q.id === id)!, ...patch });
-  },
-  async deleteQuiz(_id: string): Promise<void> {
-    return delay(undefined);
-  },
-  async getQuizAttempts(subject: string): Promise<QuizAttempt[]> {
-    const r = await adminFetch(`/quizzes/attempts?limit=100${subject ? `&subject=${encodeURIComponent(subject)}` : ""}`);
-    const byUser: Record<string, QuizAttempt> = {};
-    (r.data || []).forEach((a: any) => {
-      const key = a.userId?._id || a.userId || "unknown";
-      const name = a.userId?.name || "Unknown";
-      if (!byUser[key]) {
-        byUser[key] = {
-          id: key,
-          studentName: name,
-          score: 0,
-          total: 0,
-          percentage: 0,
-          timeTaken: "—",
-          date: a.createdAt || new Date().toISOString(),
-        };
-      }
-      byUser[key].total++;
-      if (a.correct) byUser[key].score++;
-      byUser[key].percentage = Math.round((byUser[key].score / byUser[key].total) * 100);
-    });
-    return Object.values(byUser);
   },
 
   // ── Jobs ─────────────────────────────────────────────────

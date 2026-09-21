@@ -1,0 +1,2974 @@
+[
+  {
+    "id": "sql_001",
+    "technology": "SQL",
+    "topic": "SQL Basics",
+    "difficulty": "Easy",
+    "question": "What does SQL stand for and what is it used for?",
+    "answer": "SQL stands for Structured Query Language; it is used to create, query, update, and manage data in relational databases.",
+    "explanation": "SQL is a declarative language for relational database management systems (RDBMS) — you describe what data you want, not how to fetch it.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "sql",
+      "database",
+      "query language"
+    ]
+  },
+  {
+    "id": "sql_002",
+    "technology": "SQL",
+    "topic": "SQL Basics",
+    "difficulty": "Easy",
+    "question": "Which of the following is a Relational Database Management System (RDBMS)?",
+    "answer": "PostgreSQL",
+    "explanation": "PostgreSQL is a relational database that stores data in tables with rows/columns and enforces a schema; the others are NoSQL stores.",
+    "question_type": "MCQ",
+    "keywords": [
+      "rdbms",
+      "postgresql",
+      "relational"
+    ],
+    "options": [
+      "MongoDB",
+      "Redis",
+      "PostgreSQL",
+      "Cassandra"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "sql_003",
+    "technology": "SQL",
+    "topic": "SQL Basics",
+    "difficulty": "Easy",
+    "question": "What is the difference between a database and a table?",
+    "answer": "A database is a container that holds one or more tables (plus views, indexes, etc.); a table is a structured collection of rows and columns storing actual data.",
+    "explanation": "Tables are the concrete storage unit inside a database; a database is the organizational unit grouping related tables together.",
+    "question_type": "Technical",
+    "keywords": [
+      "database",
+      "table",
+      "schema"
+    ]
+  },
+  {
+    "id": "sql_004",
+    "technology": "SQL",
+    "topic": "SQL Basics",
+    "difficulty": "Medium",
+    "question": "What is the difference between a primary key and a unique key?",
+    "answer": "Both enforce uniqueness, but a table can have only one primary key (which also disallows NULLs) while it can have multiple unique keys (which allow one NULL per column, in most databases).",
+    "explanation": "The primary key is the canonical identifier for a row and is implicitly NOT NULL; unique keys are additional uniqueness constraints that may permit NULLs.",
+    "question_type": "Technical",
+    "keywords": [
+      "primary key",
+      "unique key",
+      "constraint"
+    ]
+  },
+  {
+    "id": "sql_005",
+    "technology": "SQL",
+    "topic": "SQL Basics",
+    "difficulty": "Easy",
+    "question": "Which command is used to remove all rows from a table but keep its structure, resetting identity columns, and cannot be rolled back in most databases?",
+    "answer": "TRUNCATE",
+    "explanation": "TRUNCATE quickly deallocates all rows and typically resets auto-increment counters; DELETE removes rows individually (and can be rolled back and filtered with WHERE), while DROP removes the whole table.",
+    "question_type": "MCQ",
+    "keywords": [
+      "truncate",
+      "delete",
+      "ddl"
+    ],
+    "options": [
+      "DELETE",
+      "DROP",
+      "TRUNCATE",
+      "REMOVE"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "sql_006",
+    "technology": "SQL",
+    "topic": "SELECT Queries",
+    "difficulty": "Easy",
+    "question": "Write a query to select the `name` and `email` columns from a table called `users`.",
+    "answer": "SELECT name, email FROM users;",
+    "explanation": "Listing specific columns instead of `SELECT *` avoids pulling unnecessary data and is more resilient to schema changes.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "select",
+      "columns",
+      "projection"
+    ],
+    "schema_context": "CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));"
+  },
+  {
+    "id": "sql_007",
+    "technology": "SQL",
+    "topic": "SELECT Queries",
+    "difficulty": "Easy",
+    "question": "Write a query to select all distinct values of `city` from a `customers` table.",
+    "answer": "SELECT DISTINCT city FROM customers;",
+    "explanation": "DISTINCT removes duplicate rows from the result set based on the selected column(s).",
+    "question_type": "SQL Query",
+    "keywords": [
+      "distinct",
+      "select"
+    ],
+    "schema_context": "CREATE TABLE customers (id INT PRIMARY KEY, city VARCHAR(50));"
+  },
+  {
+    "id": "sql_008",
+    "technology": "SQL",
+    "topic": "SELECT Queries",
+    "difficulty": "Medium",
+    "question": "Write a query that returns the top 5 highest-paid employees from an `employees` table (columns: id, name, salary), ordered by salary descending.",
+    "answer": "SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 5;",
+    "explanation": "ORDER BY salary DESC sorts highest first, and LIMIT 5 restricts the result to the first 5 rows (use TOP 5 / FETCH FIRST in SQL Server/Oracle syntax instead).",
+    "question_type": "SQL Query",
+    "keywords": [
+      "limit",
+      "order by",
+      "top n"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(100), salary DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_009",
+    "technology": "SQL",
+    "topic": "SELECT Queries",
+    "difficulty": "Easy",
+    "question": "What does `SELECT *` do?",
+    "answer": "Selects every column of every matching row",
+    "explanation": "The asterisk is a wildcard meaning 'all columns' in the table(s) referenced by the FROM clause.",
+    "question_type": "MCQ",
+    "keywords": [
+      "select star",
+      "wildcard"
+    ],
+    "options": [
+      "Selects zero rows",
+      "Selects every column of every matching row",
+      "Selects only the primary key",
+      "Selects distinct rows only"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_010",
+    "technology": "SQL",
+    "topic": "SELECT Queries",
+    "difficulty": "Medium",
+    "question": "Why is using `SELECT *` in production application code generally discouraged?",
+    "answer": "It fetches unnecessary columns (wasting bandwidth/memory), breaks if columns are added/removed/reordered, and can silently include sensitive columns.",
+    "explanation": "Explicit column lists make queries self-documenting and resilient to schema evolution, and only transfer the data actually needed.",
+    "question_type": "Technical",
+    "keywords": [
+      "select star",
+      "best practice"
+    ]
+  },
+  {
+    "id": "sql_011",
+    "technology": "SQL",
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Easy",
+    "question": "Write a query to find all products in a `products` table with a price greater than 100.",
+    "answer": "SELECT * FROM products WHERE price > 100;",
+    "explanation": "WHERE filters rows before they are returned, evaluated per row against the given condition.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "where",
+      "filter"
+    ],
+    "schema_context": "CREATE TABLE products (id INT PRIMARY KEY, name VARCHAR(100), price DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_012",
+    "technology": "SQL",
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Easy",
+    "question": "Which operator checks whether a value falls within a given range, inclusive of both ends?",
+    "answer": "BETWEEN",
+    "explanation": "BETWEEN a AND b is shorthand for `col >= a AND col <= b`, inclusive on both bounds.",
+    "question_type": "MCQ",
+    "keywords": [
+      "between",
+      "range"
+    ],
+    "options": [
+      "IN",
+      "BETWEEN",
+      "LIKE",
+      "EXISTS"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_013",
+    "technology": "SQL",
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Medium",
+    "question": "Write a query to find customers whose `email` ends with '@gmail.com'.",
+    "answer": "SELECT * FROM customers WHERE email LIKE '%@gmail.com';",
+    "explanation": "LIKE with a leading `%` wildcard matches any characters before the fixed suffix.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "like",
+      "wildcard",
+      "pattern matching"
+    ],
+    "schema_context": "CREATE TABLE customers (id INT PRIMARY KEY, email VARCHAR(100));"
+  },
+  {
+    "id": "sql_014",
+    "technology": "SQL",
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Medium",
+    "question": "Why does `WHERE column = NULL` never return any rows, even for rows where the column is actually NULL?",
+    "answer": "In SQL, NULL represents an unknown value, so any comparison with `=` against NULL evaluates to UNKNOWN rather than TRUE — you must use `IS NULL` instead.",
+    "explanation": "SQL's three-valued logic (TRUE/FALSE/UNKNOWN) treats NULL as 'unknown', and `x = NULL` is always UNKNOWN regardless of x, which WHERE treats as a non-match.",
+    "question_type": "Technical",
+    "keywords": [
+      "null",
+      "is null",
+      "three-valued logic"
+    ]
+  },
+  {
+    "id": "sql_015",
+    "technology": "SQL",
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Medium",
+    "question": "Which clause is used to filter groups AFTER aggregation, as opposed to filtering individual rows before aggregation?",
+    "answer": "HAVING",
+    "explanation": "HAVING filters on aggregate results (e.g. COUNT(*) > 5) after GROUP BY has produced the groups; WHERE cannot reference aggregate functions.",
+    "question_type": "MCQ",
+    "keywords": [
+      "having",
+      "aggregate",
+      "group by"
+    ],
+    "options": [
+      "WHERE",
+      "HAVING",
+      "GROUP BY",
+      "ORDER BY"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_016",
+    "technology": "SQL",
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Easy",
+    "question": "Write a query to list all employees ordered by `last_name` alphabetically.",
+    "answer": "SELECT * FROM employees ORDER BY last_name ASC;",
+    "explanation": "ASC (ascending) is the default sort direction; it can be omitted but is shown here for clarity.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "order by",
+      "sorting"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT PRIMARY KEY, last_name VARCHAR(50));"
+  },
+  {
+    "id": "sql_017",
+    "technology": "SQL",
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Easy",
+    "question": "What is the default sort order of ORDER BY if no direction is specified?",
+    "answer": "Ascending",
+    "explanation": "ASC is the SQL standard default when neither ASC nor DESC is written.",
+    "question_type": "MCQ",
+    "keywords": [
+      "order by",
+      "asc",
+      "desc"
+    ],
+    "options": [
+      "Descending",
+      "Ascending",
+      "Random",
+      "By primary key"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_018",
+    "technology": "SQL",
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Medium",
+    "question": "Write a query to sort a `students` table first by `grade` descending, and for students in the same grade, by `name` ascending.",
+    "answer": "SELECT * FROM students ORDER BY grade DESC, name ASC;",
+    "explanation": "Multiple ORDER BY columns are applied left to right — later columns only break ties among rows equal on the earlier columns.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "order by",
+      "multi-column sort"
+    ],
+    "schema_context": "CREATE TABLE students (id INT PRIMARY KEY, name VARCHAR(100), grade INT);"
+  },
+  {
+    "id": "sql_019",
+    "technology": "SQL",
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Medium",
+    "question": "How do most databases order NULL values by default when sorting a column ascending?",
+    "answer": "In most databases (e.g. PostgreSQL, Oracle) NULLs sort last by default in ASC order and first in DESC order, but this default varies by database (MySQL sorts NULLs first in ASC).",
+    "explanation": "There is no single SQL-standard default for NULL ordering; `NULLS FIRST`/`NULLS LAST` (where supported) makes the behavior explicit and portable.",
+    "question_type": "Technical",
+    "keywords": [
+      "null",
+      "order by",
+      "sorting"
+    ]
+  },
+  {
+    "id": "sql_020",
+    "technology": "SQL",
+    "topic": "Aggregate Functions",
+    "difficulty": "Easy",
+    "question": "Write a query to count the total number of rows in an `orders` table.",
+    "answer": "SELECT COUNT(*) FROM orders;",
+    "explanation": "COUNT(*) counts all rows regardless of NULLs; COUNT(column) would only count non-NULL values of that column.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "count",
+      "aggregate"
+    ],
+    "schema_context": "CREATE TABLE orders (id INT PRIMARY KEY, amount DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_021",
+    "technology": "SQL",
+    "topic": "Aggregate Functions",
+    "difficulty": "Easy",
+    "question": "Which aggregate function returns the average of a numeric column?",
+    "answer": "AVG",
+    "explanation": "AVG computes the arithmetic mean of the non-NULL values in the column.",
+    "question_type": "MCQ",
+    "keywords": [
+      "avg",
+      "average",
+      "aggregate"
+    ],
+    "options": [
+      "SUM",
+      "AVG",
+      "COUNT",
+      "MEAN"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_022",
+    "technology": "SQL",
+    "topic": "Aggregate Functions",
+    "difficulty": "Medium",
+    "question": "Does COUNT(column_name) count NULL values in that column?",
+    "answer": "No — COUNT(column_name) only counts rows where that column is NOT NULL. Only COUNT(*) counts every row regardless of NULLs.",
+    "explanation": "Aggregate functions other than COUNT(*) generally ignore NULLs entirely (SUM, AVG, MIN, MAX skip NULL values in their computation).",
+    "question_type": "Technical",
+    "keywords": [
+      "count",
+      "null",
+      "aggregate"
+    ]
+  },
+  {
+    "id": "sql_023",
+    "technology": "SQL",
+    "topic": "Aggregate Functions",
+    "difficulty": "Medium",
+    "question": "Write a query to find the total `amount` of all orders in the `orders` table, along with the highest and lowest single order amount.",
+    "answer": "SELECT SUM(amount) AS total, MAX(amount) AS highest, MIN(amount) AS lowest FROM orders;",
+    "explanation": "SUM, MAX, and MIN can be computed together in one SELECT since they all aggregate over the same row set.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "sum",
+      "max",
+      "min",
+      "aggregate"
+    ],
+    "schema_context": "CREATE TABLE orders (id INT PRIMARY KEY, amount DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_024",
+    "technology": "SQL",
+    "topic": "GROUP BY & HAVING",
+    "difficulty": "Medium",
+    "question": "Write a query to find the number of orders placed by each customer in an `orders` table (columns: id, customer_id, amount).",
+    "answer": "SELECT customer_id, COUNT(*) AS order_count FROM orders GROUP BY customer_id;",
+    "explanation": "GROUP BY collapses rows sharing the same customer_id into one group per customer, and COUNT(*) counts rows within each group.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "group by",
+      "count",
+      "aggregation"
+    ],
+    "schema_context": "CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_025",
+    "technology": "SQL",
+    "topic": "GROUP BY & HAVING",
+    "difficulty": "Medium",
+    "question": "Write a query to find customers who have placed more than 3 orders.",
+    "answer": "SELECT customer_id, COUNT(*) AS order_count FROM orders GROUP BY customer_id HAVING COUNT(*) > 3;",
+    "explanation": "HAVING filters groups after aggregation — you cannot write `WHERE COUNT(*) > 3` because WHERE runs before grouping/aggregation happens.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "having",
+      "group by",
+      "aggregate filter"
+    ],
+    "schema_context": "CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_026",
+    "technology": "SQL",
+    "topic": "GROUP BY & HAVING",
+    "difficulty": "Medium",
+    "question": "In a query with GROUP BY, which columns are allowed in the SELECT list (in standard SQL)?",
+    "answer": "Only columns in the GROUP BY clause, or aggregate functions",
+    "explanation": "Standard SQL requires every non-aggregated selected column to appear in the GROUP BY clause, since each group must reduce to one row per output column.",
+    "question_type": "MCQ",
+    "keywords": [
+      "group by",
+      "select list"
+    ],
+    "options": [
+      "Any column from the table",
+      "Only columns in the GROUP BY clause, or aggregate functions",
+      "Only aggregate functions",
+      "Only the primary key"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_027",
+    "technology": "SQL",
+    "topic": "GROUP BY & HAVING",
+    "difficulty": "Hard",
+    "question": "What is the logical order of execution among FROM, WHERE, GROUP BY, HAVING, SELECT, and ORDER BY in a SQL query?",
+    "answer": "FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY (with LIMIT/OFFSET typically last).",
+    "explanation": "SQL is declarative and written in a different order than it is logically evaluated: rows are sourced and filtered before grouping, groups are filtered by HAVING, then the SELECT list (including aliases) is computed, and finally the result is sorted.",
+    "question_type": "Technical",
+    "keywords": [
+      "execution order",
+      "query processing"
+    ]
+  },
+  {
+    "id": "sql_028",
+    "technology": "SQL",
+    "topic": "Joins",
+    "difficulty": "Easy",
+    "question": "What is the difference between an INNER JOIN and a LEFT JOIN?",
+    "answer": "INNER JOIN returns only rows that have matching values in both tables; LEFT JOIN returns all rows from the left table plus matched rows from the right table, with NULLs where there is no match.",
+    "explanation": "LEFT JOIN preserves unmatched left-side rows (filled with NULL for right-side columns), which INNER JOIN would simply exclude.",
+    "question_type": "Technical",
+    "keywords": [
+      "inner join",
+      "left join"
+    ]
+  },
+  {
+    "id": "sql_029",
+    "technology": "SQL",
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question": "Write a query to list each order along with the customer's name, given `orders(id, customer_id, amount)` and `customers(id, name)`, including orders whose customer somehow no longer exists.",
+    "answer": "SELECT o.id, o.amount, c.name FROM orders o LEFT JOIN customers c ON o.customer_id = c.id;",
+    "explanation": "LEFT JOIN keeps every row from `orders` (the left table) even if there's no matching customer, returning NULL for `c.name` in that case.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "left join",
+      "join"
+    ],
+    "schema_context": "CREATE TABLE customers (id INT PRIMARY KEY, name VARCHAR(100)); CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_030",
+    "technology": "SQL",
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question": "What does a CROSS JOIN produce between two tables of size M and N rows?",
+    "answer": "M * N rows (the Cartesian product)",
+    "explanation": "CROSS JOIN pairs every row of the first table with every row of the second, with no join condition, producing the full Cartesian product.",
+    "question_type": "MCQ",
+    "keywords": [
+      "cross join",
+      "cartesian product"
+    ],
+    "options": [
+      "M + N rows",
+      "min(M, N) rows",
+      "M * N rows (the Cartesian product)",
+      "0 rows unless a condition matches"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "sql_031",
+    "technology": "SQL",
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question": "Write a query using a self-join to find pairs of employees who work in the same department, given `employees(id, name, department_id)`.",
+    "answer": "SELECT e1.name AS employee1, e2.name AS employee2 FROM employees e1 JOIN employees e2 ON e1.department_id = e2.department_id AND e1.id < e2.id;",
+    "explanation": "A self-join joins a table to itself using two aliases; `e1.id < e2.id` avoids pairing an employee with themself and avoids duplicate mirrored pairs.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "self join",
+      "join"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(100), department_id INT);"
+  },
+  {
+    "id": "sql_032",
+    "technology": "SQL",
+    "topic": "Joins",
+    "difficulty": "Hard",
+    "question": "What is the difference between a RIGHT JOIN and rewriting the same query as a LEFT JOIN?",
+    "answer": "A `A RIGHT JOIN B` is equivalent to `B LEFT JOIN A` (with columns reordered) — RIGHT JOIN keeps all rows from the right table and NULL-fills unmatched left-table columns.",
+    "explanation": "RIGHT JOIN is rarely used in practice because swapping the table order and using LEFT JOIN expresses the same result more conventionally/readably.",
+    "question_type": "Technical",
+    "keywords": [
+      "right join",
+      "left join"
+    ]
+  },
+  {
+    "id": "sql_033",
+    "technology": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Medium",
+    "question": "Write a query to find all employees whose salary is above the company average, given `employees(id, name, salary)`.",
+    "answer": "SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);",
+    "explanation": "The subquery computes a single scalar value (the average), which the outer query then compares each row's salary against.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "subquery",
+      "scalar subquery"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(100), salary DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_034",
+    "technology": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Medium",
+    "question": "What is a 'correlated subquery'?",
+    "answer": "A subquery that references a column from the outer query and is re-evaluated per outer row",
+    "explanation": "Correlated subqueries depend on the current row of the outer query, so conceptually they execute once per outer row (though optimizers may rewrite this).",
+    "question_type": "MCQ",
+    "keywords": [
+      "correlated subquery"
+    ],
+    "options": [
+      "A subquery that runs once before the outer query",
+      "A subquery that references a column from the outer query and is re-evaluated per outer row",
+      "A subquery inside a WHERE clause only",
+      "A subquery that always returns multiple rows"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_035",
+    "technology": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Medium",
+    "question": "Write a query to find customers who have placed at least one order, given `customers(id, name)` and `orders(id, customer_id)`, using EXISTS.",
+    "answer": "SELECT name FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);",
+    "explanation": "EXISTS returns true as soon as the correlated subquery finds at least one matching row, and is typically efficient because it can short-circuit.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "exists",
+      "correlated subquery"
+    ],
+    "schema_context": "CREATE TABLE customers (id INT PRIMARY KEY, name VARCHAR(100)); CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT);"
+  },
+  {
+    "id": "sql_036",
+    "technology": "SQL",
+    "topic": "Subqueries",
+    "difficulty": "Hard",
+    "question": "Why can EXISTS often outperform IN when checking membership against a subquery that returns many rows?",
+    "answer": "EXISTS can stop scanning as soon as it finds one matching row, whereas IN historically required materializing the full subquery result to compare against; modern optimizers narrow this gap but EXISTS remains a safe, semantically clear choice, especially with NULLs.",
+    "explanation": "Additionally, NOT IN has a well-known pitfall: if the subquery result contains a NULL, `NOT IN` can unexpectedly return no rows at all, while `NOT EXISTS` does not have this problem.",
+    "question_type": "Technical",
+    "keywords": [
+      "exists",
+      "in",
+      "performance"
+    ]
+  },
+  {
+    "id": "sql_037",
+    "technology": "SQL",
+    "topic": "Set Operations",
+    "difficulty": "Easy",
+    "question": "What is the difference between UNION and UNION ALL?",
+    "answer": "UNION combines the results of two queries and removes duplicate rows; UNION ALL combines them and keeps all duplicates.",
+    "explanation": "Because UNION must de-duplicate, it typically performs an implicit sort/hash step and is slower than UNION ALL when duplicates aren't a concern.",
+    "question_type": "Technical",
+    "keywords": [
+      "union",
+      "union all"
+    ]
+  },
+  {
+    "id": "sql_038",
+    "technology": "SQL",
+    "topic": "Set Operations",
+    "difficulty": "Medium",
+    "question": "What must be true about the two SELECT statements combined with UNION?",
+    "answer": "They must return the same number of columns with compatible types, in the same order",
+    "explanation": "UNION/UNION ALL/INTERSECT/EXCEPT all require the participating queries to have the same number of columns with compatible data types positionally.",
+    "question_type": "MCQ",
+    "keywords": [
+      "union",
+      "set operations"
+    ],
+    "options": [
+      "They must query the same table",
+      "They must return the same number of columns with compatible types, in the same order",
+      "They must have identical column names",
+      "They must both use ORDER BY"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_039",
+    "technology": "SQL",
+    "topic": "Set Operations",
+    "difficulty": "Medium",
+    "question": "Write a query using INTERSECT to find customer IDs that appear in both a `2023_customers` table and a `2024_customers` table (each with a single `customer_id` column).",
+    "answer": "SELECT customer_id FROM 2023_customers INTERSECT SELECT customer_id FROM 2024_customers;",
+    "explanation": "INTERSECT returns only the rows present in both result sets (some databases like MySQL historically lacked INTERSECT and required a JOIN/IN workaround instead).",
+    "question_type": "SQL Query",
+    "keywords": [
+      "intersect",
+      "set operations"
+    ],
+    "schema_context": "CREATE TABLE year_2023_customers (customer_id INT); CREATE TABLE year_2024_customers (customer_id INT);"
+  },
+  {
+    "id": "sql_040",
+    "technology": "SQL",
+    "topic": "Views",
+    "difficulty": "Easy",
+    "question": "What is a SQL view?",
+    "answer": "A view is a saved, named SELECT query that behaves like a virtual table — querying it re-runs the underlying query without permanently storing its own copy of the data (unless it's a materialized view).",
+    "explanation": "Views are useful for simplifying complex queries, enforcing row/column-level access control, and presenting a stable interface even if underlying tables change.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "view",
+      "virtual table"
+    ]
+  },
+  {
+    "id": "sql_041",
+    "technology": "SQL",
+    "topic": "Views",
+    "difficulty": "Medium",
+    "question": "What is a materialized view?",
+    "answer": "A view whose result is physically stored and must be refreshed to reflect underlying data changes",
+    "explanation": "Unlike a regular view (re-executed each time it's queried), a materialized view caches its result set on disk for fast reads, at the cost of needing periodic REFRESH.",
+    "question_type": "MCQ",
+    "keywords": [
+      "materialized view"
+    ],
+    "options": [
+      "A view that cannot be queried",
+      "A view whose result is physically stored and must be refreshed to reflect underlying data changes",
+      "A synonym for a temporary table",
+      "A view that only works with joins"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_042",
+    "technology": "SQL",
+    "topic": "Views",
+    "difficulty": "Medium",
+    "question": "Can you always INSERT or UPDATE through a view?",
+    "answer": "No — only 'simple' views (typically a single-table SELECT without aggregates, GROUP BY, DISTINCT, or joins) are usually updatable; views involving joins or aggregation generally are not, unless the database provides INSTEAD OF triggers.",
+    "explanation": "Because a view is a query, the database must be able to unambiguously map a change back to a single underlying row, which isn't always possible for complex views.",
+    "question_type": "Technical",
+    "keywords": [
+      "view",
+      "updatable view"
+    ]
+  },
+  {
+    "id": "sql_043",
+    "technology": "SQL",
+    "topic": "Indexes",
+    "difficulty": "Easy",
+    "question": "What is an index in a database, and why is it used?",
+    "answer": "An index is a separate data structure (commonly a B-tree) that stores a sorted reference to column values, allowing the database to look up matching rows much faster than scanning the whole table.",
+    "explanation": "Without an index, a query filtering on a column requires a full table scan; an index lets the database jump directly to relevant rows, similar to a book's index.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "index",
+      "b-tree",
+      "performance"
+    ]
+  },
+  {
+    "id": "sql_044",
+    "technology": "SQL",
+    "topic": "Indexes",
+    "difficulty": "Medium",
+    "question": "What is a downside of adding many indexes to a table?",
+    "answer": "Slower INSERT/UPDATE/DELETE, since indexes must also be maintained, plus extra storage",
+    "explanation": "Every index must be updated whenever the underlying data changes, so write-heavy tables pay a cost for each additional index, along with the storage it consumes.",
+    "question_type": "MCQ",
+    "keywords": [
+      "index",
+      "trade-off"
+    ],
+    "options": [
+      "Faster reads only, no downside",
+      "Slower INSERT/UPDATE/DELETE, since indexes must also be maintained, plus extra storage",
+      "Indexes make SELECT queries slower",
+      "Indexes disable primary keys"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_045",
+    "technology": "SQL",
+    "topic": "Indexes",
+    "difficulty": "Medium",
+    "question": "Why might an index on a column NOT be used by the query optimizer even if the column appears in a WHERE clause?",
+    "answer": "Common reasons: the column is wrapped in a function or expression (e.g. WHERE LOWER(name) = ...), the query would return a large fraction of the table (making a full scan cheaper), the index is on a different leading column in a composite index, or statistics are stale.",
+    "explanation": "The optimizer estimates cost for both plans and picks whichever it predicts is cheaper — an index isn't automatically used just because it exists on a filtered column.",
+    "question_type": "Technical",
+    "keywords": [
+      "index",
+      "query optimizer"
+    ]
+  },
+  {
+    "id": "sql_046",
+    "technology": "SQL",
+    "topic": "Indexes",
+    "difficulty": "Hard",
+    "question": "In a composite (multi-column) index on (a, b, c), which queries can still use the index efficiently?",
+    "answer": "Queries filtering on a leftmost prefix of the columns can use it efficiently: filtering on `a` alone, `a AND b`, or `a AND b AND c` — but filtering on `b` alone (without `a`) generally cannot use this index efficiently.",
+    "explanation": "A composite B-tree index is physically sorted by the first column, then the second within each first-column value, and so on — so the index is only directly seekable from its leftmost column.",
+    "question_type": "Technical",
+    "keywords": [
+      "composite index",
+      "leftmost prefix"
+    ]
+  },
+  {
+    "id": "sql_047",
+    "technology": "SQL",
+    "topic": "Constraints",
+    "difficulty": "Easy",
+    "question": "What does a FOREIGN KEY constraint enforce?",
+    "answer": "It enforces referential integrity by ensuring a column's value must match an existing value in a referenced table's primary/unique key (or be NULL, if allowed).",
+    "explanation": "This prevents 'orphan' rows — e.g. an order referencing a customer_id that doesn't exist in the customers table.",
+    "question_type": "Technical",
+    "keywords": [
+      "foreign key",
+      "referential integrity"
+    ]
+  },
+  {
+    "id": "sql_048",
+    "technology": "SQL",
+    "topic": "Constraints",
+    "difficulty": "Easy",
+    "question": "Which constraint ensures a column's value satisfies a custom boolean condition, e.g. `age >= 18`?",
+    "answer": "CHECK",
+    "explanation": "CHECK constraints let you define arbitrary conditions that every row must satisfy for that column (or combination of columns).",
+    "question_type": "MCQ",
+    "keywords": [
+      "check constraint"
+    ],
+    "options": [
+      "CHECK",
+      "UNIQUE",
+      "NOT NULL",
+      "DEFAULT"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "sql_049",
+    "technology": "SQL",
+    "topic": "Constraints",
+    "difficulty": "Medium",
+    "question": "What are the common referential actions available for ON DELETE on a foreign key (e.g. CASCADE, SET NULL, RESTRICT)?",
+    "answer": "CASCADE deletes dependent rows automatically; SET NULL sets the foreign key column to NULL; RESTRICT/NO ACTION blocks the delete if dependent rows exist; SET DEFAULT sets it to a default value.",
+    "explanation": "These options control what happens to child rows when the referenced parent row is deleted, letting the schema encode the desired real-world behavior.",
+    "question_type": "Technical",
+    "keywords": [
+      "foreign key",
+      "on delete cascade"
+    ]
+  },
+  {
+    "id": "sql_050",
+    "technology": "SQL",
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question": "What problem does database normalization solve?",
+    "answer": "Normalization organizes tables to reduce data redundancy and avoid update/insert/delete anomalies, by decomposing tables based on functional dependencies.",
+    "explanation": "For example, storing a customer's address redundantly in every order row risks inconsistency if the address changes; normalization moves it into a separate customers table referenced by foreign key.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "normalization",
+      "redundancy"
+    ]
+  },
+  {
+    "id": "sql_051",
+    "technology": "SQL",
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question": "A table is in Second Normal Form (2NF) when it is in 1NF and additionally:",
+    "answer": "Every non-key attribute is fully functionally dependent on the whole primary key (no partial dependency)",
+    "explanation": "2NF eliminates partial dependencies — relevant when a table has a composite primary key and some column depends on only part of that key.",
+    "question_type": "MCQ",
+    "keywords": [
+      "2nf",
+      "normalization",
+      "functional dependency"
+    ],
+    "options": [
+      "Has no foreign keys",
+      "Every non-key attribute is fully functionally dependent on the whole primary key (no partial dependency)",
+      "Has no NULL values",
+      "Uses only INT columns"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_052",
+    "technology": "SQL",
+    "topic": "Normalization",
+    "difficulty": "Hard",
+    "question": "What is a transitive dependency, and how does Third Normal Form (3NF) address it?",
+    "answer": "A transitive dependency exists when a non-key column depends on another non-key column, which in turn depends on the primary key (A -> B -> C). 3NF requires every non-key attribute to depend directly on the key, not transitively through another non-key attribute.",
+    "explanation": "For example, if `orders(order_id, customer_id, customer_city)` stores customer_city, and customer_city really depends on customer_id (not order_id), that's a transitive dependency 3NF would remove by moving customer_city to a customers table.",
+    "question_type": "Technical",
+    "keywords": [
+      "3nf",
+      "transitive dependency"
+    ]
+  },
+  {
+    "id": "sql_053",
+    "technology": "SQL",
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question": "When might you intentionally denormalize a database design?",
+    "answer": "When read performance is critical and the redundant data changes rarely, denormalizing (e.g. storing a computed total or duplicating a lookup value) can avoid expensive joins/aggregations at query time, trading some redundancy risk for speed.",
+    "explanation": "Denormalization is a deliberate trade-off, common in reporting/analytics schemas (e.g. data warehouses using star schemas), and should be applied selectively, not as a default.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "denormalization",
+      "performance trade-off"
+    ]
+  },
+  {
+    "id": "sql_054",
+    "technology": "SQL",
+    "topic": "Transactions & ACID",
+    "difficulty": "Medium",
+    "question": "What does the 'A' in ACID stand for, and what does it guarantee?",
+    "answer": "Atomicity — it guarantees that a transaction's operations either all succeed and are committed, or if any part fails, the entire transaction is rolled back as if none of it happened.",
+    "explanation": "This prevents a transaction from leaving the database in a partially-applied, inconsistent state (e.g. debiting one account without crediting another).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "acid",
+      "atomicity",
+      "transaction"
+    ]
+  },
+  {
+    "id": "sql_055",
+    "technology": "SQL",
+    "topic": "Transactions & ACID",
+    "difficulty": "Medium",
+    "question": "What does the Isolation property in ACID primarily concern?",
+    "answer": "Controlling how concurrently running transactions see each other's uncommitted changes",
+    "explanation": "Isolation levels (Read Uncommitted, Read Committed, Repeatable Read, Serializable) define what anomalies (dirty reads, non-repeatable reads, phantom reads) concurrent transactions may observe.",
+    "question_type": "MCQ",
+    "keywords": [
+      "isolation",
+      "concurrency",
+      "acid"
+    ],
+    "options": [
+      "Ensuring data is backed up",
+      "Controlling how concurrently running transactions see each other's uncommitted changes",
+      "Ensuring queries run fast",
+      "Ensuring data types are consistent"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_056",
+    "technology": "SQL",
+    "topic": "Transactions & ACID",
+    "difficulty": "Hard",
+    "question": "What is a 'phantom read', and which isolation level is required to fully prevent it?",
+    "answer": "A phantom read occurs when a transaction re-runs a query and gets a different SET of rows (new rows appeared or existing ones vanished) because another transaction inserted/deleted matching rows in between. SERIALIZABLE isolation is required to fully prevent it.",
+    "explanation": "REPEATABLE READ prevents non-repeatable reads (a re-read row changing value) but, in the strict standard definition, does not guarantee against phantom rows appearing/disappearing; SERIALIZABLE effectively orders transactions as if run one at a time.",
+    "question_type": "Technical",
+    "keywords": [
+      "phantom read",
+      "isolation level",
+      "serializable"
+    ]
+  },
+  {
+    "id": "sql_057",
+    "technology": "SQL",
+    "topic": "Transactions & ACID",
+    "difficulty": "Medium",
+    "question": "What is a deadlock in the context of database transactions?",
+    "answer": "A deadlock occurs when two or more transactions each hold a lock the other needs, so neither can proceed — e.g. Transaction A holds a lock on row 1 and waits for row 2, while Transaction B holds row 2 and waits for row 1.",
+    "explanation": "Most databases detect deadlocks automatically and abort one of the transactions (rolling it back) so the other can proceed.",
+    "question_type": "Technical",
+    "keywords": [
+      "deadlock",
+      "locking",
+      "concurrency"
+    ]
+  },
+  {
+    "id": "sql_058",
+    "technology": "SQL",
+    "topic": "Stored Procedures",
+    "difficulty": "Easy",
+    "question": "What is a stored procedure?",
+    "answer": "A stored procedure is a named, precompiled set of SQL statements (often with parameters and control flow) stored in the database and invoked by name.",
+    "explanation": "Stored procedures can encapsulate business logic close to the data, reduce network round-trips for multi-step operations, and be reused across applications.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "stored procedure"
+    ]
+  },
+  {
+    "id": "sql_059",
+    "technology": "SQL",
+    "topic": "Stored Procedures",
+    "difficulty": "Medium",
+    "question": "What is a key difference between a stored procedure and a user-defined function (UDF) in most SQL databases?",
+    "answer": "A function must return a value and can typically be used inside a SELECT/expression, while a procedure need not return a value and is invoked with CALL/EXEC",
+    "explanation": "Functions are designed to be composable inside expressions/queries and are usually restricted from side effects like DML in strict-mode databases, whereas procedures are invoked as standalone statements and commonly perform DML.",
+    "question_type": "MCQ",
+    "keywords": [
+      "stored procedure",
+      "user-defined function"
+    ],
+    "options": [
+      "Procedures cannot take parameters",
+      "A function must return a value and can typically be used inside a SELECT/expression, while a procedure need not return a value and is invoked with CALL/EXEC",
+      "Functions can modify data but procedures cannot",
+      "There is no difference"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_060",
+    "technology": "SQL",
+    "topic": "Triggers",
+    "difficulty": "Easy",
+    "question": "What is a database trigger?",
+    "answer": "A trigger is a piece of stored logic that automatically executes in response to a specific event (INSERT, UPDATE, or DELETE) on a table.",
+    "explanation": "Triggers are useful for enforcing complex business rules, auditing changes, or maintaining derived/denormalized data automatically, without relying on application code to remember to do so.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "trigger"
+    ]
+  },
+  {
+    "id": "sql_061",
+    "technology": "SQL",
+    "topic": "Triggers",
+    "difficulty": "Medium",
+    "question": "What is the difference between a BEFORE and an AFTER trigger?",
+    "answer": "BEFORE fires before the triggering operation is applied (can modify/validate the row), AFTER fires once it has been applied",
+    "explanation": "BEFORE triggers can inspect and even change the incoming row (e.g. via NEW in MySQL/PostgreSQL) before it's written, useful for validation/defaulting; AFTER triggers run once the change is committed to the table, useful for auditing or cascading effects.",
+    "question_type": "MCQ",
+    "keywords": [
+      "trigger",
+      "before",
+      "after"
+    ],
+    "options": [
+      "BEFORE runs on SELECT, AFTER on INSERT",
+      "BEFORE fires before the triggering operation is applied (can modify/validate the row), AFTER fires once it has been applied",
+      "There is no functional difference",
+      "AFTER triggers cannot access the changed row"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_062",
+    "technology": "SQL",
+    "topic": "Triggers",
+    "difficulty": "Hard",
+    "question": "What risk do triggers introduce for application maintainability, and how can you mitigate it?",
+    "answer": "Triggers execute 'invisibly' from the application's perspective — a developer looking at application code may not realize extra logic runs on INSERT/UPDATE, making behavior harder to trace and debug. Mitigation: keep triggers minimal, well-documented, and prefer explicit application-level logic for anything business-critical or complex.",
+    "explanation": "Because triggers are defined in the database rather than version-controlled application code (unless migrations are carefully tracked), they can become a hidden source of bugs and hard-to-reproduce behavior.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "trigger",
+      "maintainability"
+    ]
+  },
+  {
+    "id": "sql_063",
+    "technology": "SQL",
+    "topic": "Window Functions",
+    "difficulty": "Medium",
+    "question": "Write a query that ranks employees by salary (highest first) within each department, given `employees(id, name, department_id, salary)`.",
+    "answer": "SELECT name, department_id, salary, RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS salary_rank FROM employees;",
+    "explanation": "PARTITION BY restarts the ranking for each department, and ORDER BY salary DESC determines the rank order within each partition; RANK() gives tied values the same rank and skips the next rank number.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "window function",
+      "rank",
+      "partition by"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(100), department_id INT, salary DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_064",
+    "technology": "SQL",
+    "topic": "Window Functions",
+    "difficulty": "Hard",
+    "question": "What is the difference between RANK() and DENSE_RANK() when there are ties?",
+    "answer": "RANK() leaves gaps in the ranking sequence after a tie; DENSE_RANK() does not",
+    "explanation": "If two rows tie for rank 2, RANK() assigns them both 2 and the next row gets rank 4 (skipping 3); DENSE_RANK() assigns them both 2 and the next row gets rank 3 (no gap).",
+    "question_type": "MCQ",
+    "keywords": [
+      "rank",
+      "dense_rank",
+      "window function"
+    ],
+    "options": [
+      "They behave identically",
+      "RANK() leaves gaps in the ranking sequence after a tie; DENSE_RANK() does not",
+      "DENSE_RANK() leaves gaps; RANK() does not",
+      "RANK() only works with PARTITION BY"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_065",
+    "technology": "SQL",
+    "topic": "Window Functions",
+    "difficulty": "Hard",
+    "question": "How does a window function differ from GROUP BY aggregation?",
+    "answer": "GROUP BY collapses multiple rows into one row per group, losing row-level detail; a window function computes an aggregate/ranking value PER ROW while still returning every original row, using OVER(...) to define the window of rows it considers.",
+    "explanation": "This lets you show, e.g., each employee's salary alongside their department's average salary in the same row, which plain GROUP BY cannot do without a self-join or subquery.",
+    "question_type": "Technical",
+    "keywords": [
+      "window function",
+      "group by",
+      "over clause"
+    ]
+  },
+  {
+    "id": "sql_066",
+    "technology": "SQL",
+    "topic": "Query Optimization",
+    "difficulty": "Medium",
+    "question": "What does EXPLAIN (or EXPLAIN PLAN) show, and why is it useful?",
+    "answer": "EXPLAIN shows the execution plan the database's query optimizer intends to use for a query — which indexes (if any) it will use, join order, join algorithms, and estimated row counts/cost.",
+    "explanation": "It's the primary tool for diagnosing why a query is slow, e.g. revealing an unexpected full table scan where an index scan was expected.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "explain",
+      "query plan",
+      "optimization"
+    ]
+  },
+  {
+    "id": "sql_067",
+    "technology": "SQL",
+    "topic": "Query Optimization",
+    "difficulty": "Medium",
+    "question": "Which of the following typically hurts query performance the most on a large table?",
+    "answer": "A full table scan caused by a non-sargable predicate (e.g. wrapping the column in a function)",
+    "explanation": "Non-sargable predicates (Search ARGument ABLE) — like `WHERE YEAR(order_date) = 2024` instead of a range comparison — prevent the optimizer from using an index on that column, forcing a full scan.",
+    "question_type": "MCQ",
+    "keywords": [
+      "sargable",
+      "full table scan",
+      "performance"
+    ],
+    "options": [
+      "Using an indexed column in WHERE",
+      "A full table scan caused by a non-sargable predicate (e.g. wrapping the column in a function)",
+      "Selecting fewer columns",
+      "Using LIMIT"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_068",
+    "technology": "SQL",
+    "topic": "Query Optimization",
+    "difficulty": "Hard",
+    "question": "A query joining three large tables is slow. What are three concrete things you would check to speed it up?",
+    "answer": "Check: (1) EXPLAIN plan for full table scans and confirm join columns are indexed, (2) whether the join order/algorithm chosen makes sense given table sizes and selectivity, (3) whether the query fetches more columns/rows than actually needed (e.g. missing WHERE filters, unnecessary DISTINCT, or SELECT *).",
+    "explanation": "Systematic diagnosis (plan first, then indexes, then query shape) is more reliable than guessing — the EXPLAIN plan usually points directly at the bottleneck (e.g. a specific unindexed join column).",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "query optimization",
+      "explain plan",
+      "joins"
+    ]
+  },
+  {
+    "id": "sql_069",
+    "technology": "SQL",
+    "topic": "DDL/DML/DCL/TCL",
+    "difficulty": "Easy",
+    "question": "Which category of SQL statements does `CREATE TABLE` belong to?",
+    "answer": "DDL",
+    "explanation": "DDL (Data Definition Language) covers statements that define/alter schema objects: CREATE, ALTER, DROP, TRUNCATE.",
+    "question_type": "MCQ",
+    "keywords": [
+      "ddl",
+      "create table"
+    ],
+    "options": [
+      "DML",
+      "DDL",
+      "DCL",
+      "TCL"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_070",
+    "technology": "SQL",
+    "topic": "DDL/DML/DCL/TCL",
+    "difficulty": "Easy",
+    "question": "Which category do INSERT, UPDATE, and DELETE belong to?",
+    "answer": "DML",
+    "explanation": "DML (Data Manipulation Language) covers statements that manipulate the actual data rows: SELECT is sometimes classified separately as DQL, but INSERT/UPDATE/DELETE are DML.",
+    "question_type": "MCQ",
+    "keywords": [
+      "dml"
+    ],
+    "options": [
+      "DDL",
+      "DML",
+      "DCL",
+      "TCL"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_071",
+    "technology": "SQL",
+    "topic": "DDL/DML/DCL/TCL",
+    "difficulty": "Medium",
+    "question": "What is the difference between COMMIT and ROLLBACK, and what category of statement are they?",
+    "answer": "Both are TCL (Transaction Control Language) statements. COMMIT permanently saves all changes made in the current transaction; ROLLBACK discards them, reverting the database to its state before the transaction began.",
+    "explanation": "TCL statements manage transaction boundaries; without an explicit COMMIT, changes may only be visible within the current session depending on the database's autocommit setting.",
+    "question_type": "Technical",
+    "keywords": [
+      "commit",
+      "rollback",
+      "tcl"
+    ]
+  },
+  {
+    "id": "sql_072",
+    "technology": "SQL",
+    "topic": "DDL/DML/DCL/TCL",
+    "difficulty": "Medium",
+    "question": "GRANT and REVOKE, which control user permissions, belong to which category?",
+    "answer": "DCL",
+    "explanation": "DCL (Data Control Language) manages access control/permissions on database objects.",
+    "question_type": "MCQ",
+    "keywords": [
+      "dcl",
+      "grant",
+      "revoke"
+    ],
+    "options": [
+      "DDL",
+      "DML",
+      "DCL",
+      "TCL"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "sql_073",
+    "technology": "SQL",
+    "topic": "ER Modeling",
+    "difficulty": "Easy",
+    "question": "What is an Entity-Relationship (ER) diagram used for?",
+    "answer": "An ER diagram visually models the entities (things) in a system, their attributes, and the relationships between them, before translating that design into actual database tables.",
+    "explanation": "It's a design tool used during the database design phase to capture requirements and relationships (one-to-one, one-to-many, many-to-many) clearly before implementation.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "er diagram",
+      "entity relationship"
+    ]
+  },
+  {
+    "id": "sql_074",
+    "technology": "SQL",
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question": "How is a many-to-many relationship typically implemented in a relational database?",
+    "answer": "Using a junction (bridge/associative) table with foreign keys to both entities",
+    "explanation": "A junction table (e.g. `student_courses` linking `students` and `courses`) holds one row per association, converting the many-to-many relationship into two one-to-many relationships.",
+    "question_type": "MCQ",
+    "keywords": [
+      "many-to-many",
+      "junction table"
+    ],
+    "options": [
+      "By adding a foreign key directly on both tables",
+      "By adding a foreign key on the table with fewer rows",
+      "Using a junction (bridge/associative) table with foreign keys to both entities",
+      "It cannot be implemented in relational databases"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "sql_075",
+    "technology": "SQL",
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question": "You are modeling a blog: users write posts, and posts can have multiple tags while tags can apply to multiple posts. Describe the tables and relationships you'd create.",
+    "answer": "Tables: `users(id, ...)`, `posts(id, user_id FK, title, content, ...)`, `tags(id, name)`, and a junction table `post_tags(post_id FK, tag_id FK)`. users->posts is one-to-many; posts<->tags is many-to-many via post_tags.",
+    "explanation": "The one-to-many (user to posts) is expressed with a simple foreign key on the 'many' side; the many-to-many (posts to tags) requires the junction table since neither side's foreign key alone can represent multiple associations per row.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "er modeling",
+      "junction table",
+      "one-to-many"
+    ]
+  },
+  {
+    "id": "sql_076",
+    "technology": "SQL",
+    "topic": "SQL Injection & Security",
+    "difficulty": "Medium",
+    "question": "What is a SQL injection attack?",
+    "answer": "SQL injection occurs when untrusted user input is concatenated directly into a SQL query string, allowing an attacker to alter the query's logic — e.g. inputting `' OR '1'='1` to bypass a login check.",
+    "explanation": "Because the database can't distinguish attacker-supplied SQL syntax from the intended query structure once it's concatenated as a string, the attacker effectively gets to write part of the query themselves.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "sql injection",
+      "security"
+    ]
+  },
+  {
+    "id": "sql_077",
+    "technology": "SQL",
+    "topic": "SQL Injection & Security",
+    "difficulty": "Medium",
+    "question": "What is the most effective defense against SQL injection?",
+    "answer": "Using parameterized queries / prepared statements",
+    "explanation": "Parameterized queries send the SQL structure and the user-supplied values separately to the database driver, so user input is always treated as data, never as executable SQL syntax, regardless of its content.",
+    "question_type": "MCQ",
+    "keywords": [
+      "parameterized query",
+      "prepared statement",
+      "sql injection"
+    ],
+    "options": [
+      "Escaping quotes manually in application code",
+      "Using parameterized queries / prepared statements",
+      "Validating input length only",
+      "Using a NoSQL database instead"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_078",
+    "technology": "SQL",
+    "topic": "SQL Injection & Security",
+    "difficulty": "Hard",
+    "question": "A login query is built as: `\"SELECT * FROM users WHERE username = '\" + username + \"' AND password = '\" + password + \"'\"`. Explain how an attacker could bypass authentication, and how to fix it.",
+    "answer": "An attacker could set username to `admin' -- ` (or `' OR '1'='1' -- `), which comments out the password check or makes the WHERE clause always true, logging in without a valid password. Fix: use a parameterized query, e.g. `WHERE username = ? AND password = ?` with bound parameters, and never build SQL via string concatenation of user input.",
+    "explanation": "The `--` starts a SQL comment in most dialects, so everything after it (including the password check) is ignored; parameterization eliminates this entire class of attack because the driver never re-parses user input as SQL syntax.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "sql injection",
+      "authentication bypass",
+      "parameterized query"
+    ]
+  },
+  {
+    "id": "sql_079",
+    "technology": "SQL",
+    "topic": "Query-Writing Problems",
+    "difficulty": "Medium",
+    "question": "Write a query to find the second-highest salary from an `employees` table (columns: id, salary), without using LIMIT/OFFSET.",
+    "answer": "SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees);",
+    "explanation": "The inner subquery finds the overall maximum; the outer query then finds the maximum salary strictly less than that, which is the second-highest (handles ties on the top salary correctly).",
+    "question_type": "SQL Query",
+    "keywords": [
+      "nth highest",
+      "subquery"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT PRIMARY KEY, salary DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_080",
+    "technology": "SQL",
+    "topic": "Query-Writing Problems",
+    "difficulty": "Hard",
+    "question": "Write a query to find duplicate email addresses in a `users` table (columns: id, email).",
+    "answer": "SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1;",
+    "explanation": "Grouping by email and filtering groups with more than one row identifies which email values occur more than once.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "duplicates",
+      "group by",
+      "having"
+    ],
+    "schema_context": "CREATE TABLE users (id INT PRIMARY KEY, email VARCHAR(100));"
+  },
+  {
+    "id": "sql_081",
+    "technology": "SQL",
+    "topic": "Query-Writing Problems",
+    "difficulty": "Medium",
+    "question": "Write a query to find all departments that have no employees, given `departments(id, name)` and `employees(id, name, department_id)`.",
+    "answer": "SELECT d.name FROM departments d LEFT JOIN employees e ON d.id = e.department_id WHERE e.id IS NULL;",
+    "explanation": "LEFT JOIN keeps every department even without a matching employee; filtering for `e.id IS NULL` isolates departments where no employee row matched.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "left join",
+      "anti-join"
+    ],
+    "schema_context": "CREATE TABLE departments (id INT PRIMARY KEY, name VARCHAR(100)); CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(100), department_id INT);"
+  },
+  {
+    "id": "sql_082",
+    "technology": "SQL",
+    "topic": "Query-Writing Problems",
+    "difficulty": "Hard",
+    "question": "Write a query to find employees who earn more than their department's average salary, given `employees(id, name, department_id, salary)`.",
+    "answer": "SELECT e.name FROM employees e WHERE e.salary > (SELECT AVG(e2.salary) FROM employees e2 WHERE e2.department_id = e.department_id);",
+    "explanation": "This is a correlated subquery: for each outer row, the inner query recomputes the average salary restricted to that employee's own department, then compares.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "correlated subquery",
+      "avg"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(100), department_id INT, salary DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_083",
+    "technology": "SQL",
+    "topic": "Query-Writing Problems",
+    "difficulty": "Easy",
+    "question": "Write a query to update the `status` column to 'inactive' for all users in a `users` table who haven't logged in (`last_login` is NULL).",
+    "answer": "UPDATE users SET status = 'inactive' WHERE last_login IS NULL;",
+    "explanation": "UPDATE with a WHERE clause modifies only the matching rows; omitting WHERE would update every row in the table.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "update",
+      "is null"
+    ],
+    "schema_context": "CREATE TABLE users (id INT PRIMARY KEY, status VARCHAR(20), last_login DATE);"
+  },
+  {
+    "id": "sql_084",
+    "technology": "SQL",
+    "topic": "Query-Writing Problems",
+    "difficulty": "Medium",
+    "question": "Write a query to delete customers from a `customers` table who have never placed an order, given `orders(id, customer_id)`.",
+    "answer": "DELETE FROM customers WHERE id NOT IN (SELECT customer_id FROM orders WHERE customer_id IS NOT NULL);",
+    "explanation": "Filtering `customer_id IS NOT NULL` in the subquery avoids the classic NOT IN + NULL pitfall, where a single NULL in the subquery result would make NOT IN match no rows at all.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "delete",
+      "not in",
+      "null pitfall"
+    ],
+    "schema_context": "CREATE TABLE customers (id INT PRIMARY KEY); CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT);"
+  },
+  {
+    "id": "sql_085",
+    "technology": "SQL",
+    "topic": "SQL Basics",
+    "difficulty": "Medium",
+    "question": "Which of these best describes a schema in a relational database?",
+    "answer": "The structural definition of tables, columns, types, and constraints",
+    "explanation": "A schema is the blueprint describing what tables exist, their columns/types, and the constraints/relationships between them — distinct from the actual data (rows) stored in it.",
+    "question_type": "MCQ",
+    "keywords": [
+      "schema",
+      "database design"
+    ],
+    "options": [
+      "A single row of data",
+      "The structural definition of tables, columns, types, and constraints",
+      "A backup file",
+      "A stored procedure"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_086",
+    "technology": "SQL",
+    "topic": "SQL Basics",
+    "difficulty": "Medium",
+    "question": "What is the difference between a clustered and a non-clustered index?",
+    "answer": "A clustered index determines the physical storage order of the table's rows (a table can have only one), while a non-clustered index is a separate structure pointing back to the row's location, and a table can have many.",
+    "explanation": "Because a clustered index dictates physical row order, lookups by that key are especially fast, but only one clustering order can exist per table.",
+    "question_type": "Technical",
+    "keywords": [
+      "clustered index",
+      "non-clustered index"
+    ]
+  },
+  {
+    "id": "sql_087",
+    "technology": "SQL",
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Medium",
+    "question": "Write a query to get the 3 most recently placed orders from an `orders` table (columns: id, order_date, amount).",
+    "answer": "SELECT * FROM orders ORDER BY order_date DESC LIMIT 3;",
+    "explanation": "Sorting by order_date descending puts the newest first, and LIMIT 3 restricts the result to just those three rows.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "order by",
+      "limit"
+    ],
+    "schema_context": "CREATE TABLE orders (id INT PRIMARY KEY, order_date DATE, amount DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_088",
+    "technology": "SQL",
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Easy",
+    "question": "Can you ORDER BY a column that isn't in the SELECT list?",
+    "answer": "Yes, in most databases, as long as it's from a table referenced in the FROM clause",
+    "explanation": "ORDER BY is evaluated after the row set is formed and generally can reference any column available from the FROM clause, not just ones in the final SELECT list (some restrictions apply with DISTINCT/UNION).",
+    "question_type": "MCQ",
+    "keywords": [
+      "order by"
+    ],
+    "options": [
+      "Never",
+      "Yes, in most databases, as long as it's from a table referenced in the FROM clause",
+      "Only for numeric columns",
+      "Only with GROUP BY"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_089",
+    "technology": "SQL",
+    "topic": "Aggregate Functions",
+    "difficulty": "Medium",
+    "question": "Write a query to find how many distinct customers have placed at least one order, given `orders(id, customer_id)`.",
+    "answer": "SELECT COUNT(DISTINCT customer_id) FROM orders;",
+    "explanation": "COUNT(DISTINCT column) counts unique non-NULL values rather than every row, so a customer with 5 orders is only counted once.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "count distinct",
+      "aggregate"
+    ],
+    "schema_context": "CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT);"
+  },
+  {
+    "id": "sql_090",
+    "technology": "SQL",
+    "topic": "Aggregate Functions",
+    "difficulty": "Hard",
+    "question": "Why can't you write `SELECT customer_id, SUM(amount) FROM orders` without a GROUP BY, if `customer_id` isn't unique per row?",
+    "answer": "Standard SQL rejects mixing a non-aggregated column with an aggregate function in the same SELECT without GROUP BY, because it's ambiguous which customer_id value should represent the single aggregated SUM row.",
+    "explanation": "Some databases (like older MySQL in non-strict mode) silently allow this and pick an arbitrary row's value, which is why relying on it is considered a bug-prone anti-pattern; GROUP BY customer_id resolves the ambiguity explicitly.",
+    "question_type": "Technical",
+    "keywords": [
+      "group by",
+      "aggregate",
+      "ansi sql"
+    ]
+  },
+  {
+    "id": "sql_091",
+    "technology": "SQL",
+    "topic": "Constraints",
+    "difficulty": "Medium",
+    "question": "What happens if you try to insert a row that violates a UNIQUE constraint?",
+    "answer": "The INSERT fails with a constraint violation error",
+    "explanation": "Constraint violations cause the statement to fail and roll back (in the context of that statement/transaction), protecting data integrity rather than silently corrupting or skipping data.",
+    "question_type": "MCQ",
+    "keywords": [
+      "unique constraint",
+      "insert"
+    ],
+    "options": [
+      "The row is inserted with a warning",
+      "The database silently ignores the duplicate value",
+      "The INSERT fails with a constraint violation error",
+      "The old row is automatically deleted"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "sql_092",
+    "technology": "SQL",
+    "topic": "Constraints",
+    "difficulty": "Medium",
+    "question": "Can a column with a FOREIGN KEY constraint contain NULL values?",
+    "answer": "Yes, by default, unless the column also has a NOT NULL constraint — a NULL foreign key simply means 'no relationship for this row', and referential integrity checks don't apply to NULLs.",
+    "explanation": "This is commonly used for optional relationships, e.g. an `orders.assigned_agent_id` that's NULL until an agent is assigned.",
+    "question_type": "Technical",
+    "keywords": [
+      "foreign key",
+      "null"
+    ]
+  },
+  {
+    "id": "sql_093",
+    "technology": "SQL",
+    "topic": "Views",
+    "difficulty": "Medium",
+    "question": "Write a query to create a view named `high_value_customers` showing customers (from `customers(id, name)`) with total order amount over 10000, given `orders(id, customer_id, amount)`.",
+    "answer": "CREATE VIEW high_value_customers AS SELECT c.id, c.name, SUM(o.amount) AS total_spent FROM customers c JOIN orders o ON c.id = o.customer_id GROUP BY c.id, c.name HAVING SUM(o.amount) > 10000;",
+    "explanation": "The view encapsulates the join + aggregation + HAVING filter logic behind a simple name that can be queried like `SELECT * FROM high_value_customers` going forward.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "create view",
+      "having"
+    ],
+    "schema_context": "CREATE TABLE customers (id INT PRIMARY KEY, name VARCHAR(100)); CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT, amount DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_094",
+    "technology": "SQL",
+    "topic": "Set Operations",
+    "difficulty": "Medium",
+    "question": "What is the difference between EXCEPT (or MINUS in Oracle) and a NOT IN subquery for finding rows in one set but not another?",
+    "answer": "EXCEPT/MINUS is a set operation comparing whole rows between two same-shaped queries and handles NULLs predictably, while a NOT IN subquery has the well-known pitfall of returning zero rows entirely if the subquery contains any NULL value.",
+    "explanation": "For excluding rows based on a subquery, EXCEPT or a NOT EXISTS correlated subquery are generally safer choices than NOT IN when NULLs might be present.",
+    "question_type": "Technical",
+    "keywords": [
+      "except",
+      "minus",
+      "not in"
+    ]
+  },
+  {
+    "id": "sql_095",
+    "technology": "SQL",
+    "topic": "Set Operations",
+    "difficulty": "Medium",
+    "question": "Does UNION ALL guarantee any particular row order in its result?",
+    "answer": "No — row order is undefined unless an explicit ORDER BY is added at the end",
+    "explanation": "Like any SQL query without an ORDER BY, the result order of UNION/UNION ALL is not guaranteed by the standard — an explicit ORDER BY on the combined result is required for a reliable order.",
+    "question_type": "MCQ",
+    "keywords": [
+      "union all",
+      "order by"
+    ],
+    "options": [
+      "Yes, always ascending by first column",
+      "No — row order is undefined unless an explicit ORDER BY is added at the end",
+      "Yes, insertion order is always preserved",
+      "Only for numeric columns"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_096",
+    "technology": "SQL",
+    "topic": "Stored Procedures",
+    "difficulty": "Medium",
+    "question": "What is a key security/performance benefit of stored procedures when handling user input?",
+    "answer": "Stored procedures naturally use parameters rather than string concatenation, which helps prevent SQL injection, and because they are precompiled, the database can cache and reuse their execution plan across calls.",
+    "explanation": "Application code calling a procedure with bound parameters (e.g. `CALL update_balance(?, ?)`) never builds SQL from raw user input, closing off the injection vector entirely for that operation.",
+    "question_type": "Technical",
+    "keywords": [
+      "stored procedure",
+      "sql injection",
+      "performance"
+    ]
+  },
+  {
+    "id": "sql_097",
+    "technology": "SQL",
+    "topic": "Triggers",
+    "difficulty": "Medium",
+    "question": "You want to automatically log every change to a `salary` column in an `employees` table into an `audit_log` table. What kind of trigger would you use, and why?",
+    "answer": "An AFTER UPDATE trigger on `employees`, which inserts a row into `audit_log` (old value, new value, timestamp, user) once the update has actually been applied.",
+    "explanation": "AFTER is appropriate here because the goal is recording what happened, not validating/blocking the change beforehand, and using AFTER avoids re-triggering validation logic that might belong in a BEFORE trigger.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "trigger",
+      "audit log",
+      "after update"
+    ]
+  },
+  {
+    "id": "sql_098",
+    "technology": "SQL",
+    "topic": "Window Functions",
+    "difficulty": "Medium",
+    "question": "Write a query using a window function to show each order's amount alongside a running total of amounts ordered by order_date, given `orders(id, order_date, amount)`.",
+    "answer": "SELECT id, order_date, amount, SUM(amount) OVER (ORDER BY order_date) AS running_total FROM orders;",
+    "explanation": "SUM(...) OVER (ORDER BY order_date) with no PARTITION BY computes a cumulative sum across all rows up to and including the current row's position in the specified order, without collapsing rows like GROUP BY would.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "window function",
+      "running total"
+    ],
+    "schema_context": "CREATE TABLE orders (id INT PRIMARY KEY, order_date DATE, amount DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_099",
+    "technology": "SQL",
+    "topic": "Query Optimization",
+    "difficulty": "Medium",
+    "question": "What is the N+1 query problem, and how does it typically arise?",
+    "answer": "It occurs when code fetches a list of N parent records with one query, then issues a separate query for each parent's related data (N additional queries) instead of fetching everything in one join or batched query, resulting in N+1 total round-trips.",
+    "explanation": "This is a common ORM pitfall; fixing it usually means eager-loading the related data with a JOIN or a single `WHERE parent_id IN (...)` query instead of looping and querying per row.",
+    "question_type": "Technical",
+    "keywords": [
+      "n+1 query",
+      "orm",
+      "performance"
+    ]
+  },
+  {
+    "id": "sql_100",
+    "technology": "SQL",
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question": "What is the goal of First Normal Form (1NF)?",
+    "answer": "1NF requires each column to hold atomic (indivisible) values and each row to be uniquely identifiable, with no repeating groups or multi-valued columns (e.g. no storing a comma-separated list of phone numbers in one column).",
+    "explanation": "Splitting a multi-valued column into a separate related table (or separate rows) is the typical fix to bring a table into 1NF.",
+    "question_type": "Technical",
+    "keywords": [
+      "1nf",
+      "atomic values"
+    ]
+  },
+  {
+    "id": "sql_101",
+    "technology": "SQL",
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question": "What is the difference between a weak entity and a strong entity in ER modeling?",
+    "answer": "A strong entity has its own primary key and can exist independently; a weak entity cannot be uniquely identified by its own attributes alone and depends on a relationship with an 'owner' strong entity (using a partial key plus the owner's key).",
+    "explanation": "A classic example: `order_items` might be a weak entity — an item only makes sense in the context of a specific order, identified by (order_id, item_number).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "weak entity",
+      "strong entity"
+    ]
+  },
+  {
+    "id": "sql_102",
+    "technology": "SQL",
+    "topic": "SQL Injection & Security",
+    "difficulty": "Easy",
+    "question": "Which practice most directly reduces the blast radius of a successful SQL injection, independent of preventing the injection itself?",
+    "answer": "Running the application's database user with the minimum privileges it actually needs (least privilege)",
+    "explanation": "Least privilege limits what an attacker can do even if injection succeeds — e.g. a reporting app's DB user shouldn't have DROP TABLE or write access it never needs.",
+    "question_type": "MCQ",
+    "keywords": [
+      "least privilege",
+      "sql injection",
+      "security"
+    ],
+    "options": [
+      "Using a longer password",
+      "Running the application's database user with the minimum privileges it actually needs (least privilege)",
+      "Storing passwords in plaintext",
+      "Disabling backups"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "sql_103",
+    "technology": "SQL",
+    "topic": "Query-Writing Problems",
+    "difficulty": "Medium",
+    "question": "Write a query to find the department with the highest average salary, given `employees(id, department_id, salary)`.",
+    "answer": "SELECT department_id, AVG(salary) AS avg_salary FROM employees GROUP BY department_id ORDER BY avg_salary DESC LIMIT 1;",
+    "explanation": "Grouping by department and averaging salary per group, then sorting descending and taking the top row, isolates the single highest-average department.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "group by",
+      "avg",
+      "order by",
+      "limit"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT PRIMARY KEY, department_id INT, salary DECIMAL(10,2));"
+  },
+  {
+    "id": "sql_104",
+    "technology": "SQL",
+    "topic": "Query-Writing Problems",
+    "difficulty": "Hard",
+    "question": "Write a query to find customers who placed orders in every month of 2024, given `orders(id, customer_id, order_date)`.",
+    "answer": "SELECT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = 2024 GROUP BY customer_id HAVING COUNT(DISTINCT EXTRACT(MONTH FROM order_date)) = 12;",
+    "explanation": "Counting the distinct months (1-12) present per customer within 2024 and requiring that count to equal 12 identifies customers with at least one order in every month.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "group by",
+      "having",
+      "date functions"
+    ],
+    "schema_context": "CREATE TABLE orders (id INT PRIMARY KEY, customer_id INT, order_date DATE);"
+  },
+  {
+    "topic": "SQL Basics",
+    "difficulty": "Easy",
+    "question": "What does the acronym SQL stand for?",
+    "answer": "Structured Query Language",
+    "explanation": "SQL is the standard language for storing, manipulating, and retrieving data in relational database systems.",
+    "question_type": "MCQ",
+    "keywords": [
+      "sql",
+      "structured query language"
+    ],
+    "options": [
+      "Structured Query Language",
+      "Sequential Query Logic",
+      "Standard Query List",
+      "System Query Language"
+    ],
+    "correct_option": 0,
+    "id": "sql_105",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SQL Basics",
+    "difficulty": "Easy",
+    "question": "Which SQL clause is used to filter groups after aggregation, as opposed to filtering rows before aggregation?",
+    "answer": "HAVING",
+    "explanation": "WHERE filters individual rows before GROUP BY runs; HAVING filters the aggregated groups produced by GROUP BY, so it can reference aggregate functions like COUNT() or SUM().",
+    "question_type": "Conceptual",
+    "keywords": [
+      "having",
+      "where",
+      "group by"
+    ],
+    "id": "sql_106",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SQL Basics",
+    "difficulty": "Medium",
+    "question": "Is SQL case-sensitive for its keywords (e.g. SELECT vs select)?",
+    "answer": "No, SQL keywords are case-insensitive in virtually all major RDBMSs",
+    "explanation": "`SELECT`, `select`, and `Select` are all treated identically by the parser; however, identifier (table/column name) case sensitivity DOES vary by database and platform (e.g. quoted identifiers on PostgreSQL are case-sensitive), so conventions like uppercase keywords are a readability choice, not a requirement.",
+    "question_type": "Technical",
+    "keywords": [
+      "case sensitivity",
+      "keywords",
+      "identifiers"
+    ],
+    "id": "sql_107",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SELECT Queries",
+    "difficulty": "Easy",
+    "question": "Write a query to select all columns from a table named `employees`.",
+    "answer": "SELECT * FROM employees;",
+    "explanation": "The `*` wildcard selects every column; while convenient for ad-hoc queries, explicitly naming columns is generally preferred in application code to avoid breaking when the schema changes.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "select",
+      "wildcard"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department VARCHAR(50), salary DECIMAL(10,2));",
+    "id": "sql_108",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SELECT Queries",
+    "difficulty": "Easy",
+    "question": "How do you rename a selected column's output name using an alias?",
+    "answer": "SELECT column_name AS alias_name",
+    "explanation": "The `AS` keyword (optional in most dialects) renames a column or expression in the result set only - it does not change the underlying column name in the table.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "alias",
+      "as",
+      "column rename"
+    ],
+    "id": "sql_109",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SELECT Queries",
+    "difficulty": "Medium",
+    "question": "Write a query to select distinct department names from the `employees` table.",
+    "answer": "SELECT DISTINCT department FROM employees;",
+    "explanation": "DISTINCT removes duplicate rows from the result set based on the selected column(s), so each department name appears only once even if many employees share it.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "distinct",
+      "unique values"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department VARCHAR(50), salary DECIMAL(10,2));",
+    "id": "sql_110",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Medium",
+    "question": "What is the difference between `IS NULL` and `= NULL` in a WHERE clause?",
+    "answer": "`= NULL` never matches anything (always evaluates to UNKNOWN); `IS NULL` is the correct way to test for NULL",
+    "explanation": "NULL represents an unknown value, so any comparison using `=` against NULL yields UNKNOWN rather than TRUE, even comparing NULL to NULL - SQL requires the special `IS NULL`/`IS NOT NULL` predicates to test nullness.",
+    "question_type": "Technical",
+    "keywords": [
+      "null",
+      "is null",
+      "three-valued logic"
+    ],
+    "id": "sql_111",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Medium",
+    "question": "Write a query to find employees whose name starts with 'A' using LIKE.",
+    "answer": "SELECT * FROM employees WHERE name LIKE 'A%';",
+    "explanation": "The `%` wildcard in LIKE matches zero or more of any character, so `'A%'` matches any string starting with 'A'.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "like",
+      "wildcard",
+      "pattern matching"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department VARCHAR(50));",
+    "id": "sql_112",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Easy",
+    "question": "What is the default sort direction of ORDER BY if none is specified?",
+    "answer": "Ascending (ASC)",
+    "explanation": "SQL defaults to ascending order; DESC must be explicitly specified for descending order.",
+    "question_type": "MCQ",
+    "keywords": [
+      "order by",
+      "asc",
+      "default"
+    ],
+    "options": [
+      "Ascending",
+      "Descending",
+      "Random",
+      "Undefined"
+    ],
+    "correct_option": 0,
+    "id": "sql_113",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Medium",
+    "question": "Write a query to sort employees by department ascending, then by salary descending within each department.",
+    "answer": "SELECT * FROM employees ORDER BY department ASC, salary DESC;",
+    "explanation": "ORDER BY can take multiple columns; the first is the primary sort key, and subsequent columns break ties within groups that share the same value for the earlier columns.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "order by",
+      "multiple columns"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department VARCHAR(50), salary DECIMAL(10,2));",
+    "id": "sql_114",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Hard",
+    "question": "If a query uses ORDER BY on a column not in the SELECT list, but also uses DISTINCT, what problem can occur?",
+    "answer": "Some databases require every ORDER BY column to appear in the SELECT list when DISTINCT is used, and will raise an error otherwise",
+    "explanation": "Because DISTINCT deduplicates rows based only on the SELECT list's columns, sorting by a column that was never part of that deduplication is ambiguous - which of several 'duplicate' original rows' value for that column should be used? Some engines reject it outright rather than guess.",
+    "question_type": "Technical",
+    "keywords": [
+      "distinct",
+      "order by",
+      "select list"
+    ],
+    "id": "sql_115",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Aggregate Functions",
+    "difficulty": "Easy",
+    "question": "Which aggregate function returns the number of rows in a group, including rows with NULL values (when used as COUNT(*))?",
+    "answer": "COUNT(*)",
+    "explanation": "COUNT(*) counts every row regardless of NULLs; COUNT(column_name) only counts rows where that specific column is non-NULL - a common source of confusion.",
+    "question_type": "MCQ",
+    "keywords": [
+      "count",
+      "aggregate",
+      "null"
+    ],
+    "options": [
+      "SUM(*)",
+      "COUNT(*)",
+      "TOTAL(*)",
+      "ROWS(*)"
+    ],
+    "correct_option": 1,
+    "id": "sql_116",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Aggregate Functions",
+    "difficulty": "Medium",
+    "question": "What does AVG() do when a column being averaged contains NULL values?",
+    "answer": "NULLs are excluded from both the sum and the count used to compute the average",
+    "explanation": "AVG ignores NULL rows entirely rather than treating them as 0, so averaging [10, NULL, 20] gives 15, not 10.",
+    "question_type": "Technical",
+    "keywords": [
+      "avg",
+      "null",
+      "aggregate"
+    ],
+    "id": "sql_117",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Aggregate Functions",
+    "difficulty": "Medium",
+    "question": "Write a query to find the total salary paid per department.",
+    "answer": "SELECT department, SUM(salary) FROM employees GROUP BY department;",
+    "explanation": "SUM aggregates the salary column, and GROUP BY department ensures the sum is computed separately for each department rather than across the whole table.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "sum",
+      "group by"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department VARCHAR(50), salary DECIMAL(10,2));",
+    "id": "sql_118",
+    "technology": "SQL"
+  },
+  {
+    "topic": "GROUP BY & HAVING",
+    "difficulty": "Medium",
+    "question": "Write a query to find departments with more than 5 employees.",
+    "answer": "SELECT department, COUNT(*) FROM employees GROUP BY department HAVING COUNT(*) > 5;",
+    "explanation": "HAVING filters on the aggregated COUNT(*) result per group, which WHERE cannot do since WHERE runs before grouping/aggregation occurs.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "group by",
+      "having",
+      "count"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department VARCHAR(50));",
+    "id": "sql_119",
+    "technology": "SQL"
+  },
+  {
+    "topic": "GROUP BY & HAVING",
+    "difficulty": "Hard",
+    "question": "Can a column appear in SELECT without being in GROUP BY or wrapped in an aggregate function?",
+    "answer": "In standard SQL, no - it causes an error; MySQL historically allowed it (returning an arbitrary row's value) unless ONLY_FULL_GROUP_BY mode is enabled",
+    "explanation": "Every non-aggregated column in the SELECT list must be functionally dependent on the GROUP BY columns, otherwise the database cannot determine which row's value to report for that column within a group - most databases (PostgreSQL, SQL Server) enforce this strictly.",
+    "question_type": "Technical",
+    "keywords": [
+      "group by",
+      "select",
+      "functional dependency"
+    ],
+    "id": "sql_120",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Joins",
+    "difficulty": "Easy",
+    "question": "Which JOIN type returns only rows that have matching values in both tables?",
+    "answer": "INNER JOIN",
+    "explanation": "INNER JOIN excludes any row from either table that doesn't have a corresponding match in the other table, based on the join condition.",
+    "question_type": "MCQ",
+    "keywords": [
+      "inner join",
+      "matching rows"
+    ],
+    "options": [
+      "LEFT JOIN",
+      "INNER JOIN",
+      "CROSS JOIN",
+      "FULL JOIN"
+    ],
+    "correct_option": 1,
+    "id": "sql_121",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question": "What does a LEFT JOIN return for rows in the left table that have no match in the right table?",
+    "answer": "The left table's columns with their actual values, and NULL for every column from the right table",
+    "explanation": "LEFT JOIN preserves every row from the left table regardless of match, filling in NULLs for the unmatched right-side columns - this is the key difference from INNER JOIN.",
+    "question_type": "Technical",
+    "keywords": [
+      "left join",
+      "null",
+      "unmatched rows"
+    ],
+    "id": "sql_122",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Joins",
+    "difficulty": "Hard",
+    "question": "What does a CROSS JOIN between a table with 3 rows and a table with 4 rows produce?",
+    "answer": "12 rows (the Cartesian product: 3 x 4)",
+    "explanation": "CROSS JOIN pairs every row of the first table with every row of the second table with no join condition, so the result size is the product of both table sizes - it's rarely intentional in production queries outside generating combinations.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "cross join",
+      "cartesian product"
+    ],
+    "code_snippet": "SELECT * FROM table_a CROSS JOIN table_b; -- table_a has 3 rows, table_b has 4 rows",
+    "id": "sql_123",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question": "Write a query to list each employee's name along with their department's name, given a separate departments table.",
+    "answer": "SELECT e.name, d.department_name FROM employees e INNER JOIN departments d ON e.department_id = d.id;",
+    "explanation": "The join condition `e.department_id = d.id` connects each employee row to its matching department row via the foreign key relationship.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "inner join",
+      "foreign key"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department_id INT); CREATE TABLE departments (id INT, department_name VARCHAR(50));",
+    "id": "sql_124",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Subqueries",
+    "difficulty": "Medium",
+    "question": "Write a query to find employees who earn more than the average salary, using a subquery.",
+    "answer": "SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);",
+    "explanation": "The subquery computes a single scalar value (the average), which the outer query then compares each employee's salary against.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "subquery",
+      "scalar subquery",
+      "avg"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), salary DECIMAL(10,2));",
+    "id": "sql_125",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Subqueries",
+    "difficulty": "Hard",
+    "question": "What is a correlated subquery, and how does it differ from a regular (non-correlated) subquery?",
+    "answer": "A correlated subquery references a column from the outer query, so it must be re-evaluated once per outer row, unlike a non-correlated subquery which runs once independently",
+    "explanation": "Because a correlated subquery depends on the current outer row's values, the database conceptually executes it repeatedly (though optimizers often rewrite it as a join for performance) - this makes correlated subqueries potentially much slower on large tables if not optimized.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "correlated subquery",
+      "performance"
+    ],
+    "id": "sql_126",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Set Operations",
+    "difficulty": "Medium",
+    "question": "Does UNION ALL guarantee the rows keep the same relative order as the two original SELECT statements?",
+    "answer": "Not unless an explicit ORDER BY is added to the overall UNION ALL statement - without one, row order is not guaranteed by the SQL standard",
+    "explanation": "Many databases happen to preserve the order rows were produced in practice, but relying on that is not portable or guaranteed - if a specific order matters, always add an explicit ORDER BY at the end of the combined query.",
+    "question_type": "Technical",
+    "keywords": [
+      "union all",
+      "row order",
+      "order by"
+    ],
+    "id": "sql_127",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Set Operations",
+    "difficulty": "Medium",
+    "question": "For a UNION to work between two SELECT statements, what must be true about their result sets?",
+    "answer": "Both must have the same number of columns, with compatible data types in the same column positions",
+    "explanation": "UNION combines rows positionally, not by column name, so column count and type-compatibility (not necessarily identical names) between the two queries is required, or the database raises an error.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "union",
+      "column compatibility"
+    ],
+    "id": "sql_128",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Views",
+    "difficulty": "Easy",
+    "question": "Can a view be built on top of another view?",
+    "answer": "Yes, views can be nested (a view's defining query can select from another view)",
+    "explanation": "This is convenient for layering abstractions, but deeply nested views can hurt query performance and readability, since the database must effectively inline/expand every layer when the outer view is queried.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "nested views",
+      "view composition"
+    ],
+    "id": "sql_129",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Views",
+    "difficulty": "Hard",
+    "question": "Under what circumstances can you INSERT/UPDATE data through a view?",
+    "answer": "Only when the view is 'simple' enough - typically based on a single table with no aggregates, GROUP BY, DISTINCT, or set operations - so the database can unambiguously map the change back to the base table",
+    "explanation": "A view that joins multiple tables or aggregates data usually cannot be directly updated because there's no unambiguous way to translate a change in the view's output back into a change on the underlying rows.",
+    "question_type": "Technical",
+    "keywords": [
+      "view",
+      "updatable view"
+    ],
+    "id": "sql_130",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Indexes",
+    "difficulty": "Medium",
+    "question": "Why can adding too many indexes to a table slow down write performance?",
+    "answer": "Every INSERT, UPDATE, or DELETE must also update every index defined on the affected columns, so more indexes mean more work per write",
+    "explanation": "Indexes trade write speed and storage space for read speed - this is why indexing strategy typically targets columns that are frequently searched/joined/sorted on, not every column.",
+    "question_type": "Technical",
+    "keywords": [
+      "index",
+      "write performance",
+      "tradeoff"
+    ],
+    "id": "sql_131",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Indexes",
+    "difficulty": "Hard",
+    "question": "What is a composite (multi-column) index, and why does column order within it matter?",
+    "answer": "An index built on multiple columns together; it can efficiently satisfy queries that filter on a leading prefix of those columns, but not queries that only filter on a non-leading column",
+    "explanation": "A composite index on (a, b) is structured like a sorted list first by `a`, then by `b` within each `a` value - a query filtering only on `b` cannot use it efficiently, similar to how a phone book sorted by last-then-first name can't quickly find people by first name alone.",
+    "question_type": "Technical",
+    "keywords": [
+      "composite index",
+      "column order",
+      "leftmost prefix"
+    ],
+    "id": "sql_132",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Constraints",
+    "difficulty": "Easy",
+    "question": "Which constraint ensures a column's value must be unique across all rows but still allows NULL values (in most databases)?",
+    "answer": "UNIQUE",
+    "explanation": "Unlike PRIMARY KEY (which forbids NULL), a UNIQUE constraint allows NULLs, and most databases even allow multiple NULLs since NULL is never considered equal to another NULL for uniqueness purposes.",
+    "question_type": "MCQ",
+    "keywords": [
+      "unique constraint",
+      "null"
+    ],
+    "options": [
+      "PRIMARY KEY",
+      "UNIQUE",
+      "NOT NULL",
+      "CHECK"
+    ],
+    "correct_option": 1,
+    "id": "sql_133",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Constraints",
+    "difficulty": "Medium",
+    "question": "What happens if you try to delete a row that is referenced by a FOREIGN KEY in another table, with no ON DELETE clause specified?",
+    "answer": "The delete is rejected with a foreign key constraint violation error",
+    "explanation": "The default foreign key behavior (RESTRICT/NO ACTION) prevents deleting a parent row while child rows still reference it, protecting referential integrity - ON DELETE CASCADE or SET NULL must be explicitly configured for different behavior.",
+    "question_type": "Technical",
+    "keywords": [
+      "foreign key",
+      "delete",
+      "referential integrity"
+    ],
+    "id": "sql_134",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question": "What problem does Second Normal Form (2NF) address that First Normal Form (1NF) does not?",
+    "answer": "Partial dependency - where a non-key column depends on only PART of a composite primary key rather than the whole key",
+    "explanation": "2NF requires 1NF plus the elimination of partial dependencies, which typically only matters for tables with composite (multi-column) primary keys; tables with a single-column key are automatically in 2NF once they satisfy 1NF.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "2nf",
+      "partial dependency",
+      "normalization"
+    ],
+    "id": "sql_135",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Normalization",
+    "difficulty": "Hard",
+    "question": "What is a transitive dependency, and which normal form eliminates it?",
+    "answer": "A transitive dependency is when a non-key column depends on another non-key column, which in turn depends on the primary key (A -> B -> C); Third Normal Form (3NF) eliminates it",
+    "explanation": "For example, storing both `department_id` and `department_name` in an employees table creates a transitive dependency (department_name depends on department_id, not directly on employee id) - 3NF requires moving department_name to its own departments table.",
+    "question_type": "Technical",
+    "keywords": [
+      "3nf",
+      "transitive dependency"
+    ],
+    "id": "sql_136",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Transactions & ACID",
+    "difficulty": "Easy",
+    "question": "What does the 'I' in ACID stand for, and what does it guarantee?",
+    "answer": "Isolation - concurrent transactions produce the same result as if they had executed one after another (serially), even though they may actually run concurrently",
+    "explanation": "Isolation is enforced via locking or multi-version concurrency control (MVCC); the exact strength of the guarantee depends on the configured isolation level (Read Committed, Repeatable Read, Serializable, etc.).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "isolation",
+      "acid",
+      "concurrency"
+    ],
+    "id": "sql_137",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Transactions & ACID",
+    "difficulty": "Hard",
+    "question": "What is a 'phantom read' and which isolation level is specifically designed to prevent it?",
+    "answer": "A phantom read occurs when a transaction re-runs a query and sees NEW rows that satisfy the condition, inserted by another committed transaction in between; SERIALIZABLE isolation prevents it",
+    "explanation": "Unlike a non-repeatable read (an existing row's value changing between reads), a phantom read is about the ROW SET changing size - REPEATABLE READ prevents changes to already-read rows but doesn't guarantee against new matching rows appearing, which is why SERIALIZABLE is the level that fully closes this gap.",
+    "question_type": "Technical",
+    "keywords": [
+      "phantom read",
+      "serializable",
+      "isolation level"
+    ],
+    "id": "sql_138",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Stored Procedures",
+    "difficulty": "Medium",
+    "question": "What is one key advantage of using a stored procedure over sending the equivalent raw SQL from application code each time?",
+    "answer": "The execution plan can be pre-compiled/cached and reused, and it reduces the amount of data sent over the network (just the procedure call + parameters, not the full SQL text)",
+    "explanation": "Stored procedures also help centralize business logic in the database and can reduce SQL injection risk if parameters are used correctly, though modern parameterized queries from application code achieve similar security.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "stored procedure",
+      "performance",
+      "execution plan"
+    ],
+    "id": "sql_139",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Window Functions",
+    "difficulty": "Hard",
+    "question": "How does NTILE() differ from RANK() and DENSE_RANK()?",
+    "answer": "NTILE(n) divides the ordered rows into n roughly equal-sized buckets and returns the bucket number for each row, rather than a rank based on value comparisons",
+    "explanation": "NTILE is used for percentile/quartile-style bucketing (e.g. NTILE(4) for quartiles), while RANK/DENSE_RANK reflect a row's position relative to ties in the ordering - the two solve different problems even though both are ranking-style window functions.",
+    "question_type": "Technical",
+    "keywords": [
+      "ntile",
+      "window function",
+      "bucketing"
+    ],
+    "id": "sql_140",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Window Functions",
+    "difficulty": "Medium",
+    "question": "Write a query using a window function to show each employee's salary alongside the average salary of their department, without collapsing rows via GROUP BY.",
+    "answer": "SELECT name, department, salary, AVG(salary) OVER (PARTITION BY department) AS dept_avg FROM employees;",
+    "explanation": "PARTITION BY splits rows into groups (like GROUP BY) but OVER() keeps every individual row in the output, just annotated with the aggregate computed over its partition - unlike GROUP BY, which reduces each group to one row.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "window function",
+      "partition by",
+      "over"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department VARCHAR(50), salary DECIMAL(10,2));",
+    "id": "sql_141",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query Optimization",
+    "difficulty": "Medium",
+    "question": "Why does `SELECT *` often perform worse than selecting only the needed columns, even beyond just network transfer size?",
+    "answer": "It can prevent the database from using a 'covering index' (an index that already contains all needed columns), forcing an extra lookup into the full table for columns not in the index",
+    "explanation": "When a query only needs columns that are all present in an index, the database can answer the query directly from the index without touching the table at all - selecting extra unneeded columns defeats this optimization.",
+    "question_type": "Technical",
+    "keywords": [
+      "select star",
+      "covering index",
+      "optimization"
+    ],
+    "id": "sql_142",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query Optimization",
+    "difficulty": "Hard",
+    "question": "What does EXPLAIN (or EXPLAIN PLAN) show, and why is it the primary tool for diagnosing a slow query?",
+    "answer": "It shows the execution plan the database's query optimizer chose - which indexes (if any) are used, the join algorithm, the estimated/actual row counts, and the order operations happen in",
+    "explanation": "Without EXPLAIN, you're guessing why a query is slow; with it, you can see concretely whether the optimizer is doing a full table scan instead of using an available index, doing an inefficient join order, etc.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "explain",
+      "execution plan",
+      "query optimizer"
+    ],
+    "id": "sql_143",
+    "technology": "SQL"
+  },
+  {
+    "topic": "DDL/DML/DCL/TCL",
+    "difficulty": "Easy",
+    "question": "Which category does the `ALTER TABLE` statement belong to?",
+    "answer": "DDL (Data Definition Language)",
+    "explanation": "DDL statements (CREATE, ALTER, DROP, TRUNCATE) define or modify the structure of database objects, as opposed to DML (SELECT, INSERT, UPDATE, DELETE) which manipulates the data within them.",
+    "question_type": "MCQ",
+    "keywords": [
+      "ddl",
+      "alter table"
+    ],
+    "options": [
+      "DML",
+      "DDL",
+      "DCL",
+      "TCL"
+    ],
+    "correct_option": 1,
+    "id": "sql_144",
+    "technology": "SQL"
+  },
+  {
+    "topic": "DDL/DML/DCL/TCL",
+    "difficulty": "Medium",
+    "question": "What is the key difference between DELETE and TRUNCATE for removing all rows from a table?",
+    "answer": "DELETE removes rows one at a time (can be filtered with WHERE, is logged row-by-row, and can be rolled back) while TRUNCATE deallocates the table's data pages directly, is typically not filterable, and is much faster but often cannot be rolled back in some databases (or has more limited rollback behavior)",
+    "explanation": "TRUNCATE is classified as DDL in many databases (since it resets the table structure/storage) whereas DELETE is DML, which is why TRUNCATE also typically resets auto-increment counters while DELETE does not.",
+    "question_type": "Technical",
+    "keywords": [
+      "delete",
+      "truncate",
+      "ddl vs dml"
+    ],
+    "id": "sql_145",
+    "technology": "SQL"
+  },
+  {
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question": "How is a many-to-many relationship typically represented in a relational schema?",
+    "answer": "Via a junction (bridge/associative) table that holds foreign keys referencing both related tables",
+    "explanation": "Relational databases can't directly express many-to-many relationships between two tables, so a third table is introduced whose rows each represent one pairing, holding a foreign key to each side (and often forming a composite primary key from both).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "many-to-many",
+      "junction table",
+      "er model"
+    ],
+    "id": "sql_146",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SQL Injection & Security",
+    "difficulty": "Medium",
+    "question": "Why do parameterized queries (prepared statements) prevent SQL injection, while string concatenation does not?",
+    "answer": "Parameterized queries send the SQL structure and the user-supplied values SEPARATELY to the database, so user input is never parsed as part of the SQL syntax - it's always treated as pure data",
+    "explanation": "With string concatenation, malicious input like `' OR '1'='1` becomes part of the actual SQL text the database parses; with a parameterized query, that same string is bound as a literal value for a placeholder and can never alter the query's logic.",
+    "question_type": "Technical",
+    "keywords": [
+      "sql injection",
+      "parameterized query",
+      "prepared statement"
+    ],
+    "id": "sql_147",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SQL Injection & Security",
+    "difficulty": "Hard",
+    "question": "Why is the principle of least privilege important for the database user account an application connects with?",
+    "answer": "If the application's DB account only has the minimum permissions it needs (e.g. no DROP TABLE, no access to unrelated schemas), a successful SQL injection is limited in the damage it can do, even if the query-construction bug itself isn't fixed yet",
+    "explanation": "Defense in depth means SQL injection prevention (parameterized queries) shouldn't be the only safeguard - restricting what the compromised account could even do if injection succeeded limits blast radius.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "least privilege",
+      "sql injection",
+      "defense in depth"
+    ],
+    "id": "sql_148",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query-Writing Problems",
+    "difficulty": "Medium",
+    "question": "Write a query to find the second-highest salary in the employees table (without using LIMIT/OFFSET).",
+    "answer": "SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees);",
+    "explanation": "The inner subquery finds the overall maximum; the outer query then finds the maximum among everything strictly less than that, which is the second-highest value.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "second highest",
+      "subquery",
+      "max"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), salary DECIMAL(10,2));",
+    "id": "sql_149",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query-Writing Problems",
+    "difficulty": "Hard",
+    "question": "Write a query to find duplicate email addresses in a users table, along with how many times each appears.",
+    "answer": "SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1;",
+    "explanation": "Grouping by email collapses all rows sharing the same email into one group; HAVING COUNT(*) > 1 then keeps only groups that had more than one row, i.e. true duplicates.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "duplicates",
+      "group by",
+      "having"
+    ],
+    "schema_context": "CREATE TABLE users (id INT, email VARCHAR(255), name VARCHAR(100));",
+    "id": "sql_150",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query-Writing Problems",
+    "difficulty": "Hard",
+    "question": "Write a query to find employees who earn more than their own manager, given a self-referencing employees table.",
+    "answer": "SELECT e.name FROM employees e JOIN employees m ON e.manager_id = m.id WHERE e.salary > m.salary;",
+    "explanation": "A self-join treats the same table as two logical tables (aliased `e` for employee and `m` for manager), joining each employee row to the row representing their manager via `manager_id`.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "self join",
+      "manager",
+      "hierarchical data"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), salary DECIMAL(10,2), manager_id INT);",
+    "id": "sql_151",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SQL Basics",
+    "difficulty": "Medium",
+    "question": "What is the difference between a clause's logical processing order and its written order in a SELECT statement (e.g. WHERE is written after SELECT but processed before it)?",
+    "answer": "SQL is processed roughly in this logical order: FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY, even though it's WRITTEN as SELECT ... FROM ... WHERE ... GROUP BY ... HAVING ... ORDER BY",
+    "explanation": "This is why a column alias defined in SELECT can't be used in WHERE (WHERE runs before SELECT creates the alias) but CAN be used in ORDER BY (which runs after SELECT).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "logical processing order",
+      "select",
+      "clause order"
+    ],
+    "id": "sql_152",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SELECT Queries",
+    "difficulty": "Hard",
+    "question": "Can you use a column alias (defined in SELECT) inside the WHERE clause of the same query?",
+    "answer": "No, in standard SQL - WHERE is logically processed before SELECT assigns the alias, so the alias name doesn't exist yet at that point",
+    "explanation": "Some databases (like MySQL, in certain contexts) are lenient about this, but it's not portable SQL - the safe approach is to repeat the full expression in WHERE or wrap the query in a subquery/CTE.",
+    "question_type": "Technical",
+    "keywords": [
+      "alias",
+      "where clause",
+      "logical order"
+    ],
+    "id": "sql_153",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Easy",
+    "question": "Which operator negates a condition, e.g. turning `col IN (1,2,3)` into 'not in that list'?",
+    "answer": "NOT",
+    "explanation": "`NOT col IN (1,2,3)` (or equivalently `col NOT IN (1,2,3)`) excludes rows matching the list instead of including them.",
+    "question_type": "MCQ",
+    "keywords": [
+      "not",
+      "negation",
+      "in"
+    ],
+    "options": [
+      "NOT",
+      "EXCEPT",
+      "MINUS",
+      "DIFF"
+    ],
+    "correct_option": 0,
+    "id": "sql_154",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Hard",
+    "question": "What is a subtle danger of using `NOT IN` with a subquery that might return NULL values?",
+    "answer": "If the subquery's result set contains even one NULL, the entire `NOT IN` condition evaluates to UNKNOWN for every row, silently returning zero rows",
+    "explanation": "This happens because `x NOT IN (a, b, NULL)` expands to `x <> a AND x <> b AND x <> NULL`, and `x <> NULL` is always UNKNOWN, which poisons the whole AND chain to UNKNOWN - using NOT EXISTS instead avoids this trap.",
+    "question_type": "Technical",
+    "keywords": [
+      "not in",
+      "null",
+      "subquery gotcha"
+    ],
+    "id": "sql_155",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Sorting (ORDER BY)",
+    "difficulty": "Medium",
+    "question": "How do you sort NULL values to appear last, regardless of ASC/DESC, in databases that support it (e.g. PostgreSQL)?",
+    "answer": "ORDER BY column NULLS LAST",
+    "explanation": "By default, different databases treat NULL differently in sort order (PostgreSQL sorts NULLs last in ASC by default; some others sort them first) - explicit NULLS FIRST/NULLS LAST removes the ambiguity.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "nulls last",
+      "order by",
+      "null sorting"
+    ],
+    "id": "sql_156",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Aggregate Functions",
+    "difficulty": "Hard",
+    "question": "What does `COUNT(DISTINCT column)` compute?",
+    "answer": "The number of distinct non-NULL values in that column",
+    "explanation": "It combines two behaviors: DISTINCT removes duplicate values first, and COUNT (like COUNT(column)) still excludes NULLs from the count - so COUNT(DISTINCT col) can be significantly smaller than COUNT(col) if there are many repeated values.",
+    "question_type": "Technical",
+    "keywords": [
+      "count distinct",
+      "aggregate"
+    ],
+    "id": "sql_157",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Aggregate Functions",
+    "difficulty": "Medium",
+    "question": "Write a query to find the minimum and maximum salary in the employees table in one query.",
+    "answer": "SELECT MIN(salary), MAX(salary) FROM employees;",
+    "explanation": "Multiple aggregate functions can be computed together in a single SELECT without GROUP BY, since with no GROUP BY the whole table is treated as one implicit group.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "min",
+      "max",
+      "aggregate"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), salary DECIMAL(10,2));",
+    "id": "sql_158",
+    "technology": "SQL"
+  },
+  {
+    "topic": "GROUP BY & HAVING",
+    "difficulty": "Medium",
+    "question": "Write a query to find the average salary per department, only showing departments where the average exceeds 50000.",
+    "answer": "SELECT department, AVG(salary) FROM employees GROUP BY department HAVING AVG(salary) > 50000;",
+    "explanation": "HAVING can reference the same aggregate expression used in SELECT to filter which groups make it into the final result.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "having",
+      "avg",
+      "group by"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, department VARCHAR(50), salary DECIMAL(10,2));",
+    "id": "sql_159",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Joins",
+    "difficulty": "Medium",
+    "question": "Write a query to find employees who have NOT been assigned to any project, given a separate project_assignments table.",
+    "answer": "SELECT e.name FROM employees e LEFT JOIN project_assignments p ON e.id = p.employee_id WHERE p.employee_id IS NULL;",
+    "explanation": "LEFT JOIN keeps every employee row even without a match; filtering for `p.employee_id IS NULL` afterward isolates exactly the employees for whom no matching assignment row existed.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "left join",
+      "anti join",
+      "unmatched rows"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100)); CREATE TABLE project_assignments (employee_id INT, project_id INT);",
+    "id": "sql_160",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Joins",
+    "difficulty": "Hard",
+    "question": "What is the difference between a NATURAL JOIN and an explicit INNER JOIN ... ON?",
+    "answer": "NATURAL JOIN automatically joins on all columns that share the same name in both tables, without specifying a condition; INNER JOIN ... ON requires an explicit condition",
+    "explanation": "NATURAL JOIN is considered risky in production code because adding an unrelated column with a matching name to either table silently changes the join behavior - explicit ON conditions are almost always preferred for clarity and safety.",
+    "question_type": "Technical",
+    "keywords": [
+      "natural join",
+      "inner join",
+      "implicit join"
+    ],
+    "id": "sql_161",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Subqueries",
+    "difficulty": "Medium",
+    "question": "What is the difference between using a subquery with `IN` versus `EXISTS`?",
+    "answer": "`IN` compares a value against a list of values returned by the subquery; `EXISTS` only checks whether the subquery returns ANY row at all, without caring about the actual values",
+    "explanation": "EXISTS often performs better for correlated subqueries against large result sets because the database can stop as soon as one matching row is found, whereas IN may need the full subquery result materialized first (behavior varies by optimizer).",
+    "question_type": "Conceptual",
+    "keywords": [
+      "in",
+      "exists",
+      "subquery"
+    ],
+    "id": "sql_162",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Set Operations",
+    "difficulty": "Medium",
+    "question": "Which set operator returns only the rows that appear in BOTH result sets?",
+    "answer": "INTERSECT",
+    "explanation": "INTERSECT returns the common rows between two SELECT statements' results, analogous to a set intersection; not all databases support it natively (MySQL added it only in 8.0.31+).",
+    "question_type": "MCQ",
+    "keywords": [
+      "intersect",
+      "set operation"
+    ],
+    "options": [
+      "UNION",
+      "INTERSECT",
+      "EXCEPT",
+      "JOIN"
+    ],
+    "correct_option": 1,
+    "id": "sql_163",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Views",
+    "difficulty": "Medium",
+    "question": "What is a materialized view, and how does it differ from a regular view?",
+    "answer": "A materialized view physically stores its query's result set on disk (like a table), refreshed periodically or on demand, rather than recomputing the query every time it's read",
+    "explanation": "This trades data freshness (the view can be stale until refreshed) for read performance - useful for expensive aggregate queries that don't need up-to-the-second accuracy.",
+    "question_type": "Technical",
+    "keywords": [
+      "materialized view",
+      "caching"
+    ],
+    "id": "sql_164",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Indexes",
+    "difficulty": "Medium",
+    "question": "What is the most common underlying data structure used for a standard B-tree index?",
+    "answer": "A balanced tree (B-tree or B+tree) structure",
+    "explanation": "B-trees keep data sorted and allow searches, insertions, and range queries in logarithmic time, which is why they're the default index type for equality and range comparisons in most relational databases.",
+    "question_type": "MCQ",
+    "keywords": [
+      "b-tree",
+      "index structure"
+    ],
+    "options": [
+      "Hash table",
+      "B-tree",
+      "Linked list",
+      "Array"
+    ],
+    "correct_option": 1,
+    "id": "sql_165",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Indexes",
+    "difficulty": "Medium",
+    "question": "Why would a hash index generally be a poor choice for a column you frequently run range queries on (e.g. `salary > 50000`)?",
+    "answer": "Hash indexes only support exact-match equality lookups efficiently - they don't preserve any ordering, so they can't be used to satisfy range/comparison predicates",
+    "explanation": "A B-tree index maintains sorted order and so directly supports both equality and range lookups; a hash index scrambles values into buckets, destroying any ordering information.",
+    "question_type": "Technical",
+    "keywords": [
+      "hash index",
+      "range query",
+      "b-tree"
+    ],
+    "id": "sql_166",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Constraints",
+    "difficulty": "Medium",
+    "question": "Can a table have more than one PRIMARY KEY?",
+    "answer": "No, a table can have only one PRIMARY KEY (though that key can span multiple columns as a composite key)",
+    "explanation": "A table CAN have multiple UNIQUE constraints in addition to its single PRIMARY KEY, but only one column (or column combination) can be designated the primary key.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "primary key",
+      "composite key"
+    ],
+    "id": "sql_167",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Constraints",
+    "difficulty": "Medium",
+    "question": "What does a CHECK constraint do?",
+    "answer": "It enforces that every value in a column (or combination of columns) satisfies a specified boolean condition before the row can be inserted or updated",
+    "explanation": "For example, `CHECK (age >= 0)` rejects any attempt to insert a negative age directly at the database level, providing a safety net independent of application-layer validation.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "check constraint",
+      "validation"
+    ],
+    "id": "sql_168",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Normalization",
+    "difficulty": "Medium",
+    "question": "What problem does normalization primarily aim to reduce?",
+    "answer": "Data redundancy and the update/insert/delete anomalies that redundancy causes",
+    "explanation": "If the same fact (e.g. a customer's address) is stored in multiple rows, updating it requires changing every copy - miss one and the data becomes inconsistent; normalization organizes data so each fact is stored in exactly one place.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "normalization",
+      "redundancy",
+      "anomalies"
+    ],
+    "id": "sql_169",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Normalization",
+    "difficulty": "Hard",
+    "question": "Why might a team deliberately denormalize part of a heavily-normalized schema in a production system?",
+    "answer": "To improve read performance by avoiding expensive joins on frequently-run, performance-critical queries, at the cost of some redundancy and more complex write logic to keep the duplicated data in sync",
+    "explanation": "This is a common tradeoff in reporting/analytics systems and read-heavy services, where the read performance gain outweighs the added complexity of maintaining consistency across denormalized copies.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "denormalization",
+      "performance tradeoff"
+    ],
+    "id": "sql_170",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Transactions & ACID",
+    "difficulty": "Medium",
+    "question": "What does COMMIT do, and what does ROLLBACK do?",
+    "answer": "COMMIT permanently saves all changes made during the current transaction; ROLLBACK discards all changes made since the transaction (or a specified savepoint) began",
+    "explanation": "Until COMMIT is called, other transactions (depending on isolation level) typically cannot see the uncommitted changes, and the changes can still be undone entirely via ROLLBACK.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "commit",
+      "rollback",
+      "transaction"
+    ],
+    "id": "sql_171",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Transactions & ACID",
+    "difficulty": "Medium",
+    "question": "What is 'lock escalation' in a database, and why might it matter for concurrency?",
+    "answer": "Lock escalation is when the database converts many fine-grained row-level locks held by a transaction into a single coarser table-level (or page-level) lock, to reduce lock-management overhead",
+    "explanation": "While this reduces memory/CPU overhead for the lock manager, it can significantly hurt concurrency by blocking other transactions from accessing unrelated rows in the same table that they otherwise could have accessed under row-level locking.",
+    "question_type": "Technical",
+    "keywords": [
+      "lock escalation",
+      "concurrency",
+      "locking"
+    ],
+    "id": "sql_172",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Stored Procedures",
+    "difficulty": "Hard",
+    "question": "What is a key downside of putting significant business logic inside stored procedures rather than application code?",
+    "answer": "It's harder to version-control, unit-test, and debug compared to application code, and it can tightly couple business logic to a specific database vendor's procedural SQL dialect, hurting portability",
+    "explanation": "Many teams strike a balance: keep genuinely data-intensive operations (like bulk aggregation) in stored procedures for performance, but keep general business logic in application code where standard tooling and testing frameworks apply.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "stored procedure",
+      "maintainability",
+      "vendor lock-in"
+    ],
+    "id": "sql_173",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Triggers",
+    "difficulty": "Hard",
+    "question": "What is a risk of chaining multiple triggers across tables (trigger A on table 1 causes a write that fires trigger B on table 2, etc.)?",
+    "answer": "It can create hard-to-trace cascading side effects, hidden performance costs, and even infinite loops if triggers circularly cause each other to fire",
+    "explanation": "Because triggers execute implicitly (not visible at the call site of the original statement), deeply chained trigger logic makes it very difficult to reason about what actually happens when a single INSERT/UPDATE runs, which is why many teams limit trigger usage to simple, well-contained cases like audit logging.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "trigger",
+      "cascading effects",
+      "debugging"
+    ],
+    "id": "sql_174",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Window Functions",
+    "difficulty": "Medium",
+    "question": "What does the window function ROW_NUMBER() do?",
+    "answer": "It assigns a unique, sequential integer to each row within its partition, based on the specified ORDER BY, with no gaps or ties (even if the ordering column has duplicate values, each row still gets a distinct number)",
+    "explanation": "Unlike RANK()/DENSE_RANK(), ROW_NUMBER() never repeats a number for tied rows - it just picks an arbitrary (but consistent) order among ties based on their physical/scan order unless further ORDER BY columns break the tie.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "row_number",
+      "window function"
+    ],
+    "id": "sql_175",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Window Functions",
+    "difficulty": "Hard",
+    "question": "Write a query to find, for each department, the top-paid employee, using a window function.",
+    "answer": "SELECT * FROM (SELECT *, RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk FROM employees) t WHERE rnk = 1;",
+    "explanation": "RANK() OVER (PARTITION BY department ORDER BY salary DESC) numbers employees within each department by salary descending; wrapping it in a subquery/CTE lets you then filter to just rnk = 1, since window functions cannot be referenced directly in the same query's WHERE clause.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "window function",
+      "rank",
+      "top n per group"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), department VARCHAR(50), salary DECIMAL(10,2));",
+    "id": "sql_176",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query Optimization",
+    "difficulty": "Medium",
+    "question": "Why can wrapping an indexed column in a function (e.g. `WHERE YEAR(order_date) = 2024`) prevent the database from using the index on that column?",
+    "answer": "Most standard indexes store the raw column values, not the result of applying a function to them, so the database can't use the index to directly look up rows matching the function's output - it typically falls back to scanning every row and applying the function to each one",
+    "explanation": "The index-friendly rewrite is usually to compare the raw column against a range instead, e.g. `WHERE order_date >= '2024-01-01' AND order_date < '2025-01-01'`, which the index CAN be used for; some databases also support function-based/expression indexes as a workaround.",
+    "question_type": "Technical",
+    "keywords": [
+      "sargable",
+      "function on column",
+      "index usage"
+    ],
+    "id": "sql_177",
+    "technology": "SQL"
+  },
+  {
+    "topic": "DDL/DML/DCL/TCL",
+    "difficulty": "Medium",
+    "question": "Which category do GRANT and REVOKE belong to?",
+    "answer": "DCL (Data Control Language)",
+    "explanation": "DCL statements manage permissions and access control - GRANT gives a user/role privileges, REVOKE removes them - distinct from DDL (structure), DML (data), and TCL (transaction control: COMMIT/ROLLBACK).",
+    "question_type": "MCQ",
+    "keywords": [
+      "dcl",
+      "grant",
+      "revoke"
+    ],
+    "options": [
+      "DDL",
+      "DML",
+      "DCL",
+      "TCL"
+    ],
+    "correct_option": 2,
+    "id": "sql_178",
+    "technology": "SQL"
+  },
+  {
+    "topic": "ER Modeling",
+    "difficulty": "Medium",
+    "question": "In ER modeling, what is the difference between a strong entity and a weak entity?",
+    "answer": "A strong entity has its own primary key and can exist independently; a weak entity depends on a related strong entity for its identity (its primary key includes the strong entity's key)",
+    "explanation": "For example, an `order_items` row is often a weak entity dependent on `orders` - an order item doesn't meaningfully exist without its parent order, and is often identified by (order_id, line_number) rather than a key of its own.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "weak entity",
+      "strong entity",
+      "er model"
+    ],
+    "id": "sql_179",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SQL Injection & Security",
+    "difficulty": "Medium",
+    "question": "Is escaping special characters in user input (like replacing `'` with `''`) a reliable defense against SQL injection on its own?",
+    "answer": "Not fully reliable - it's easy to miss an edge case (encoding quirks, second-order injection, different quoting rules per database), so parameterized queries/prepared statements are the recommended primary defense",
+    "explanation": "Manual escaping has historically been the source of many injection vulnerabilities due to subtle mistakes (e.g. forgetting a context like inside a LIKE pattern needs different escaping); parameterization avoids the problem structurally rather than relying on getting every escaping rule right.",
+    "question_type": "Technical",
+    "keywords": [
+      "escaping",
+      "sql injection",
+      "prepared statements"
+    ],
+    "id": "sql_180",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query-Writing Problems",
+    "difficulty": "Medium",
+    "question": "Write a query to count how many employees exist in each salary range: 'Under 50k', '50k-100k', 'Over 100k'.",
+    "answer": "SELECT CASE WHEN salary < 50000 THEN 'Under 50k' WHEN salary <= 100000 THEN '50k-100k' ELSE 'Over 100k' END AS salary_range, COUNT(*) FROM employees GROUP BY salary_range;",
+    "explanation": "A CASE expression can be used both in SELECT to label each row and in GROUP BY (referencing the same expression or its alias, depending on the database) to bucket rows into custom categories before aggregating.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "case expression",
+      "bucketing",
+      "group by"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), salary DECIMAL(10,2));",
+    "id": "sql_181",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query-Writing Problems",
+    "difficulty": "Hard",
+    "question": "Write a query to find the 3rd highest distinct salary using LIMIT/OFFSET.",
+    "answer": "SELECT DISTINCT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 2;",
+    "explanation": "DISTINCT ensures duplicate salary values only count once; sorting descending and skipping the first 2 (OFFSET 2) then taking 1 (LIMIT 1) lands exactly on the 3rd-highest distinct value.",
+    "question_type": "SQL Query",
+    "keywords": [
+      "limit",
+      "offset",
+      "nth highest"
+    ],
+    "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), salary DECIMAL(10,2));",
+    "id": "sql_182",
+    "technology": "SQL"
+  }
+]

@@ -1,0 +1,3929 @@
+[
+  {
+    "id": "c_001",
+    "technology": "C",
+    "topic": "C Basics",
+    "difficulty": "Easy",
+    "question": "What is the entry point function of every C program?",
+    "answer": "main()",
+    "explanation": "Execution of a C program always begins with the main() function; the C runtime calls it after program startup/initialization.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "main",
+      "entry point",
+      "program structure"
+    ]
+  },
+  {
+    "id": "c_002",
+    "technology": "C",
+    "topic": "C Basics",
+    "difficulty": "Easy",
+    "question": "Which of the following is the correct file extension for a C source file?",
+    "answer": ".c",
+    "explanation": "C source files use the .c extension; .h is reserved for header files, .obj/.o for compiled object files, and .exe for the final executable.",
+    "question_type": "MCQ",
+    "keywords": [
+      "file extension",
+      "source file"
+    ],
+    "options": [
+      ".c",
+      ".h",
+      ".obj",
+      ".exe"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "c_003",
+    "technology": "C",
+    "topic": "C Basics",
+    "difficulty": "Easy",
+    "question": "Which header must be included to use printf() and scanf()?",
+    "answer": "stdio.h",
+    "explanation": "printf and scanf are declared in the Standard I/O header, stdio.h.",
+    "question_type": "MCQ",
+    "keywords": [
+      "stdio.h",
+      "printf",
+      "scanf"
+    ],
+    "options": [
+      "stdlib.h",
+      "stdio.h",
+      "string.h",
+      "conio.h"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_004",
+    "technology": "C",
+    "topic": "C Basics",
+    "difficulty": "Medium",
+    "question": "What is the difference between compilation and linking in the C build process?",
+    "answer": "Compilation translates each .c source file into an object file (.o/.obj) containing machine code with unresolved external references; linking combines all object files and libraries, resolving those references into a single executable.",
+    "explanation": "Splitting compilation and linking lets large programs be built from separately compiled translation units, only recompiling files that changed.",
+    "question_type": "Technical",
+    "keywords": [
+      "compilation",
+      "linking",
+      "object file",
+      "build process"
+    ]
+  },
+  {
+    "id": "c_005",
+    "technology": "C",
+    "topic": "C Basics",
+    "difficulty": "Hard",
+    "question": "What are the four phases a C source file goes through before becoming an executable?",
+    "answer": "Preprocessing (macro expansion, header inclusion), compilation (source to assembly), assembly (assembly to machine code/object file), and linking (combining object files and libraries into an executable).",
+    "explanation": "Each phase has a distinct output you can inspect with compiler flags (e.g. gcc -E for preprocessed output, -S for assembly, -c for object file), which is useful for debugging build issues.",
+    "question_type": "Technical",
+    "keywords": [
+      "preprocessing",
+      "compilation",
+      "assembly",
+      "linking"
+    ]
+  },
+  {
+    "id": "c_006",
+    "technology": "C",
+    "topic": "Variables & Data Types",
+    "difficulty": "Easy",
+    "question": "What is the size of an `int` on most modern 32/64-bit systems using a common compiler?",
+    "answer": "4 bytes",
+    "explanation": "On most modern platforms (LP64/LLP64 with gcc/clang/MSVC), int is 4 bytes (32 bits), though the C standard only guarantees it is at least 16 bits.",
+    "question_type": "MCQ",
+    "keywords": [
+      "int size",
+      "data types",
+      "sizeof"
+    ],
+    "options": [
+      "2 bytes",
+      "4 bytes",
+      "8 bytes",
+      "Implementation-defined, no typical value"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_007",
+    "technology": "C",
+    "topic": "Variables & Data Types",
+    "difficulty": "Easy",
+    "question": "What is the difference between `signed` and `unsigned` integer types in C?",
+    "answer": "A signed type can represent both negative and positive values (using one bit for sign, typically two's complement), while an unsigned type represents only non-negative values, using the full bit width for magnitude and effectively doubling the positive range.",
+    "explanation": "For a 4-byte int, signed ranges roughly -2^31 to 2^31-1, while unsigned int ranges 0 to 2^32-1.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "signed",
+      "unsigned",
+      "integer types"
+    ]
+  },
+  {
+    "id": "c_008",
+    "technology": "C",
+    "topic": "Variables & Data Types",
+    "difficulty": "Medium",
+    "question": "What does this program print?\n\n#include <stdio.h>\nint main() {\n    unsigned int a = 0;\n    a = a - 1;\n    printf(\"%u\\n\", a);\n    return 0;\n}",
+    "answer": "4294967295",
+    "explanation": "Unsigned integer subtraction wraps around modulo 2^32 (for a 4-byte unsigned int): 0 - 1 becomes 2^32 - 1 = 4294967295, since unsigned arithmetic never produces a negative result.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "unsigned overflow",
+      "wraparound",
+      "integer arithmetic"
+    ],
+    "code_snippet": "#include <stdio.h>\nint main() {\n    unsigned int a = 0;\n    a = a - 1;\n    printf(\"%u\\n\", a);\n    return 0;\n}"
+  },
+  {
+    "id": "c_009",
+    "technology": "C",
+    "topic": "Variables & Data Types",
+    "difficulty": "Medium",
+    "question": "What is the purpose of the `const` qualifier when declaring a variable in C?",
+    "answer": "It tells the compiler the variable's value must not be modified after initialization; any attempt to assign to it is a compile-time error.",
+    "explanation": "const is a compile-time contract enforced by the compiler, not a hardware protection — casting away const and writing through the resulting pointer is undefined behavior, not a guaranteed crash.",
+    "question_type": "Technical",
+    "keywords": [
+      "const",
+      "qualifiers",
+      "immutability"
+    ]
+  },
+  {
+    "id": "c_010",
+    "technology": "C",
+    "topic": "Variables & Data Types",
+    "difficulty": "Hard",
+    "question": "Why can `sizeof(int)` differ between platforms, and what does the C standard actually guarantee about it?",
+    "answer": "The C standard only guarantees minimum ranges for each integer type (int must be able to represent at least -32767 to 32767), not an exact byte size; the actual size is implementation-defined and depends on the target architecture and compiler's chosen data model (e.g. ILP32, LP64, LLP64).",
+    "explanation": "This is why portable code that needs an exact width uses the fixed-width types from <stdint.h> (int32_t, uint64_t, etc.) instead of relying on int/long having a specific size.",
+    "question_type": "Technical",
+    "keywords": [
+      "sizeof",
+      "portability",
+      "stdint.h",
+      "data model"
+    ]
+  },
+  {
+    "id": "c_011",
+    "technology": "C",
+    "topic": "Variables & Data Types",
+    "difficulty": "Easy",
+    "question": "Which of these is a valid C variable name?",
+    "answer": "_count",
+    "explanation": "C identifiers may start with a letter or underscore and contain letters, digits, and underscores; they cannot start with a digit or contain a hyphen, and cannot be reserved keywords like 'int'.",
+    "question_type": "MCQ",
+    "keywords": [
+      "identifiers",
+      "variable naming"
+    ],
+    "options": [
+      "2ndValue",
+      "_count",
+      "my-var",
+      "int"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_012",
+    "technology": "C",
+    "topic": "Operators",
+    "difficulty": "Easy",
+    "question": "What is the difference between the `=` and `==` operators in C?",
+    "answer": "`=` is the assignment operator, which stores a value into a variable; `==` is the equality comparison operator, which evaluates to 1 (true) or 0 (false) without modifying either operand.",
+    "explanation": "Accidentally writing `if (x = 5)` instead of `if (x == 5)` is a classic C bug: it assigns 5 to x and the condition is always true (non-zero), which is why many compilers warn about assignments used as conditions.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "assignment",
+      "equality",
+      "common bugs"
+    ]
+  },
+  {
+    "id": "c_013",
+    "technology": "C",
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question": "What is the output of this code?\n\n#include <stdio.h>\nint main() {\n    int a = 5;\n    printf(\"%d %d %d\\n\", a++, a, ++a);\n    return 0;\n}",
+    "answer": "Undefined (the order of evaluation of function arguments is unspecified in C)",
+    "explanation": "C does not define the order in which function arguments are evaluated, and modifying `a` more than once between sequence points (via a++ and ++a in the same expression) is undefined behavior — the actual printed values depend on the compiler.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "undefined behavior",
+      "sequence points",
+      "order of evaluation"
+    ],
+    "code_snippet": "#include <stdio.h>\nint main() {\n    int a = 5;\n    printf(\"%d %d %d\\n\", a++, a, ++a);\n    return 0;\n}"
+  },
+  {
+    "id": "c_014",
+    "technology": "C",
+    "topic": "Operators",
+    "difficulty": "Easy",
+    "question": "What does the `%` operator compute for two integers in C?",
+    "answer": "The remainder after integer division",
+    "explanation": "The modulo operator % returns the remainder of integer division; e.g. 7 % 3 evaluates to 1.",
+    "question_type": "MCQ",
+    "keywords": [
+      "modulo",
+      "remainder",
+      "operators"
+    ],
+    "options": [
+      "The remainder after integer division",
+      "The percentage of one number relative to another",
+      "Floating point division",
+      "Bitwise XOR"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "c_015",
+    "technology": "C",
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question": "What is the difference between the bitwise AND `&` and logical AND `&&` operators?",
+    "answer": "`&` performs a bitwise AND on the binary representation of its integer operands, producing an integer result; `&&` is a logical operator that treats its operands as true/false (non-zero/zero) and short-circuits, evaluating the right operand only if the left is true, producing 0 or 1.",
+    "explanation": "Short-circuiting with && matters for correctness, e.g. `if (p != NULL && p->value > 0)` safely skips the dereference when p is NULL, whereas `&` would evaluate (and dereference) both sides.",
+    "question_type": "Technical",
+    "keywords": [
+      "bitwise and",
+      "logical and",
+      "short-circuit"
+    ]
+  },
+  {
+    "id": "c_016",
+    "technology": "C",
+    "topic": "Operators",
+    "difficulty": "Hard",
+    "question": "This code is meant to check if a number is both even and positive, but always evaluates the condition incorrectly. Find the bug.",
+    "answer": "The bug is using `&` (bitwise AND) instead of `&&` (logical AND) on `(n % 2 == 0) & (n > 0)`; the individual comparisons already produce 0/1, so `&` happens to work by coincidence here, but the real bug in the shown code is that the developer wrote `n % 2 = 0` (assignment) instead of `n % 2 == 0` (comparison), which is a compile error since `n % 2` is not an lvalue.",
+    "explanation": "This tests attentiveness to the difference between `=` and `==` combined with operator precedence — a very common class of real C bugs, especially with modulo expressions.",
+    "question_type": "Debugging",
+    "keywords": [
+      "assignment vs equality",
+      "operator precedence",
+      "compile error"
+    ],
+    "buggy_code": "if (n % 2 = 0 && n > 0) {\n    printf(\"even and positive\\n\");\n}",
+    "fixed_code": "if (n % 2 == 0 && n > 0) {\n    printf(\"even and positive\\n\");\n}"
+  },
+  {
+    "id": "c_017",
+    "technology": "C",
+    "topic": "Control Flow",
+    "difficulty": "Easy",
+    "question": "What is the difference between `while` and `do-while` loops in C?",
+    "answer": "A `while` loop checks its condition before executing the loop body, so the body may run zero times; a `do-while` loop checks the condition after executing the body, so the body always runs at least once.",
+    "explanation": "do-while is useful for menu-driven programs where you want the code to execute at least once, e.g. showing a menu before checking whether the user chose to exit.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "while loop",
+      "do-while loop",
+      "loop control"
+    ]
+  },
+  {
+    "id": "c_018",
+    "technology": "C",
+    "topic": "Control Flow",
+    "difficulty": "Easy",
+    "question": "Which statement immediately exits the nearest enclosing loop in C?",
+    "answer": "break",
+    "explanation": "`break` terminates the nearest enclosing loop or switch statement immediately; `continue` skips to the next iteration instead of exiting.",
+    "question_type": "MCQ",
+    "keywords": [
+      "break",
+      "loop control"
+    ],
+    "options": [
+      "continue",
+      "break",
+      "exit",
+      "return"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_019",
+    "technology": "C",
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question": "Why does a `switch` statement in C 'fall through' to the next case if you omit `break`?",
+    "answer": "By design, a C switch statement evaluates the matching case label and then simply continues executing subsequent statements sequentially until it hits a `break` or the end of the switch block — there is no implicit jump out after each case.",
+    "explanation": "This fall-through behavior can be used intentionally (e.g. grouping multiple case labels to share code) but is a frequent source of bugs when a `break` is accidentally omitted.",
+    "question_type": "Technical",
+    "keywords": [
+      "switch",
+      "fall-through",
+      "break"
+    ]
+  },
+  {
+    "id": "c_020",
+    "technology": "C",
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question": "What does this program print?\n\n#include <stdio.h>\nint main() {\n    int i = 0;\n    for (; i < 5; i++) {\n        if (i == 2) continue;\n        if (i == 4) break;\n        printf(\"%d \", i);\n    }\n    return 0;\n}",
+    "answer": "0 1 3",
+    "explanation": "The loop prints 0 and 1, skips printing when i==2 due to `continue` (but i still increments), prints 3, then breaks entirely when i==4 before printing it.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "continue",
+      "break",
+      "for loop"
+    ],
+    "code_snippet": "for (int i = 0; i < 5; i++) {\n    if (i == 2) continue;\n    if (i == 4) break;\n    printf(\"%d \", i);\n}"
+  },
+  {
+    "id": "c_021",
+    "technology": "C",
+    "topic": "Control Flow",
+    "difficulty": "Hard",
+    "question": "Can a `switch` statement in C branch on a `float` or a `string`? Why or why not?",
+    "answer": "No. C's switch statement only accepts an integer-type (or enum) controlling expression, and its case labels must be compile-time integer constants; floating-point values and strings are not permitted because switch is implemented as a jump table or comparison chain over discrete integral values.",
+    "explanation": "To 'switch' on a string, C code typically uses a chain of `strcmp` calls inside if-else statements instead.",
+    "question_type": "Technical",
+    "keywords": [
+      "switch statement",
+      "integer types",
+      "case labels"
+    ]
+  },
+  {
+    "id": "c_022",
+    "technology": "C",
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question": "What is the difference between a function declaration (prototype) and a function definition in C?",
+    "answer": "A declaration/prototype tells the compiler a function's name, return type, and parameter types so it can be called before its body is seen (e.g. `int add(int, int);`); a definition provides the actual function body/implementation.",
+    "explanation": "Declarations are usually placed in header files so multiple source files can call the function while only one source file contains its definition.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "function prototype",
+      "function definition",
+      "header files"
+    ]
+  },
+  {
+    "id": "c_023",
+    "technology": "C",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "How does C pass arguments to functions by default, and what does this mean for modifying a caller's variable?",
+    "answer": "C passes all arguments by value — the function receives a copy of each argument's value, so changes made to a parameter inside the function do not affect the caller's original variable.",
+    "explanation": "To let a function modify a caller's variable, the caller must pass a pointer to that variable, and the function dereferences the pointer to write through it.",
+    "question_type": "Technical",
+    "keywords": [
+      "pass by value",
+      "pointers",
+      "function parameters"
+    ]
+  },
+  {
+    "id": "c_024",
+    "technology": "C",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "Write a C function `int factorial(int n)` that returns the factorial of a non-negative integer n (0! = 1).",
+    "answer": "int factorial(int n) {\n    if (n <= 1) return 1;\n    return n * factorial(n - 1);\n}",
+    "explanation": "The base case handles 0 and 1 (both factorial to 1); the recursive case multiplies n by the factorial of n-1, unwinding until the base case is hit.",
+    "question_type": "Coding",
+    "keywords": [
+      "factorial",
+      "recursion",
+      "functions"
+    ],
+    "starter_code": "int factorial(int n) {\n    // TODO\n}",
+    "expected_solution": "int factorial(int n) {\n    if (n <= 1) return 1;\n    return n * factorial(n - 1);\n}",
+    "test_cases": [
+      {
+        "input": "factorial(0)",
+        "expected_output": "1"
+      },
+      {
+        "input": "factorial(5)",
+        "expected_output": "120"
+      },
+      {
+        "input": "factorial(1)",
+        "expected_output": "1"
+      }
+    ]
+  },
+  {
+    "id": "c_025",
+    "technology": "C",
+    "topic": "Functions",
+    "difficulty": "Hard",
+    "question": "What is a function pointer in C, and what is one practical use for it?",
+    "answer": "A function pointer is a variable that stores the address of a function, declared with the function's return type and parameter types, e.g. `int (*op)(int, int);`; calling `op(a, b)` invokes whatever function `op` currently points to.",
+    "explanation": "Function pointers enable callback-style patterns in C, such as passing a custom comparison function to `qsort()`, or building a dispatch table that maps command codes to handler functions.",
+    "question_type": "Technical",
+    "keywords": [
+      "function pointers",
+      "callbacks",
+      "qsort"
+    ]
+  },
+  {
+    "id": "c_026",
+    "technology": "C",
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question": "What keyword is used to specify that a function does not return a value in C?",
+    "answer": "void",
+    "explanation": "A function declared with return type `void` does not return a value; attempting `return expr;` inside it (with a non-void expr) is an error.",
+    "question_type": "MCQ",
+    "keywords": [
+      "void",
+      "return type"
+    ],
+    "options": [
+      "null",
+      "void",
+      "none",
+      "empty"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_027",
+    "technology": "C",
+    "topic": "Recursion",
+    "difficulty": "Easy",
+    "question": "What two things must every correct recursive function have?",
+    "answer": "A base case that stops the recursion without making a further recursive call, and a recursive case that calls itself with an argument that progresses toward the base case.",
+    "explanation": "Without a reachable base case (or if the argument never converges toward it), the recursion never terminates and eventually causes a stack overflow.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "base case",
+      "recursive case",
+      "recursion"
+    ]
+  },
+  {
+    "id": "c_028",
+    "technology": "C",
+    "topic": "Recursion",
+    "difficulty": "Medium",
+    "question": "Write a recursive C function `int fib(int n)` that returns the n-th Fibonacci number (fib(0)=0, fib(1)=1).",
+    "answer": "int fib(int n) {\n    if (n <= 1) return n;\n    return fib(n - 1) + fib(n - 2);\n}",
+    "explanation": "The base cases return n directly for n=0 or n=1; otherwise the function sums the two preceding Fibonacci values, recursing until the base case is reached.",
+    "question_type": "Coding",
+    "keywords": [
+      "fibonacci",
+      "recursion"
+    ],
+    "starter_code": "int fib(int n) {\n    // TODO\n}",
+    "expected_solution": "int fib(int n) {\n    if (n <= 1) return n;\n    return fib(n - 1) + fib(n - 2);\n}",
+    "test_cases": [
+      {
+        "input": "fib(0)",
+        "expected_output": "0"
+      },
+      {
+        "input": "fib(6)",
+        "expected_output": "8"
+      },
+      {
+        "input": "fib(10)",
+        "expected_output": "55"
+      }
+    ]
+  },
+  {
+    "id": "c_029",
+    "technology": "C",
+    "topic": "Recursion",
+    "difficulty": "Hard",
+    "question": "Why can deep or infinite recursion crash a C program, and what is this failure called?",
+    "answer": "Each recursive call allocates a new stack frame (for parameters, local variables, and the return address) on the call stack, which has a fixed, limited size; if recursion goes too deep (or never terminates), the stack frame allocations exceed that limit, causing a stack overflow that typically crashes the program with a segmentation fault.",
+    "explanation": "Tail-recursive style can sometimes be optimized by the compiler into a loop (eliminating new stack frames), but C does not guarantee tail-call optimization, so deep recursion is still risky in portable code.",
+    "question_type": "Technical",
+    "keywords": [
+      "stack overflow",
+      "call stack",
+      "recursion depth"
+    ]
+  },
+  {
+    "id": "c_030",
+    "technology": "C",
+    "topic": "Arrays",
+    "difficulty": "Easy",
+    "question": "How are array elements indexed in C?",
+    "answer": "C array indices are zero-based: for an array of size n, valid indices run from 0 to n-1, where index 0 refers to the first element.",
+    "explanation": "Accessing an index outside 0..n-1 (e.g. arr[n]) is undefined behavior in C, since there is no automatic bounds checking.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "array indexing",
+      "zero-based"
+    ]
+  },
+  {
+    "id": "c_031",
+    "technology": "C",
+    "topic": "Arrays",
+    "difficulty": "Medium",
+    "question": "Why does C not perform automatic bounds checking on array access, and what is the risk?",
+    "answer": "C arrays are a thin abstraction over raw memory: `arr[i]` is defined to mean `*(arr + i)`, a pointer-arithmetic-based memory access with no runtime index validation, for performance and simplicity reasons consistent with C's low-level design philosophy.",
+    "explanation": "Reading or writing outside an array's bounds is undefined behavior and can silently corrupt adjacent memory (a buffer overflow), which is a major source of security vulnerabilities in C programs.",
+    "question_type": "Technical",
+    "keywords": [
+      "bounds checking",
+      "buffer overflow",
+      "pointer arithmetic"
+    ]
+  },
+  {
+    "id": "c_032",
+    "technology": "C",
+    "topic": "Arrays",
+    "difficulty": "Medium",
+    "question": "Write a C function `int sumArray(int arr[], int n)` that returns the sum of all n elements.",
+    "answer": "int sumArray(int arr[], int n) {\n    int sum = 0;\n    for (int i = 0; i < n; i++) sum += arr[i];\n    return sum;\n}",
+    "explanation": "The function iterates from index 0 to n-1, accumulating each element's value into `sum`, then returns the total.",
+    "question_type": "Coding",
+    "keywords": [
+      "array sum",
+      "iteration"
+    ],
+    "starter_code": "int sumArray(int arr[], int n) {\n    // TODO\n}",
+    "expected_solution": "int sumArray(int arr[], int n) {\n    int sum = 0;\n    for (int i = 0; i < n; i++) sum += arr[i];\n    return sum;\n}",
+    "test_cases": [
+      {
+        "input": "sumArray({1,2,3,4,5}, 5)",
+        "expected_output": "15"
+      },
+      {
+        "input": "sumArray({}, 0)",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "c_033",
+    "technology": "C",
+    "topic": "Arrays",
+    "difficulty": "Hard",
+    "question": "What actually happens when you write `arr[3]` where `arr` is declared as `int arr[10]`, in terms of the underlying operation?",
+    "answer": "`arr[3]` is syntactic sugar for `*(arr + 3)`: the array name decays to a pointer to its first element, `3` is scaled by `sizeof(int)` and added to that address, and the result is dereferenced to access that memory location.",
+    "explanation": "This is why `arr[3]` and `3[arr]` are equivalent in C (both become `*(arr + 3)` and `*(3 + arr)`), a quirky but real consequence of how array indexing is defined via pointer arithmetic.",
+    "question_type": "Technical",
+    "keywords": [
+      "array decay",
+      "pointer arithmetic",
+      "indexing"
+    ]
+  },
+  {
+    "id": "c_034",
+    "technology": "C",
+    "topic": "Arrays",
+    "difficulty": "Easy",
+    "question": "How do you declare an array of 10 integers in C?",
+    "answer": "int arr[10];",
+    "explanation": "The syntax `type name[size];` declares an array of `size` elements of `type`; `int arr[10];` allocates 10 contiguous ints.",
+    "question_type": "MCQ",
+    "keywords": [
+      "array declaration"
+    ],
+    "options": [
+      "int arr(10);",
+      "array int arr[10];",
+      "int arr[10];",
+      "int[10] arr;"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "c_035",
+    "technology": "C",
+    "topic": "Pointers",
+    "difficulty": "Easy",
+    "question": "What does a pointer variable store in C?",
+    "answer": "A pointer stores the memory address of another variable (or of allocated memory), rather than a data value directly.",
+    "explanation": "Declared as `int *p;`, the pointer `p` can hold the address of an int variable, and `*p` dereferences it to access the int stored at that address.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "pointers",
+      "memory address"
+    ]
+  },
+  {
+    "id": "c_036",
+    "technology": "C",
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question": "What is a 'dangling pointer' and how does it typically occur?",
+    "answer": "A dangling pointer is a pointer that still holds the address of memory that has been freed or gone out of scope, so the memory it points to is no longer valid; dereferencing it produces undefined behavior.",
+    "explanation": "A common cause is calling `free(ptr)` and then continuing to use `ptr` without setting it to NULL, or returning the address of a local (stack) variable from a function after that variable's scope has ended.",
+    "question_type": "Technical",
+    "keywords": [
+      "dangling pointer",
+      "use after free",
+      "undefined behavior"
+    ]
+  },
+  {
+    "id": "c_037",
+    "technology": "C",
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question": "What does this program print?\n\n#include <stdio.h>\nint main() {\n    int x = 10;\n    int *p = &x;\n    *p = 20;\n    printf(\"%d\\n\", x);\n    return 0;\n}",
+    "answer": "20",
+    "explanation": "`p` holds the address of `x`; writing `*p = 20` dereferences `p` and stores 20 into the memory location it points to, which is `x` itself, so printing `x` afterward shows 20.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "dereference",
+      "pointers"
+    ],
+    "code_snippet": "int x = 10;\nint *p = &x;\n*p = 20;\nprintf(\"%d\\n\", x);"
+  },
+  {
+    "id": "c_038",
+    "technology": "C",
+    "topic": "Pointers",
+    "difficulty": "Hard",
+    "question": "What is the difference between a pointer to a constant (`const int *p`) and a constant pointer (`int * const p`)?",
+    "answer": "`const int *p` means the data p points to cannot be modified through p (p itself can be reassigned to point elsewhere); `int * const p` means p itself is a constant address that cannot be reassigned once initialized, but the data it points to CAN be modified through p.",
+    "explanation": "Reading these declarations right-to-left from the identifier helps: `const int *p` reads as 'p is a pointer to a const int', while `int * const p` reads as 'p is a const pointer to an int'.",
+    "question_type": "Technical",
+    "keywords": [
+      "const pointer",
+      "pointer to const",
+      "declarations"
+    ]
+  },
+  {
+    "id": "c_039",
+    "technology": "C",
+    "topic": "Pointers",
+    "difficulty": "Easy",
+    "question": "Which operator is used to get the address of a variable in C?",
+    "answer": "&",
+    "explanation": "The unary `&` (address-of) operator yields the memory address of its operand; `*` is the dereference operator used on the resulting pointer.",
+    "question_type": "MCQ",
+    "keywords": [
+      "address-of operator"
+    ],
+    "options": [
+      "*",
+      "&",
+      "#",
+      "@"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_040",
+    "technology": "C",
+    "topic": "Pointer Arithmetic",
+    "difficulty": "Medium",
+    "question": "If `int *p` points to the first element of an int array, what does `p + 1` actually compute?",
+    "answer": "`p + 1` computes the address `sizeof(int)` bytes after `p` (typically 4 bytes further), not simply p's numeric value plus 1 — pointer arithmetic automatically scales by the size of the pointed-to type so `p + 1` correctly points to the next array element.",
+    "explanation": "This is why pointer arithmetic on `char *` advances by 1 byte per increment, but on `int *` it advances by sizeof(int) bytes per increment.",
+    "question_type": "Technical",
+    "keywords": [
+      "pointer arithmetic",
+      "type scaling"
+    ]
+  },
+  {
+    "id": "c_041",
+    "technology": "C",
+    "topic": "Pointer Arithmetic",
+    "difficulty": "Hard",
+    "question": "Given `int arr[5] = {10,20,30,40,50}; int *p = arr;`, what does `*(p + 2)` evaluate to?",
+    "answer": "30",
+    "explanation": "`p` points to arr[0]; `p + 2` points to arr[2] because pointer addition scales by sizeof(int), and dereferencing that with `*` yields the value stored at arr[2], which is 30.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "pointer arithmetic",
+      "array indexing"
+    ],
+    "code_snippet": "int arr[5] = {10,20,30,40,50};\nint *p = arr;\nprintf(\"%d\", *(p + 2));"
+  },
+  {
+    "id": "c_042",
+    "technology": "C",
+    "topic": "Pointer Arithmetic",
+    "difficulty": "Medium",
+    "question": "What is 'pointer decay' in C?",
+    "answer": "Pointer decay is the automatic conversion of an array's name into a pointer to its first element in most expression contexts (e.g. when passed to a function or used in pointer arithmetic).",
+    "explanation": "Because of decay, a function parameter declared as `int arr[]` is actually treated as `int *arr`, which is why `sizeof(arr)` inside such a function gives the pointer's size, not the original array's size.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "pointer decay",
+      "array to pointer"
+    ]
+  },
+  {
+    "id": "c_043",
+    "technology": "C",
+    "topic": "Pointer Arithmetic",
+    "difficulty": "Hard",
+    "question": "Why is subtracting two pointers into the same array meaningful in C, and what does the result represent?",
+    "answer": "Subtracting two pointers that point into the same array (e.g. `p2 - p1`) yields the number of elements between them (a ptrdiff_t value), because the subtraction is scaled by the size of the pointed-to type, just like pointer addition.",
+    "explanation": "Pointer subtraction is only well-defined when both pointers point into the same array (or one past its end); subtracting pointers into unrelated objects is undefined behavior.",
+    "question_type": "Technical",
+    "keywords": [
+      "pointer subtraction",
+      "ptrdiff_t"
+    ]
+  },
+  {
+    "id": "c_044",
+    "technology": "C",
+    "topic": "Strings",
+    "difficulty": "Easy",
+    "question": "How does C represent strings, and what marks the end of one?",
+    "answer": "C represents a string as an array of characters terminated by a null character `'\\0'` (byte value 0); there is no separate length field, so functions that operate on strings scan until they find the null terminator.",
+    "explanation": "This is why `strlen()` runs in O(n) time — it must scan character by character until it finds `\\0` to determine the length.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "null terminator",
+      "c strings",
+      "strlen"
+    ]
+  },
+  {
+    "id": "c_045",
+    "technology": "C",
+    "topic": "Strings",
+    "difficulty": "Medium",
+    "question": "Why is `strcpy()` considered unsafe, and what function is often recommended instead?",
+    "answer": "`strcpy(dest, src)` copies characters from src to dest until it hits the null terminator, with no check that dest is large enough to hold src — if src is longer than dest's allocated size, it overflows the buffer, corrupting adjacent memory.",
+    "explanation": "`strncpy(dest, src, n)` limits the copy to at most n characters, reducing (but not eliminating — it may not null-terminate if src is >= n chars) the overflow risk; many codebases prefer explicit bounds-checked copying or strlcpy where available.",
+    "question_type": "Technical",
+    "keywords": [
+      "strcpy",
+      "buffer overflow",
+      "strncpy"
+    ]
+  },
+  {
+    "id": "c_046",
+    "technology": "C",
+    "topic": "Strings",
+    "difficulty": "Medium",
+    "question": "Write a C function `int stringLength(const char *s)` that returns the length of a null-terminated string without using strlen().",
+    "answer": "int stringLength(const char *s) {\n    int len = 0;\n    while (s[len] != '\\0') len++;\n    return len;\n}",
+    "explanation": "The function walks the string one character at a time, counting characters until it reaches the null terminator, which marks the end of the string.",
+    "question_type": "Coding",
+    "keywords": [
+      "string length",
+      "null terminator"
+    ],
+    "starter_code": "int stringLength(const char *s) {\n    // TODO\n}",
+    "expected_solution": "int stringLength(const char *s) {\n    int len = 0;\n    while (s[len] != '\\0') len++;\n    return len;\n}",
+    "test_cases": [
+      {
+        "input": "stringLength(\"hello\")",
+        "expected_output": "5"
+      },
+      {
+        "input": "stringLength(\"\")",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "c_047",
+    "technology": "C",
+    "topic": "Strings",
+    "difficulty": "Hard",
+    "question": "What does this print?\n\n#include <stdio.h>\n#include <string.h>\nint main() {\n    char a[20] = \"Hello\";\n    char b[] = \"World\";\n    strcat(a, b);\n    printf(\"%s\\n\", a);\n    return 0;\n}",
+    "answer": "HelloWorld",
+    "explanation": "`strcat(a, b)` appends the contents of `b` to the end of `a` (right before a's null terminator), and since `a` was declared with 20 bytes of storage there is enough room, so the result is the concatenation \"HelloWorld\".",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "strcat",
+      "string concatenation"
+    ],
+    "code_snippet": "char a[20] = \"Hello\";\nchar b[] = \"World\";\nstrcat(a, b);\nprintf(\"%s\\n\", a);"
+  },
+  {
+    "id": "c_048",
+    "technology": "C",
+    "topic": "Strings",
+    "difficulty": "Easy",
+    "question": "Which character marks the end of a C string?",
+    "answer": "'\\0'",
+    "explanation": "The null character '\\0' (ASCII value 0) terminates a C string; it is automatically appended by string literals and functions like strcpy.",
+    "question_type": "MCQ",
+    "keywords": [
+      "null terminator"
+    ],
+    "options": [
+      "'\\n'",
+      "'\\0'",
+      "EOF",
+      "' '"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_049",
+    "technology": "C",
+    "topic": "Structures",
+    "difficulty": "Easy",
+    "question": "What is a `struct` in C used for?",
+    "answer": "A struct groups multiple related variables (possibly of different types) together under one name, allowing them to be treated as a single composite data type.",
+    "explanation": "For example, `struct Point { int x; int y; };` bundles two ints representing coordinates into one logical unit, `struct Point p;`.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "struct",
+      "composite types"
+    ]
+  },
+  {
+    "id": "c_050",
+    "technology": "C",
+    "topic": "Structures",
+    "difficulty": "Medium",
+    "question": "What is 'structure padding' and why does the compiler add it?",
+    "answer": "Structure padding is extra, unused bytes the compiler inserts between struct members (or after the last member) so that each member is aligned to an address boundary its type requires (e.g. a 4-byte int aligned to a 4-byte boundary), which many CPUs need for efficient (or even correct) memory access.",
+    "explanation": "Padding means `sizeof(struct)` can be larger than the sum of its members' individual sizes, and reordering members (largest to smallest) can sometimes reduce total padding.",
+    "question_type": "Technical",
+    "keywords": [
+      "struct padding",
+      "memory alignment"
+    ]
+  },
+  {
+    "id": "c_051",
+    "technology": "C",
+    "topic": "Structures",
+    "difficulty": "Medium",
+    "question": "Define a `struct Point` with integer members `x` and `y`, and write a function `int distanceSquared(struct Point a, struct Point b)` returning the squared distance between them.",
+    "answer": "struct Point { int x; int y; };\nint distanceSquared(struct Point a, struct Point b) {\n    int dx = a.x - b.x;\n    int dy = a.y - b.y;\n    return dx * dx + dy * dy;\n}",
+    "explanation": "The squared Euclidean distance avoids a sqrt() call by summing the squares of the coordinate differences, which is often sufficient (e.g. for comparing distances).",
+    "question_type": "Coding",
+    "keywords": [
+      "struct",
+      "distance formula"
+    ],
+    "starter_code": "struct Point { int x; int y; };\nint distanceSquared(struct Point a, struct Point b) {\n    // TODO\n}",
+    "expected_solution": "struct Point { int x; int y; };\nint distanceSquared(struct Point a, struct Point b) {\n    int dx = a.x - b.x;\n    int dy = a.y - b.y;\n    return dx * dx + dy * dy;\n}",
+    "test_cases": [
+      {
+        "input": "distanceSquared({0,0}, {3,4})",
+        "expected_output": "25"
+      },
+      {
+        "input": "distanceSquared({1,1}, {1,1})",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "c_052",
+    "technology": "C",
+    "topic": "Structures",
+    "difficulty": "Hard",
+    "question": "How do you access a struct member through a pointer to that struct, and how does the `->` operator relate to `(*p).member`?",
+    "answer": "Given `struct Point *p`, you access a member either by explicitly dereferencing first, `(*p).x`, or with the arrow operator, `p->x` — the two are exactly equivalent, and `->` was introduced purely as a more readable shorthand.",
+    "explanation": "The arrow operator combines dereference-and-member-access into a single operator, which becomes especially useful for chains like `node->next->data` where repeated `(*...)` syntax would be cumbersome.",
+    "question_type": "Technical",
+    "keywords": [
+      "arrow operator",
+      "struct pointer"
+    ]
+  },
+  {
+    "id": "c_053",
+    "technology": "C",
+    "topic": "Unions",
+    "difficulty": "Easy",
+    "question": "How does memory allocation for a `union` differ from a `struct` in C?",
+    "answer": "All members of a union share the same memory location, and the union's total size equals its largest member's size; a struct instead allocates separate memory for each member, so its size is (at least) the sum of its members' sizes plus any padding.",
+    "explanation": "This means writing to one union member and then reading a different member reinterprets the same bytes as the new type, whereas struct members are fully independent.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "union",
+      "shared memory",
+      "struct vs union"
+    ]
+  },
+  {
+    "id": "c_054",
+    "technology": "C",
+    "topic": "Unions",
+    "difficulty": "Medium",
+    "question": "What is a practical use case for a `union` in C?",
+    "answer": "Unions are commonly used to save memory when only one of several possible types needs to be stored at a time (e.g. a variant/tagged-union type), or to reinterpret the same raw bytes as different types (type punning), such as inspecting the individual bytes of a float.",
+    "explanation": "A typical pattern pairs a union with an explicit 'tag' field in an enclosing struct to track which member is currently valid, since the union itself has no built-in way to know which member was last written.",
+    "question_type": "Technical",
+    "keywords": [
+      "union use case",
+      "tagged union",
+      "type punning"
+    ]
+  },
+  {
+    "id": "c_055",
+    "technology": "C",
+    "topic": "Unions",
+    "difficulty": "Hard",
+    "question": "Given `union U { int i; char c[4]; } u; u.i = 1;`, on a little-endian system, what is `u.c[0]`?",
+    "answer": "1",
+    "explanation": "On a little-endian system, the least significant byte of the integer is stored at the lowest memory address, which corresponds to `c[0]`; since `u.i = 1` has its least significant byte equal to 1, `u.c[0]` is 1 (and c[1..3] are 0).",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "union",
+      "endianness",
+      "type punning"
+    ],
+    "code_snippet": "union U { int i; char c[4]; } u;\nu.i = 1;\nprintf(\"%d\", u.c[0]);"
+  },
+  {
+    "id": "c_056",
+    "technology": "C",
+    "topic": "Enums",
+    "difficulty": "Easy",
+    "question": "What is an `enum` in C and what is its underlying type?",
+    "answer": "An enum defines a set of named integer constants, improving code readability compared to raw magic numbers; under the hood, each enumerator is simply an int constant, and by default the first enumerator is 0 and each subsequent one increments by 1 unless explicitly assigned.",
+    "explanation": "For example, `enum Color { RED, GREEN, BLUE };` gives RED=0, GREEN=1, BLUE=2 automatically.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "enum",
+      "named constants"
+    ]
+  },
+  {
+    "id": "c_057",
+    "technology": "C",
+    "topic": "Enums",
+    "difficulty": "Medium",
+    "question": "Given `enum Day { MON, TUE, WED = 5, THU };`, what integer value does THU have?",
+    "answer": "6",
+    "explanation": "Enumerators default to one more than the previous value unless explicitly assigned; MON=0, TUE=1, WED is explicitly set to 5, and THU (unassigned) continues from there as 6.",
+    "question_type": "MCQ",
+    "keywords": [
+      "enum values",
+      "enumerators"
+    ],
+    "options": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "correct_option": 3
+  },
+  {
+    "id": "c_058",
+    "technology": "C",
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question": "What is the difference between `malloc()` and `calloc()`?",
+    "answer": "`malloc(size)` allocates `size` bytes of uninitialized memory (its contents are indeterminate); `calloc(n, size)` allocates memory for n elements of `size` bytes each and initializes all of it to zero.",
+    "explanation": "calloc is often preferred when you specifically need zero-initialized memory (e.g. a fresh array of counters), avoiding a separate manual memset() call.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "malloc",
+      "calloc",
+      "dynamic memory"
+    ]
+  },
+  {
+    "id": "c_059",
+    "technology": "C",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question": "What is a memory leak in C, and how does it typically happen?",
+    "answer": "A memory leak occurs when dynamically allocated memory (via malloc/calloc/realloc) is never freed with free() before all pointers to it go out of scope or are overwritten, so the program loses the ability to ever release that memory back to the system.",
+    "explanation": "A common cause is overwriting the only pointer to allocated memory (e.g. `ptr = malloc(...); ... ptr = malloc(...);` without freeing the first allocation first), permanently losing the reference needed to free it.",
+    "question_type": "Technical",
+    "keywords": [
+      "memory leak",
+      "malloc",
+      "free"
+    ]
+  },
+  {
+    "id": "c_060",
+    "technology": "C",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question": "Write C code that dynamically allocates an array of n integers, initializes each to its index, and then frees it.",
+    "answer": "int *arr = (int *)malloc(n * sizeof(int));\nif (arr != NULL) {\n    for (int i = 0; i < n; i++) arr[i] = i;\n    // use arr...\n    free(arr);\n}",
+    "explanation": "malloc reserves n * sizeof(int) bytes; the code checks for allocation failure (malloc returns NULL if it can't allocate), fills each slot with its index, and calls free() exactly once to release the memory when done.",
+    "question_type": "Coding",
+    "keywords": [
+      "malloc",
+      "free",
+      "dynamic array"
+    ],
+    "starter_code": "int *arr = /* allocate n ints */;\n// TODO: initialize and free",
+    "expected_solution": "int *arr = (int *)malloc(n * sizeof(int));\nif (arr != NULL) {\n    for (int i = 0; i < n; i++) arr[i] = i;\n    free(arr);\n}",
+    "test_cases": [
+      {
+        "input": "n=5",
+        "expected_output": "arr = {0,1,2,3,4}, then memory freed with no leak"
+      },
+      {
+        "input": "n=0",
+        "expected_output": "malloc(0) behavior is implementation-defined; freeing the returned pointer (if non-NULL) is still correct"
+      }
+    ]
+  },
+  {
+    "id": "c_061",
+    "technology": "C",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question": "What is a 'double free' bug, and why is it dangerous?",
+    "answer": "A double free occurs when `free()` is called twice on the same pointer without an intervening allocation; the second call operates on memory the allocator has already reclaimed (and possibly reused), corrupting the heap's internal bookkeeping structures.",
+    "explanation": "This corruption is undefined behavior and can cause crashes far away from the actual bug, or in the worst case be exploited as a security vulnerability; the standard defensive practice is to set a pointer to NULL immediately after freeing it, since free(NULL) is explicitly a safe no-op.",
+    "question_type": "Technical",
+    "keywords": [
+      "double free",
+      "heap corruption",
+      "undefined behavior"
+    ]
+  },
+  {
+    "id": "c_062",
+    "technology": "C",
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question": "A function allocates memory with malloc(), stores it in a local pointer, and returns without freeing it or returning the pointer. What happens to that memory, and how would you detect this bug?",
+    "answer": "The memory becomes unreachable (leaked) the moment the function returns, since the only pointer to it — a local variable — goes out of scope; the program can never free it again during that run, and the memory stays reserved until the process exits.",
+    "explanation": "Such leaks are typically found using memory-profiling tools like Valgrind (on Linux) or AddressSanitizer, which track every allocation and report ones that were never freed when the program exits.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "memory leak",
+      "valgrind",
+      "debugging"
+    ]
+  },
+  {
+    "id": "c_063",
+    "technology": "C",
+    "topic": "File Handling",
+    "difficulty": "Easy",
+    "question": "What function is used to open a file in C, and what does it return?",
+    "answer": "`fopen(filename, mode)` opens a file and returns a `FILE *` pointer used for subsequent operations on that file, or NULL if the file could not be opened (e.g. it doesn't exist and mode requires reading).",
+    "explanation": "Common modes include \"r\" (read), \"w\" (write, truncating existing content), \"a\" (append), and \"rb\"/\"wb\" for binary mode.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "fopen",
+      "file pointer",
+      "file modes"
+    ]
+  },
+  {
+    "id": "c_064",
+    "technology": "C",
+    "topic": "File Handling",
+    "difficulty": "Medium",
+    "question": "Why should you always check the return value of `fopen()` before using the file pointer?",
+    "answer": "`fopen()` returns NULL if the file could not be opened (e.g. it doesn't exist, permissions deny access, or the disk is full for write mode); dereferencing or passing a NULL FILE* to functions like fprintf/fread is undefined behavior and commonly crashes the program.",
+    "explanation": "Defensive code always does `FILE *fp = fopen(...); if (fp == NULL) { /* handle error, e.g. via perror() */ }` before proceeding.",
+    "question_type": "Technical",
+    "keywords": [
+      "fopen",
+      "null check",
+      "error handling"
+    ]
+  },
+  {
+    "id": "c_065",
+    "technology": "C",
+    "topic": "File Handling",
+    "difficulty": "Medium",
+    "question": "Write C code that opens a file called \"data.txt\" for writing, writes the line \"Hello, File!\", and closes it.",
+    "answer": "FILE *fp = fopen(\"data.txt\", \"w\");\nif (fp != NULL) {\n    fprintf(fp, \"Hello, File!\\n\");\n    fclose(fp);\n}",
+    "explanation": "fopen with mode \"w\" creates the file if it doesn't exist (or truncates it if it does); fprintf writes formatted text to it just like printf writes to stdout; fclose flushes buffered output and releases the file handle.",
+    "question_type": "Coding",
+    "keywords": [
+      "fopen",
+      "fprintf",
+      "fclose"
+    ],
+    "starter_code": "FILE *fp = fopen(\"data.txt\", \"w\");\n// TODO",
+    "expected_solution": "FILE *fp = fopen(\"data.txt\", \"w\");\nif (fp != NULL) {\n    fprintf(fp, \"Hello, File!\\n\");\n    fclose(fp);\n}",
+    "test_cases": [
+      {
+        "input": "run the program",
+        "expected_output": "data.txt is created containing the line 'Hello, File!'"
+      },
+      {
+        "input": "fopen fails (e.g. writing to a read-only/invalid path) so fp is NULL",
+        "expected_output": "the if (fp != NULL) check is false, so fprintf/fclose are skipped and the program avoids a NULL pointer dereference"
+      }
+    ]
+  },
+  {
+    "id": "c_066",
+    "technology": "C",
+    "topic": "File Handling",
+    "difficulty": "Hard",
+    "question": "Why is it important to call `fclose()` on every file you open, beyond just releasing the OS file handle?",
+    "answer": "Standard I/O in C is typically buffered — writes via fprintf/fputs may sit in an in-memory buffer rather than being written to disk immediately; `fclose()` flushes that buffer to the underlying file before releasing the handle, so skipping fclose can silently lose buffered but unwritten data if the program exits abnormally.",
+    "explanation": "You can force a flush without closing using `fflush(fp)`, but fclose is still needed eventually to release the OS-level file descriptor, of which a process has a limited number.",
+    "question_type": "Technical",
+    "keywords": [
+      "fclose",
+      "buffering",
+      "fflush"
+    ]
+  },
+  {
+    "id": "c_067",
+    "technology": "C",
+    "topic": "Preprocessor Directives & Macros",
+    "difficulty": "Easy",
+    "question": "What does the `#define` directive do in C?",
+    "answer": "`#define` creates a preprocessor macro — a simple text-substitution rule applied to the source code before actual compilation begins; e.g. `#define PI 3.14159` replaces every occurrence of `PI` with `3.14159` in the code that follows.",
+    "explanation": "Unlike a `const` variable, a `#define` macro has no type and does not exist at runtime — it is purely a textual substitution performed by the preprocessor.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "define",
+      "macros",
+      "preprocessor"
+    ]
+  },
+  {
+    "id": "c_068",
+    "technology": "C",
+    "topic": "Preprocessor Directives & Macros",
+    "difficulty": "Medium",
+    "question": "Why should function-like macro arguments be wrapped in parentheses, e.g. `#define SQUARE(x) ((x) * (x))` instead of `#define SQUARE(x) x * x`?",
+    "answer": "Because macros are pure text substitution, an unparenthesized macro can produce incorrect results when the caller passes an expression: `SQUARE(a + b)` without parentheses expands to `a + b * a + b`, which due to operator precedence is NOT (a+b)*(a+b); wrapping both the parameter and the whole expression in parentheses, `((x) * (x))`, expands safely to `((a + b) * (a + b))`.",
+    "explanation": "This is a classic C macro pitfall — always parenthesize macro parameters and the overall expansion to guard against operator-precedence surprises at the call site.",
+    "question_type": "Technical",
+    "keywords": [
+      "macro pitfalls",
+      "operator precedence",
+      "parentheses"
+    ]
+  },
+  {
+    "id": "c_069",
+    "technology": "C",
+    "topic": "Preprocessor Directives & Macros",
+    "difficulty": "Medium",
+    "question": "What is the purpose of an `#include` guard (e.g. `#ifndef HEADER_H ... #define HEADER_H ... #endif`) in a header file?",
+    "answer": "To prevent the header's contents from being included more than once in the same translation unit",
+    "explanation": "If a header is included multiple times (directly or transitively through other headers), without a guard its declarations would be duplicated, causing 'redefinition' compile errors; the guard makes the second and later #includes expand to nothing.",
+    "question_type": "MCQ",
+    "keywords": [
+      "include guard",
+      "header files"
+    ],
+    "options": [
+      "To speed up compilation",
+      "To prevent the header's contents from being included more than once in the same translation unit",
+      "To enable debugging output",
+      "To link multiple object files"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_070",
+    "technology": "C",
+    "topic": "Preprocessor Directives & Macros",
+    "difficulty": "Hard",
+    "question": "What is the difference between a macro constant defined with `#define` and a real constant declared with `const`?",
+    "answer": "A `#define` macro is replaced by the preprocessor before compilation, has no type, is not visible to the debugger by name, and obeys no scoping rules; a `const` variable is a real, typed variable known to the compiler (and debugger) that occupies memory (unless optimized away) and respects normal scope rules.",
+    "explanation": "Because `const` values are type-checked, they catch more errors at compile time (e.g. type mismatches) than untyped macros, which is why modern C style generally prefers const (or enum) over #define for simple constants.",
+    "question_type": "Technical",
+    "keywords": [
+      "define vs const",
+      "macros",
+      "type safety"
+    ]
+  },
+  {
+    "id": "c_071",
+    "technology": "C",
+    "topic": "Storage Classes",
+    "difficulty": "Easy",
+    "question": "What does the `static` keyword do when applied to a local variable inside a function?",
+    "answer": "A `static` local variable is initialized only once and retains its value between successive calls to the function, instead of being re-created (and losing its value) on each call like a normal local variable.",
+    "explanation": "For example, a function using a static counter variable will keep incrementing that same counter across multiple calls, rather than resetting it to its initial value every time.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "static",
+      "local variables",
+      "persistence"
+    ]
+  },
+  {
+    "id": "c_072",
+    "technology": "C",
+    "topic": "Storage Classes",
+    "difficulty": "Medium",
+    "question": "What is the effect of declaring a global variable or function as `static` at file scope (outside any function)?",
+    "answer": "It gives the variable or function 'internal linkage', restricting its visibility to the current source file (translation unit) only — other .c files cannot reference it via `extern`, even if they know its name.",
+    "explanation": "This is commonly used to create private helper functions/variables within a .c file, preventing naming collisions with identically-named symbols in other files.",
+    "question_type": "Technical",
+    "keywords": [
+      "static",
+      "internal linkage",
+      "file scope"
+    ]
+  },
+  {
+    "id": "c_073",
+    "technology": "C",
+    "topic": "Storage Classes",
+    "difficulty": "Hard",
+    "question": "Which storage class suggests to the compiler that a variable should be stored in a CPU register for faster access (though the compiler may ignore the request)?",
+    "answer": "register",
+    "explanation": "The `register` keyword is a hint, not a guarantee — modern optimizing compilers usually decide register allocation on their own and may ignore this keyword entirely; a `register` variable's address also cannot be taken with `&`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "register keyword",
+      "storage classes"
+    ],
+    "options": [
+      "static",
+      "extern",
+      "register",
+      "auto"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "c_074",
+    "technology": "C",
+    "topic": "Bit Manipulation",
+    "difficulty": "Medium",
+    "question": "How do you check whether the k-th bit (0-indexed from the right) of an integer `n` is set, using bitwise operators?",
+    "answer": "Compute `(n >> k) & 1`: right-shift n by k positions so the bit of interest becomes the least significant bit, then mask with `& 1` to isolate it — the result is 1 if that bit was set, 0 otherwise.",
+    "explanation": "An equivalent alternative is `n & (1 << k)`, which is non-zero exactly when the k-th bit is set (though the non-zero value itself may not literally be 1).",
+    "question_type": "Technical",
+    "keywords": [
+      "bitwise operators",
+      "bit checking",
+      "shift operators"
+    ]
+  },
+  {
+    "id": "c_075",
+    "technology": "C",
+    "topic": "Bit Manipulation",
+    "difficulty": "Medium",
+    "question": "Write a C function `int countSetBits(unsigned int n)` that returns the number of 1-bits in n.",
+    "answer": "int countSetBits(unsigned int n) {\n    int count = 0;\n    while (n) {\n        count += n & 1;\n        n >>= 1;\n    }\n    return count;\n}",
+    "explanation": "The loop repeatedly checks the least significant bit with `n & 1`, adds it to the running count, then right-shifts n to examine the next bit, continuing until all bits have been processed (n becomes 0).",
+    "question_type": "Coding",
+    "keywords": [
+      "set bits",
+      "bit counting",
+      "hamming weight"
+    ],
+    "starter_code": "int countSetBits(unsigned int n) {\n    // TODO\n}",
+    "expected_solution": "int countSetBits(unsigned int n) {\n    int count = 0;\n    while (n) {\n        count += n & 1;\n        n >>= 1;\n    }\n    return count;\n}",
+    "test_cases": [
+      {
+        "input": "countSetBits(7)",
+        "expected_output": "3"
+      },
+      {
+        "input": "countSetBits(8)",
+        "expected_output": "1"
+      },
+      {
+        "input": "countSetBits(0)",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "c_076",
+    "technology": "C",
+    "topic": "Bit Manipulation",
+    "difficulty": "Hard",
+    "question": "How can you use bitwise operators to check if an integer is a power of two (and why does it work)?",
+    "answer": "`n > 0 && (n & (n - 1)) == 0` checks it: a power of two in binary has exactly one bit set (e.g. 8 = 1000); subtracting 1 flips that bit to 0 and sets all lower bits to 1 (0111), so ANDing the two produces 0 only when n had exactly one bit set — i.e. only for powers of two (and the n > 0 check excludes 0, which would otherwise falsely satisfy the AND condition).",
+    "explanation": "This trick is O(1) and avoids any loop or division, making it a common interview question and a real optimization technique.",
+    "question_type": "Technical",
+    "keywords": [
+      "power of two",
+      "bit trick",
+      "bitwise and"
+    ]
+  },
+  {
+    "id": "c_077",
+    "technology": "C",
+    "topic": "Bit Manipulation",
+    "difficulty": "Easy",
+    "question": "What does the left-shift operator `<<` do to an integer?",
+    "answer": "Shifts its bits to the left, filling with zeros (equivalent to multiplying by 2 per shift, for non-negative values without overflow)",
+    "explanation": "`x << 1` shifts all bits one position left, appending a 0 bit on the right, which for a non-negative x without overflow is equivalent to `x * 2`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "left shift",
+      "bitwise operators"
+    ],
+    "options": [
+      "Divides by 2",
+      "Shifts its bits to the left, filling with zeros (equivalent to multiplying by 2 per shift, for non-negative values without overflow)",
+      "Reverses the bits",
+      "Performs a bitwise NOT"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_078",
+    "technology": "C",
+    "topic": "Command Line Arguments",
+    "difficulty": "Easy",
+    "question": "What do the parameters `argc` and `argv` in `int main(int argc, char *argv[])` represent?",
+    "answer": "`argc` is the count of command-line arguments passed to the program (including the program's own name); `argv` is an array of C-strings holding those arguments, with `argv[0]` typically being the program's name/path and `argv[argc]` guaranteed to be NULL.",
+    "explanation": "For example, running `./prog hello world` gives argc=3, with argv[0]=\"./prog\", argv[1]=\"hello\", argv[2]=\"world\".",
+    "question_type": "Conceptual",
+    "keywords": [
+      "argc",
+      "argv",
+      "command line arguments"
+    ]
+  },
+  {
+    "id": "c_079",
+    "technology": "C",
+    "topic": "Command Line Arguments",
+    "difficulty": "Medium",
+    "question": "Write a main() function that prints each command-line argument (excluding the program name) on its own line.",
+    "answer": "int main(int argc, char *argv[]) {\n    for (int i = 1; i < argc; i++) {\n        printf(\"%s\\n\", argv[i]);\n    }\n    return 0;\n}",
+    "explanation": "The loop starts at index 1 (skipping argv[0], the program name) and prints each subsequent argument string up to argc-1.",
+    "question_type": "Coding",
+    "keywords": [
+      "argv",
+      "command line parsing"
+    ],
+    "starter_code": "int main(int argc, char *argv[]) {\n    // TODO\n    return 0;\n}",
+    "expected_solution": "int main(int argc, char *argv[]) {\n    for (int i = 1; i < argc; i++) {\n        printf(\"%s\\n\", argv[i]);\n    }\n    return 0;\n}",
+    "test_cases": [
+      {
+        "input": "./prog foo bar",
+        "expected_output": "foo\\nbar"
+      },
+      {
+        "input": "./prog",
+        "expected_output": "(no output)"
+      }
+    ]
+  },
+  {
+    "id": "c_080",
+    "technology": "C",
+    "topic": "Linked Lists in C",
+    "difficulty": "Medium",
+    "question": "What is a singly linked list, and how does it differ structurally from an array?",
+    "answer": "A singly linked list is a sequence of nodes, each holding a data value and a pointer to the next node, with the list itself just tracking a pointer to the head node; unlike an array, its nodes are NOT stored contiguously in memory, and there is no O(1) random access by index — you must traverse from the head.",
+    "explanation": "The trade-off is that linked lists allow O(1) insertion/deletion at a known position (no shifting elements like an array requires), at the cost of O(n) access time and extra memory per node for the pointer.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "linked list",
+      "array vs linked list",
+      "nodes"
+    ]
+  },
+  {
+    "id": "c_081",
+    "technology": "C",
+    "topic": "Linked Lists in C",
+    "difficulty": "Medium",
+    "question": "Given a struct `struct Node { int data; struct Node *next; };`, write a function `struct Node* createNode(int data)` that allocates and returns a new node with `next` set to NULL.",
+    "answer": "struct Node* createNode(int data) {\n    struct Node *node = (struct Node *)malloc(sizeof(struct Node));\n    node->data = data;\n    node->next = NULL;\n    return node;\n}",
+    "explanation": "The function allocates enough memory for one Node with malloc, initializes its data field, sets next to NULL (since it isn't linked to anything yet), and returns the pointer to the caller.",
+    "question_type": "Coding",
+    "keywords": [
+      "linked list",
+      "node creation",
+      "malloc"
+    ],
+    "starter_code": "struct Node* createNode(int data) {\n    // TODO\n}",
+    "expected_solution": "struct Node* createNode(int data) {\n    struct Node *node = (struct Node *)malloc(sizeof(struct Node));\n    node->data = data;\n    node->next = NULL;\n    return node;\n}",
+    "test_cases": [
+      {
+        "input": "createNode(5)",
+        "expected_output": "a new node with data=5, next=NULL"
+      },
+      {
+        "input": "createNode(-5)",
+        "expected_output": "a new node with data=-5, next=NULL"
+      }
+    ]
+  },
+  {
+    "id": "c_082",
+    "technology": "C",
+    "topic": "Linked Lists in C",
+    "difficulty": "Hard",
+    "question": "Write a function `void insertAtHead(struct Node **head, int data)` that inserts a new node with the given data at the front of the list, updating the caller's head pointer.",
+    "answer": "void insertAtHead(struct Node **head, int data) {\n    struct Node *node = (struct Node *)malloc(sizeof(struct Node));\n    node->data = data;\n    node->next = *head;\n    *head = node;\n}",
+    "explanation": "Because the function must modify the caller's `head` variable itself (not just a copy of it), it takes a pointer-to-pointer (`struct Node **head`); it links the new node to the old head, then updates the caller's head to point to the new node via `*head = node`.",
+    "question_type": "Coding",
+    "keywords": [
+      "linked list insertion",
+      "pointer to pointer",
+      "head pointer"
+    ],
+    "starter_code": "void insertAtHead(struct Node **head, int data) {\n    // TODO\n}",
+    "expected_solution": "void insertAtHead(struct Node **head, int data) {\n    struct Node *node = (struct Node *)malloc(sizeof(struct Node));\n    node->data = data;\n    node->next = *head;\n    *head = node;\n}",
+    "test_cases": [
+      {
+        "input": "list: 2->3, insertAtHead(&head, 1)",
+        "expected_output": "list becomes 1->2->3"
+      },
+      {
+        "input": "list: NULL, insertAtHead(&head, 5)",
+        "expected_output": "list becomes 5->NULL"
+      }
+    ]
+  },
+  {
+    "id": "c_083",
+    "technology": "C",
+    "topic": "Linked Lists in C",
+    "difficulty": "Hard",
+    "question": "Why does inserting a node at the head of a linked list require passing a pointer to the head pointer (`struct Node **head`) rather than just `struct Node *head`?",
+    "answer": "C passes arguments by value; if the function received `struct Node *head` directly, it would only get a local copy of the caller's head pointer, and reassigning that local copy inside the function would not change the caller's actual head variable — passing `struct Node **head` lets the function dereference and modify the caller's original pointer variable.",
+    "explanation": "This is the same reason any function that needs to modify a caller's variable of any type must receive a pointer to it — one more level of indirection is needed to modify a pointer itself.",
+    "question_type": "Technical",
+    "keywords": [
+      "pointer to pointer",
+      "pass by value",
+      "linked list"
+    ]
+  },
+  {
+    "id": "c_084",
+    "technology": "C",
+    "topic": "C Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a C function `int isPalindrome(char *s)` that returns 1 if the null-terminated string s reads the same forwards and backwards, 0 otherwise.",
+    "answer": "int isPalindrome(char *s) {\n    int len = strlen(s);\n    for (int i = 0; i < len / 2; i++) {\n        if (s[i] != s[len - 1 - i]) return 0;\n    }\n    return 1;\n}",
+    "explanation": "The function compares characters from both ends moving inward; if any pair differs, it's not a palindrome, so it returns 0 immediately. If all pairs match through the midpoint, it returns 1.",
+    "question_type": "Coding",
+    "keywords": [
+      "palindrome",
+      "string comparison"
+    ],
+    "starter_code": "int isPalindrome(char *s) {\n    // TODO\n}",
+    "expected_solution": "int isPalindrome(char *s) {\n    int len = strlen(s);\n    for (int i = 0; i < len / 2; i++) {\n        if (s[i] != s[len - 1 - i]) return 0;\n    }\n    return 1;\n}",
+    "test_cases": [
+      {
+        "input": "isPalindrome(\"madam\")",
+        "expected_output": "1"
+      },
+      {
+        "input": "isPalindrome(\"hello\")",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "c_085",
+    "technology": "C",
+    "topic": "C Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a C function `void reverseArray(int arr[], int n)` that reverses the array in place.",
+    "answer": "void reverseArray(int arr[], int n) {\n    int start = 0, end = n - 1;\n    while (start < end) {\n        int temp = arr[start];\n        arr[start] = arr[end];\n        arr[end] = temp;\n        start++;\n        end--;\n    }\n}",
+    "explanation": "Two indices start at both ends and move toward the middle, swapping the elements they point to at each step, until they meet or cross — this reverses the array using O(1) extra space.",
+    "question_type": "Coding",
+    "keywords": [
+      "array reversal",
+      "two pointers",
+      "in-place"
+    ],
+    "starter_code": "void reverseArray(int arr[], int n) {\n    // TODO\n}",
+    "expected_solution": "void reverseArray(int arr[], int n) {\n    int start = 0, end = n - 1;\n    while (start < end) {\n        int temp = arr[start];\n        arr[start] = arr[end];\n        arr[end] = temp;\n        start++;\n        end--;\n    }\n}",
+    "test_cases": [
+      {
+        "input": "reverseArray({1,2,3,4}, 4)",
+        "expected_output": "{4,3,2,1}"
+      },
+      {
+        "input": "reverseArray({1}, 1)",
+        "expected_output": "{1}"
+      }
+    ]
+  },
+  {
+    "id": "c_086",
+    "technology": "C",
+    "topic": "C Coding Problems",
+    "difficulty": "Hard",
+    "question": "Write a C function `int isPrime(int n)` that returns 1 if n is a prime number, 0 otherwise, using an efficient approach.",
+    "answer": "int isPrime(int n) {\n    if (n <= 1) return 0;\n    for (int i = 2; (long)i * i <= n; i++) {\n        if (n % i == 0) return 0;\n    }\n    return 1;\n}",
+    "explanation": "Numbers <= 1 aren't prime by definition. The loop only needs to check divisors up to sqrt(n), since if n has a factor larger than its square root, it must also have a corresponding factor smaller than the square root, so checking up to sqrt(n) is sufficient and much faster than checking up to n.",
+    "question_type": "Coding",
+    "keywords": [
+      "prime check",
+      "sqrt optimization"
+    ],
+    "starter_code": "int isPrime(int n) {\n    // TODO\n}",
+    "expected_solution": "int isPrime(int n) {\n    if (n <= 1) return 0;\n    for (int i = 2; (long)i * i <= n; i++) {\n        if (n % i == 0) return 0;\n    }\n    return 1;\n}",
+    "test_cases": [
+      {
+        "input": "isPrime(7)",
+        "expected_output": "1"
+      },
+      {
+        "input": "isPrime(1)",
+        "expected_output": "0"
+      },
+      {
+        "input": "isPrime(15)",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "c_087",
+    "technology": "C",
+    "topic": "C Coding Problems",
+    "difficulty": "Hard",
+    "question": "Write a C function `void swap(int *a, int *b)` that swaps the values pointed to by a and b, and explain why pointers are required for this to work.",
+    "answer": "void swap(int *a, int *b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}",
+    "explanation": "Since C passes arguments by value, a function that took plain `int a, int b` would only swap its own local copies, leaving the caller's variables untouched; passing the addresses of the caller's variables lets the function dereference and modify the original memory locations directly.",
+    "question_type": "Coding",
+    "keywords": [
+      "swap function",
+      "pointers",
+      "pass by reference simulation"
+    ],
+    "starter_code": "void swap(int *a, int *b) {\n    // TODO\n}",
+    "expected_solution": "void swap(int *a, int *b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}",
+    "test_cases": [
+      {
+        "input": "x=1, y=2; swap(&x, &y)",
+        "expected_output": "x=2, y=1"
+      },
+      {
+        "input": "x=10, y=10; swap(&x, &y)",
+        "expected_output": "x=10, y=10 (no visible change since both inputs were equal, but the pointer-based swap logic still executes correctly)"
+      }
+    ]
+  },
+  {
+    "id": "c_088",
+    "technology": "C",
+    "topic": "Real-world C Questions",
+    "difficulty": "Medium",
+    "question": "Your embedded C program needs to read a sensor value into a fixed-size buffer received over a serial port, but the incoming data length varies. What is the safest way to write this in C to avoid a buffer overflow?",
+    "answer": "Always know and enforce the buffer's capacity explicitly: read at most (buffer_size - 1) bytes (reserving one byte for a null terminator if treating it as a string), check the actual number of bytes received before copying, and reject or truncate data that would exceed the buffer rather than trusting the incoming length blindly.",
+    "explanation": "This defensive pattern — always validating a length against a known buffer capacity before copying — is the core discipline that prevents the buffer overflows responsible for a large share of real-world C security vulnerabilities.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "buffer safety",
+      "embedded C",
+      "bounds checking"
+    ]
+  },
+  {
+    "id": "c_089",
+    "technology": "C",
+    "topic": "Real-world C Questions",
+    "difficulty": "Hard",
+    "question": "A long-running C server process's memory usage grows continuously over days even though request load is steady. What are the likely categories of bug to investigate, and how would you narrow it down?",
+    "answer": "The most likely cause is a memory leak: memory allocated per-request (or per-connection) that is not freed on every code path (including error/early-return paths), or a data structure (cache, list, hash map) that grows without an eviction/removal policy. To narrow it down, use a memory profiler like Valgrind's memcheck or AddressSanitizer's LeakSanitizer to identify exactly which allocation call sites' memory is never freed.",
+    "explanation": "Real leaks are often on rarely-hit error paths (e.g. an early `return` after malloc() but before the matching free()), which is why testing only the happy path can miss them.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "memory leak debugging",
+      "valgrind",
+      "production issue"
+    ]
+  },
+  {
+    "id": "c_090",
+    "technology": "C",
+    "topic": "Real-world C Questions",
+    "difficulty": "Medium",
+    "question": "Why is C still widely used for operating system kernels and embedded systems despite being a decades-old language?",
+    "answer": "C provides low-level control over memory and hardware (direct pointer manipulation, minimal runtime overhead, predictable performance) while still offering enough abstraction over raw assembly to be portable and maintainable; it has no garbage collector or heavyweight runtime, which matters for resource-constrained embedded devices and for kernels that must manage memory themselves.",
+    "explanation": "This is exactly why the Linux kernel, most microcontroller firmware, and other systems software are still written primarily in C — few other languages combine that level of control with such broad hardware/compiler support.",
+    "question_type": "Technical",
+    "keywords": [
+      "c use cases",
+      "systems programming",
+      "embedded systems"
+    ]
+  },
+  {
+    "id": "c_091",
+    "technology": "C",
+    "topic": "Real-world C Questions",
+    "difficulty": "Hard",
+    "question": "What is 'undefined behavior' in C, and why do compilers sometimes 'optimize based on' it in surprising ways?",
+    "answer": "Undefined behavior (UB) is behavior the C standard places no requirements on at all — e.g. signed integer overflow, dereferencing a NULL pointer, or reading an uninitialized variable — meaning literally anything (including seemingly nonsensical results) is a conforming outcome. Because UB is, by definition, assumed never to happen in a correct program, optimizing compilers are free to assume it doesn't occur and generate code that can behave unexpectedly (e.g. eliminating a NULL check that comes after a dereference of the same pointer, reasoning the pointer 'must' be non-NULL).",
+    "explanation": "This is why relying on 'my compiler happens to do X with this UB' is dangerous — a different compiler, or even the same compiler with different optimization flags, can produce different results.",
+    "question_type": "Technical",
+    "keywords": [
+      "undefined behavior",
+      "compiler optimization",
+      "signed overflow"
+    ]
+  },
+  {
+    "id": "c_092",
+    "technology": "C",
+    "topic": "Real-world C Questions",
+    "difficulty": "Medium",
+    "question": "A program segfaults intermittently only in release builds (optimizations on), but never in debug builds. What class of C bug commonly causes this pattern, and why does optimization level matter?",
+    "answer": "This pattern is a classic symptom of undefined behavior — such as use of an uninitialized variable, a subtle buffer overrun, or reliance on a specific (but not guaranteed) evaluation order — which debug builds happen to mask (e.g. debug allocators zero-initialize memory, or unoptimized code preserves a particular variable layout) while release-mode optimizations rearrange code and memory layout in ways that expose the latent bug.",
+    "explanation": "Tools like AddressSanitizer/UndefinedBehaviorSanitizer are specifically designed to catch this class of bug even in optimized builds, since 'it works in debug' is not proof of correctness in C.",
+    "question_type": "Debugging",
+    "keywords": [
+      "undefined behavior",
+      "release vs debug",
+      "sanitizers"
+    ],
+    "buggy_code": "int getValue(int flag) {\n    int result;\n    if (flag) {\n        result = 42;\n    }\n    return result; // used uninitialized if flag is 0\n}",
+    "fixed_code": "int getValue(int flag) {\n    int result = 0;\n    if (flag) {\n        result = 42;\n    }\n    return result;\n}"
+  },
+  {
+    "id": "c_093",
+    "technology": "C",
+    "topic": "C Basics",
+    "difficulty": "Medium",
+    "question": "Which of the following is NOT one of the four phases of building a C program?",
+    "answer": "Garbage collection",
+    "explanation": "C's build pipeline is preprocessing, compilation, assembly, and linking; C has no garbage collector phase — memory management is entirely manual via malloc/free.",
+    "question_type": "MCQ",
+    "keywords": [
+      "build phases",
+      "garbage collection"
+    ],
+    "options": [
+      "Preprocessing",
+      "Linking",
+      "Garbage collection",
+      "Assembly"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "c_094",
+    "technology": "C",
+    "topic": "Variables & Data Types",
+    "difficulty": "Medium",
+    "question": "Which format specifier is used to print a `double` with printf?",
+    "answer": "%f",
+    "explanation": "%f is used for both float and double when passed to printf (default argument promotion converts float to double when passed through variadic functions), while %lf is required only for scanf with a double.",
+    "question_type": "MCQ",
+    "keywords": [
+      "format specifiers",
+      "printf"
+    ],
+    "options": [
+      "%d",
+      "%f",
+      "%c",
+      "%s"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_095",
+    "technology": "C",
+    "topic": "Operators",
+    "difficulty": "Easy",
+    "question": "What is the result of `5 / 2` in C, where both operands are `int`?",
+    "answer": "2",
+    "explanation": "Integer division in C truncates toward zero, discarding the fractional part; 5 / 2 = 2.5 truncates to 2.",
+    "question_type": "MCQ",
+    "keywords": [
+      "integer division",
+      "truncation"
+    ],
+    "options": [
+      "2.5",
+      "2",
+      "3",
+      "2.0"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_096",
+    "technology": "C",
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question": "In a C `for` loop `for (init; condition; update)`, which part executes exactly once, before the loop begins?",
+    "answer": "init",
+    "explanation": "`init` runs a single time before the loop starts (typically to declare/initialize the loop variable); `condition` is checked before every iteration and `update` runs after every iteration.",
+    "question_type": "MCQ",
+    "keywords": [
+      "for loop",
+      "loop structure"
+    ],
+    "options": [
+      "condition",
+      "update",
+      "init",
+      "the loop body"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "c_097",
+    "technology": "C",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "What is the term for a function that calls itself?",
+    "answer": "Recursive function",
+    "explanation": "A function that calls itself, directly or indirectly (through another function), is called a recursive function.",
+    "question_type": "MCQ",
+    "keywords": [
+      "recursion",
+      "terminology"
+    ],
+    "options": [
+      "Inline function",
+      "Recursive function",
+      "Static function",
+      "Variadic function"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_098",
+    "technology": "C",
+    "topic": "Arrays",
+    "difficulty": "Medium",
+    "question": "What does `sizeof(arr) / sizeof(arr[0])` compute for a statically declared array `arr`?",
+    "answer": "The number of elements in the array",
+    "explanation": "sizeof(arr) gives the array's total size in bytes, and sizeof(arr[0]) gives one element's size; dividing gives the element count. This only works for actual arrays in the scope where they were declared — not for a pointer received as a function parameter, since it has decayed and sizeof would give the pointer's size instead.",
+    "question_type": "MCQ",
+    "keywords": [
+      "sizeof",
+      "array length idiom"
+    ],
+    "options": [
+      "The address of the array",
+      "The number of elements in the array",
+      "The size of one element",
+      "Always 1"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_099",
+    "technology": "C",
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question": "What is the value of an uninitialized global pointer variable in C?",
+    "answer": "NULL (0), because global/static variables are zero-initialized by default",
+    "explanation": "Unlike local (automatic) variables, which have indeterminate values if uninitialized, variables with static storage duration (globals and `static` locals) are guaranteed to be zero-initialized by the C standard if no explicit initializer is given.",
+    "question_type": "MCQ",
+    "keywords": [
+      "global variables",
+      "zero initialization",
+      "static storage duration"
+    ],
+    "options": [
+      "Indeterminate/garbage",
+      "NULL (0), because global/static variables are zero-initialized by default",
+      "Always points to main()",
+      "A compile error occurs"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_100",
+    "technology": "C",
+    "topic": "Strings",
+    "difficulty": "Medium",
+    "question": "Which function compares two C strings lexicographically?",
+    "answer": "strcmp",
+    "explanation": "strcmp(a, b) returns 0 if the strings are equal, a negative value if a < b lexicographically, and positive if a > b; using `==` on two char* only compares their pointer addresses, not their contents.",
+    "question_type": "MCQ",
+    "keywords": [
+      "strcmp",
+      "string comparison"
+    ],
+    "options": [
+      "strcpy",
+      "strcmp",
+      "strcat",
+      "strlen"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_101",
+    "technology": "C",
+    "topic": "Structures",
+    "difficulty": "Medium",
+    "question": "Can a struct in standard C (not C++) contain member functions?",
+    "answer": "No — C structs can only contain data members, not functions",
+    "explanation": "Unlike C++ classes/structs, a plain C struct is purely a data aggregate; any 'methods' operating on it must be written as separate free functions that take a pointer to the struct as a parameter.",
+    "question_type": "MCQ",
+    "keywords": [
+      "struct limitations",
+      "c vs c++"
+    ],
+    "options": [
+      "Yes, always",
+      "No — C structs can only contain data members, not functions",
+      "Only static ones",
+      "Only if compiled with a C++ compiler"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_102",
+    "technology": "C",
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question": "What does `realloc(ptr, newSize)` do?",
+    "answer": "Resizes a previously allocated memory block to newSize, possibly moving it, and returns a pointer to the (possibly new) block",
+    "explanation": "realloc attempts to resize in place if possible; if it can't, it allocates a new block, copies the old data over (up to the smaller of the old and new sizes), frees the old block, and returns the new pointer — which is why you must always assign the result to a variable rather than overwriting ptr directly before checking for failure.",
+    "question_type": "MCQ",
+    "keywords": [
+      "realloc",
+      "dynamic memory resizing"
+    ],
+    "options": [
+      "Frees the memory immediately",
+      "Resizes a previously allocated memory block to newSize, possibly moving it, and returns a pointer to the (possibly new) block",
+      "Allocates zero-initialized memory",
+      "Compacts the heap"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_103",
+    "technology": "C",
+    "topic": "File Handling",
+    "difficulty": "Medium",
+    "question": "Which fopen() mode opens a file for reading and writing, without truncating it, positioned at the start?",
+    "answer": "\"r+\"",
+    "explanation": "\"r+\" opens an existing file for both reading and writing without truncating its existing content; \"w+\" would truncate it, and plain \"r\" only allows reading.",
+    "question_type": "MCQ",
+    "keywords": [
+      "fopen modes"
+    ],
+    "options": [
+      "\"r\"",
+      "\"w\"",
+      "\"r+\"",
+      "\"a\""
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "c_104",
+    "technology": "C",
+    "topic": "Bit Manipulation",
+    "difficulty": "Medium",
+    "question": "What does the bitwise XOR of a number with itself always evaluate to?",
+    "answer": "0",
+    "explanation": "XOR (^) returns 1 only where corresponding bits differ; since a value compared with itself never differs bit-for-bit, `x ^ x` is always 0 for any x.",
+    "question_type": "MCQ",
+    "keywords": [
+      "xor",
+      "bitwise operators"
+    ],
+    "options": [
+      "1",
+      "0",
+      "x",
+      "-1"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "c_105",
+    "technology": "C",
+    "topic": "Enums",
+    "difficulty": "Medium",
+    "question": "Can you assign an arbitrary integer value to an enum variable in C, even if it doesn't match any named enumerator?",
+    "answer": "Yes — in C (unlike some other languages), an enum variable is just an int under the hood, so assigning an out-of-range integer compiles without error, though it defeats the readability purpose of using an enum.",
+    "explanation": "C provides no runtime enforcement that an enum variable only holds one of its named values; this is a known weak point compared to enums in more strictly-typed languages.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "enum limitations",
+      "type safety"
+    ]
+  },
+  {
+    "id": "c_106",
+    "technology": "C",
+    "topic": "Recursion",
+    "difficulty": "Medium",
+    "question": "Write a recursive C function `int sumDigits(int n)` that returns the sum of the digits of a non-negative integer n.",
+    "answer": "int sumDigits(int n) {\n    if (n == 0) return 0;\n    return (n % 10) + sumDigits(n / 10);\n}",
+    "explanation": "The base case is n == 0, returning 0; otherwise the function adds the last digit (n % 10) to the recursive result of summing the digits of the remaining number (n / 10, which drops the last digit).",
+    "question_type": "Coding",
+    "keywords": [
+      "digit sum",
+      "recursion"
+    ],
+    "starter_code": "int sumDigits(int n) {\n    // TODO\n}",
+    "expected_solution": "int sumDigits(int n) {\n    if (n == 0) return 0;\n    return (n % 10) + sumDigits(n / 10);\n}",
+    "test_cases": [
+      {
+        "input": "sumDigits(123)",
+        "expected_output": "6"
+      },
+      {
+        "input": "sumDigits(0)",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "c_107",
+    "technology": "C",
+    "topic": "C Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a C function `int findMax(int arr[], int n)` that returns the largest element in the array.",
+    "answer": "int findMax(int arr[], int n) {\n    int max = arr[0];\n    for (int i = 1; i < n; i++) {\n        if (arr[i] > max) max = arr[i];\n    }\n    return max;\n}",
+    "explanation": "The function starts with the first element as the current maximum, then scans the rest of the array, updating max whenever it finds a larger value.",
+    "question_type": "Coding",
+    "keywords": [
+      "max element",
+      "linear scan"
+    ],
+    "starter_code": "int findMax(int arr[], int n) {\n    // TODO\n}",
+    "expected_solution": "int findMax(int arr[], int n) {\n    int max = arr[0];\n    for (int i = 1; i < n; i++) {\n        if (arr[i] > max) max = arr[i];\n    }\n    return max;\n}",
+    "test_cases": [
+      {
+        "input": "findMax({3,7,2,9,4}, 5)",
+        "expected_output": "9"
+      },
+      {
+        "input": "findMax({5}, 1)",
+        "expected_output": "5"
+      }
+    ]
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which of these is NOT a valid C keyword?",
+    "options": [
+      "auto",
+      "register",
+      "friend",
+      "volatile"
+    ],
+    "correct_option": 2,
+    "answer": "friend",
+    "explanation": "`friend` is a C++ keyword (used to grant a class access to private members); C has no such keyword. `auto`, `register`, and `volatile` are all real C storage-class/type-qualifier keywords.",
+    "keywords": [
+      "keywords",
+      "c basics",
+      "friend"
+    ],
+    "id": "c_108",
+    "technology": "C"
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "What is the difference between a compiler and an interpreter, and which one does C use?",
+    "answer": "A compiler translates the entire source file into machine code ahead of time, producing an executable; an interpreter reads and executes source code line by line at runtime. C uses a compiler.",
+    "explanation": "Because C is compiled fully before execution, compile-time errors (syntax, type mismatches) are caught before the program ever runs, and the resulting binary runs without needing the compiler present.",
+    "keywords": [
+      "compiler",
+      "interpreter",
+      "compiled language"
+    ],
+    "id": "c_109",
+    "technology": "C"
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What are the four phases a C source file goes through to become an executable?",
+    "answer": "Preprocessing (macro expansion, file inclusion), compilation (source to assembly), assembly (assembly to object/machine code), and linking (combining object files and libraries into one executable).",
+    "explanation": "Understanding these phases explains errors like 'undefined reference' (a linker error, not a compiler error) versus 'undeclared identifier' (a compiler error).",
+    "keywords": [
+      "preprocessing",
+      "compilation",
+      "linking",
+      "build stages"
+    ],
+    "id": "c_110",
+    "technology": "C"
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A C program compiles with zero warnings under `-Wall` but crashes only on the target embedded device, never on the developer's desktop. What class of bug does this smell of, and why would warnings not catch it?",
+    "answer": "Undefined behavior that happens to 'work' on one platform's calling convention/memory layout/endianness but not another - e.g. reading an uninitialized variable, signed integer overflow, or a strict-aliasing violation.",
+    "explanation": "The C standard doesn't require compilers to detect most undefined behavior, and different compilers/architectures can produce different (still 'valid' per the standard) results for the same UB, which is exactly the kind of bug that appears to work by luck on one machine.",
+    "keywords": [
+      "undefined behavior",
+      "portability",
+      "platform-specific bug"
+    ],
+    "id": "c_111",
+    "technology": "C"
+  },
+  {
+    "topic": "Variables & Data Types",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which format specifier is used to print an `unsigned long` in printf?",
+    "options": [
+      "%d",
+      "%ld",
+      "%lu",
+      "%u"
+    ],
+    "correct_option": 2,
+    "answer": "%lu",
+    "explanation": "`%lu` combines the `l` length modifier (long) with `u` (unsigned) to match `unsigned long`; `%u` alone is for plain `unsigned int`, and using the wrong specifier is undefined behavior on many platforms.",
+    "keywords": [
+      "printf",
+      "format specifiers",
+      "unsigned long"
+    ],
+    "id": "c_112",
+    "technology": "C"
+  },
+  {
+    "topic": "Variables & Data Types",
+    "difficulty": "Medium",
+    "question_type": "Output Prediction",
+    "code_snippet": "#include <stdio.h>\nint main() {\n    unsigned int a = 3;\n    int b = -7;\n    printf(\"%d\\n\", a + b > 0);\n    return 0;\n}",
+    "question": "What does this program print, and why is the result surprising given `b` is negative?",
+    "answer": "1",
+    "explanation": "In `a + b`, the `int` operand `b` is implicitly converted to `unsigned int` (usual arithmetic conversions) before the addition, since `unsigned int` has equal or higher rank. `-7` becomes a huge unsigned value (UINT_MAX-6), so `3 + that` wraps around to `0`... actually let's trace precisely: as unsigned, -7 becomes UINT_MAX-6, adding 3 gives UINT_MAX-3, which is a large positive unsigned value, so the comparison `> 0` is true, printing 1.",
+    "keywords": [
+      "unsigned int",
+      "implicit conversion",
+      "usual arithmetic conversions"
+    ],
+    "id": "c_113",
+    "technology": "C"
+  },
+  {
+    "topic": "Variables & Data Types",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why is the size of `int` not guaranteed to be 4 bytes across all C implementations?",
+    "answer": "The C standard only guarantees minimum ranges (`int` must hold at least -32767 to 32767), not exact sizes - the actual size is implementation-defined and depends on the target architecture's natural word size (historically 2 bytes on 16-bit systems, commonly 4 bytes on 32/64-bit systems).",
+    "explanation": "This is why portable code that needs an exact width uses `<stdint.h>` types like `int32_t` instead of assuming `int` is always 4 bytes.",
+    "keywords": [
+      "int size",
+      "implementation-defined",
+      "stdint.h",
+      "portability"
+    ],
+    "id": "c_114",
+    "technology": "C"
+  },
+  {
+    "topic": "Variables & Data Types",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "What is the difference between declaring a variable and defining a variable in C?",
+    "answer": "A declaration tells the compiler a variable's type and name exist (e.g. `extern int x;`) without allocating storage; a definition actually allocates storage for it (e.g. `int x;`).",
+    "explanation": "A variable can be declared multiple times across files (via `extern`) but must be defined exactly once, which is why multiple definitions cause a linker error.",
+    "keywords": [
+      "declaration",
+      "definition",
+      "extern"
+    ],
+    "id": "c_115",
+    "technology": "C"
+  },
+  {
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question_type": "Output Prediction",
+    "code_snippet": "#include <stdio.h>\nint main() {\n    int i = 5;\n    printf(\"%d %d %d\\n\", i++, i, ++i);\n    return 0;\n}",
+    "question": "What does this program print (or is the output undefined)?",
+    "answer": "The output is unspecified/undefined behavior - the order of evaluation of function arguments is unsequenced in C, and this expression modifies `i` more than once between sequence points without a defined order.",
+    "explanation": "Different compilers can legally produce different results (e.g. `7 6 7` or `5 7 7`) for this exact code, which is why real code should never read and modify the same variable more than once in one expression without a sequence point.",
+    "keywords": [
+      "sequence points",
+      "undefined behavior",
+      "increment operators"
+    ],
+    "id": "c_116",
+    "technology": "C"
+  },
+  {
+    "topic": "Operators",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why does `a && b++` sometimes not increment `b` at all?",
+    "answer": "`&&` short-circuits: if `a` evaluates to false (0), the right-hand operand `b++` is never evaluated at all, so the increment never happens.",
+    "explanation": "This is a deliberate C guarantee (unlike the unsequenced-argument case above) - `&&` and `||` are sequence points that skip evaluating their right operand when the result is already determined by the left.",
+    "keywords": [
+      "short-circuit evaluation",
+      "logical and",
+      "side effects"
+    ],
+    "id": "c_117",
+    "technology": "C"
+  },
+  {
+    "topic": "Control Flow",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What happens if a `switch` statement's `case` block is missing a `break`?",
+    "options": [
+      "Compile error",
+      "Execution falls through to the next case",
+      "The switch exits immediately",
+      "Only the first matching case runs"
+    ],
+    "correct_option": 1,
+    "answer": "Execution falls through to the next case",
+    "explanation": "Without `break`, control flow 'falls through' and continues executing the statements of the next case label regardless of whether its condition matches - this is a common source of bugs, though occasionally used deliberately.",
+    "keywords": [
+      "switch",
+      "fall-through",
+      "break"
+    ],
+    "id": "c_118",
+    "technology": "C"
+  },
+  {
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "buggy_code": "for (unsigned int i = 10; i >= 0; i--) {\n    printf(\"%u\\n\", i);\n}",
+    "fixed_code": "for (int i = 10; i >= 0; i--) {\n    printf(\"%d\\n\", i);\n}",
+    "question": "This loop is meant to count down from 10 to 0 and stop, but it runs forever (or crashes with huge numbers). Find and fix the bug.",
+    "answer": "`i` is `unsigned int`, so it can never be negative - when `i` reaches 0 and decrements again, it wraps around to UINT_MAX instead of becoming -1, so `i >= 0` is always true.",
+    "explanation": "Using a signed loop counter (`int`) fixes it, since the loop naturally stops when `i` becomes -1 and fails the `>= 0` check.",
+    "keywords": [
+      "unsigned integer wraparound",
+      "infinite loop",
+      "loop counter"
+    ],
+    "id": "c_119",
+    "technology": "C"
+  },
+  {
+    "topic": "Control Flow",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A `goto`-based error-cleanup pattern is common in C (jumping to a single `cleanup:` label at the end of a function to free resources). Why is `goto` considered acceptable here when it's usually discouraged?",
+    "answer": "C has no exceptions or destructors, so without `goto`, cleanup code (freeing multiple resources acquired in sequence) would have to be duplicated at every early-return point; a single forward `goto` to a cleanup label centralizes it without the tangled control flow `goto` is usually criticized for.",
+    "explanation": "This pattern only jumps forward to one well-defined place and never backward or across scopes unpredictably, which avoids the 'spaghetti code' problem the original criticism of `goto` was about.",
+    "keywords": [
+      "goto",
+      "resource cleanup",
+      "error handling"
+    ],
+    "id": "c_120",
+    "technology": "C"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "What does it mean that C uses pass-by-value for function arguments?",
+    "answer": "A copy of the argument's value is passed into the function; changes made to the parameter inside the function do not affect the caller's original variable.",
+    "explanation": "To let a function modify a caller's variable, the caller must pass a pointer to it instead, so the function can dereference the pointer to modify the original memory.",
+    "keywords": [
+      "pass by value",
+      "function arguments",
+      "pointers"
+    ],
+    "id": "c_121",
+    "technology": "C"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What is the purpose of declaring a function prototype before `main()`?",
+    "options": [
+      "It makes the function run faster",
+      "It tells the compiler the function's signature so calls can be type-checked before the definition appears",
+      "It is required by the C standard for every function",
+      "It allows the function to be recursive"
+    ],
+    "correct_option": 1,
+    "answer": "It tells the compiler the function's signature so calls can be type-checked before the definition appears",
+    "explanation": "Without a prototype, older C compilers assume an implicit `int` return type and no argument checking, which can silently produce wrong code if the actual definition disagrees.",
+    "keywords": [
+      "function prototype",
+      "forward declaration"
+    ],
+    "id": "c_122",
+    "technology": "C"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why can returning a pointer to a local (stack) variable from a function cause undefined behavior?",
+    "answer": "The local variable's storage is deallocated when the function returns (its stack frame is popped), so the returned pointer becomes a dangling pointer - dereferencing it afterward reads memory that may have already been overwritten by other function calls.",
+    "explanation": "The fix is to either return the value itself (not a pointer to it), use `static` storage (at the cost of losing reentrancy), or have the caller pass in a buffer / the function allocate on the heap.",
+    "keywords": [
+      "dangling pointer",
+      "stack frame",
+      "local variable lifetime"
+    ],
+    "id": "c_123",
+    "technology": "C"
+  },
+  {
+    "topic": "Recursion",
+    "difficulty": "Easy",
+    "question_type": "Coding",
+    "starter_code": "int factorial(int n) {\n    // TODO\n}",
+    "question": "Write a recursive function `factorial(int n)` that returns n! (assume n >= 0).",
+    "expected_solution": "int factorial(int n) {\n    if (n <= 1) return 1;\n    return n * factorial(n - 1);\n}",
+    "test_cases": [
+      {
+        "input": "factorial(5)",
+        "expected_output": "120"
+      },
+      {
+        "input": "factorial(0)",
+        "expected_output": "1"
+      }
+    ],
+    "answer": "int factorial(int n) { if (n <= 1) return 1; return n * factorial(n - 1); }",
+    "explanation": "The base case `n <= 1` stops the recursion; each recursive call reduces `n` by 1, guaranteeing termination.",
+    "keywords": [
+      "recursion",
+      "base case",
+      "factorial"
+    ],
+    "id": "c_124",
+    "technology": "C"
+  },
+  {
+    "topic": "Recursion",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is tail recursion, and does standard C guarantee tail-call optimization?",
+    "answer": "Tail recursion is when the recursive call is the very last operation in the function (nothing happens after it returns). No - the C standard does not require tail-call optimization; whether a compiler eliminates the extra stack frame is purely a compiler/optimization-level decision.",
+    "explanation": "This matters because a 'tail recursive' function can still overflow the stack on a standards-conforming but non-optimizing compiler, unlike languages (e.g. Scheme) that mandate TCO.",
+    "keywords": [
+      "tail recursion",
+      "tail call optimization",
+      "stack overflow"
+    ],
+    "id": "c_125",
+    "technology": "C"
+  },
+  {
+    "topic": "Recursion",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A recursive function that computes Fibonacci numbers becomes extremely slow for n around 40, even though each call does trivial work. Why, and what's the standard fix?",
+    "answer": "The naive recursive Fibonacci recomputes the same subproblems exponentially many times (fib(n) calls fib(n-1) and fib(n-2), which each recompute overlapping subtrees) - time complexity is O(2^n). The fix is memoization (caching already-computed results) or an iterative bottom-up approach, both O(n).",
+    "explanation": "This is the classic example of recursion without memoization causing exponential blowup from redundant recomputation, not from any single call being slow.",
+    "keywords": [
+      "fibonacci",
+      "exponential recursion",
+      "memoization"
+    ],
+    "id": "c_126",
+    "technology": "C"
+  },
+  {
+    "topic": "Arrays",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What is the value of `arr[2]` after `int arr[5] = {1, 2};`?",
+    "options": [
+      "Garbage/undefined",
+      "2",
+      "0",
+      "Compile error"
+    ],
+    "correct_option": 2,
+    "answer": "0",
+    "explanation": "When an array is partially initialized with an initializer list, C guarantees every remaining element is zero-initialized, so `arr` becomes `{1, 2, 0, 0, 0}`.",
+    "keywords": [
+      "array initialization",
+      "zero-initialization"
+    ],
+    "id": "c_127",
+    "technology": "C"
+  },
+  {
+    "topic": "Arrays",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why does `sizeof(arr) / sizeof(arr[0])` correctly give the number of elements for an array, but not for a pointer to the first element?",
+    "answer": "`sizeof(arr)` on an actual array gives the total byte size of the whole array (element size * count), so dividing by one element's size gives the count. But once an array decays to a pointer (e.g. when passed to a function), `sizeof(ptr)` only gives the pointer's own size (4 or 8 bytes), which has nothing to do with how many elements it points to.",
+    "explanation": "This is why this idiom silently breaks (giving a wrong small number) if used inside a function that received the array as a parameter, since the parameter is really just a pointer.",
+    "keywords": [
+      "sizeof",
+      "array decay",
+      "pointer vs array"
+    ],
+    "id": "c_128",
+    "technology": "C"
+  },
+  {
+    "topic": "Arrays",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "buggy_code": "int arr[5] = {1,2,3,4,5};\nfor (int i = 0; i <= 5; i++) {\n    printf(\"%d\\n\", arr[i]);\n}",
+    "fixed_code": "int arr[5] = {1,2,3,4,5};\nfor (int i = 0; i < 5; i++) {\n    printf(\"%d\\n\", arr[i]);\n}",
+    "question": "This loop is supposed to print all 5 elements of `arr` but reads out of bounds. Find and fix the bug.",
+    "answer": "The loop condition `i <= 5` allows `i` to reach 5, but valid indices for a 5-element array are only 0-4; `arr[5]` reads one past the end of the array (undefined behavior).",
+    "explanation": "Changing the condition to `i < 5` (or `i < size` in general) is the standard off-by-one fix.",
+    "keywords": [
+      "off-by-one",
+      "array bounds",
+      "buffer overrun"
+    ],
+    "id": "c_129",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointers",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "What does the `*` mean when used in a variable declaration like `int *p;` versus in an expression like `*p = 5;`?",
+    "answer": "In a declaration, `*` marks `p` as a pointer type (\"p is a pointer to int\"). In an expression, `*p` is the dereference operator, meaning \"the int value at the address p points to\".",
+    "explanation": "This dual use of `*` (declaration vs. dereference) is a frequent source of confusion for beginners since the same symbol means two different things depending on context.",
+    "keywords": [
+      "pointer declaration",
+      "dereference operator"
+    ],
+    "id": "c_130",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What does a `NULL` pointer represent in C?",
+    "options": [
+      "A pointer to memory address 0 that always exists",
+      "A special pointer value guaranteed not to point to any valid object",
+      "The same thing as an uninitialized pointer",
+      "A pointer to the first byte of the stack"
+    ],
+    "correct_option": 1,
+    "answer": "A special pointer value guaranteed not to point to any valid object",
+    "explanation": "`NULL` is a guaranteed sentinel value used to indicate 'this pointer intentionally points to nothing'; dereferencing it is undefined behavior (commonly a crash), and it's distinct from an uninitialized pointer, which holds an indeterminate (garbage) value.",
+    "keywords": [
+      "null pointer",
+      "pointer semantics"
+    ],
+    "id": "c_131",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointers",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "What is a dangling pointer, and name two common ways one is created.",
+    "answer": "A dangling pointer points to memory that has been freed or has gone out of scope, so the memory it references is no longer valid to use. Common causes: (1) calling `free()` on a pointer and continuing to use it without setting it to NULL, and (2) returning the address of a local (stack) variable from a function.",
+    "explanation": "Using a dangling pointer is undefined behavior - it might appear to 'work' by luck if the memory hasn't been reused yet, making the bug intermittent and hard to reproduce.",
+    "keywords": [
+      "dangling pointer",
+      "use after free",
+      "stack variable lifetime"
+    ],
+    "id": "c_132",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointer Arithmetic",
+    "difficulty": "Medium",
+    "question_type": "Output Prediction",
+    "code_snippet": "#include <stdio.h>\nint main() {\n    int arr[4] = {10, 20, 30, 40};\n    int *p = arr;\n    printf(\"%d\\n\", *(p + 2));\n    return 0;\n}",
+    "question": "What does this program print, given pointer arithmetic on an int array?",
+    "answer": "30",
+    "explanation": "`p + 2` advances the pointer by 2 * sizeof(int) bytes (not 2 raw bytes), landing on `arr[2]`, which holds 30. Pointer arithmetic is automatically scaled by the pointed-to type's size.",
+    "keywords": [
+      "pointer arithmetic",
+      "array indexing"
+    ],
+    "id": "c_133",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointer Arithmetic",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why is subtracting two unrelated pointers (pointing into two different arrays) undefined behavior, while subtracting two pointers into the SAME array is well-defined?",
+    "answer": "Pointer subtraction is only defined when both pointers point into the same array (or one past its end) - the result is the number of elements between them. If the pointers belong to unrelated memory regions, there's no meaningful 'element distance' between them, and the standard leaves the result undefined.",
+    "explanation": "This matters because two pointers happening to have addresses close together (e.g. two separate local variables) does NOT make subtracting them meaningful or portable, even though it would 'compile and run'.",
+    "keywords": [
+      "pointer subtraction",
+      "same array requirement",
+      "undefined behavior"
+    ],
+    "id": "c_134",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointer Arithmetic",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Given `int *p;` pointing into an `int` array, what does `p++` actually do to the underlying address?",
+    "options": [
+      "Adds 1 byte",
+      "Adds sizeof(int) bytes",
+      "Adds sizeof(int*) bytes",
+      "It's a compile error on pointers"
+    ],
+    "correct_option": 1,
+    "answer": "Adds sizeof(int) bytes",
+    "explanation": "Incrementing a pointer moves it forward by exactly one element of its pointed-to type, i.e. `sizeof(int)` bytes (commonly 4), not one raw byte.",
+    "keywords": [
+      "pointer increment",
+      "pointer arithmetic scaling"
+    ],
+    "id": "c_135",
+    "technology": "C"
+  },
+  {
+    "topic": "Strings",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "Why does a C string literal `\"hello\"` actually occupy 6 bytes in memory, not 5?",
+    "answer": "C strings are null-terminated - a hidden `'\\0'` character is automatically appended after the visible characters to mark the end of the string, so `\"hello\"` is stored as `{'h','e','l','l','o','\\0'}`.",
+    "explanation": "Every C string function (strlen, strcpy, printf's %s, etc.) relies on scanning until it finds this null terminator to know where the string ends.",
+    "keywords": [
+      "null terminator",
+      "string literal",
+      "c strings"
+    ],
+    "id": "c_136",
+    "technology": "C"
+  },
+  {
+    "topic": "Strings",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "buggy_code": "char dest[5];\nstrcpy(dest, \"hello world\");",
+    "fixed_code": "char dest[12];\nstrncpy(dest, \"hello world\", sizeof(dest) - 1);\ndest[sizeof(dest) - 1] = '\\0';",
+    "question": "This code causes a buffer overflow. Identify the bug and fix it.",
+    "answer": "`dest` is only 5 bytes but `strcpy` copies \"hello world\" (12 bytes including the null terminator) into it without any bounds checking, overflowing the buffer and corrupting adjacent memory.",
+    "explanation": "The fix is to size the destination buffer correctly (or use a length-bounded copy like `strncpy`/`snprintf` and manually ensure null-termination, since `strncpy` doesn't always null-terminate if the source is too long).",
+    "keywords": [
+      "buffer overflow",
+      "strcpy",
+      "strncpy"
+    ],
+    "id": "c_137",
+    "technology": "C"
+  },
+  {
+    "topic": "Strings",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why is modifying a string literal like `char *s = \"hello\"; s[0] = 'H';` undefined behavior, while `char s[] = \"hello\"; s[0] = 'H';` is fine?",
+    "answer": "`char *s = \"hello\"` points `s` at a string literal, which many implementations place in read-only memory - writing to it is undefined behavior (often a segfault). `char s[]` instead copies the literal's characters into a newly allocated, writable array on the stack, so modifying it is safe.",
+    "explanation": "This distinction (pointer-to-literal vs. array-copy-of-literal) is one of the most common sources of confusing crashes for C beginners, since both declarations look similar and the buggy version often 'compiles fine'.",
+    "keywords": [
+      "string literal",
+      "read-only memory",
+      "array vs pointer"
+    ],
+    "id": "c_138",
+    "technology": "C"
+  },
+  {
+    "topic": "Structures",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "How do you access a member `age` through a pointer `p` to a `struct Person`?",
+    "options": [
+      "p.age",
+      "p->age",
+      "*p.age",
+      "p::age"
+    ],
+    "correct_option": 1,
+    "answer": "p->age",
+    "explanation": "The `->` operator dereferences the pointer and accesses the member in one step; `p.age` would only be valid if `p` itself were a struct, not a pointer to one.",
+    "keywords": [
+      "struct pointer",
+      "arrow operator"
+    ],
+    "id": "c_139",
+    "technology": "C"
+  },
+  {
+    "topic": "Structures",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is structure padding, and why might `sizeof(struct { char a; int b; })` be 8 instead of 5?",
+    "answer": "Compilers insert padding bytes between struct members so each member is aligned to an address boundary matching its natural alignment requirement (e.g. an `int` typically needs 4-byte alignment). Here, 3 padding bytes are inserted after `char a` so `int b` starts on a 4-byte boundary, making the total 8 bytes (1 + 3 padding + 4).",
+    "explanation": "This is why reordering struct members (e.g. putting larger types first) can reduce a struct's total size - it's a common memory-optimization technique in performance-sensitive C code.",
+    "keywords": [
+      "structure padding",
+      "memory alignment",
+      "struct size"
+    ],
+    "id": "c_140",
+    "technology": "C"
+  },
+  {
+    "topic": "Structures",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "Two C programs on different machines exchange a struct by writing its raw bytes to a file and reading them back. It works on one machine but reads garbage on another. What's the likely cause?",
+    "answer": "Differing struct padding/alignment rules and/or byte-order (endianness) between the two machines/compilers - the raw byte layout of a struct is NOT guaranteed to be identical across different compilers or architectures.",
+    "explanation": "The fix is to serialize the struct explicitly field-by-field into a defined wire format (e.g. fixed-width integers in a specified byte order) instead of dumping raw memory, which is inherently non-portable.",
+    "keywords": [
+      "struct serialization",
+      "endianness",
+      "portability"
+    ],
+    "id": "c_141",
+    "technology": "C"
+  },
+  {
+    "topic": "Unions",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "How does the memory layout of a `union` differ from a `struct` with the same members?",
+    "answer": "All members of a `union` share the SAME memory location (the union's size is that of its largest member), so writing to one member overwrites the others; a `struct`'s members each have their own separate memory location.",
+    "explanation": "This means a union can only meaningfully hold one of its members' values at a time, unlike a struct which holds all of them simultaneously.",
+    "keywords": [
+      "union",
+      "struct",
+      "shared memory"
+    ],
+    "id": "c_142",
+    "technology": "C"
+  },
+  {
+    "topic": "Unions",
+    "difficulty": "Medium",
+    "question_type": "Output Prediction",
+    "code_snippet": "#include <stdio.h>\nunion U { int i; float f; };\nint main() {\n    union U u;\n    u.i = 1;\n    printf(\"%d\\n\", sizeof(u) == sizeof(int));\n    return 0;\n}",
+    "question": "Assuming `int` and `float` are both 4 bytes on this platform, what does this print?",
+    "answer": "1",
+    "explanation": "A union's size equals its largest member's size (with possible padding); since both `int` and `float` are 4 bytes here, `sizeof(u)` is 4, equal to `sizeof(int)`, so the comparison is true (prints 1).",
+    "keywords": [
+      "union size",
+      "sizeof"
+    ],
+    "id": "c_143",
+    "technology": "C"
+  },
+  {
+    "topic": "Unions",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why is 'type punning' via a union (writing one member, reading a different one) technically undefined behavior in standard C, even though many compilers support it as an extension?",
+    "answer": "The C standard says reading a union member other than the one most recently written is undefined behavior (with a narrow historical exception for common initial members of structs within unions), though in practice GCC/Clang explicitly document and support this pattern as a well-defined extension for byte-level reinterpretation.",
+    "explanation": "This is why 'union type punning' works reliably in practice on mainstream compilers but is not something the ISO C standard itself guarantees - portable code should be aware it relies on a widely-supported extension rather than pure standard C.",
+    "keywords": [
+      "type punning",
+      "union",
+      "undefined behavior",
+      "compiler extension"
+    ],
+    "id": "c_144",
+    "technology": "C"
+  },
+  {
+    "topic": "Enums",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What is the default underlying type of a C `enum`?",
+    "options": [
+      "unsigned char",
+      "int (or a compatible integer type chosen by the compiler)",
+      "long long",
+      "It has no underlying type"
+    ],
+    "correct_option": 1,
+    "answer": "int (or a compatible integer type chosen by the compiler)",
+    "explanation": "C enums are essentially named integer constants; the standard lets the compiler pick any integer type able to represent all the enumerator values, but it's commonly `int` in practice.",
+    "keywords": [
+      "enum",
+      "underlying type"
+    ],
+    "id": "c_145",
+    "technology": "C"
+  },
+  {
+    "topic": "Enums",
+    "difficulty": "Medium",
+    "question_type": "Output Prediction",
+    "code_snippet": "#include <stdio.h>\nenum Color { RED, GREEN = 5, BLUE };\nint main() {\n    printf(\"%d\\n\", BLUE);\n    return 0;\n}",
+    "question": "What does this program print, given an enum with an explicitly assigned value partway through?",
+    "answer": "6",
+    "explanation": "`RED` defaults to 0, `GREEN` is explicitly set to 5, and `BLUE` (with no explicit value) continues from the previous enumerator + 1, so `BLUE` is 6.",
+    "keywords": [
+      "enum values",
+      "auto-increment"
+    ],
+    "id": "c_146",
+    "technology": "C"
+  },
+  {
+    "topic": "Enums",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why can two different enum constants in C be compared equal even if they were declared in completely unrelated enums?",
+    "answer": "C enums are not strongly typed distinct types the way they are in some other languages - the compiler treats enum constants as plain integers, so `enum Color { RED }` and `enum Status { OK }` where both happen to equal 0 will compare equal (`RED == OK` is true) with no type error.",
+    "explanation": "This lack of type safety is a well-known weakness of C enums compared to C++'s `enum class`, and is a common source of accidental bugs when passing the wrong enum's value into a function expecting a different one.",
+    "keywords": [
+      "enum type safety",
+      "weak typing"
+    ],
+    "id": "c_147",
+    "technology": "C"
+  },
+  {
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which function is used to release memory allocated with `malloc()`?",
+    "options": [
+      "delete()",
+      "release()",
+      "free()",
+      "dealloc()"
+    ],
+    "correct_option": 2,
+    "answer": "free()",
+    "explanation": "`free()` is the C standard library function that returns dynamically allocated memory back to the heap allocator; `delete` is a C++ operator, not part of C.",
+    "keywords": [
+      "free",
+      "malloc",
+      "dynamic memory"
+    ],
+    "id": "c_148",
+    "technology": "C"
+  },
+  {
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "buggy_code": "int *p = malloc(sizeof(int));\nfree(p);\nfree(p);",
+    "fixed_code": "int *p = malloc(sizeof(int));\nfree(p);\np = NULL;",
+    "question": "This code causes a 'double free' bug. Fix it.",
+    "answer": "Calling `free()` twice on the same pointer is undefined behavior (often heap corruption or a crash) because the memory was already returned to the allocator after the first call.",
+    "explanation": "Setting the pointer to `NULL` immediately after freeing it is the standard defensive practice - `free(NULL)` is explicitly defined as a safe no-op, so an accidental second free becomes harmless.",
+    "keywords": [
+      "double free",
+      "heap corruption",
+      "dangling pointer"
+    ],
+    "id": "c_149",
+    "technology": "C"
+  },
+  {
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "What is a memory leak in C, and why doesn't the language detect or prevent it automatically?",
+    "answer": "A memory leak occurs when dynamically allocated memory (via malloc/calloc/realloc) is never freed before all pointers to it go out of scope, making it permanently unreachable and unreclaimable until the program exits. C has no garbage collector or automatic memory management - the programmer is fully responsible for pairing every allocation with exactly one corresponding free.",
+    "explanation": "This manual memory model gives C predictable, low-overhead performance but shifts the burden of correctness entirely onto the developer, which is why tools like Valgrind exist specifically to detect leaks.",
+    "keywords": [
+      "memory leak",
+      "manual memory management",
+      "malloc/free pairing"
+    ],
+    "id": "c_150",
+    "technology": "C"
+  },
+  {
+    "topic": "File Handling",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which `fopen` mode opens a file for writing, creating it if it doesn't exist, and truncating it if it does?",
+    "options": [
+      "\"r\"",
+      "\"a\"",
+      "\"w\"",
+      "\"r+\""
+    ],
+    "correct_option": 2,
+    "answer": "\"w\"",
+    "explanation": "Mode `\"w\"` creates the file if missing and truncates (empties) it if it already exists; `\"a\"` appends without truncating, and `\"r\"` only opens for reading (fails if the file doesn't exist).",
+    "keywords": [
+      "fopen modes",
+      "file writing"
+    ],
+    "id": "c_151",
+    "technology": "C"
+  },
+  {
+    "topic": "File Handling",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why should the return value of `fopen()` always be checked before using the returned `FILE*`?",
+    "answer": "`fopen()` returns `NULL` if the file could not be opened (e.g. it doesn't exist, or permissions are insufficient); dereferencing/using a NULL `FILE*` in subsequent calls like `fread`/`fprintf` is undefined behavior, typically crashing the program.",
+    "explanation": "Robust C file-handling code always checks `if (fp == NULL) { /* handle error */ }` immediately after `fopen` before proceeding.",
+    "keywords": [
+      "fopen",
+      "null check",
+      "error handling"
+    ],
+    "id": "c_152",
+    "technology": "C"
+  },
+  {
+    "topic": "File Handling",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A program writes data to a file, but when it crashes right after `fwrite()` (before `fclose()`), the file on disk is sometimes incomplete/empty. Why?",
+    "answer": "`fwrite()` writes to a user-space buffer maintained by the C standard library, not necessarily straight to disk; the buffer is only guaranteed to be flushed to the OS on `fclose()` (or an explicit `fflush()`), so a crash before that point can lose buffered-but-unflushed data.",
+    "explanation": "For crash-safety-critical writes, code should call `fflush()` (and potentially `fsync`-equivalent OS calls) after critical writes rather than relying on `fclose()` happening normally.",
+    "keywords": [
+      "file buffering",
+      "fflush",
+      "data loss on crash"
+    ],
+    "id": "c_153",
+    "technology": "C"
+  },
+  {
+    "topic": "Preprocessor Directives & Macros",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "What does the `#include` directive actually do?",
+    "answer": "It tells the preprocessor to textually paste the entire contents of the named file in place of the `#include` line, before actual compilation begins.",
+    "explanation": "This is why circular or repeated includes can cause 'redefinition' errors without include guards (`#ifndef`/`#define`/`#endif`) or `#pragma once`.",
+    "keywords": [
+      "include directive",
+      "preprocessor",
+      "textual substitution"
+    ],
+    "id": "c_154",
+    "technology": "C"
+  },
+  {
+    "topic": "Preprocessor Directives & Macros",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "buggy_code": "#define SQUARE(x) x * x\nint result = 100 / SQUARE(2 + 3);",
+    "fixed_code": "#define SQUARE(x) ((x) * (x))\nint result = 100 / SQUARE(2 + 3);",
+    "question": "The programmer expected `result` to be `100 / 25 = 4`, but got a different value. Why, and how do you fix the macro?",
+    "answer": "The macro expands textually to `100 / 2 + 3 * 2 + 3`, which due to operator precedence evaluates as `(100/2) + (3*2) + 3 = 50 + 6 + 3 = 59`, not `100/25`.",
+    "explanation": "Wrapping both the parameter and the whole macro body in parentheses (`((x) * (x))`) forces correct expansion regardless of what expression is passed in or what surrounds the macro call - this is a standard, essential macro-safety habit.",
+    "keywords": [
+      "macro expansion",
+      "operator precedence",
+      "parenthesize macros"
+    ],
+    "id": "c_155",
+    "technology": "C"
+  },
+  {
+    "topic": "Preprocessor Directives & Macros",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why are `inline` functions generally preferred over function-like macros in modern C, despite macros having zero function-call overhead too?",
+    "answer": "Macros do pure textual substitution with no type checking, no scoping, and can silently misbehave with side-effecting arguments (e.g. `SQUARE(i++)` evaluates `i++` twice); `inline` functions are real functions with proper type checking, scoping, and single-evaluation-of-arguments semantics, while still allowing the compiler to eliminate call overhead.",
+    "explanation": "This is why style guides for modern C (C99 and later, once `inline` became standard) generally recommend inline functions over macros for anything beyond simple constant definitions.",
+    "keywords": [
+      "inline functions",
+      "macros",
+      "type safety"
+    ],
+    "id": "c_156",
+    "technology": "C"
+  },
+  {
+    "topic": "Storage Classes",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What is the default value of a `static` local variable if not explicitly initialized?",
+    "options": [
+      "Garbage/indeterminate",
+      "0",
+      "Whatever was in that memory previously",
+      "Compile error - must be initialized"
+    ],
+    "correct_option": 1,
+    "answer": "0",
+    "explanation": "Unlike ordinary (automatic) local variables, `static` variables are guaranteed to be zero-initialized by default if no explicit initializer is given, because they live in the program's static/BSS data segment, not the stack.",
+    "keywords": [
+      "static variable",
+      "zero initialization"
+    ],
+    "id": "c_157",
+    "technology": "C"
+  },
+  {
+    "topic": "Storage Classes",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "How does a `static` local variable inside a function differ in lifetime from a normal (automatic) local variable?",
+    "answer": "A normal local variable is created on the stack when the function is entered and destroyed when it returns; a `static` local variable is allocated once (persists for the entire program's lifetime) and retains its value between separate calls to the function.",
+    "explanation": "This makes `static` locals useful for things like call counters, but also introduces state that makes the function non-reentrant (unsafe to call from multiple threads simultaneously without synchronization).",
+    "keywords": [
+      "static local variable",
+      "variable lifetime",
+      "reentrancy"
+    ],
+    "id": "c_158",
+    "technology": "C"
+  },
+  {
+    "topic": "Storage Classes",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "What does `static` mean when applied to a function or global variable at file scope (as opposed to inside a function)?",
+    "answer": "At file scope, `static` gives the function or variable INTERNAL linkage - it becomes visible only within that translation unit (source file) and cannot be referenced from other files via `extern`, unlike the default `extern` (external) linkage.",
+    "explanation": "This is commonly used to create 'private' helper functions/variables in a `.c` file that shouldn't leak into the program's global symbol table, reducing naming collisions across a large codebase.",
+    "keywords": [
+      "static linkage",
+      "internal linkage",
+      "file scope"
+    ],
+    "id": "c_159",
+    "technology": "C"
+  },
+  {
+    "topic": "Bit Manipulation",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What does the expression `x & 1` test for?",
+    "options": [
+      "Whether x is negative",
+      "Whether x is even",
+      "Whether x is odd (its least significant bit is 1)",
+      "Whether x is zero"
+    ],
+    "correct_option": 2,
+    "answer": "Whether x is odd (its least significant bit is 1)",
+    "explanation": "ANDing with 1 isolates just the lowest bit; that bit is 1 exactly when the number is odd in standard binary representation.",
+    "keywords": [
+      "bitwise and",
+      "parity check",
+      "least significant bit"
+    ],
+    "id": "c_160",
+    "technology": "C"
+  },
+  {
+    "topic": "Bit Manipulation",
+    "difficulty": "Medium",
+    "question_type": "Coding",
+    "starter_code": "int countSetBits(unsigned int n) {\n    // TODO\n}",
+    "question": "Write a function that counts the number of 1-bits (set bits) in an unsigned integer.",
+    "expected_solution": "int countSetBits(unsigned int n) {\n    int count = 0;\n    while (n) {\n        count += n & 1;\n        n >>= 1;\n    }\n    return count;\n}",
+    "test_cases": [
+      {
+        "input": "countSetBits(7)",
+        "expected_output": "3 (binary 111)"
+      },
+      {
+        "input": "countSetBits(8)",
+        "expected_output": "1 (binary 1000)"
+      }
+    ],
+    "answer": "int countSetBits(unsigned int n) { int count = 0; while (n) { count += n & 1; n >>= 1; } return count; }",
+    "explanation": "Each iteration checks the lowest bit with `& 1` then shifts right, examining every bit exactly once until `n` becomes 0.",
+    "keywords": [
+      "set bits",
+      "bit counting",
+      "shift operators"
+    ],
+    "id": "c_161",
+    "technology": "C"
+  },
+  {
+    "topic": "Bit Manipulation",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why is right-shifting a negative signed integer (e.g. `-8 >> 1`) implementation-defined behavior in C, unlike right-shifting an unsigned integer?",
+    "answer": "For unsigned integers, `>>` is always a logical shift (fills with zeros). For SIGNED integers, the C standard leaves it up to the implementation whether a right shift is arithmetic (sign-extends, filling with the sign bit) or logical (fills with zeros) - though in practice, nearly all modern compilers/CPUs perform arithmetic shift for signed negative values.",
+    "explanation": "Portable code that needs a guaranteed bit pattern result should operate on unsigned types rather than relying on this implementation-defined signed-shift behavior.",
+    "keywords": [
+      "arithmetic shift",
+      "logical shift",
+      "implementation-defined behavior"
+    ],
+    "id": "c_162",
+    "technology": "C"
+  },
+  {
+    "topic": "Command Line Arguments",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "In `int main(int argc, char *argv[])`, what do `argc` and `argv[0]` represent?",
+    "answer": "`argc` is the count of command-line arguments (including the program name itself); `argv[0]` is conventionally the name/path used to invoke the program.",
+    "explanation": "So a program run as `./prog hello world` has `argc == 3` and `argv[0] == \"./prog\"`, `argv[1] == \"hello\"`, `argv[2] == \"world\"`.",
+    "keywords": [
+      "argc",
+      "argv",
+      "command line arguments"
+    ],
+    "id": "c_163",
+    "technology": "C"
+  },
+  {
+    "topic": "Command Line Arguments",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "buggy_code": "int main(int argc, char *argv[]) {\n    int n = atoi(argv[1]);\n    printf(\"%d\\n\", n);\n    return 0;\n}",
+    "fixed_code": "int main(int argc, char *argv[]) {\n    if (argc < 2) { fprintf(stderr, \"Usage: %s <number>\\n\", argv[0]); return 1; }\n    int n = atoi(argv[1]);\n    printf(\"%d\\n\", n);\n    return 0;\n}",
+    "question": "This program crashes when run with no arguments. Why, and how should it be fixed?",
+    "answer": "With no arguments, `argc` is 1 and `argv[1]` doesn't exist (accessing it is undefined behavior/out of bounds), so dereferencing it inside `atoi` crashes or reads garbage.",
+    "explanation": "The fix is to always validate `argc` is large enough before indexing into `argv` beyond `argv[0]`.",
+    "keywords": [
+      "argv bounds",
+      "argc validation",
+      "command line parsing"
+    ],
+    "id": "c_164",
+    "technology": "C"
+  },
+  {
+    "topic": "Linked Lists in C",
+    "difficulty": "Medium",
+    "question_type": "Coding",
+    "starter_code": "struct Node { int data; struct Node *next; };\nstruct Node* reverseList(struct Node *head) {\n    // TODO\n}",
+    "question": "Write a function that reverses a singly linked list in place and returns the new head.",
+    "expected_solution": "struct Node* reverseList(struct Node *head) {\n    struct Node *prev = NULL, *curr = head, *next;\n    while (curr != NULL) {\n        next = curr->next;\n        curr->next = prev;\n        prev = curr;\n        curr = next;\n    }\n    return prev;\n}",
+    "test_cases": [
+      {
+        "input": "list 1->2->3->NULL",
+        "expected_output": "3->2->1->NULL"
+      },
+      {
+        "input": "empty list (head=NULL)",
+        "expected_output": "NULL"
+      }
+    ],
+    "answer": "Iteratively rewire each node's `next` pointer to point to the previous node, tracking prev/curr/next.",
+    "explanation": "Each node's `next` is redirected backward one at a time; `prev` ends up pointing at the old tail, which becomes the new head once the loop finishes.",
+    "keywords": [
+      "linked list",
+      "reverse list",
+      "pointer manipulation"
+    ],
+    "id": "c_165",
+    "technology": "C"
+  },
+  {
+    "topic": "Linked Lists in C",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "How does Floyd's cycle detection algorithm (\"tortoise and hare\") detect a cycle in a linked list without extra memory?",
+    "answer": "Two pointers traverse the list at different speeds - a slow pointer moves one node at a time, a fast pointer moves two nodes at a time. If there is a cycle, the fast pointer will eventually 'lap' the slow pointer and they will point to the same node; if there's no cycle, the fast pointer reaches NULL first.",
+    "explanation": "This runs in O(n) time and O(1) extra space, unlike a hash-set-based approach which needs O(n) extra memory to track visited nodes.",
+    "keywords": [
+      "floyd cycle detection",
+      "linked list cycle",
+      "two pointer technique"
+    ],
+    "id": "c_166",
+    "technology": "C"
+  },
+  {
+    "topic": "Linked Lists in C",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What does it mean when a linked list node's `next` pointer is `NULL`?",
+    "options": [
+      "The list is empty",
+      "That node is the last node in the list",
+      "The list is circular",
+      "A memory error occurred"
+    ],
+    "correct_option": 1,
+    "answer": "That node is the last node in the list",
+    "explanation": "By convention, a `NULL` `next` pointer marks the end of a singly linked list - traversal loops typically continue `while (node != NULL)`.",
+    "keywords": [
+      "linked list",
+      "null terminator node"
+    ],
+    "id": "c_167",
+    "technology": "C"
+  },
+  {
+    "topic": "C Coding Problems",
+    "difficulty": "Medium",
+    "question_type": "Coding",
+    "starter_code": "int isPalindrome(char *s) {\n    // TODO\n}",
+    "question": "Write a function that checks whether a null-terminated string is a palindrome (reads the same forwards and backwards), returning 1 if true, 0 otherwise.",
+    "expected_solution": "int isPalindrome(char *s) {\n    int len = strlen(s);\n    for (int i = 0; i < len / 2; i++) {\n        if (s[i] != s[len - 1 - i]) return 0;\n    }\n    return 1;\n}",
+    "test_cases": [
+      {
+        "input": "isPalindrome(\"level\")",
+        "expected_output": "1"
+      },
+      {
+        "input": "isPalindrome(\"hello\")",
+        "expected_output": "0"
+      }
+    ],
+    "answer": "Compare characters from both ends moving inward, stopping early on any mismatch.",
+    "explanation": "Only need to check up to the midpoint (`len/2` comparisons) since each pair (i, len-1-i) is checked once.",
+    "keywords": [
+      "palindrome",
+      "string comparison",
+      "two pointer"
+    ],
+    "id": "c_168",
+    "technology": "C"
+  },
+  {
+    "topic": "C Coding Problems",
+    "difficulty": "Hard",
+    "question_type": "Programming Problem",
+    "starter_code": "void reverseWords(char *s) {\n    // TODO: reverse the order of words in place, e.g. \"the sky is blue\" -> \"blue is sky the\"\n}",
+    "question": "Write a function that reverses the ORDER of words in a string in place (not the characters within each word), e.g. \"the sky is blue\" becomes \"blue is sky the\".",
+    "expected_solution": "void reverseStr(char *a, char *b) {\n    while (a < b) { char t = *a; *a = *b; *b = t; a++; b--; }\n}\nvoid reverseWords(char *s) {\n    int len = strlen(s);\n    reverseStr(s, s + len - 1);\n    int start = 0;\n    for (int i = 0; i <= len; i++) {\n        if (s[i] == ' ' || s[i] == '\\0') {\n            reverseStr(s + start, s + i - 1);\n            start = i + 1;\n        }\n    }\n}",
+    "test_cases": [
+      {
+        "input": "\"the sky is blue\"",
+        "expected_output": "\"blue is sky the\""
+      },
+      {
+        "input": "\"hello\"",
+        "expected_output": "\"hello\""
+      }
+    ],
+    "answer": "Reverse the entire string first, then reverse each individual word back to its correct internal order.",
+    "explanation": "Reversing the whole string puts the words in the right overall order but scrambles each word's letters; a second pass reversing each word segment (bounded by spaces) fixes the letters while preserving the new word order.",
+    "keywords": [
+      "reverse words",
+      "in-place string manipulation",
+      "two-pass algorithm"
+    ],
+    "id": "c_169",
+    "technology": "C"
+  },
+  {
+    "topic": "C Coding Problems",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which standard library function converts a string to an integer in C?",
+    "options": [
+      "strtoint()",
+      "atoi()",
+      "itoa()",
+      "toInt()"
+    ],
+    "correct_option": 1,
+    "answer": "atoi()",
+    "explanation": "`atoi()` (from `<stdlib.h>`) converts a string to an `int`; note it has no error reporting for invalid input (returns 0), so `strtol` is often preferred for robust parsing.",
+    "keywords": [
+      "atoi",
+      "string to integer conversion"
+    ],
+    "id": "c_170",
+    "technology": "C"
+  },
+  {
+    "topic": "Real-world C Questions",
+    "difficulty": "Medium",
+    "question_type": "Scenario Based",
+    "question": "You're debugging a C program that occasionally segfaults, but only in release builds (compiled with optimizations), never in debug builds. What's a likely explanation?",
+    "answer": "The bug is likely undefined behavior (e.g. use of an uninitialized variable, a strict-aliasing violation, or signed integer overflow) that happens to produce 'safe-looking' results in an unoptimized debug build, but the optimizer in a release build is free to assume UB never happens and can transform the code in ways that expose the bug (e.g. eliminating a bounds check it assumes is redundant).",
+    "explanation": "This is a classic and frustrating class of bug precisely because 'it works in debug' gives false confidence - the correct approach is to run sanitizers (like AddressSanitizer/UBSan) rather than just trusting debug-build behavior.",
+    "keywords": [
+      "undefined behavior",
+      "compiler optimization",
+      "release vs debug build"
+    ],
+    "id": "c_171",
+    "technology": "C"
+  },
+  {
+    "topic": "Real-world C Questions",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why do embedded/systems C codebases often avoid recursion and dynamic memory allocation (malloc) entirely?",
+    "answer": "Recursion risks unpredictable stack growth (stack overflow) on systems with very limited, fixed-size stacks, and malloc's allocation time isn't guaranteed to be constant/predictable, plus heap fragmentation is a real risk in long-running embedded systems with no OS-level memory protection to fall back on. Both introduce non-determinism that's unacceptable in real-time or safety-critical systems.",
+    "explanation": "This is why coding standards for embedded/safety-critical C (like MISRA C) often explicitly restrict or ban unbounded recursion and dynamic allocation after initialization.",
+    "keywords": [
+      "embedded systems",
+      "misra c",
+      "deterministic memory"
+    ],
+    "id": "c_172",
+    "technology": "C"
+  },
+  {
+    "topic": "Real-world C Questions",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "Why is C still widely used for operating system kernels and embedded systems despite being an 'old' language?",
+    "answer": "C offers close-to-hardware control (direct memory access, minimal runtime overhead, predictable performance) without an automatic garbage collector or heavy runtime, while still being far more portable and maintainable than writing directly in assembly.",
+    "explanation": "This tradeoff - low-level control with just enough abstraction - is exactly what's needed for kernels, drivers, and embedded firmware where performance and predictability matter more than high-level language conveniences.",
+    "keywords": [
+      "systems programming",
+      "low-level control",
+      "operating systems"
+    ],
+    "id": "c_173",
+    "technology": "C"
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which of these is the correct entry point signature the C standard guarantees is portable?",
+    "options": [
+      "void main()",
+      "int main(void)",
+      "main()",
+      "int main() returning nothing"
+    ],
+    "correct_option": 1,
+    "answer": "int main(void)",
+    "explanation": "The C standard defines two portable forms: `int main(void)` and `int main(int argc, char *argv[])`; `void main()` is non-standard and rejected or warned about by strict compilers.",
+    "keywords": [
+      "main function",
+      "entry point",
+      "standard signature"
+    ],
+    "id": "c_174",
+    "technology": "C"
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Easy",
+    "question_type": "Technical",
+    "question": "What is the purpose of the return value of `main()`?",
+    "answer": "It communicates the program's exit status to the operating system/calling shell - conventionally 0 means success, and any non-zero value indicates an error condition.",
+    "explanation": "Shell scripts and other programs can check this exit code (e.g. via `$?` in bash) to decide whether the previous command succeeded.",
+    "keywords": [
+      "exit status",
+      "main return value"
+    ],
+    "id": "c_175",
+    "technology": "C"
+  },
+  {
+    "topic": "Variables & Data Types",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What is the range of a `signed char` typically (on a platform with 8-bit chars)?",
+    "options": [
+      "0 to 255",
+      "-128 to 127",
+      "-256 to 255",
+      "-127 to 127 only"
+    ],
+    "correct_option": 1,
+    "answer": "-128 to 127",
+    "explanation": "An 8-bit signed char uses two's complement representation, giving a range of -128 to 127 (256 total distinct values), while `unsigned char` covers 0 to 255.",
+    "keywords": [
+      "signed char",
+      "two's complement",
+      "range"
+    ],
+    "id": "c_176",
+    "technology": "C"
+  },
+  {
+    "topic": "Variables & Data Types",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "buggy_code": "char c = 200;\nif (c == 200) printf(\"match\\n\"); else printf(\"no match\\n\");",
+    "fixed_code": "unsigned char c = 200;\nif (c == 200) printf(\"match\\n\"); else printf(\"no match\\n\");",
+    "question": "On a platform where `char` is signed by default, this prints \"no match\" unexpectedly. Why, and how is it fixed?",
+    "answer": "200 overflows the range of a signed 8-bit char (-128 to 127); the value wraps/is implementation-defined and typically becomes -56, which is not equal to 200.",
+    "explanation": "Declaring `c` as `unsigned char` (range 0-255) lets it hold 200 correctly, since whether plain `char` is signed or unsigned is itself implementation-defined in C.",
+    "keywords": [
+      "char signedness",
+      "integer overflow",
+      "implementation-defined"
+    ],
+    "id": "c_177",
+    "technology": "C"
+  },
+  {
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the difference between the `==` operator and the `=` operator, and why is confusing them a classic C bug?",
+    "answer": "`==` is the equality comparison operator (returns 1 or 0); `=` is the assignment operator (assigns and evaluates to the assigned value). Writing `if (x = 5)` instead of `if (x == 5)` compiles fine (assignment expressions are valid conditions) but always assigns 5 to x and evaluates the condition as true, silently doing something completely different from what was intended.",
+    "explanation": "Many compilers warn about this ('suggest parentheses around assignment used as truth value'), and some style guides recommend writing `if (5 == x)` (Yoda conditions) specifically so an accidental `=` becomes a compile error instead of a silent bug.",
+    "keywords": [
+      "assignment vs equality",
+      "yoda conditions",
+      "common bug"
+    ],
+    "id": "c_178",
+    "technology": "C"
+  },
+  {
+    "topic": "Control Flow",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What is the difference between a `while` loop and a `do-while` loop?",
+    "options": [
+      "No difference",
+      "do-while always executes the loop body at least once before checking the condition",
+      "while loops cannot contain break",
+      "do-while cannot use continue"
+    ],
+    "correct_option": 1,
+    "answer": "do-while always executes the loop body at least once before checking the condition",
+    "explanation": "A `while` loop checks its condition BEFORE the first iteration (so the body might never run), while `do-while` checks it AFTER the first iteration, guaranteeing at least one execution.",
+    "keywords": [
+      "while loop",
+      "do-while loop",
+      "loop condition timing"
+    ],
+    "id": "c_179",
+    "technology": "C"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What does it mean for a C function to be 'variadic', and give an example from the standard library.",
+    "answer": "A variadic function accepts a variable number of arguments, declared with `...` after at least one fixed parameter, e.g. `int printf(const char *format, ...)`. Inside the function, the `<stdarg.h>` macros (`va_start`, `va_arg`, `va_end`) are used to access the extra arguments.",
+    "explanation": "Variadic functions have no compile-time type checking on the extra arguments, which is why passing the wrong type to `printf` (e.g. `%d` for a `double`) is undefined behavior rather than a compile error.",
+    "keywords": [
+      "variadic functions",
+      "printf",
+      "stdarg.h"
+    ],
+    "id": "c_180",
+    "technology": "C"
+  },
+  {
+    "topic": "Arrays",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "How is a 2D array like `int grid[3][4]` actually laid out in memory in C?",
+    "answer": "It's stored in row-major order as one contiguous block of 12 (3*4) ints - the entire first row, then the entire second row, then the third, with no separate memory blocks per row.",
+    "explanation": "This is why `grid[i][j]` is equivalent to `*(*(grid + i) + j)` and why iterating in row-major order (outer loop over rows, inner over columns) is more cache-friendly than column-major access.",
+    "keywords": [
+      "2D array",
+      "row-major order",
+      "memory layout"
+    ],
+    "id": "c_181",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What does `void *p` (a pointer to void) mean?",
+    "options": [
+      "A pointer with no value",
+      "A generic pointer that can point to any data type, but cannot be dereferenced directly without a cast",
+      "A pointer that always equals NULL",
+      "An error - void pointers don't exist in C"
+    ],
+    "correct_option": 1,
+    "answer": "A generic pointer that can point to any data type, but cannot be dereferenced directly without a cast",
+    "explanation": "`void*` is used for generic APIs like `malloc` (which returns `void*` so it can be assigned to any pointer type) and `memcpy`; the compiler doesn't know the pointed-to type's size, so `*p` alone is invalid until cast to a concrete pointer type.",
+    "keywords": [
+      "void pointer",
+      "generic pointer"
+    ],
+    "id": "c_182",
+    "technology": "C"
+  },
+  {
+    "topic": "Structures",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "What is the purpose of `typedef` when used with structs, e.g. `typedef struct { int x; } Point;`?",
+    "answer": "It creates an alias `Point` so the type can be referred to simply as `Point` instead of having to write `struct Point` every time.",
+    "explanation": "In plain C (unlike C++, which allows using the struct tag name directly as a type), omitting `typedef` would require writing `struct Point p;` everywhere instead of just `Point p;`.",
+    "keywords": [
+      "typedef",
+      "struct alias"
+    ],
+    "id": "c_183",
+    "technology": "C"
+  },
+  {
+    "topic": "Memory Management",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What does `realloc(ptr, newSize)` do if `newSize` is smaller than the original allocation?",
+    "options": [
+      "It always fails",
+      "It shrinks the allocation, possibly in place, and the pointer may or may not change",
+      "It has no effect",
+      "It's undefined behavior to shrink an allocation"
+    ],
+    "correct_option": 1,
+    "answer": "It shrinks the allocation, possibly in place, and the pointer may or may not change",
+    "explanation": "`realloc` may resize in place (same address) or allocate a new block and copy the data over (freeing the old block) - the caller must always use the returned pointer, not assume the original pointer is still valid.",
+    "keywords": [
+      "realloc",
+      "dynamic resizing"
+    ],
+    "id": "c_184",
+    "technology": "C"
+  },
+  {
+    "topic": "Bit Manipulation",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What does the expression `x & (x - 1)` compute when `x` is a power of two?",
+    "options": [
+      "Always equals x",
+      "Always equals 0",
+      "Always equals -1",
+      "Always equals x+1"
+    ],
+    "correct_option": 1,
+    "answer": "Always equals 0",
+    "explanation": "A power of two has exactly one bit set; subtracting 1 flips that bit to 0 and sets all lower bits to 1, so ANDing with the original leaves no bits in common, giving 0. This trick is commonly used to check `if ((x & (x-1)) == 0)` to test whether x is a power of two.",
+    "keywords": [
+      "power of two check",
+      "bit trick"
+    ],
+    "id": "c_185",
+    "technology": "C"
+  },
+  {
+    "topic": "Storage Classes",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What does the `register` storage class keyword suggest to the compiler?",
+    "options": [
+      "Store the variable in a CPU register for faster access (a hint, not a guarantee)",
+      "Store the variable in a database register",
+      "Make the variable global",
+      "Prevent the variable from ever changing"
+    ],
+    "correct_option": 0,
+    "answer": "Store the variable in a CPU register for faster access (a hint, not a guarantee)",
+    "explanation": "Modern compilers largely ignore `register` as a hint since their own register-allocation optimizers are better at this decision than programmer hints; you also cannot take the address of a `register` variable in the older interpretation.",
+    "keywords": [
+      "register keyword",
+      "compiler hint"
+    ],
+    "id": "c_186",
+    "technology": "C"
+  },
+  {
+    "topic": "Command Line Arguments",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why is it important to treat `argv[]` strings as read-only in most portable code?",
+    "answer": "While the C standard technically allows modifying the characters `argv` points to, some environments store them in memory shared with environment variables or other OS structures, so modifying them can have unintended side effects; treating them as effectively `const char*` is the safer, portable convention.",
+    "explanation": "This is why well-written code that needs a modifiable copy of an argument makes an explicit copy (e.g. with `strdup`) rather than mutating `argv` directly.",
+    "keywords": [
+      "argv mutability",
+      "command line arguments",
+      "portability"
+    ],
+    "id": "c_187",
+    "technology": "C"
+  },
+  {
+    "topic": "Linked Lists in C",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why is a doubly linked list's node typically larger than a singly linked list's node, and what capability does that extra field buy?",
+    "answer": "A doubly linked list node stores both a `next` and a `prev` pointer (versus just `next` for a singly linked list), which costs one extra pointer's worth of memory per node but allows O(1) traversal backward and O(1) removal of a node given only a pointer to it (no need to walk from the head to find its predecessor).",
+    "explanation": "This tradeoff (more memory per node, but cheaper removal/backward traversal) is why doubly linked lists are preferred when frequent arbitrary-position deletion is needed, like in LRU cache implementations.",
+    "keywords": [
+      "doubly linked list",
+      "prev pointer",
+      "removal complexity"
+    ],
+    "id": "c_188",
+    "technology": "C"
+  },
+  {
+    "topic": "C Coding Problems",
+    "difficulty": "Medium",
+    "question_type": "Coding",
+    "starter_code": "int findMax(int arr[], int n) {\n    // TODO\n}",
+    "question": "Write a function that returns the largest element in an integer array of size n.",
+    "expected_solution": "int findMax(int arr[], int n) {\n    int max = arr[0];\n    for (int i = 1; i < n; i++) {\n        if (arr[i] > max) max = arr[i];\n    }\n    return max;\n}",
+    "test_cases": [
+      {
+        "input": "findMax({3,7,2,9,4}, 5)",
+        "expected_output": "9"
+      },
+      {
+        "input": "findMax({-1,-5,-2}, 3)",
+        "expected_output": "-1"
+      }
+    ],
+    "answer": "Track a running maximum, initialized to the first element, updating it whenever a larger element is found.",
+    "explanation": "Starting `max` at `arr[0]` (rather than 0 or INT_MIN) correctly handles arrays of all-negative numbers.",
+    "keywords": [
+      "find maximum",
+      "array traversal"
+    ],
+    "id": "c_189",
+    "technology": "C"
+  },
+  {
+    "topic": "Real-world C Questions",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "Why is checking the return value of `malloc()` for `NULL` considered essential in robust C code?",
+    "answer": "`malloc` returns `NULL` if the allocation fails (e.g. the system is out of memory); proceeding to dereference the returned pointer without checking leads to undefined behavior (typically a crash) instead of a controlled error path.",
+    "explanation": "In long-running or resource-constrained systems (embedded devices, servers under memory pressure), allocation failure is a real, recoverable scenario that well-written C code should handle gracefully rather than assume never happens.",
+    "keywords": [
+      "malloc null check",
+      "allocation failure",
+      "robust error handling"
+    ],
+    "id": "c_190",
+    "technology": "C"
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "What is 'undefined behavior' in the C standard's technical sense, and how does it differ from 'implementation-defined behavior'?",
+    "answer": "Undefined behavior means the standard imposes NO requirements at all on what happens - the program could crash, produce garbage, or even appear to work; the compiler is free to assume it never occurs and optimize accordingly. Implementation-defined behavior means the standard requires each implementation to choose a behavior and DOCUMENT it consistently (e.g. the size of `int`), so it's unspecified between compilers but consistent and predictable within one.",
+    "explanation": "This distinction matters a lot in practice: relying on implementation-defined behavior is merely non-portable, while relying on undefined behavior is a genuine bug that can break unpredictably, even on the same compiler after a version/optimization-level change.",
+    "keywords": [
+      "undefined behavior",
+      "implementation-defined behavior",
+      "c standard"
+    ],
+    "id": "c_191",
+    "technology": "C"
+  },
+  {
+    "topic": "Variables & Data Types",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why does the C standard guarantee `sizeof(char)` is always exactly 1, regardless of how many actual bits a byte has on that platform?",
+    "answer": "`sizeof` measures size in units of `char` by definition - `sizeof(char)` is defined to be 1 by the standard itself, essentially making `char` the base unit `sizeof` counts in, regardless of whether a byte on that platform is 8, 16, or another number of bits.",
+    "explanation": "This is why `sizeof(int)` being '4' doesn't necessarily mean 4 eight-bit bytes on exotic platforms with non-8-bit chars (like some DSPs) - it means 4 chars' worth of storage, whatever that platform's char width is.",
+    "keywords": [
+      "sizeof char",
+      "byte width",
+      "c standard guarantee"
+    ],
+    "id": "c_192",
+    "technology": "C"
+  },
+  {
+    "topic": "Operators",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What does the ternary conditional operator `cond ? a : b` evaluate to?",
+    "options": [
+      "Always a",
+      "Always b",
+      "a if cond is true (non-zero), otherwise b",
+      "A boolean result only"
+    ],
+    "correct_option": 2,
+    "answer": "a if cond is true (non-zero), otherwise b",
+    "explanation": "It's a compact expression form of if-else - `max = (a > b) ? a : b;` assigns whichever of a/b is larger.",
+    "keywords": [
+      "ternary operator",
+      "conditional expression"
+    ],
+    "id": "c_193",
+    "technology": "C"
+  },
+  {
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What does the `continue` statement do inside a loop?",
+    "options": [
+      "Exits the loop entirely",
+      "Skips the rest of the current iteration's body and proceeds to the loop's next iteration check",
+      "Restarts the loop from the beginning",
+      "Pauses the loop"
+    ],
+    "correct_option": 1,
+    "answer": "Skips the rest of the current iteration's body and proceeds to the loop's next iteration check",
+    "explanation": "In a `for` loop, `continue` still runs the increment expression before re-checking the condition; in a `while` loop, it jumps straight to the condition check.",
+    "keywords": [
+      "continue statement",
+      "loop control"
+    ],
+    "id": "c_194",
+    "technology": "C"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "What is a 'pure function' informally, and does C enforce purity in any way?",
+    "answer": "A pure function's output depends only on its inputs and it has no observable side effects (no modifying global state, no I/O). C does not enforce or track purity at all - any function can freely read/write globals or do I/O, and there's no keyword to declare or check for purity.",
+    "explanation": "Some compilers offer non-standard attributes (like GCC's `__attribute__((pure))`) as an optimization hint, but this is a compiler extension, not a language guarantee.",
+    "keywords": [
+      "pure function",
+      "side effects"
+    ],
+    "id": "c_195",
+    "technology": "C"
+  },
+  {
+    "topic": "Arrays",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What is the index of the first element in a C array?",
+    "options": [
+      "1",
+      "0",
+      "-1",
+      "It depends on the declaration"
+    ],
+    "correct_option": 1,
+    "answer": "0",
+    "explanation": "C arrays are zero-indexed - `arr[0]` is the first element, and `arr[n-1]` is the last element of an n-element array.",
+    "keywords": [
+      "array indexing",
+      "zero-based indexing"
+    ],
+    "id": "c_196",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointers",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is a 'wild pointer', and how does it differ from a null pointer or a dangling pointer?",
+    "answer": "A wild pointer is one that has never been initialized at all and holds an indeterminate (garbage) value from whatever was previously in that memory - unlike a null pointer (deliberately points to nothing, a known safe sentinel) or a dangling pointer (used to point somewhere valid but no longer does), a wild pointer's value was never meaningful to begin with.",
+    "explanation": "Dereferencing any of the three is problematic, but a wild pointer is arguably the most dangerous since its garbage value could coincidentally point to valid-looking memory, masking the bug.",
+    "keywords": [
+      "wild pointer",
+      "uninitialized pointer"
+    ],
+    "id": "c_197",
+    "technology": "C"
+  },
+  {
+    "topic": "Pointer Arithmetic",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "Why is comparing two pointers with `<`/`>` only well-defined when they point into the same array?",
+    "answer": "Pointer relational comparisons are meant to express 'which element comes first' within a single array's layout; pointers into unrelated objects have no such meaningful ordering relationship, so the C standard leaves that comparison's result undefined (though it will still 'compile and run', typically comparing raw addresses).",
+    "explanation": "This is the same underlying restriction as pointer subtraction being defined only within one array - both rely on there being a genuine, defined notion of relative position.",
+    "keywords": [
+      "pointer comparison",
+      "undefined behavior",
+      "same array requirement"
+    ],
+    "id": "c_198",
+    "technology": "C"
+  },
+  {
+    "topic": "Strings",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which function compares two C strings and returns 0 if they are equal?",
+    "options": [
+      "strequal()",
+      "strcmp()",
+      "strcheck()",
+      "compare()"
+    ],
+    "correct_option": 1,
+    "answer": "strcmp()",
+    "explanation": "`strcmp` returns 0 for equal strings, a negative value if the first differs before the second lexicographically, and positive otherwise - it does NOT return a boolean, which is a common beginner mistake (`if (strcmp(a,b))` actually means 'if NOT equal').",
+    "keywords": [
+      "strcmp",
+      "string comparison"
+    ],
+    "id": "c_199",
+    "technology": "C"
+  },
+  {
+    "topic": "Structures",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Can a struct in C contain a pointer to its own type (e.g. `struct Node { int data; struct Node *next; };`), but not an instance of its own type directly? Why?",
+    "answer": "Yes, a pointer to its own type is fine because a pointer has a fixed, known size regardless of the pointed-to type's size. An instance of its own type directly (`struct Node next;` instead of `struct Node *next;`) is NOT allowed because it would require the struct to contain itself, an infinitely recursive (and thus impossible to compute) size.",
+    "explanation": "This is exactly why linked data structures (linked lists, trees) in C are built with self-referential pointers, not embedded self-instances.",
+    "keywords": [
+      "self-referential struct",
+      "linked list node",
+      "recursive type"
+    ],
+    "id": "c_200",
+    "technology": "C"
+  },
+  {
+    "topic": "Memory Management",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A long-running server process's memory usage grows steadily over days even though every allocated object appears to eventually be freed somewhere in the code. What are two possible explanations besides an outright missed `free()`?",
+    "answer": "(1) Memory fragmentation - the heap allocator may be unable to reuse freed-but-scattered small blocks for new larger allocation requests, causing the process's total memory footprint (as seen by the OS) to keep growing even though logically 'used' memory is stable. (2) A slow leak in an error/exception path that's rarely hit in testing but does execute occasionally in production (e.g. a `free()` that's skipped only on a specific error branch).",
+    "explanation": "Diagnosing this usually requires a memory profiler (like Valgrind's massif or a heap profiler) rather than just code review, since fragmentation and rare-path leaks are both hard to spot by reading code alone.",
+    "keywords": [
+      "memory fragmentation",
+      "slow memory leak",
+      "production debugging"
+    ],
+    "id": "c_201",
+    "technology": "C"
+  },
+  {
+    "topic": "File Handling",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Which function reads a line of text from a file, safely bounded by a maximum length?",
+    "options": [
+      "gets()",
+      "fgets()",
+      "scanf()",
+      "readline()"
+    ],
+    "correct_option": 1,
+    "answer": "fgets()",
+    "explanation": "`fgets(buffer, size, stream)` reads at most `size-1` characters (leaving room for the null terminator), unlike the dangerous, deprecated `gets()` which has no bounds checking at all and was removed from the C11 standard for this reason.",
+    "keywords": [
+      "fgets",
+      "gets",
+      "buffer safety"
+    ],
+    "id": "c_202",
+    "technology": "C"
+  },
+  {
+    "topic": "Bit Manipulation",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What does the `~` operator do in C?",
+    "options": [
+      "Logical NOT",
+      "Bitwise complement (flips every bit)",
+      "Subtraction",
+      "Modulus"
+    ],
+    "correct_option": 1,
+    "answer": "Bitwise complement (flips every bit)",
+    "explanation": "`~x` flips every bit of x (0 becomes 1, 1 becomes 0); this is different from `!x` (logical NOT), which produces 1 if x is 0 and 0 otherwise.",
+    "keywords": [
+      "bitwise complement",
+      "bitwise not"
+    ],
+    "id": "c_203",
+    "technology": "C"
+  },
+  {
+    "topic": "Enums",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why might a developer explicitly assign power-of-two values to enum constants (e.g. `RED=1, GREEN=2, BLUE=4`)?",
+    "answer": "To use the enum as a bitmask/set of flags that can be combined with bitwise OR (`RED | BLUE`) and tested with bitwise AND, allowing a single integer variable to represent any combination of the flags simultaneously.",
+    "explanation": "This pattern only works cleanly when each value occupies a distinct bit position (powers of two), so combining values with OR never causes overlap/ambiguity between which flags are set.",
+    "keywords": [
+      "bitmask enum",
+      "flag combination",
+      "bitwise or"
+    ],
+    "id": "c_204",
+    "technology": "C"
+  },
+  {
+    "topic": "Real-world C Questions",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A multi-threaded C program without any locks has two threads incrementing the same global `int counter` variable a million times each, but the final value is consistently less than 2 million. Why?",
+    "answer": "`counter++` is not atomic - it typically compiles to a read, an increment, and a write as three separate steps. If both threads read the same value before either writes back the incremented result, one thread's increment is effectively lost (a data race), so some increments don't count.",
+    "explanation": "This requires proper synchronization (a mutex, or a C11 `_Atomic` type / GCC atomic builtins) to fix - it's a textbook demonstration of why unsynchronized shared mutable state between threads is unsafe even for something as 'simple' as incrementing a counter.",
+    "keywords": [
+      "data race",
+      "atomicity",
+      "multithreading in C"
+    ],
+    "id": "c_205",
+    "technology": "C"
+  },
+  {
+    "topic": "C Coding Problems",
+    "difficulty": "Easy",
+    "question_type": "Coding",
+    "starter_code": "int sumArray(int arr[], int n) {\n    // TODO\n}",
+    "question": "Write a function that returns the sum of all elements in an integer array of size n.",
+    "expected_solution": "int sumArray(int arr[], int n) {\n    int sum = 0;\n    for (int i = 0; i < n; i++) sum += arr[i];\n    return sum;\n}",
+    "test_cases": [
+      {
+        "input": "sumArray({1,2,3,4}, 4)",
+        "expected_output": "10"
+      },
+      {
+        "input": "sumArray({}, 0)",
+        "expected_output": "0"
+      }
+    ],
+    "answer": "Accumulate a running total by iterating over every element once.",
+    "explanation": "Initializing `sum` to 0 correctly handles the empty-array case (n=0), since the loop body simply never executes.",
+    "keywords": [
+      "array sum",
+      "accumulator pattern"
+    ],
+    "id": "c_206",
+    "technology": "C"
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Medium",
+    "question_type": "Conceptual",
+    "question": "What is the difference between a syntax error and a logic error in a C program?",
+    "answer": "A syntax error violates the language's grammar rules and is caught by the compiler before the program can even be built (e.g. a missing semicolon). A logic error produces a program that compiles and runs fine but produces incorrect results, because the algorithm/logic itself is flawed.",
+    "explanation": "Logic errors are generally harder to find since there's no compiler message pointing to them - they require testing, debugging, or code review to catch.",
+    "keywords": [
+      "syntax error",
+      "logic error",
+      "compile-time vs runtime"
+    ],
+    "id": "c_207",
+    "technology": "C"
+  },
+  {
+    "topic": "Variables & Data Types",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which of these correctly declares a constant integer in C?",
+    "options": [
+      "constant int x = 5;",
+      "const int x = 5;",
+      "int const_x = 5;",
+      "#final int x = 5;"
+    ],
+    "correct_option": 1,
+    "answer": "const int x = 5;",
+    "explanation": "`const` is the C keyword for declaring a variable whose value cannot be changed after initialization; `constant` and `#final` are not valid C syntax.",
+    "keywords": [
+      "const keyword",
+      "constants"
+    ],
+    "id": "c_208",
+    "technology": "C"
+  },
+  {
+    "topic": "Control Flow",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why is testing floating-point values for exact equality (`if (x == 0.1)`) generally unreliable in C?",
+    "answer": "Most decimal fractions (like 0.1) cannot be represented exactly in binary floating-point, so `x` might actually hold something like 0.1000000000000000055511151231257827..., and accumulated rounding from prior computations makes exact equality comparisons fragile and often fail even when values are 'mathematically' equal.",
+    "explanation": "The standard fix is to compare with a small tolerance/epsilon: `if (fabs(x - 0.1) < EPSILON)` instead of exact equality.",
+    "keywords": [
+      "floating point precision",
+      "epsilon comparison",
+      "binary representation"
+    ],
+    "id": "c_209",
+    "technology": "C"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question_type": "Coding",
+    "starter_code": "int gcd(int a, int b) {\n    // TODO\n}",
+    "question": "Write a function that computes the greatest common divisor of two positive integers using the Euclidean algorithm.",
+    "expected_solution": "int gcd(int a, int b) {\n    while (b != 0) {\n        int temp = b;\n        b = a % b;\n        a = temp;\n    }\n    return a;\n}",
+    "test_cases": [
+      {
+        "input": "gcd(48, 18)",
+        "expected_output": "6"
+      },
+      {
+        "input": "gcd(17, 5)",
+        "expected_output": "1"
+      }
+    ],
+    "answer": "Repeatedly replace (a, b) with (b, a mod b) until b becomes 0; a is then the GCD.",
+    "explanation": "This is the classic Euclidean algorithm, running in O(log(min(a,b))) time, far faster than checking every possible common divisor.",
+    "keywords": [
+      "gcd",
+      "euclidean algorithm",
+      "modulo"
+    ],
+    "id": "c_210",
+    "technology": "C"
+  },
+  {
+    "topic": "Structures",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "Can you compare two struct variables directly with `==` in C (e.g. `if (p1 == p2)` where p1, p2 are struct Point)?",
+    "options": [
+      "Yes, it compares all members automatically",
+      "No - C provides no built-in struct comparison; you must compare members individually or use memcmp with caveats",
+      "Only if the struct has exactly one member",
+      "Yes, but only for structs containing exclusively integers"
+    ],
+    "correct_option": 1,
+    "answer": "No - C provides no built-in struct comparison; you must compare members individually or use memcmp with caveats",
+    "explanation": "Unlike C++ (where you can overload `operator==`), plain C has no mechanism to compare aggregate types directly; `memcmp` can work but is unsafe if the struct has padding bytes with indeterminate values.",
+    "keywords": [
+      "struct comparison",
+      "no operator overloading in c"
+    ],
+    "id": "c_211",
+    "technology": "C"
+  },
+  {
+    "topic": "Memory Management",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What does `free(NULL)` do?",
+    "options": [
+      "Crashes the program",
+      "Nothing - it's explicitly defined as a safe no-op",
+      "Frees all previously allocated memory",
+      "Undefined behavior"
+    ],
+    "correct_option": 1,
+    "answer": "Nothing - it's explicitly defined as a safe no-op",
+    "explanation": "The C standard explicitly guarantees `free(NULL)` does nothing and is always safe to call, which is why setting a pointer to NULL after freeing it makes any accidental subsequent free() harmless.",
+    "keywords": [
+      "free null",
+      "safe no-op"
+    ],
+    "id": "c_212",
+    "technology": "C"
+  },
+  {
+    "topic": "Real-world C Questions",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why do C projects often use tools like Valgrind or AddressSanitizer during development and testing?",
+    "answer": "Because C gives the programmer full manual control over memory with essentially no built-in safety net, these tools detect classes of bugs the language itself won't catch - out-of-bounds reads/writes, use-after-free, memory leaks, and uninitialized memory reads - by instrumenting the program at runtime.",
+    "explanation": "Many of these bugs are 'silent' (the program appears to work most of the time) without such tooling, which is why they're considered essential parts of a serious C development workflow, not optional extras.",
+    "keywords": [
+      "valgrind",
+      "addresssanitizer",
+      "memory debugging tools"
+    ],
+    "id": "c_213",
+    "technology": "C"
+  },
+  {
+    "topic": "C Coding Problems",
+    "difficulty": "Hard",
+    "question_type": "Programming Problem",
+    "starter_code": "int binarySearch(int arr[], int n, int target) {\n    // TODO: return index of target, or -1 if not found. Assume arr is sorted ascending.\n}",
+    "question": "Implement iterative binary search on a sorted array, returning the index of `target` or -1 if not found.",
+    "expected_solution": "int binarySearch(int arr[], int n, int target) {\n    int lo = 0, hi = n - 1;\n    while (lo <= hi) {\n        int mid = lo + (hi - lo) / 2;\n        if (arr[mid] == target) return mid;\n        else if (arr[mid] < target) lo = mid + 1;\n        else hi = mid - 1;\n    }\n    return -1;\n}",
+    "test_cases": [
+      {
+        "input": "binarySearch({1,3,5,7,9}, 5, 7)",
+        "expected_output": "3"
+      },
+      {
+        "input": "binarySearch({1,3,5}, 3, 4)",
+        "expected_output": "-1"
+      }
+    ],
+    "answer": "Repeatedly halve the search range by comparing the middle element to the target, narrowing to the correct half each time.",
+    "explanation": "Using `lo + (hi - lo) / 2` instead of `(lo + hi) / 2` avoids a subtle integer overflow bug when lo and hi are both large.",
+    "keywords": [
+      "binary search",
+      "sorted array",
+      "integer overflow avoidance"
+    ],
+    "id": "c_214",
+    "technology": "C"
+  },
+  {
+    "topic": "C Basics",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "What does the semicolon `;` mark at the end of most C statements?",
+    "options": [
+      "A comment",
+      "The end of a statement",
+      "The start of a block",
+      "Nothing - it's optional"
+    ],
+    "correct_option": 1,
+    "answer": "The end of a statement",
+    "explanation": "C requires a semicolon to terminate most statements (declarations, expression statements); omitting it is a syntax error the compiler reports at the point it expected one.",
+    "keywords": [
+      "semicolon",
+      "statement termination"
+    ],
+    "id": "c_215",
+    "technology": "C"
+  },
+  {
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "What is operator precedence, and why does `2 + 3 * 4` evaluate to 14, not 20?",
+    "answer": "Operator precedence determines the order operators are evaluated in when an expression mixes several - `*` has higher precedence than `+`, so `3 * 4` is computed first (giving 12), then `2 + 12` gives 14.",
+    "explanation": "Parentheses can always override the default precedence explicitly, e.g. `(2 + 3) * 4` forces the addition first, yielding 20 instead.",
+    "keywords": [
+      "operator precedence",
+      "expression evaluation order"
+    ],
+    "id": "c_216",
+    "technology": "C"
+  }
+]

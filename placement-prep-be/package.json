@@ -10,6 +10,11 @@
     "lint": "eslint src/**/*.ts",
     "seed:aptitude": "tsx src/seed/seedAptitude.ts",
     "gen:aptitude": "tsx src/scripts/generateAptitudeQuestions.ts",
+    "train:chatbot": "tsx src/scripts/trainChatbot.ts",
+    "eval:chatbot": "tsx src/scripts/evalChatbot.ts",
+    "chatbot:unanswered": "tsx src/scripts/chatbotUnanswered.ts",
+    "export:chatbot": "tsx src/scripts/exportChatbotData.ts",
+    "eval:hybrid": "tsx src/scripts/evalHybrid.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

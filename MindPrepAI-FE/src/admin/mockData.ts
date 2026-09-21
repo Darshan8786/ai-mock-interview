@@ -8,8 +8,6 @@ import type {
   AdminStudent,
   AdminResume,
   AdminInterview,
-  AdminQuiz,
-  QuizAttempt,
   AdminJob,
   JobApplicant,
   ProctoringLog,
@@ -103,7 +101,6 @@ function makeStudents(): AdminStudent[] {
       atsScore,
       placementReadiness: readiness,
       interviewsTaken: i % 3 === 0 ? 0 : 1 + (i % 8),
-      quizAttempts: 3 + (i * 7) % 40,
       averageInterviewScore: 50 + Math.floor(Math.random() * 45),
       weakSubjects: weak,
       strongSubjects: strong,
@@ -166,48 +163,6 @@ function makeInterviews(): AdminInterview[] {
             : "Good understanding of fundamentals. Improve structured problem-solving and articulate responses with more examples.",
       date: daysAgo(12 - (i % 12)),
       durationMin: 15 + (i * 7) % 40,
-    };
-  });
-}
-
-function makeQuizzes(): AdminQuiz[] {
-  const subjects = ["DSA", "DBMS", "OOPS", "OS", "Networking", "SQL"];
-  const topics = ["Arrays & Hashing", "Normalization", "Polymorphism", "Process Scheduling", "TCP/IP", "Joins & Indexing"];
-  return subjects.map((subject, i) => ({
-    id: `quiz_${seed()}`,
-    subject,
-    title: `${subject} Practice Set ${i + 1}`,
-    difficulty: (["easy", "medium", "hard"] as const)[i % 3],
-    topic: topics[i % topics.length],
-    questionCount: 10 + (i * 5) % 15,
-    attempts: 20 + i * 14,
-    avgScore: 45 + (i * 11) % 40,
-    status: i % 5 === 0 ? "draft" : i % 6 === 0 ? "archived" : "published",
-    createdAt: daysAgo(40 - i * 4),
-    questions: Array.from({ length: 2 }, (_, q) => ({
-      id: `q_${seed()}`,
-      question: `Sample ${subject} question ${q + 1}: describe the core concept of ${topics[i % topics.length]}?`,
-      topic: topics[i % topics.length],
-      difficulty: (["easy", "medium", "hard"] as const)[q % 3],
-      options: ["Option A", "Option B", "Option C", "Option D"],
-      correctAnswer: "Option A",
-    })),
-  }));
-}
-
-function makeAttempts(quiz: AdminQuiz): QuizAttempt[] {
-  const namesPool = names.slice(0, 8);
-  return namesPool.map((n) => {
-    const total = quiz.questionCount;
-    const score = Math.floor(Math.random() * (total + 1));
-    return {
-      id: `att_${seed()}`,
-      studentName: n,
-      score,
-      total,
-      percentage: Math.round((score / total) * 100),
-      timeTaken: `${1 + Math.floor(Math.random() * 4)}m ${pad(Math.floor(Math.random() * 60))}s`,
-      date: daysAgo(Math.floor(Math.random() * 20)),
     };
   });
 }
@@ -352,12 +307,10 @@ export function getAdminStats(): AdminStats {
   const students = makeStudents();
   const interviews = makeInterviews();
   const resumes = makeResumes();
-  const quizzes = makeQuizzes();
   const logs = makeProctoringLogs();
   return {
     totalStudents: students.length,
     totalInterviews: interviews.length,
-    totalQuizAttempts: quizzes.reduce((a, q) => a + q.attempts, 0),
     totalResumeAnalyses: resumes.length,
     totalJobs: makeJobs().length,
     activeJobs: makeJobs().filter((j) => j.status === "active").length,
@@ -376,11 +329,9 @@ export function getDashboardCharts(): DashboardCharts {
   const performance = labels.map((label, i) => ({
     label,
     interviews: 30 + (i * 13) % 60,
-    quizzes: 45 + (i * 17) % 70,
   }));
   return {
     interviewPerformance: performance,
-    quizPerformance: performance.map((p) => ({ ...p, quizzes: p.interviews })),
     atsDistribution: [
       { range: "0-40", count: 4 },
       { range: "41-60", count: 7 },
@@ -397,7 +348,6 @@ export function getDashboardCharts(): DashboardCharts {
       day,
       logins: 120 + i * 25,
       interviews: 18 + i * 7,
-      quizzes: 60 + i * 15,
     })),
   };
 }
@@ -406,8 +356,6 @@ export const mockData = {
   students: makeStudents,
   resumes: makeResumes,
   interviews: makeInterviews,
-  quizzes: makeQuizzes,
-  attempts: makeAttempts,
   jobs: makeJobs,
   applicants: makeApplicants,
   proctoringLogs: makeProctoringLogs,

@@ -37,14 +37,6 @@ export function AdminDashboard() {
       trendUp: true,
     },
     {
-      label: "Total Quiz Attempts",
-      value: stats.data?.totalQuizAttempts ?? 0,
-      icon: <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-      color: "bg-amber-500/15",
-      trend: "5%",
-      trendUp: true,
-    },
-    {
       label: "Total Resume Analyses",
       value: stats.data?.totalResumeAnalyses ?? 0,
       icon: <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>,
@@ -125,19 +117,6 @@ export function AdminDashboard() {
             </ResponsiveContainer>
           </ChartCard>
 
-          {/* Quiz Performance */}
-          <ChartCard title="Quiz Performance" subtitle="Quiz attempt success rates">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={charts.data?.quizPerformance ?? []} barGap={4}>
-                <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
-                <XAxis dataKey="label" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
-                <YAxis stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
-                <Tooltip contentStyle={chartTooltipStyle} />
-                <Bar dataKey="quizzes" name="Quizzes" fill={chartColors.purple} radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartCard>
-
           {/* ATS Score Distribution */}
           <ChartCard title="ATS Score Distribution" subtitle="Resume ATS score ranges across students">
             <ResponsiveContainer width="100%" height="100%">
@@ -176,7 +155,7 @@ export function AdminDashboard() {
           </ChartCard>
 
           {/* Weekly User Activity */}
-          <ChartCard title="Weekly User Activity" subtitle="Logins, interviews and quiz attempts" className="lg:col-span-2">
+          <ChartCard title="Weekly User Activity" subtitle="Logins and interviews" className="lg:col-span-2">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={weekly}>
                 <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
@@ -186,7 +165,6 @@ export function AdminDashboard() {
                 <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
                 <Line type="monotone" dataKey="logins" name="Logins" stroke={chartColors.blue} strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.emerald} strokeWidth={2} dot={false} />
-                <Line type="monotone" dataKey="quizzes" name="Quizzes" stroke={chartColors.purple} strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </ChartCard>

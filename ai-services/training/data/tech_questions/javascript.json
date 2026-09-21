@@ -1,0 +1,3046 @@
+[
+  {
+    "id": "javascript_001",
+    "technology": "JavaScript",
+    "topic": "JS Basics",
+    "difficulty": "Easy",
+    "question": "Which of these is NOT a primitive type in JavaScript?",
+    "answer": "object",
+    "explanation": "object is a reference type; JavaScript's primitives are string, number, bigint, boolean, undefined, symbol, and null.",
+    "question_type": "MCQ",
+    "keywords": [
+      "primitive types",
+      "object"
+    ],
+    "options": [
+      "string",
+      "number",
+      "object",
+      "boolean"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "javascript_002",
+    "technology": "JavaScript",
+    "topic": "JS Basics",
+    "difficulty": "Easy",
+    "question": "What is the difference between `null` and `undefined`?",
+    "answer": "`undefined` means a variable has been declared but not yet assigned a value; `null` is an explicit assignment representing 'no value', deliberately set by the programmer.",
+    "explanation": "`typeof undefined` is `'undefined'` while `typeof null` is (famously, due to a long-standing bug) `'object'` — they are distinct values with `==` treating them as equal but `===` treating them as different.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "null",
+      "undefined"
+    ]
+  },
+  {
+    "id": "javascript_003",
+    "technology": "JavaScript",
+    "topic": "JS Basics",
+    "difficulty": "Easy",
+    "question": "What does `typeof []` return?",
+    "answer": "'object'",
+    "explanation": "Arrays are a special kind of object in JavaScript, so `typeof` reports `'object'`; use `Array.isArray()` to specifically detect arrays.",
+    "question_type": "MCQ",
+    "keywords": [
+      "typeof",
+      "array"
+    ],
+    "options": [
+      "'array'",
+      "'object'",
+      "'list'",
+      "'undefined'"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_004",
+    "technology": "JavaScript",
+    "topic": "Variables (var/let/const)",
+    "difficulty": "Easy",
+    "question": "What is the main scoping difference between `var` and `let`?",
+    "answer": "`var` is function-scoped (or globally scoped if declared outside a function), while `let` is block-scoped, meaning it only exists within the nearest enclosing `{ }` block.",
+    "explanation": "This means a `var` declared inside an `if` block leaks out to the surrounding function, while a `let` in the same position does not.",
+    "question_type": "Technical",
+    "keywords": [
+      "var",
+      "let",
+      "scope"
+    ]
+  },
+  {
+    "id": "javascript_005",
+    "technology": "JavaScript",
+    "topic": "Variables (var/let/const)",
+    "difficulty": "Easy",
+    "question": "Which declaration prevents reassignment of the variable binding itself?",
+    "answer": "const",
+    "explanation": "const creates a binding that cannot be reassigned, though if it holds an object/array, the object's contents can still be mutated.",
+    "question_type": "MCQ",
+    "keywords": [
+      "const",
+      "reassignment"
+    ],
+    "options": [
+      "var",
+      "let",
+      "const",
+      "static"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "javascript_006",
+    "technology": "JavaScript",
+    "topic": "Variables (var/let/const)",
+    "difficulty": "Medium",
+    "question": "Explain why this code throws an error, and how to fix it.",
+    "answer": "TypeError: Assignment to constant variable.",
+    "explanation": "`total` was declared with `const`, which forbids reassigning the binding; changing to `let total = 0;` fixes it since `let` allows reassignment.",
+    "question_type": "Debugging",
+    "keywords": [
+      "const",
+      "typeerror",
+      "reassignment"
+    ],
+    "buggy_code": "const total = 0;\nfor (let i = 0; i < 5; i++) {\n  total = total + i;\n}",
+    "fixed_code": "let total = 0;\nfor (let i = 0; i < 5; i++) {\n  total = total + i;\n}"
+  },
+  {
+    "id": "javascript_007",
+    "technology": "JavaScript",
+    "topic": "Variables (var/let/const)",
+    "difficulty": "Medium",
+    "question": "What does this loop print, and why does `let` behave differently from `var` here?",
+    "answer": "0\n1\n2",
+    "explanation": "Each loop iteration with `let` creates a fresh binding of `i` scoped to that iteration, so each `setTimeout` callback captures its own `i` value (0, 1, 2) rather than sharing one variable, unlike the classic `var` version of this loop which would print 3, 3, 3.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "let",
+      "closures",
+      "settimeout",
+      "loop"
+    ],
+    "code_snippet": "for (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}"
+  },
+  {
+    "id": "javascript_008",
+    "technology": "JavaScript",
+    "topic": "Data Types",
+    "difficulty": "Easy",
+    "question": "What will `typeof NaN` return?",
+    "answer": "'number'",
+    "explanation": "NaN ('Not a Number') is, ironically, of type number in JavaScript's type system — it represents an invalid numeric result, not the absence of a numeric type.",
+    "question_type": "MCQ",
+    "keywords": [
+      "nan",
+      "typeof"
+    ],
+    "options": [
+      "'nan'",
+      "'number'",
+      "'undefined'",
+      "'object'"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_009",
+    "technology": "JavaScript",
+    "topic": "Data Types",
+    "difficulty": "Medium",
+    "question": "What is the difference between `==` and `===` in JavaScript?",
+    "answer": "`==` (loose equality) performs type coercion before comparing, while `===` (strict equality) compares both value and type without coercion.",
+    "explanation": "For example, `1 == '1'` is `true` because the string is coerced to a number first, but `1 === '1'` is `false` since the types differ.",
+    "question_type": "Technical",
+    "keywords": [
+      "equality",
+      "coercion",
+      "strict equality"
+    ]
+  },
+  {
+    "id": "javascript_010",
+    "technology": "JavaScript",
+    "topic": "Data Types",
+    "difficulty": "Hard",
+    "question": "What does comparing NaN to itself print here?",
+    "answer": "false",
+    "explanation": "`NaN` is the only JavaScript value that is not equal to itself under either `==` or `===`, because IEEE-754 defines NaN comparisons to always be false; use `Number.isNaN()` or `Object.is()` to test for it.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "nan",
+      "equality"
+    ],
+    "code_snippet": "console.log(NaN === NaN);"
+  },
+  {
+    "id": "javascript_011",
+    "technology": "JavaScript",
+    "topic": "Operators",
+    "difficulty": "Easy",
+    "question": "What does the `??` (nullish coalescing) operator do?",
+    "answer": "Returns the right operand only if the left is null or undefined",
+    "explanation": "Unlike `||`, which falls through for any falsy value (0, '', false, NaN), `??` only falls through specifically for `null` or `undefined`, preserving legitimate falsy values like 0 or ''.",
+    "question_type": "MCQ",
+    "keywords": [
+      "nullish coalescing",
+      "??"
+    ],
+    "options": [
+      "Returns the right operand only if the left is falsy",
+      "Returns the right operand only if the left is null or undefined",
+      "Performs logical AND",
+      "Compares two values for equality"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_012",
+    "technology": "JavaScript",
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question": "What does this snippet print given the nullish coalescing operator and a falsy-but-not-nullish value?",
+    "answer": "0",
+    "explanation": "`||` treats `0` as falsy and falls through to the right operand (`5`)... wait — actually with `??`, since `0` is neither `null` nor `undefined`, it is returned as-is, so the output is `0`.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "nullish coalescing",
+      "falsy"
+    ],
+    "code_snippet": "const count = 0;\nconsole.log(count ?? 5);"
+  },
+  {
+    "id": "javascript_013",
+    "technology": "JavaScript",
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question": "What is the result of `'5' + 3` in JavaScript?",
+    "answer": "'53'",
+    "explanation": "When either operand of `+` is a string, JavaScript coerces the other operand to a string and concatenates rather than performing numeric addition.",
+    "question_type": "MCQ",
+    "keywords": [
+      "type coercion",
+      "string concatenation"
+    ],
+    "options": [
+      "8",
+      "'53'",
+      "NaN",
+      "Error"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_014",
+    "technology": "JavaScript",
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question": "What is the result of `'5' - 3`?",
+    "answer": "2",
+    "explanation": "Unlike `+`, the `-` operator has no string-concatenation meaning, so both operands are coerced to numbers: `'5'` becomes `5`, giving `5 - 3 = 2`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "type coercion",
+      "subtraction"
+    ],
+    "options": [
+      "'53'",
+      "2",
+      "NaN",
+      "Error"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_015",
+    "technology": "JavaScript",
+    "topic": "Control Flow",
+    "difficulty": "Easy",
+    "question": "What is the difference between `switch` with and without `break` statements?",
+    "answer": "Without `break`, execution 'falls through' into the next case's code after a match, executing subsequent cases regardless of their own condition, until a `break` or the end of the switch is reached.",
+    "explanation": "Fall-through can be intentional (grouping multiple case labels to share code) but is a common source of bugs when a `break` is accidentally omitted.",
+    "question_type": "Technical",
+    "keywords": [
+      "switch",
+      "fall-through",
+      "break"
+    ]
+  },
+  {
+    "id": "javascript_016",
+    "technology": "JavaScript",
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question": "What does this switch statement print, given the missing break in the first case?",
+    "answer": "one\ntwo",
+    "explanation": "Case 'a' has no break, so execution falls through into case 'b's code as well, printing both 'one' and 'two' before hitting the break in case 'b'.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "switch",
+      "fall-through"
+    ],
+    "code_snippet": "const x = 'a';\nswitch (x) {\n  case 'a':\n    console.log('one');\n  case 'b':\n    console.log('two');\n    break;\n  default:\n    console.log('three');\n}"
+  },
+  {
+    "id": "javascript_017",
+    "technology": "JavaScript",
+    "topic": "Functions",
+    "difficulty": "Easy",
+    "question": "What is a first-class function, and why does it matter in JavaScript?",
+    "answer": "A first-class function is one that can be assigned to a variable, passed as an argument, and returned from another function, just like any other value.",
+    "explanation": "This is foundational to JavaScript's functional-programming features — callbacks, higher-order functions, and closures all rely on functions being treated as ordinary values.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "first-class functions"
+    ]
+  },
+  {
+    "id": "javascript_018",
+    "technology": "JavaScript",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "What does a function without an explicit `return` statement return?",
+    "answer": "undefined",
+    "explanation": "If a function body finishes without hitting a `return`, JavaScript implicitly returns `undefined`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "return",
+      "undefined"
+    ],
+    "options": [
+      "null",
+      "0",
+      "undefined",
+      "An error is thrown"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "javascript_019",
+    "technology": "JavaScript",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "What is the difference between a function declaration and a function expression regarding hoisting?",
+    "answer": "Function declarations (`function foo() {}`) are fully hoisted — both the name and body are available before their line of code runs. Function expressions (`const foo = function() {}`) only hoist the variable declaration (as undefined, for `var`), not the assignment, so calling it before the assignment throws or fails.",
+    "explanation": "This is why you can call a function declared later in the file via a declaration, but not one assigned via an expression.",
+    "question_type": "Technical",
+    "keywords": [
+      "hoisting",
+      "function declaration",
+      "function expression"
+    ]
+  },
+  {
+    "id": "javascript_020",
+    "technology": "JavaScript",
+    "topic": "Arrow Functions",
+    "difficulty": "Medium",
+    "question": "What is a key behavioral difference between arrow functions and regular functions?",
+    "answer": "Arrow functions do not have their own `this` — they inherit it lexically from the enclosing scope",
+    "explanation": "Regular functions get their own `this` determined by how they're called; arrow functions instead capture `this` from the surrounding lexical scope at definition time, which is why they're popular for callbacks inside methods.",
+    "question_type": "MCQ",
+    "keywords": [
+      "arrow function",
+      "this",
+      "lexical scope"
+    ],
+    "options": [
+      "Arrow functions cannot take parameters",
+      "Arrow functions do not have their own `this` — they inherit it lexically from the enclosing scope",
+      "Arrow functions cannot be async",
+      "There is no difference"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_021",
+    "technology": "JavaScript",
+    "topic": "Arrow Functions",
+    "difficulty": "Hard",
+    "question": "This object method is supposed to log the object's name after a delay, but logs `undefined` instead. Fix it.",
+    "answer": "TypeError/undefined output because the regular function passed to setTimeout gets its own `this`, which is undefined/global in this context, not the `person` object.",
+    "explanation": "Changing the callback to an arrow function (`() => console.log(this.name)`) makes it inherit `this` from `greet`'s lexical scope, which correctly refers to `person`.",
+    "question_type": "Debugging",
+    "keywords": [
+      "this",
+      "arrow function",
+      "settimeout"
+    ],
+    "buggy_code": "const person = {\n  name: 'Alex',\n  greet() {\n    setTimeout(function() {\n      console.log(this.name);\n    }, 100);\n  }\n};\nperson.greet();",
+    "fixed_code": "const person = {\n  name: 'Alex',\n  greet() {\n    setTimeout(() => {\n      console.log(this.name);\n    }, 100);\n  }\n};\nperson.greet();"
+  },
+  {
+    "id": "javascript_022",
+    "technology": "JavaScript",
+    "topic": "Closures",
+    "difficulty": "Medium",
+    "question": "What is a closure in JavaScript?",
+    "answer": "A closure is a function that retains access to variables from its enclosing (lexical) scope even after that outer function has finished executing.",
+    "explanation": "Closures are what let a function 'remember' the environment it was created in — commonly used to create private state, e.g. a counter function that keeps its own count variable.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "closure",
+      "lexical scope"
+    ]
+  },
+  {
+    "id": "javascript_023",
+    "technology": "JavaScript",
+    "topic": "Closures",
+    "difficulty": "Medium",
+    "question": "Write a function `makeCounter()` that returns a function which, each time it is called, returns an incrementing count starting from 1.",
+    "answer": "function makeCounter() {\n  let count = 0;\n  return function() {\n    count += 1;\n    return count;\n  };\n}",
+    "explanation": "The returned inner function closes over `count`, so each call mutates and reads the same private variable that persists across calls, rather than resetting each time.",
+    "question_type": "Coding",
+    "keywords": [
+      "closure",
+      "counter"
+    ],
+    "starter_code": "function makeCounter() {\n  // your code here\n}",
+    "expected_solution": "function makeCounter() {\n  let count = 0;\n  return function() {\n    count += 1;\n    return count;\n  };\n}",
+    "test_cases": [
+      {
+        "input": "const c = makeCounter(); c(); c();",
+        "expected_output": "1, then 2"
+      },
+      {
+        "input": "const c2 = makeCounter(); c2();",
+        "expected_output": "1 (independent from other counters)"
+      }
+    ]
+  },
+  {
+    "id": "javascript_024",
+    "technology": "JavaScript",
+    "topic": "Closures",
+    "difficulty": "Hard",
+    "question": "What does this `var`-based loop print, and why is it different from the `let` version?",
+    "answer": "3\n3\n3",
+    "explanation": "`var` is function-scoped, so all three callbacks close over the SAME `i` variable; by the time the timeouts fire (after the loop has fully finished), `i` has reached 3 for all of them.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "closure",
+      "var",
+      "settimeout"
+    ],
+    "code_snippet": "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}"
+  },
+  {
+    "id": "javascript_025",
+    "technology": "JavaScript",
+    "topic": "Scope & Hoisting",
+    "difficulty": "Medium",
+    "question": "What is the 'temporal dead zone' (TDZ)?",
+    "answer": "The TDZ is the period between entering a scope and the point where a `let`/`const` variable is actually declared, during which accessing that variable throws a ReferenceError, even though the variable is technically hoisted.",
+    "explanation": "Unlike `var` (hoisted and initialized to `undefined`), `let`/`const` are hoisted but not initialized, so referencing them before their declaration line fails fast instead of silently returning `undefined`.",
+    "question_type": "Technical",
+    "keywords": [
+      "temporal dead zone",
+      "hoisting",
+      "let"
+    ]
+  },
+  {
+    "id": "javascript_026",
+    "technology": "JavaScript",
+    "topic": "Scope & Hoisting",
+    "difficulty": "Medium",
+    "question": "What does logging `x` before its `var` declaration print?",
+    "answer": "undefined",
+    "explanation": "`var x` is hoisted to the top of the function, so at the point of `console.log(x)` the declaration already exists (with value `undefined`) but the assignment `x = 5` hasn't run yet — this is different from a ReferenceError, which would occur with `let`/`const` in the same position.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "hoisting",
+      "var"
+    ],
+    "code_snippet": "console.log(x);\nvar x = 5;"
+  },
+  {
+    "id": "javascript_027",
+    "technology": "JavaScript",
+    "topic": "this Keyword",
+    "difficulty": "Medium",
+    "question": "In a regular (non-arrow) method called as `obj.method()`, what does `this` refer to inside `method`?",
+    "answer": "`obj`, the object the method was called on",
+    "explanation": "`this` is determined by the call-site: calling a function as a property of an object (`obj.method()`) binds `this` to that object.",
+    "question_type": "MCQ",
+    "keywords": [
+      "this",
+      "method call"
+    ],
+    "options": [
+      "The global object always",
+      "`obj`, the object the method was called on",
+      "undefined always",
+      "The method function itself"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_028",
+    "technology": "JavaScript",
+    "topic": "this Keyword",
+    "difficulty": "Hard",
+    "question": "Extracting a method into a standalone variable and calling it breaks `this`. Explain why and fix it.",
+    "answer": "Calling `sayHi` as a bare function loses its connection to `user`, so `this` becomes `undefined` (in strict mode/modules) or the global object, and `this.name` fails or is wrong.",
+    "explanation": "Fix with `.bind(user)` (`const sayHi = user.sayHi.bind(user);`), or by using an arrow function wrapper (`const sayHi = () => user.sayHi();`), so `this` is explicitly locked to `user` regardless of how `sayHi` is later invoked.",
+    "question_type": "Debugging",
+    "keywords": [
+      "this",
+      "bind",
+      "method extraction"
+    ],
+    "buggy_code": "const user = {\n  name: 'Sam',\n  sayHi() {\n    console.log(`Hi, ${this.name}`);\n  }\n};\nconst sayHi = user.sayHi;\nsayHi();",
+    "fixed_code": "const user = {\n  name: 'Sam',\n  sayHi() {\n    console.log(`Hi, ${this.name}`);\n  }\n};\nconst sayHi = user.sayHi.bind(user);\nsayHi();"
+  },
+  {
+    "id": "javascript_029",
+    "technology": "JavaScript",
+    "topic": "Objects",
+    "difficulty": "Easy",
+    "question": "How do you check if an object has a property directly on itself (not inherited)?",
+    "answer": "obj.hasOwnProperty('key')",
+    "explanation": "`hasOwnProperty` checks only the object's own properties, ignoring anything found further up the prototype chain, unlike the `in` operator which checks inherited properties too.",
+    "question_type": "MCQ",
+    "keywords": [
+      "hasownproperty",
+      "object"
+    ],
+    "options": [
+      "obj.hasOwnProperty('key')",
+      "obj.key exists",
+      "typeof obj.key",
+      "obj.contains('key')"
+    ],
+    "correct_option": 0
+  },
+  {
+    "id": "javascript_030",
+    "technology": "JavaScript",
+    "topic": "Objects",
+    "difficulty": "Medium",
+    "question": "What is the difference between `Object.freeze()` and `Object.seal()`?",
+    "answer": "`Object.freeze()` prevents adding, removing, AND modifying existing properties (fully immutable, shallowly). `Object.seal()` prevents adding or removing properties, but existing properties can still be modified (just not reconfigured or deleted).",
+    "explanation": "Both are shallow — a frozen object's nested objects are still mutable unless frozen separately.",
+    "question_type": "Technical",
+    "keywords": [
+      "object.freeze",
+      "object.seal",
+      "immutability"
+    ]
+  },
+  {
+    "id": "javascript_031",
+    "technology": "JavaScript",
+    "topic": "Objects",
+    "difficulty": "Medium",
+    "question": "Write a function `deepClone(obj)` that returns a deep copy of a plain JSON-serializable object (no functions, dates, or circular references).",
+    "answer": "function deepClone(obj) {\n  return JSON.parse(JSON.stringify(obj));\n}",
+    "explanation": "For plain JSON-compatible data, serializing to a string and parsing it back creates an entirely independent copy with no shared references at any nesting level; this approach fails for functions, `undefined`, `Date` objects, and circular structures, which is why the constraint is stated.",
+    "question_type": "Coding",
+    "keywords": [
+      "deep clone",
+      "json"
+    ],
+    "starter_code": "function deepClone(obj) {\n  // your code here\n}",
+    "expected_solution": "function deepClone(obj) {\n  return JSON.parse(JSON.stringify(obj));\n}",
+    "test_cases": [
+      {
+        "input": "deepClone({a: 1, b: {c: 2}})",
+        "expected_output": "{a: 1, b: {c: 2}} (new object, mutating the copy's b.c does not affect the original)"
+      },
+      {
+        "input": "deepClone([1, 2, 3])",
+        "expected_output": "[1, 2, 3] (new array, independent copy)"
+      }
+    ]
+  },
+  {
+    "id": "javascript_032",
+    "technology": "JavaScript",
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Easy",
+    "question": "Which array method creates a NEW array by applying a function to every element, without mutating the original?",
+    "answer": "map",
+    "explanation": "`map` returns a new array of the same length with each element transformed by the callback; `forEach` returns undefined and is used purely for side effects.",
+    "question_type": "MCQ",
+    "keywords": [
+      "map",
+      "array methods"
+    ],
+    "options": [
+      "forEach",
+      "map",
+      "push",
+      "splice"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_033",
+    "technology": "JavaScript",
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Medium",
+    "question": "What is the difference between `map` and `filter`?",
+    "answer": "`map` transforms every element and returns a new array of the SAME length; `filter` selects a subset of elements (based on a predicate returning true/false) and returns a new array that may be SHORTER.",
+    "explanation": "Chaining them (`arr.filter(...).map(...)`) is a common pattern for 'select then transform' pipelines.",
+    "question_type": "Technical",
+    "keywords": [
+      "map",
+      "filter"
+    ]
+  },
+  {
+    "id": "javascript_034",
+    "technology": "JavaScript",
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Medium",
+    "question": "Write a function `sumEvens(numbers)` that returns the sum of all even numbers in an array using `filter` and `reduce`.",
+    "answer": "function sumEvens(numbers) {\n  return numbers.filter(n => n % 2 === 0).reduce((acc, n) => acc + n, 0);\n}",
+    "explanation": "`filter` keeps only even numbers, then `reduce` accumulates them into a single sum starting from an initial accumulator of 0.",
+    "question_type": "Coding",
+    "keywords": [
+      "filter",
+      "reduce",
+      "array methods"
+    ],
+    "starter_code": "function sumEvens(numbers) {\n  // your code here\n}",
+    "expected_solution": "function sumEvens(numbers) {\n  return numbers.filter(n => n % 2 === 0).reduce((acc, n) => acc + n, 0);\n}",
+    "test_cases": [
+      {
+        "input": "sumEvens([1, 2, 3, 4, 5, 6])",
+        "expected_output": "12"
+      },
+      {
+        "input": "sumEvens([1, 3, 5])",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "javascript_035",
+    "technology": "JavaScript",
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Medium",
+    "question": "What does `[1, 2, 3].includes(2)` return?",
+    "answer": "true",
+    "explanation": "`includes` performs a value search and returns a boolean indicating whether the array contains the given value (using SameValueZero comparison).",
+    "question_type": "MCQ",
+    "keywords": [
+      "includes",
+      "array methods"
+    ],
+    "options": [
+      "1",
+      "true",
+      "'2'",
+      "undefined"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_036",
+    "technology": "JavaScript",
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Hard",
+    "question": "What array does mapping `nums` to their squares print here?",
+    "answer": "[1, 4, 9]",
+    "explanation": "`map` squares each number, producing a brand-new array `[1, 4, 9]`; the original `nums` array is unaffected because `map` never mutates its source.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "map",
+      "immutability"
+    ],
+    "code_snippet": "const nums = [1, 2, 3];\nconst squared = nums.map(n => n * n);\nconsole.log(squared);"
+  },
+  {
+    "id": "javascript_037",
+    "technology": "JavaScript",
+    "topic": "Prototypes & Prototypal Inheritance",
+    "difficulty": "Medium",
+    "question": "What is the prototype chain in JavaScript?",
+    "answer": "Every object has an internal link (`[[Prototype]]`, accessible via `Object.getPrototypeOf` or the legacy `__proto__`) to another object; when a property isn't found on the object itself, JavaScript looks it up along this chain of linked objects until it finds it or reaches `null`.",
+    "explanation": "This is how JavaScript implements inheritance — methods defined on `Array.prototype`, for example, are available on every array instance via the prototype chain, without being copied onto each array.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "prototype chain",
+      "inheritance"
+    ]
+  },
+  {
+    "id": "javascript_038",
+    "technology": "JavaScript",
+    "topic": "Prototypes & Prototypal Inheritance",
+    "difficulty": "Medium",
+    "question": "What does the `class` keyword in modern JavaScript primarily provide?",
+    "answer": "Syntactic sugar over JavaScript's existing prototype-based inheritance",
+    "explanation": "Under the hood, `class` syntax still creates functions and sets up the prototype chain the same way `Object.create`/constructor-function patterns always did — it's a cleaner syntax, not a different inheritance mechanism.",
+    "question_type": "MCQ",
+    "keywords": [
+      "class",
+      "prototype",
+      "syntactic sugar"
+    ],
+    "options": [
+      "A completely new inheritance model unrelated to prototypes",
+      "Syntactic sugar over JavaScript's existing prototype-based inheritance",
+      "A way to avoid using `this`",
+      "Static typing"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_039",
+    "technology": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Easy",
+    "question": "Which ES6 feature allows embedding expressions directly inside string literals using backticks?",
+    "answer": "Template literals",
+    "explanation": "Template literals (backtick strings) support `${expression}` interpolation and multi-line strings without concatenation.",
+    "question_type": "MCQ",
+    "keywords": [
+      "template literals"
+    ],
+    "options": [
+      "String concatenation",
+      "Template literals",
+      "String interpolation macros",
+      "JSX"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_040",
+    "technology": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Medium",
+    "question": "What problem do JavaScript modules (`import`/`export`) solve compared to plain `<script>` tags?",
+    "answer": "Modules provide file-scoped variables/functions by default (nothing leaks to global scope unless exported), explicit dependency declarations, and are only executed once even if imported multiple times, avoiding the global-namespace collisions common with multiple plain scripts.",
+    "explanation": "This makes large codebases more maintainable by making dependencies explicit and preventing accidental global variable clashes between files.",
+    "question_type": "Technical",
+    "keywords": [
+      "modules",
+      "import",
+      "export"
+    ]
+  },
+  {
+    "id": "javascript_041",
+    "technology": "JavaScript",
+    "topic": "Destructuring",
+    "difficulty": "Easy",
+    "question": "Given `const user = { name: 'Ana', age: 30 };`, write a destructuring statement to extract `name` and `age` into standalone variables.",
+    "answer": "const { name, age } = user;",
+    "explanation": "Object destructuring pulls out properties by matching variable names to property keys, avoiding repeated `user.name`/`user.age` access.",
+    "question_type": "Coding",
+    "keywords": [
+      "destructuring",
+      "object"
+    ],
+    "starter_code": "const user = { name: 'Ana', age: 30 };\n// your destructuring line here",
+    "expected_solution": "const user = { name: 'Ana', age: 30 };\nconst { name, age } = user;",
+    "test_cases": [
+      {
+        "input": "after destructuring",
+        "expected_output": "name === 'Ana' and age === 30"
+      },
+      {
+        "input": "const user2 = { name: 'Ravi', age: 25 }; const { name, age } = user2;",
+        "expected_output": "name === 'Ravi' and age === 25"
+      }
+    ]
+  },
+  {
+    "id": "javascript_042",
+    "technology": "JavaScript",
+    "topic": "Destructuring",
+    "difficulty": "Medium",
+    "question": "What does `const [a, , c] = [1, 2, 3];` result in?",
+    "answer": "a=1, c=3 (the middle element is skipped)",
+    "explanation": "Array destructuring allows skipping elements by leaving an empty slot between commas, so the second element (2) is discarded and `c` binds to the third element (3).",
+    "question_type": "MCQ",
+    "keywords": [
+      "array destructuring"
+    ],
+    "options": [
+      "a=1, c=2",
+      "a=1, c=3 (the middle element is skipped)",
+      "A syntax error",
+      "a=1, c=undefined"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_043",
+    "technology": "JavaScript",
+    "topic": "Spread/Rest Operators",
+    "difficulty": "Medium",
+    "question": "What is the difference between the spread operator and the rest operator, given they use the same `...` syntax?",
+    "answer": "Spread EXPANDS an iterable into individual elements (e.g. in a function call or array/object literal: `[...arr]`), while rest COLLECTS multiple elements into a single array (e.g. in a function parameter list or destructuring: `function f(...args)`).",
+    "explanation": "Which behavior applies depends on the context/position of `...` — spread is used where individual values are expected, rest is used where a variable is being defined to hold the remaining values.",
+    "question_type": "Technical",
+    "keywords": [
+      "spread",
+      "rest",
+      "..."
+    ]
+  },
+  {
+    "id": "javascript_044",
+    "technology": "JavaScript",
+    "topic": "Spread/Rest Operators",
+    "difficulty": "Medium",
+    "question": "Write a function `sum(...numbers)` using the rest operator that returns the sum of any number of numeric arguments.",
+    "answer": "function sum(...numbers) {\n  return numbers.reduce((acc, n) => acc + n, 0);\n}",
+    "explanation": "The rest parameter `...numbers` collects all arguments passed to `sum` into a real array, which `reduce` can then fold into a total.",
+    "question_type": "Coding",
+    "keywords": [
+      "rest parameter",
+      "reduce"
+    ],
+    "starter_code": "function sum(...numbers) {\n  // your code here\n}",
+    "expected_solution": "function sum(...numbers) {\n  return numbers.reduce((acc, n) => acc + n, 0);\n}",
+    "test_cases": [
+      {
+        "input": "sum(1, 2, 3)",
+        "expected_output": "6"
+      },
+      {
+        "input": "sum()",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "javascript_045",
+    "technology": "JavaScript",
+    "topic": "Spread/Rest Operators",
+    "difficulty": "Medium",
+    "question": "What object does spreading `obj1` and `obj2` together produce here?",
+    "answer": "{a: 1, b: 3, c: 4}",
+    "explanation": "Object spread copies properties left to right, so later properties overwrite earlier ones with the same key — `b: 3` from the second object overrides `b: 2` from the first.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "object spread",
+      "merge"
+    ],
+    "code_snippet": "const obj1 = { a: 1, b: 2 };\nconst obj2 = { b: 3, c: 4 };\nconsole.log({ ...obj1, ...obj2 });"
+  },
+  {
+    "id": "javascript_046",
+    "technology": "JavaScript",
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "What are the three states a Promise can be in?",
+    "answer": "Pending (initial state, neither fulfilled nor rejected), Fulfilled (the operation completed successfully), and Rejected (the operation failed).",
+    "explanation": "A promise is 'settled' once it becomes either fulfilled or rejected, and once settled, it cannot transition to a different state.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "promise",
+      "pending",
+      "fulfilled",
+      "rejected"
+    ]
+  },
+  {
+    "id": "javascript_047",
+    "technology": "JavaScript",
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "What does `Promise.all([p1, p2, p3])` do?",
+    "answer": "Resolves when ALL promises resolve (with an array of results), or rejects as soon as any one rejects",
+    "explanation": "Promise.all waits for every promise to fulfill and returns their results in order matching the input array; if any promise rejects, the whole Promise.all immediately rejects with that reason.",
+    "question_type": "MCQ",
+    "keywords": [
+      "promise.all"
+    ],
+    "options": [
+      "Resolves as soon as the FIRST promise resolves",
+      "Resolves when ALL promises resolve (with an array of results), or rejects as soon as any one rejects",
+      "Runs the promises sequentially",
+      "Ignores rejected promises"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_048",
+    "technology": "JavaScript",
+    "topic": "Promises",
+    "difficulty": "Hard",
+    "question": "What is the difference between `Promise.all` and `Promise.allSettled`?",
+    "answer": "`Promise.all` short-circuits and rejects immediately if any input promise rejects, discarding other results. `Promise.allSettled` always waits for every promise to settle and returns an array describing each outcome (`{status: 'fulfilled', value}` or `{status: 'rejected', reason}`), never rejecting itself.",
+    "explanation": "`allSettled` is useful when you want to know the outcome of every operation regardless of individual failures, rather than failing fast on the first rejection.",
+    "question_type": "Technical",
+    "keywords": [
+      "promise.all",
+      "promise.allsettled"
+    ]
+  },
+  {
+    "id": "javascript_049",
+    "technology": "JavaScript",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "What does the `await` keyword do, and where can it be used?",
+    "answer": "`await` pauses execution of an `async` function until the given Promise settles, then returns its resolved value (or throws if it rejected); it can only be used inside a function declared `async` (or at the top level of ES modules).",
+    "explanation": "Under the hood, `await` is syntactic sugar over `.then()` chaining, making asynchronous code read like synchronous code without callback nesting.",
+    "question_type": "Technical",
+    "keywords": [
+      "await",
+      "async"
+    ]
+  },
+  {
+    "id": "javascript_050",
+    "technology": "JavaScript",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "This code doesn't properly handle a rejected promise from `fetchData()`. Fix it.",
+    "answer": "Without a try/catch, a rejected promise inside an async function becomes an unhandled promise rejection, potentially crashing the process (in Node) or leaving the error silently unlogged.",
+    "explanation": "Wrapping the `await` in a try/catch lets the async function handle the rejection gracefully and log or recover from the error instead of letting it propagate unhandled.",
+    "question_type": "Debugging",
+    "keywords": [
+      "async/await",
+      "try/catch",
+      "error handling"
+    ],
+    "buggy_code": "async function loadUser(id) {\n  const data = await fetchData(id);\n  return data;\n}",
+    "fixed_code": "async function loadUser(id) {\n  try {\n    const data = await fetchData(id);\n    return data;\n  } catch (err) {\n    console.error('Failed to load user:', err);\n    throw err;\n  }\n}"
+  },
+  {
+    "id": "javascript_051",
+    "technology": "JavaScript",
+    "topic": "Async/Await",
+    "difficulty": "Hard",
+    "question": "What is logged first: 'sync end', or the resolved promise's 'async result'?",
+    "answer": "sync end\nasync result",
+    "explanation": "Even though the promise resolves immediately, `.then()`/await-continuation callbacks are always scheduled as microtasks, which only run after the current synchronous execution (the whole script's top-level run) finishes.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "microtask",
+      "event loop",
+      "promise"
+    ],
+    "code_snippet": "console.log('start');\nPromise.resolve().then(() => console.log('async result'));\nconsole.log('sync end');"
+  },
+  {
+    "id": "javascript_052",
+    "technology": "JavaScript",
+    "topic": "Event Loop & Concurrency Model",
+    "difficulty": "Hard",
+    "question": "What is the exact output order of this code?",
+    "answer": "start\nend\npromise\ntimeout",
+    "explanation": "Synchronous code ('start', 'end') runs first; then microtasks (the resolved Promise's `.then`) run before the next macrotask; `setTimeout`'s callback is a macrotask and runs last, even with a 0ms delay.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "event loop",
+      "microtask",
+      "macrotask",
+      "settimeout"
+    ],
+    "code_snippet": "console.log('start');\nsetTimeout(() => console.log('timeout'), 0);\nPromise.resolve().then(() => console.log('promise'));\nconsole.log('end');"
+  },
+  {
+    "id": "javascript_053",
+    "technology": "JavaScript",
+    "topic": "Event Loop & Concurrency Model",
+    "difficulty": "Medium",
+    "question": "Is JavaScript (in a single realm, e.g. one browser tab or one Node process) single-threaded or multi-threaded for running your code?",
+    "answer": "Single-threaded — one call stack executes one thing at a time, with async work handled via the event loop",
+    "explanation": "JavaScript's core execution model uses a single call stack; concurrency for I/O-bound work is achieved by delegating to the runtime (browser APIs / libuv in Node) and scheduling callbacks back onto that single thread via the event loop, not by running your JS on multiple threads simultaneously.",
+    "question_type": "MCQ",
+    "keywords": [
+      "single-threaded",
+      "event loop"
+    ],
+    "options": [
+      "Multi-threaded by default",
+      "Single-threaded — one call stack executes one thing at a time, with async work handled via the event loop",
+      "It depends on the CPU core count",
+      "Multi-threaded only for Promises"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_054",
+    "technology": "JavaScript",
+    "topic": "Event Loop & Concurrency Model",
+    "difficulty": "Hard",
+    "question": "What is the difference between the microtask queue and the macrotask (task) queue?",
+    "answer": "Microtasks (Promise callbacks, `queueMicrotask`) are drained completely — ALL pending microtasks run — before the event loop proceeds to the next macrotask. Macrotasks (setTimeout, setInterval, I/O callbacks, UI rendering) are each run one at a time, with the microtask queue fully drained again between each one.",
+    "explanation": "This ordering guarantee is why Promise callbacks consistently run before any pending setTimeout callback, even a setTimeout with a 0ms delay scheduled earlier.",
+    "question_type": "Technical",
+    "keywords": [
+      "microtask queue",
+      "macrotask queue",
+      "event loop"
+    ]
+  },
+  {
+    "id": "javascript_055",
+    "technology": "JavaScript",
+    "topic": "DOM Manipulation",
+    "difficulty": "Easy",
+    "question": "Which method selects the FIRST element matching a CSS selector?",
+    "answer": "document.querySelector",
+    "explanation": "`querySelector` returns only the first matching element (or null); `querySelectorAll` returns a static NodeList of all matches.",
+    "question_type": "MCQ",
+    "keywords": [
+      "queryselector",
+      "dom"
+    ],
+    "options": [
+      "document.getElementsByClassName",
+      "document.querySelector",
+      "document.querySelectorAll",
+      "document.getElementsByTagName"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_056",
+    "technology": "JavaScript",
+    "topic": "DOM Manipulation",
+    "difficulty": "Medium",
+    "question": "What is the difference between `innerHTML` and `textContent`?",
+    "answer": "`innerHTML` parses and renders the assigned string as HTML markup (creating actual elements), while `textContent` treats the assigned string as plain text, escaping any HTML-like characters.",
+    "explanation": "Using `innerHTML` with untrusted user input is a common XSS (cross-site scripting) vulnerability, since it will execute embedded `<script>`-like content in some contexts; `textContent` is safe for inserting arbitrary text.",
+    "question_type": "Technical",
+    "keywords": [
+      "innerhtml",
+      "textcontent",
+      "xss"
+    ]
+  },
+  {
+    "id": "javascript_057",
+    "technology": "JavaScript",
+    "topic": "Events",
+    "difficulty": "Medium",
+    "question": "What is event bubbling?",
+    "answer": "Event bubbling is the phase where an event, after firing on the target element, propagates upward through each of its ancestor elements in the DOM tree, triggering any listeners registered on them too.",
+    "explanation": "This is why a click on a button inside a `<div>` with its own click listener also triggers the div's listener, unless bubbling is stopped with `event.stopPropagation()`.",
+    "question_type": "Technical",
+    "keywords": [
+      "event bubbling",
+      "dom events"
+    ]
+  },
+  {
+    "id": "javascript_058",
+    "technology": "JavaScript",
+    "topic": "Events",
+    "difficulty": "Medium",
+    "question": "What does `event.preventDefault()` do?",
+    "answer": "Cancels the browser's default action for that event (e.g. following a link, submitting a form)",
+    "explanation": "preventDefault() suppresses the browser's built-in behavior associated with the event, independent of propagation, which is controlled separately by stopPropagation().",
+    "question_type": "MCQ",
+    "keywords": [
+      "preventdefault"
+    ],
+    "options": [
+      "Stops the event from bubbling further",
+      "Cancels the browser's default action for that event (e.g. following a link, submitting a form)",
+      "Removes all event listeners",
+      "Pauses JavaScript execution"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_059",
+    "technology": "JavaScript",
+    "topic": "Error Handling",
+    "difficulty": "Easy",
+    "question": "What is the purpose of a `finally` block in a try/catch/finally statement?",
+    "answer": "Code inside `finally` always runs after the try/catch completes, whether an exception was thrown, caught, or neither — commonly used for cleanup (closing a connection, hiding a loading spinner).",
+    "explanation": "`finally` executes regardless of whether `try` succeeded, `catch` handled an error, or even if `try`/`catch` contains a `return` statement.",
+    "question_type": "Technical",
+    "keywords": [
+      "try",
+      "catch",
+      "finally"
+    ]
+  },
+  {
+    "id": "javascript_060",
+    "technology": "JavaScript",
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "Write a function `safeDivide(a, b)` that returns the division result, or throws a `new Error('Division by zero')` if `b` is 0.",
+    "answer": "function safeDivide(a, b) {\n  if (b === 0) {\n    throw new Error('Division by zero');\n  }\n  return a / b;\n}",
+    "explanation": "Explicitly checking for the zero-divisor case and throwing a descriptive Error lets callers catch and handle it meaningfully, rather than silently getting `Infinity`/`NaN`.",
+    "question_type": "Coding",
+    "keywords": [
+      "error handling",
+      "throw"
+    ],
+    "starter_code": "function safeDivide(a, b) {\n  // your code here\n}",
+    "expected_solution": "function safeDivide(a, b) {\n  if (b === 0) {\n    throw new Error('Division by zero');\n  }\n  return a / b;\n}",
+    "test_cases": [
+      {
+        "input": "safeDivide(10, 2)",
+        "expected_output": "5"
+      },
+      {
+        "input": "safeDivide(10, 0)",
+        "expected_output": "throws Error('Division by zero')"
+      }
+    ]
+  },
+  {
+    "id": "javascript_061",
+    "technology": "JavaScript",
+    "topic": "Modules (import/export)",
+    "difficulty": "Medium",
+    "question": "What is the difference between a default export and a named export?",
+    "answer": "A module can have only one default export but multiple named exports, and named exports must be imported with matching names (or aliased)",
+    "explanation": "`export default` marks the module's single 'main' export importable under any local name, while `export { foo }` (named) requires `import { foo }` using that exact identifier unless explicitly aliased with `as`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "default export",
+      "named export"
+    ],
+    "options": [
+      "Named exports must be functions; default exports must be classes",
+      "A module can have only one default export but multiple named exports, and named exports must be imported with matching names (or aliased)",
+      "Default exports cannot be imported",
+      "There is no difference"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_062",
+    "technology": "JavaScript",
+    "topic": "JSON",
+    "difficulty": "Easy",
+    "question": "What do `JSON.stringify()` and `JSON.parse()` do?",
+    "answer": "`JSON.stringify()` converts a JavaScript value into a JSON-formatted string; `JSON.parse()` converts a JSON-formatted string back into a JavaScript value.",
+    "explanation": "JSON is a text-based data format, so any time JS data needs to cross a boundary that only handles strings (e.g. localStorage, an HTTP body, a WebSocket message), it must be serialized and later parsed back.",
+    "question_type": "Technical",
+    "keywords": [
+      "json.stringify",
+      "json.parse"
+    ]
+  },
+  {
+    "id": "javascript_063",
+    "technology": "JavaScript",
+    "topic": "JSON",
+    "difficulty": "Medium",
+    "question": "What happens to `undefined` values and functions when you `JSON.stringify` an object containing them?",
+    "answer": "They are omitted from the resulting JSON (for object properties) or converted to null (in arrays)",
+    "explanation": "JSON has no representation for `undefined` or functions, so `JSON.stringify` simply skips object properties whose value is `undefined` or a function, but replaces them with `null` when they appear as array elements.",
+    "question_type": "MCQ",
+    "keywords": [
+      "json.stringify",
+      "undefined"
+    ],
+    "options": [
+      "They throw an error",
+      "They are omitted from the resulting JSON (for object properties) or converted to null (in arrays)",
+      "They are converted to the string 'undefined'",
+      "They are preserved as-is"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_064",
+    "technology": "JavaScript",
+    "topic": "Higher-Order Functions",
+    "difficulty": "Medium",
+    "question": "What is a higher-order function?",
+    "answer": "A higher-order function is a function that either takes one or more functions as arguments, returns a function, or both.",
+    "explanation": "Array methods like `map`, `filter`, and `reduce` are higher-order functions because they accept a callback function as an argument to customize their behavior.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "higher-order function"
+    ]
+  },
+  {
+    "id": "javascript_065",
+    "technology": "JavaScript",
+    "topic": "Higher-Order Functions",
+    "difficulty": "Medium",
+    "question": "Write a higher-order function `compose(f, g)` that returns a new function equivalent to `f(g(x))`.",
+    "answer": "function compose(f, g) {\n  return function(x) {\n    return f(g(x));\n  };\n}",
+    "explanation": "`compose` returns a new function that, when called with `x`, first applies `g`, then feeds that result into `f` — a fundamental building block of functional composition.",
+    "question_type": "Coding",
+    "keywords": [
+      "compose",
+      "higher-order function"
+    ],
+    "starter_code": "function compose(f, g) {\n  // your code here\n}",
+    "expected_solution": "function compose(f, g) {\n  return function(x) {\n    return f(g(x));\n  };\n}",
+    "test_cases": [
+      {
+        "input": "compose(x => x + 1, x => x * 2)(3)",
+        "expected_output": "7 (3*2=6, then 6+1=7)"
+      },
+      {
+        "input": "compose(x => x * x, x => x + 3)(2)",
+        "expected_output": "25 (2+3=5, then 5*5=25)"
+      }
+    ]
+  },
+  {
+    "id": "javascript_066",
+    "technology": "JavaScript",
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Easy",
+    "question": "Write a function `isPalindrome(str)` that returns true if a string reads the same forwards and backwards (case-insensitive).",
+    "answer": "function isPalindrome(str) {\n  const cleaned = str.toLowerCase();\n  return cleaned === cleaned.split('').reverse().join('');\n}",
+    "explanation": "Lower-casing normalizes case sensitivity; reversing the character array and rejoining it lets a direct string comparison detect symmetry.",
+    "question_type": "Coding",
+    "keywords": [
+      "palindrome",
+      "string"
+    ],
+    "starter_code": "function isPalindrome(str) {\n  // your code here\n}",
+    "expected_solution": "function isPalindrome(str) {\n  const cleaned = str.toLowerCase();\n  return cleaned === cleaned.split('').reverse().join('');\n}",
+    "test_cases": [
+      {
+        "input": "isPalindrome('Racecar')",
+        "expected_output": "true"
+      },
+      {
+        "input": "isPalindrome('hello')",
+        "expected_output": "false"
+      }
+    ]
+  },
+  {
+    "id": "javascript_067",
+    "technology": "JavaScript",
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `findDuplicates(arr)` that returns an array of values that appear more than once in the input array.",
+    "answer": "function findDuplicates(arr) {\n  const seen = new Set();\n  const dupes = new Set();\n  for (const item of arr) {\n    if (seen.has(item)) dupes.add(item);\n    else seen.add(item);\n  }\n  return [...dupes];\n}",
+    "explanation": "A Set tracks values already seen; any value encountered again is added to a separate duplicates set, and converting that set back to an array gives each duplicate exactly once.",
+    "question_type": "Coding",
+    "keywords": [
+      "duplicates",
+      "set"
+    ],
+    "starter_code": "function findDuplicates(arr) {\n  // your code here\n}",
+    "expected_solution": "function findDuplicates(arr) {\n  const seen = new Set();\n  const dupes = new Set();\n  for (const item of arr) {\n    if (seen.has(item)) dupes.add(item);\n    else seen.add(item);\n  }\n  return [...dupes];\n}",
+    "test_cases": [
+      {
+        "input": "findDuplicates([1, 2, 2, 3, 3, 3])",
+        "expected_output": "[2, 3]"
+      },
+      {
+        "input": "findDuplicates([1, 2, 3])",
+        "expected_output": "[]"
+      }
+    ]
+  },
+  {
+    "id": "javascript_068",
+    "technology": "JavaScript",
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `flattenArray(arr)` that flattens a nested array of arbitrary depth into a single flat array (without using `Array.prototype.flat`).",
+    "answer": "function flattenArray(arr) {\n  return arr.reduce((flat, item) => {\n    return flat.concat(Array.isArray(item) ? flattenArray(item) : item);\n  }, []);\n}",
+    "explanation": "The function recurses into any array element, flattening it first, then concatenates it into the accumulator — reducing arbitrary nesting depth to a single level.",
+    "question_type": "Coding",
+    "keywords": [
+      "flatten",
+      "recursion"
+    ],
+    "starter_code": "function flattenArray(arr) {\n  // your code here\n}",
+    "expected_solution": "function flattenArray(arr) {\n  return arr.reduce((flat, item) => {\n    return flat.concat(Array.isArray(item) ? flattenArray(item) : item);\n  }, []);\n}",
+    "test_cases": [
+      {
+        "input": "flattenArray([1, [2, [3, 4], 5]])",
+        "expected_output": "[1, 2, 3, 4, 5]"
+      },
+      {
+        "input": "flattenArray([1, [2, 3], [4, [5, 6]]])",
+        "expected_output": "[1, 2, 3, 4, 5, 6]"
+      }
+    ]
+  },
+  {
+    "id": "javascript_069",
+    "technology": "JavaScript",
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Hard",
+    "question": "Write a function `debounce(fn, delay)` that returns a debounced version of `fn`, which only executes `delay` ms after the last time the debounced function was called.",
+    "answer": "function debounce(fn, delay) {\n  let timer = null;\n  return function(...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn.apply(this, args), delay);\n  };\n}",
+    "explanation": "Each call clears any pending timer and starts a new one, so `fn` only actually fires once calls stop arriving for `delay` milliseconds — commonly used for search-input or resize-event handlers.",
+    "question_type": "Coding",
+    "keywords": [
+      "debounce",
+      "closures",
+      "settimeout"
+    ],
+    "starter_code": "function debounce(fn, delay) {\n  // your code here\n}",
+    "expected_solution": "function debounce(fn, delay) {\n  let timer = null;\n  return function(...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn.apply(this, args), delay);\n  };\n}",
+    "test_cases": [
+      {
+        "input": "rapid repeated calls within `delay` ms",
+        "expected_output": "fn runs only once, after the calls stop"
+      },
+      {
+        "input": "two calls made further apart than `delay` ms (not rapid)",
+        "expected_output": "fn runs twice, once for each isolated call, since neither call is cancelled by a newer one within the delay window"
+      }
+    ]
+  },
+  {
+    "id": "javascript_070",
+    "technology": "JavaScript",
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `groupBy(arr, keyFn)` that groups array elements into an object keyed by the result of `keyFn(element)`.",
+    "answer": "function groupBy(arr, keyFn) {\n  return arr.reduce((groups, item) => {\n    const key = keyFn(item);\n    if (!groups[key]) groups[key] = [];\n    groups[key].push(item);\n    return groups;\n  }, {});\n}",
+    "explanation": "reduce builds up an accumulator object; for each item, the key is computed via `keyFn`, a bucket array is created on first use, and the item is pushed into its bucket.",
+    "question_type": "Coding",
+    "keywords": [
+      "group by",
+      "reduce"
+    ],
+    "starter_code": "function groupBy(arr, keyFn) {\n  // your code here\n}",
+    "expected_solution": "function groupBy(arr, keyFn) {\n  return arr.reduce((groups, item) => {\n    const key = keyFn(item);\n    if (!groups[key]) groups[key] = [];\n    groups[key].push(item);\n    return groups;\n  }, {});\n}",
+    "test_cases": [
+      {
+        "input": "groupBy([1,2,3,4], n => n % 2 === 0 ? 'even' : 'odd')",
+        "expected_output": "{odd: [1,3], even: [2,4]}"
+      },
+      {
+        "input": "groupBy(['apple','banana','avocado'], s => s[0])",
+        "expected_output": "{a: ['apple','avocado'], b: ['banana']}"
+      }
+    ]
+  },
+  {
+    "id": "javascript_071",
+    "technology": "JavaScript",
+    "topic": "JS Basics",
+    "difficulty": "Easy",
+    "question": "Which of these is a valid way to declare a variable in modern JavaScript?",
+    "answer": "All of the above",
+    "explanation": "`var`, `let`, and `const` are all valid variable declaration keywords, differing in scoping and reassignment rules, not validity.",
+    "question_type": "MCQ",
+    "keywords": [
+      "variable declaration"
+    ],
+    "options": [
+      "var x = 5;",
+      "let x = 5;",
+      "const x = 5;",
+      "All of the above"
+    ],
+    "correct_option": 3
+  },
+  {
+    "id": "javascript_072",
+    "technology": "JavaScript",
+    "topic": "JS Basics",
+    "difficulty": "Medium",
+    "question": "What does 'strict mode' (`'use strict';`) change about how JavaScript executes?",
+    "answer": "Strict mode disallows several error-prone patterns — assigning to undeclared variables, duplicate parameter names, and silent failures become thrown errors — and changes `this` to be `undefined` in a plain function call instead of the global object.",
+    "explanation": "It was introduced to make debugging easier and to opt into a cleaner subset of the language, and is automatically enabled inside ES modules and classes.",
+    "question_type": "Technical",
+    "keywords": [
+      "strict mode",
+      "this"
+    ]
+  },
+  {
+    "id": "javascript_073",
+    "technology": "JavaScript",
+    "topic": "Data Types",
+    "difficulty": "Medium",
+    "question": "What is the result of `typeof function(){}`?",
+    "answer": "'function'",
+    "explanation": "Functions have their own `typeof` result, `'function'`, even though they are technically also objects (they can have properties and are `instanceof Object`).",
+    "question_type": "MCQ",
+    "keywords": [
+      "typeof",
+      "function"
+    ],
+    "options": [
+      "'object'",
+      "'function'",
+      "'method'",
+      "'undefined'"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_074",
+    "technology": "JavaScript",
+    "topic": "Data Types",
+    "difficulty": "Medium",
+    "question": "What is the difference between a `Map` and a plain object for storing key-value pairs?",
+    "answer": "A `Map` allows any value (including objects and functions) as a key, preserves insertion order reliably, and has a `.size` property; plain objects coerce non-symbol keys to strings and mix user data with inherited prototype properties.",
+    "explanation": "For frequently added/removed key-value data or non-string keys, `Map` is generally the safer, more predictable choice.",
+    "question_type": "Technical",
+    "keywords": [
+      "map",
+      "object",
+      "key-value"
+    ]
+  },
+  {
+    "id": "javascript_075",
+    "technology": "JavaScript",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "What is a 'pure function'?",
+    "answer": "A pure function always returns the same output for the same input and has no observable side effects (no mutating external state, no I/O, no relying on external mutable state).",
+    "explanation": "Pure functions are easier to test, reason about, and memoize, since their behavior depends only on their arguments.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "pure function",
+      "side effects"
+    ]
+  },
+  {
+    "id": "javascript_076",
+    "technology": "JavaScript",
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "What does `arguments` refer to inside a regular (non-arrow) function?",
+    "answer": "An array-like object containing all arguments passed to the function call",
+    "explanation": "`arguments` is an array-like (not a real Array) object available inside regular functions holding every argument passed at call time, regardless of the declared parameter list; arrow functions do not have their own `arguments`.",
+    "question_type": "MCQ",
+    "keywords": [
+      "arguments object"
+    ],
+    "options": [
+      "An array of the function's parameter names",
+      "An array-like object containing all arguments passed to the function call",
+      "A reference to the calling function",
+      "It is undefined in modern JavaScript"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_077",
+    "technology": "JavaScript",
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question": "What does this loop print, given `for...in` iterates over an array?",
+    "answer": "0\n1\n2",
+    "explanation": "`for...in` iterates over enumerable property keys, which for a simple array are its numeric indices as strings ('0', '1', '2'); it prints the indices, not the values, which is why `for...of` is generally preferred for arrays.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "for-in",
+      "for-of",
+      "array iteration"
+    ],
+    "code_snippet": "const arr = ['a', 'b', 'c'];\nfor (const i in arr) {\n  console.log(i);\n}"
+  },
+  {
+    "id": "javascript_078",
+    "technology": "JavaScript",
+    "topic": "Control Flow",
+    "difficulty": "Easy",
+    "question": "Which loop construct is best suited for iterating over the VALUES of an iterable like an array?",
+    "answer": "for...of",
+    "explanation": "`for...of` iterates over the values produced by an iterable (arrays, strings, Maps, Sets), while `for...in` iterates over enumerable property keys, which is usually not what's intended for arrays.",
+    "question_type": "MCQ",
+    "keywords": [
+      "for-of",
+      "iteration"
+    ],
+    "options": [
+      "for...in",
+      "for...of",
+      "while (with manual index) only",
+      "do...while only"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_079",
+    "technology": "JavaScript",
+    "topic": "Arrow Functions",
+    "difficulty": "Medium",
+    "question": "Why can't arrow functions be used as constructors with `new`?",
+    "answer": "Arrow functions have no internal `[[Construct]]` method and no `prototype` property, both of which `new` relies on to create and link a new instance object, so calling `new` on an arrow function throws a TypeError.",
+    "explanation": "This is a direct consequence of arrow functions not having their own `this` — since `new` works by binding a freshly created object as `this`, and arrow functions never bind their own `this`, the two are fundamentally incompatible.",
+    "question_type": "Technical",
+    "keywords": [
+      "arrow function",
+      "new",
+      "constructor"
+    ]
+  },
+  {
+    "id": "javascript_080",
+    "technology": "JavaScript",
+    "topic": "Arrow Functions",
+    "difficulty": "Easy",
+    "question": "What is the concise-body syntax `const double = x => x * 2;` equivalent to?",
+    "answer": "function double(x) { return x * 2; }",
+    "explanation": "A concise (no-braces) arrow function body implicitly returns the value of its single expression, equivalent to an explicit `return` inside a block body.",
+    "question_type": "MCQ",
+    "keywords": [
+      "arrow function",
+      "implicit return"
+    ],
+    "options": [
+      "function double(x) { x * 2; }",
+      "function double(x) { return x * 2; }",
+      "function double(x) { return x; }",
+      "const double = function(x) {}"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_081",
+    "technology": "JavaScript",
+    "topic": "Scope & Hoisting",
+    "difficulty": "Medium",
+    "question": "What does 'lexical scoping' mean in JavaScript?",
+    "answer": "Lexical scoping means a variable's accessibility is determined by where it is physically written in the source code (its nesting within functions/blocks), not by which function called it at runtime.",
+    "explanation": "This is why a nested function can access its outer function's variables regardless of who calls the nested function — the scope chain is fixed at definition time, not call time.",
+    "question_type": "Technical",
+    "keywords": [
+      "lexical scope"
+    ]
+  },
+  {
+    "id": "javascript_082",
+    "technology": "JavaScript",
+    "topic": "this Keyword",
+    "difficulty": "Medium",
+    "question": "What does `this` refer to inside a regular function called with no receiver, e.g. `foo()`, in non-strict mode vs strict mode?",
+    "answer": "In non-strict mode, `this` defaults to the global object (`window` in browsers, `global` in Node); in strict mode, `this` is `undefined` in that same call.",
+    "explanation": "This is one reason strict mode is safer — accidentally referencing `this.someProperty` on an unintended global object can silently create/read global variables in non-strict mode, whereas strict mode fails loudly with a TypeError.",
+    "question_type": "Technical",
+    "keywords": [
+      "this",
+      "strict mode",
+      "global object"
+    ]
+  },
+  {
+    "id": "javascript_083",
+    "technology": "JavaScript",
+    "topic": "Prototypes & Prototypal Inheritance",
+    "difficulty": "Hard",
+    "question": "What is the difference between `Object.create(proto)` and using a class constructor with `new`?",
+    "answer": "`Object.create(proto)` creates a new, empty object whose prototype is set directly to `proto`, with no constructor function or initialization logic run. `new ClassName()` creates a new object linked to `ClassName.prototype` AND runs the constructor function to initialize its own properties.",
+    "explanation": "`Object.create` is a lower-level primitive for prototype linking; class/constructor-function patterns build on top of it while adding initialization behavior.",
+    "question_type": "Technical",
+    "keywords": [
+      "object.create",
+      "prototype",
+      "new"
+    ]
+  },
+  {
+    "id": "javascript_084",
+    "technology": "JavaScript",
+    "topic": "ES6+ Features",
+    "difficulty": "Medium",
+    "question": "What does the optional chaining operator `?.` do?",
+    "answer": "Short-circuits to `undefined` instead of throwing when accessing a property on `null`/`undefined`",
+    "explanation": "`obj?.prop` safely returns `undefined` if `obj` is `null`/`undefined`, instead of throwing a TypeError trying to read a property off of it — useful for optional/nested data.",
+    "question_type": "MCQ",
+    "keywords": [
+      "optional chaining"
+    ],
+    "options": [
+      "Throws if a property is missing",
+      "Short-circuits to `undefined` instead of throwing when accessing a property on `null`/`undefined`",
+      "Only works on arrays",
+      "Converts values to booleans"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_085",
+    "technology": "JavaScript",
+    "topic": "Destructuring",
+    "difficulty": "Medium",
+    "question": "Given a function receiving an options object, write a function signature using destructuring with a default value: `configure` takes `{ retries, timeout }`, defaulting `retries` to 3 if not provided.",
+    "answer": "function configure({ retries = 3, timeout } = {}) {\n  // ...\n}",
+    "explanation": "Destructuring in a parameter position supports default values per-property, and the `= {}` fallback on the whole parameter prevents an error if `configure()` is called with no argument at all.",
+    "question_type": "Coding",
+    "keywords": [
+      "destructuring",
+      "default parameters"
+    ],
+    "starter_code": "function configure(options) {\n  // rewrite the parameter using destructuring with a default\n}",
+    "expected_solution": "function configure({ retries = 3, timeout } = {}) {\n  return { retries, timeout };\n}",
+    "test_cases": [
+      {
+        "input": "configure({timeout: 1000})",
+        "expected_output": "{retries: 3, timeout: 1000}"
+      },
+      {
+        "input": "configure()",
+        "expected_output": "{retries: 3, timeout: undefined}"
+      }
+    ]
+  },
+  {
+    "id": "javascript_086",
+    "technology": "JavaScript",
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "Write a function `wait(ms)` that returns a Promise which resolves after `ms` milliseconds.",
+    "answer": "function wait(ms) {\n  return new Promise(resolve => setTimeout(resolve, ms));\n}",
+    "explanation": "The Promise constructor's executor calls `setTimeout`, and calling `resolve` (with no value needed here) after the delay settles the promise as fulfilled.",
+    "question_type": "Coding",
+    "keywords": [
+      "promise",
+      "settimeout"
+    ],
+    "starter_code": "function wait(ms) {\n  // your code here\n}",
+    "expected_solution": "function wait(ms) {\n  return new Promise(resolve => setTimeout(resolve, ms));\n}",
+    "test_cases": [
+      {
+        "input": "await wait(100)",
+        "expected_output": "resolves after ~100ms"
+      },
+      {
+        "input": "await wait(0)",
+        "expected_output": "still resolves asynchronously on a later event-loop tick, not synchronously"
+      }
+    ]
+  },
+  {
+    "id": "javascript_087",
+    "technology": "JavaScript",
+    "topic": "DOM Manipulation",
+    "difficulty": "Medium",
+    "question": "What is the difference between `document.querySelector` and `document.getElementById` in terms of what they accept?",
+    "answer": "`getElementById` only accepts a plain element id string (no selector syntax) and is generally the fastest lookup; `querySelector` accepts any valid CSS selector (classes, attributes, combinators) but is more general-purpose.",
+    "explanation": "Use `getElementById` for simple direct id lookups where performance matters most; use `querySelector`/`querySelectorAll` when you need CSS-selector flexibility.",
+    "question_type": "Technical",
+    "keywords": [
+      "queryselector",
+      "getelementbyid"
+    ]
+  },
+  {
+    "id": "javascript_088",
+    "technology": "JavaScript",
+    "topic": "Events",
+    "difficulty": "Medium",
+    "question": "What is event delegation, and why is it useful?",
+    "answer": "Event delegation attaches a single listener to a common ancestor element instead of individual listeners on many child elements, relying on event bubbling and `event.target` to determine which child was actually interacted with.",
+    "explanation": "This is more memory-efficient for large/dynamic lists (e.g. a table with thousands of rows) and automatically works for elements added later, since the listener lives on the stable parent, not each child.",
+    "question_type": "Technical",
+    "keywords": [
+      "event delegation",
+      "event bubbling"
+    ]
+  },
+  {
+    "id": "javascript_089",
+    "technology": "JavaScript",
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "What is the difference between a `TypeError` and a `ReferenceError`?",
+    "answer": "A `ReferenceError` occurs when referencing a variable that doesn't exist in any accessible scope (e.g. accessing an undeclared identifier); a `TypeError` occurs when a value is used in a way that's incompatible with its actual type (e.g. calling something that isn't a function, or reading a property of `undefined`).",
+    "explanation": "Both are built-in Error subclasses; distinguishing them helps pinpoint whether the bug is a missing/misspelled variable or an operation applied to the wrong kind of value.",
+    "question_type": "Technical",
+    "keywords": [
+      "typeerror",
+      "referenceerror"
+    ]
+  },
+  {
+    "id": "javascript_090",
+    "technology": "JavaScript",
+    "topic": "Modules (import/export)",
+    "difficulty": "Easy",
+    "question": "Which statement correctly imports a default export named `add` from a file `math.js`?",
+    "answer": "import add from './math.js';",
+    "explanation": "A default export is imported without curly braces, and the local name given (`add` here) can be anything, unlike named imports which must match the exported name (or use `as` to alias).",
+    "question_type": "MCQ",
+    "keywords": [
+      "default export",
+      "import"
+    ],
+    "options": [
+      "import { add } from './math.js';",
+      "import add from './math.js';",
+      "import * as add from './math.js';",
+      "require('add')"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_091",
+    "technology": "JavaScript",
+    "topic": "Higher-Order Functions",
+    "difficulty": "Medium",
+    "question": "Write a higher-order function `once(fn)` that returns a version of `fn` which can only actually run once — subsequent calls return the first call's cached result without re-invoking `fn`.",
+    "answer": "function once(fn) {\n  let called = false;\n  let result;\n  return function(...args) {\n    if (!called) {\n      result = fn.apply(this, args);\n      called = true;\n    }\n    return result;\n  };\n}",
+    "explanation": "A closure variable `called` tracks whether `fn` has already run; once true, later calls skip re-invoking `fn` and simply return the memoized `result`.",
+    "question_type": "Coding",
+    "keywords": [
+      "once",
+      "closure",
+      "memoization"
+    ],
+    "starter_code": "function once(fn) {\n  // your code here\n}",
+    "expected_solution": "function once(fn) {\n  let called = false;\n  let result;\n  return function(...args) {\n    if (!called) {\n      result = fn.apply(this, args);\n      called = true;\n    }\n    return result;\n  };\n}",
+    "test_cases": [
+      {
+        "input": "const init = once(() => Math.random()); init() === init()",
+        "expected_output": "true (same cached value both times)"
+      },
+      {
+        "input": "const add = once((a,b) => a+b); add(2,3); add(10,20)",
+        "expected_output": "first call returns 5 and caches it; second call still returns 5 (fn is not re-invoked with the new arguments)"
+      }
+    ]
+  },
+  {
+    "id": "javascript_092",
+    "technology": "JavaScript",
+    "topic": "Closures",
+    "difficulty": "Medium",
+    "question": "This code is supposed to create 3 independent adders (add5, add10, add15) but they all behave the same way. Explain the bug conceptually and describe the fix.",
+    "answer": "If the multipliers were captured via a shared, mutated `var` in a loop (classic closure-over-loop-variable bug), all returned functions would close over the same final value instead of their own snapshot.",
+    "explanation": "The fix is to ensure each generated function closes over its own independent value — e.g. using `let` in a `for` loop (fresh binding per iteration) or by using `.map()` to create each closure in its own function-call scope.",
+    "question_type": "Debugging",
+    "keywords": [
+      "closures",
+      "loop variable capture"
+    ],
+    "buggy_code": "function makeAdders() {\n  const adders = [];\n  for (var i of [5, 10, 15]) {\n    adders.push(function(x) { return x + i; });\n  }\n  return adders;\n}",
+    "fixed_code": "function makeAdders() {\n  const adders = [];\n  for (const i of [5, 10, 15]) {\n    adders.push(function(x) { return x + i; });\n  }\n  return adders;\n}"
+  },
+  {
+    "id": "javascript_093",
+    "technology": "JavaScript",
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `chunkArray(arr, size)` that splits an array into sub-arrays of at most `size` elements each.",
+    "answer": "function chunkArray(arr, size) {\n  const result = [];\n  for (let i = 0; i < arr.length; i += size) {\n    result.push(arr.slice(i, i + size));\n  }\n  return result;\n}",
+    "explanation": "Stepping through the array in increments of `size` and slicing out each window produces evenly sized chunks, with the final chunk possibly shorter if the length isn't an exact multiple.",
+    "question_type": "Coding",
+    "keywords": [
+      "chunk",
+      "array",
+      "slice"
+    ],
+    "starter_code": "function chunkArray(arr, size) {\n  // your code here\n}",
+    "expected_solution": "function chunkArray(arr, size) {\n  const result = [];\n  for (let i = 0; i < arr.length; i += size) {\n    result.push(arr.slice(i, i + size));\n  }\n  return result;\n}",
+    "test_cases": [
+      {
+        "input": "chunkArray([1,2,3,4,5], 2)",
+        "expected_output": "[[1,2],[3,4],[5]]"
+      },
+      {
+        "input": "chunkArray([1,2,3,4,5,6], 3)",
+        "expected_output": "[[1,2,3],[4,5,6]]"
+      }
+    ]
+  },
+  {
+    "id": "javascript_094",
+    "technology": "JavaScript",
+    "topic": "JS Basics",
+    "difficulty": "Medium",
+    "question": "Which of these values is falsy in JavaScript?",
+    "answer": "0 (number)",
+    "explanation": "The number `0` is one of JavaScript's seven falsy values (false, 0, -0, 0n, '', null, undefined, NaN); the string '0', an empty array, and an empty object are all truthy because they are non-empty/non-zero values or objects (objects are always truthy).",
+    "question_type": "MCQ",
+    "keywords": [
+      "falsy",
+      "truthy"
+    ],
+    "options": [
+      "'0' (string)",
+      "[] (empty array)",
+      "0 (number)",
+      "{} (empty object)"
+    ],
+    "correct_option": 2
+  },
+  {
+    "id": "javascript_095",
+    "technology": "JavaScript",
+    "topic": "Objects",
+    "difficulty": "Medium",
+    "question": "What is the difference between `Object.keys(obj)` and `for...in` for iterating an object's properties?",
+    "answer": "`Object.keys(obj)` returns an array of the object's own enumerable string-keyed property names only; `for...in` also walks up the prototype chain and includes inherited enumerable properties unless filtered with `hasOwnProperty`.",
+    "explanation": "For plain data objects without a custom prototype this rarely matters, but it becomes significant with objects that inherit from a custom prototype with enumerable properties.",
+    "question_type": "Technical",
+    "keywords": [
+      "object.keys",
+      "for-in",
+      "own properties"
+    ]
+  },
+  {
+    "id": "javascript_096",
+    "technology": "JavaScript",
+    "topic": "Event Loop & Concurrency Model",
+    "difficulty": "Medium",
+    "question": "What is `queueMicrotask()` used for?",
+    "answer": "It schedules a callback to run as a microtask — after the current synchronous code finishes but before any macrotask (like setTimeout) runs — giving explicit access to the microtask queue without needing to wrap it in a Promise.",
+    "explanation": "It's useful when you want Promise-like 'run very soon, before rendering/timers' timing without actually creating a Promise object.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "queuemicrotask",
+      "microtask"
+    ]
+  },
+  {
+    "id": "javascript_097",
+    "technology": "JavaScript",
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "Can you use `await` at the top level of a regular (non-module) script?",
+    "answer": "No — top-level `await` is only allowed inside ES modules (or inside an `async` function anywhere); using it at the top level of a classic script is a SyntaxError.",
+    "explanation": "This restriction exists because top-level await can delay module evaluation for anything importing that module, which the module system is designed to handle but classic scripts are not.",
+    "question_type": "Technical",
+    "keywords": [
+      "top-level await",
+      "modules"
+    ]
+  },
+  {
+    "id": "javascript_098",
+    "technology": "JavaScript",
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Medium",
+    "question": "What is the difference between `Array.prototype.some()` and `Array.prototype.every()`?",
+    "answer": "`some()` returns true if AT LEAST ONE element satisfies the predicate; `every()` returns true only if ALL elements satisfy the predicate.",
+    "explanation": "Both short-circuit: `some` stops as soon as it finds a match, `every` stops as soon as it finds a non-match, making both more efficient than always scanning the entire array.",
+    "question_type": "Technical",
+    "keywords": [
+      "some",
+      "every",
+      "array methods"
+    ]
+  },
+  {
+    "id": "javascript_099",
+    "technology": "JavaScript",
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Easy",
+    "question": "Which method removes the last element from an array and returns it, mutating the original array?",
+    "answer": "pop",
+    "explanation": "`pop()` removes and returns the last element, mutating the array in place; `shift()` does the equivalent for the first element.",
+    "question_type": "MCQ",
+    "keywords": [
+      "pop",
+      "mutating methods"
+    ],
+    "options": [
+      "shift",
+      "pop",
+      "slice",
+      "splice(0,1)"
+    ],
+    "correct_option": 1
+  },
+  {
+    "id": "javascript_100",
+    "technology": "JavaScript",
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "You need to fetch data from three independent APIs and only proceed once all three have responded, but a single failure shouldn't crash the whole flow if you can substitute a default value. Which Promise combinator fits best, and why?",
+    "answer": "Promise.allSettled — it waits for every promise to settle regardless of success/failure, letting you inspect each result and substitute defaults for the rejected ones, unlike Promise.all which would reject the whole batch on the first failure.",
+    "explanation": "This matches the 'don't let one failure block the others' requirement precisely, whereas Promise.all's fail-fast behavior would be the wrong tool here.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "promise.allsettled",
+      "scenario"
+    ]
+  },
+  {
+    "id": "javascript_101",
+    "technology": "JavaScript",
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Easy",
+    "question": "Write a function `countVowels(str)` that returns the number of vowels (a, e, i, o, u, case-insensitive) in a string.",
+    "answer": "function countVowels(str) {\n  const matches = str.toLowerCase().match(/[aeiou]/g);\n  return matches ? matches.length : 0;\n}",
+    "explanation": "A case-insensitive regex matching any vowel character, combined with the global flag, collects every vowel occurrence; `match` returns `null` (not an empty array) when there are zero matches, which is why the ternary guards against calling `.length` on `null`.",
+    "question_type": "Coding",
+    "keywords": [
+      "vowels",
+      "regex",
+      "string"
+    ],
+    "starter_code": "function countVowels(str) {\n  // your code here\n}",
+    "expected_solution": "function countVowels(str) {\n  const matches = str.toLowerCase().match(/[aeiou]/g);\n  return matches ? matches.length : 0;\n}",
+    "test_cases": [
+      {
+        "input": "countVowels('Hello World')",
+        "expected_output": "3"
+      },
+      {
+        "input": "countVowels('xyz')",
+        "expected_output": "0"
+      }
+    ]
+  },
+  {
+    "id": "javascript_102",
+    "technology": "JavaScript",
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Hard",
+    "question": "Write a function `deepEqual(a, b)` that recursively checks whether two plain objects/arrays/primitives are deeply equal.",
+    "answer": "function deepEqual(a, b) {\n  if (a === b) return true;\n  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) return false;\n  const keysA = Object.keys(a);\n  const keysB = Object.keys(b);\n  if (keysA.length !== keysB.length) return false;\n  return keysA.every(key => deepEqual(a[key], b[key]));\n}",
+    "explanation": "Primitives are compared directly with `===`; for objects/arrays, it recursively compares every key's value, and also checks that both sides have the same number of keys so extra/missing keys are caught.",
+    "question_type": "Coding",
+    "keywords": [
+      "deep equal",
+      "recursion"
+    ],
+    "starter_code": "function deepEqual(a, b) {\n  // your code here\n}",
+    "expected_solution": "function deepEqual(a, b) {\n  if (a === b) return true;\n  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) return false;\n  const keysA = Object.keys(a);\n  const keysB = Object.keys(b);\n  if (keysA.length !== keysB.length) return false;\n  return keysA.every(key => deepEqual(a[key], b[key]));\n}",
+    "test_cases": [
+      {
+        "input": "deepEqual({a:1,b:{c:2}}, {a:1,b:{c:2}})",
+        "expected_output": "true"
+      },
+      {
+        "input": "deepEqual({a:1}, {a:2})",
+        "expected_output": "false"
+      }
+    ]
+  },
+  {
+    "topic": "JS Basics",
+    "difficulty": "Easy",
+    "question": "Which keyword declares a variable that cannot be reassigned after initialization?",
+    "answer": "const",
+    "explanation": "`const` prevents reassignment of the binding itself; it does NOT make objects/arrays assigned to it immutable - their contents can still be mutated.",
+    "question_type": "MCQ",
+    "keywords": [
+      "const",
+      "variable declaration"
+    ],
+    "options": [
+      "var",
+      "let",
+      "const",
+      "static"
+    ],
+    "correct_option": 2,
+    "id": "javascript_103",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JS Basics",
+    "difficulty": "Medium",
+    "question": "What does `typeof null` return in JavaScript, and why is this considered a historical bug?",
+    "answer": "'object'",
+    "explanation": "This is a long-standing bug from JavaScript's original implementation (null was represented internally with a type tag that happened to match 'object'), preserved for backward compatibility since fixing it would break existing code.",
+    "question_type": "Technical",
+    "keywords": [
+      "typeof",
+      "null",
+      "language quirk"
+    ],
+    "id": "javascript_104",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Variables (var/let/const)",
+    "difficulty": "Medium",
+    "question": "Can you redeclare a `let` variable in the same scope?",
+    "answer": "No, redeclaring a `let` variable in the same block scope throws a SyntaxError",
+    "explanation": "Unlike `var` (which allows silent redeclaration), `let`/`const` enforce a single declaration per scope to catch accidental naming collisions early.",
+    "question_type": "Technical",
+    "keywords": [
+      "let",
+      "redeclaration",
+      "scope"
+    ],
+    "id": "javascript_105",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Data Types",
+    "difficulty": "Medium",
+    "question": "What is the difference between `undefined` and `not defined` in JavaScript?",
+    "answer": "`undefined` is a value assigned to a declared variable that has no assigned value yet; 'not defined' (a ReferenceError) means the variable was never declared at all in any accessible scope",
+    "explanation": "`let x; console.log(x)` logs `undefined` since `x` exists but has no value, while `console.log(y)` where `y` was never declared throws `ReferenceError: y is not defined`.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "undefined",
+      "referenceerror",
+      "declaration"
+    ],
+    "id": "javascript_106",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Operators",
+    "difficulty": "Easy",
+    "question": "What does the nullish coalescing operator `??` do differently from `||`?",
+    "answer": "`??` only falls back to the right-hand side when the left is `null` or `undefined`; `||` falls back for ANY falsy value (0, '', false, NaN too)",
+    "explanation": "`0 || 'default'` returns `'default'` (0 is falsy), but `0 ?? 'default'` returns `0` since 0 is neither null nor undefined - `??` is safer when 0 or an empty string are valid values you want to keep.",
+    "question_type": "Technical",
+    "keywords": [
+      "nullish coalescing",
+      "logical or",
+      "falsy"
+    ],
+    "id": "javascript_107",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question": "What is the difference between a `for...in` loop and a `for...of` loop?",
+    "answer": "`for...in` iterates over an object's ENUMERABLE PROPERTY KEYS (including inherited ones and, for arrays, index strings); `for...of` iterates over the VALUES of an iterable (arrays, strings, Maps, Sets, etc.)",
+    "explanation": "Using `for...in` on an array can produce surprising results (string index keys, potential inherited properties) which is why `for...of` or array methods are generally preferred for arrays specifically.",
+    "question_type": "Technical",
+    "keywords": [
+      "for in",
+      "for of",
+      "iteration"
+    ],
+    "id": "javascript_108",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "What does the `arguments` object contain inside a regular (non-arrow) function, and why don't arrow functions have their own?",
+    "answer": "`arguments` is an array-like object holding all arguments passed to the function call; arrow functions don't have their own `arguments` - they inherit it from the nearest enclosing regular function's scope",
+    "explanation": "This is a deliberate design choice tied to arrow functions not having their own `this` either - both are lexically inherited from the surrounding scope, which is part of why arrow functions are often used for callbacks that need to preserve the outer context.",
+    "question_type": "Technical",
+    "keywords": [
+      "arguments object",
+      "arrow function"
+    ],
+    "id": "javascript_109",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Arrow Functions",
+    "difficulty": "Hard",
+    "question": "Why can't an arrow function be used as a constructor with `new`?",
+    "answer": "Arrow functions have no `[[Construct]]` internal method and no `prototype` property, so calling `new` on one throws a TypeError",
+    "explanation": "This is consistent with arrow functions being designed for concise, `this`-less callback usage rather than as replacements for traditional function declarations/expressions used as object constructors.",
+    "question_type": "Technical",
+    "keywords": [
+      "arrow function",
+      "new",
+      "constructor"
+    ],
+    "id": "javascript_110",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Closures",
+    "difficulty": "Hard",
+    "question": "In a loop using `var i` with a setTimeout callback capturing `i`, why do all callbacks log the same final value, and how does switching to `let` fix it?",
+    "answer": "`var` is function-scoped, so there's only ONE `i` shared by all iterations/callbacks, which has already reached its final value by the time any timeout fires; `let` creates a NEW binding of `i` for each loop iteration, so each callback closes over its own separate value",
+    "explanation": "This is one of the most common closure gotchas in JavaScript interviews - it demonstrates the practical difference between function-scoping (var) and block-scoping (let) combined with closures.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "closure",
+      "var",
+      "let",
+      "loop"
+    ],
+    "code_snippet": "for (var i = 0; i < 3; i++) { setTimeout(() => console.log(i), 0); }",
+    "id": "javascript_111",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Scope & Hoisting",
+    "difficulty": "Medium",
+    "question": "Is a `const` object's TDZ (temporal dead zone) behavior any different from a `let` variable's?",
+    "answer": "No - `const` and `let` have identical TDZ behavior; the only difference between them is that `const` additionally forbids reassignment after initialization",
+    "explanation": "Both are hoisted to the top of their block but left uninitialized until their declaration line executes, so accessing either before that line throws a ReferenceError - TDZ is a `let`/`const` behavior, not specific to reassignability.",
+    "question_type": "Technical",
+    "keywords": [
+      "temporal dead zone",
+      "const",
+      "let"
+    ],
+    "id": "javascript_112",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "this Keyword",
+    "difficulty": "Hard",
+    "question": "What does `this` refer to inside a regular method when it's extracted and called as a standalone function (losing its object context)?",
+    "answer": "In non-strict mode, `this` becomes the global object (window in browsers); in strict mode (including inside ES modules and classes), `this` is `undefined`",
+    "explanation": "This is why callback functions passed as `obj.method` (without `.bind(obj)` or an arrow function wrapper) often break - `this` no longer refers to `obj` once the function reference is detached and called on its own.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "this",
+      "method extraction",
+      "strict mode"
+    ],
+    "code_snippet": "'use strict';\nconst obj = { name: 'A', greet() { console.log(this); } };\nconst fn = obj.greet;\nfn();",
+    "id": "javascript_113",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Objects",
+    "difficulty": "Medium",
+    "question": "If you `Object.freeze()` an object that contains a nested object property, is the nested object also frozen?",
+    "answer": "No - Object.freeze() is shallow, so the nested object's own properties can still be modified even though the outer object's top-level properties cannot",
+    "explanation": "To deeply freeze an object, you must recursively call Object.freeze() on every nested object yourself (or use a utility function that does so) - this is a common source of bugs when developers assume freeze is deep.",
+    "question_type": "Technical",
+    "keywords": [
+      "object.freeze",
+      "shallow",
+      "nested objects"
+    ],
+    "id": "javascript_114",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Objects",
+    "difficulty": "Medium",
+    "question": "What does `Object.keys(obj)` return, and how does it differ from `for...in`?",
+    "answer": "`Object.keys()` returns an array of the object's OWN enumerable property names, excluding inherited ones; `for...in` also includes inherited enumerable properties from the prototype chain",
+    "explanation": "This is why `Object.keys()` is generally preferred when you only want an object's directly-defined properties without accidentally picking up something from `Object.prototype` or a custom prototype chain.",
+    "question_type": "Technical",
+    "keywords": [
+      "object.keys",
+      "for in",
+      "own properties"
+    ],
+    "id": "javascript_115",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Easy",
+    "question": "Which array method creates a NEW array with only elements that pass a test function, without mutating the original?",
+    "answer": "filter()",
+    "explanation": "`map()` transforms each element (same length output), `filter()` selects a subset (possibly shorter output), and `reduce()` folds the array into a single accumulated value - none of the three mutate the original array.",
+    "question_type": "MCQ",
+    "keywords": [
+      "filter",
+      "array methods"
+    ],
+    "options": [
+      "map()",
+      "filter()",
+      "forEach()",
+      "reduce()"
+    ],
+    "correct_option": 1,
+    "id": "javascript_116",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Medium",
+    "question": "What is the difference between `Array.prototype.map()` and `Array.prototype.forEach()`?",
+    "answer": "`map()` returns a NEW array built from the return value of the callback on each element; `forEach()` returns `undefined` and is used purely for side effects",
+    "explanation": "Using `forEach` when you actually need a transformed array (and separately building one with `push`) is a common anti-pattern - `map` exists precisely to make this a single, declarative expression.",
+    "question_type": "Technical",
+    "keywords": [
+      "map",
+      "foreach",
+      "array methods"
+    ],
+    "id": "javascript_117",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Hard",
+    "question": "Predict the output: what does `[1, 2, 3].reduce((acc, val) => acc + val)` return, and why does omitting the initial value matter here?",
+    "answer": "6",
+    "explanation": "Without an initial value, reduce uses the array's first element (1) as the starting accumulator and begins iterating from the SECOND element, so it computes 1+2+3=6; if the array were empty and no initial value were given, this would throw a TypeError instead.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "reduce",
+      "initial value"
+    ],
+    "code_snippet": "console.log([1, 2, 3].reduce((acc, val) => acc + val));",
+    "id": "javascript_118",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Prototypes & Prototypal Inheritance",
+    "difficulty": "Medium",
+    "question": "What does `Object.create(proto)` do?",
+    "answer": "It creates a new, empty object whose internal [[Prototype]] is set directly to `proto`",
+    "explanation": "This is a more direct way to set up prototypal inheritance than using constructor functions with `.prototype`, and is often used to create objects with no prototype at all via `Object.create(null)` for pure dictionary-like use.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "object.create",
+      "prototype"
+    ],
+    "id": "javascript_119",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "ES6+ Features",
+    "difficulty": "Medium",
+    "question": "What problem do JavaScript Symbols primarily solve?",
+    "answer": "They provide guaranteed-unique property keys, useful for adding properties to objects (including built-ins) without risking collisions with existing or future property names",
+    "explanation": "Symbols are also used to define special 'well-known' behaviors, like `Symbol.iterator`, which lets any object opt into being iterable with `for...of`.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "symbol",
+      "unique keys"
+    ],
+    "id": "javascript_120",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Destructuring",
+    "difficulty": "Medium",
+    "question": "How do you provide a default value for a destructured property that might be undefined?",
+    "answer": "const { name = 'Guest' } = obj;",
+    "explanation": "The default value only kicks in if the property is `undefined` on the source object (missing entirely, or explicitly set to `undefined`) - it does NOT apply if the value is `null` or any other falsy value.",
+    "question_type": "Technical",
+    "keywords": [
+      "destructuring",
+      "default values"
+    ],
+    "id": "javascript_121",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "What state is a Promise in immediately after being created with `new Promise((resolve, reject) => {...})`, before the executor calls resolve or reject?",
+    "answer": "Pending",
+    "explanation": "A promise starts pending and transitions exactly once to either 'fulfilled' (after resolve()) or 'rejected' (after reject()) - once settled, it can never change state again.",
+    "question_type": "MCQ",
+    "keywords": [
+      "promise",
+      "pending state"
+    ],
+    "options": [
+      "Fulfilled",
+      "Rejected",
+      "Pending",
+      "Settled"
+    ],
+    "correct_option": 2,
+    "id": "javascript_122",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Promises",
+    "difficulty": "Hard",
+    "question": "What is the difference between `Promise.all()` and `Promise.allSettled()` when one of the input promises rejects?",
+    "answer": "`Promise.all()` immediately rejects with that single error, discarding the results of any other promises (even successful ones); `Promise.allSettled()` waits for ALL promises to settle and returns an array describing each one's outcome (fulfilled or rejected)",
+    "explanation": "`allSettled` is preferred when you need to know the outcome of every operation regardless of individual failures - e.g. sending several independent API requests where one failing shouldn't hide the others' results.",
+    "question_type": "Technical",
+    "keywords": [
+      "promise.all",
+      "promise.allsettled"
+    ],
+    "id": "javascript_123",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "What does an `async` function always return, even if you write `return 5;` inside it?",
+    "answer": "A Promise (that resolves to whatever value was returned - Promise.resolve(5) in this case)",
+    "explanation": "This is why you can always `.then()` or `await` the result of calling an async function, regardless of what plain value or promise the function body returns internally.",
+    "question_type": "Technical",
+    "keywords": [
+      "async function",
+      "promise",
+      "return value"
+    ],
+    "id": "javascript_124",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Async/Await",
+    "difficulty": "Hard",
+    "question": "What happens if an error is thrown inside an `async` function and there's no try/catch around the `await` that triggered it?",
+    "answer": "The returned promise rejects with that error, rather than the error propagating synchronously - the caller must handle it via `.catch()` or their own try/catch around the await/call",
+    "explanation": "This can be a source of unhandled promise rejection warnings/crashes if the caller forgets to handle the async function's rejection, since a thrown error inside an async function doesn't behave like a normal synchronous throw from the caller's perspective.",
+    "question_type": "Technical",
+    "keywords": [
+      "async function",
+      "error handling",
+      "unhandled rejection"
+    ],
+    "id": "javascript_125",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Event Loop & Concurrency Model",
+    "difficulty": "Hard",
+    "question": "Predict the output order: `console.log('A'); setTimeout(() => console.log('B'), 0); Promise.resolve().then(() => console.log('C')); console.log('D');`",
+    "answer": "A, D, C, B",
+    "explanation": "Synchronous code (A, D) runs first; then the microtask queue (Promise .then callbacks, C) drains completely before the event loop moves to the next macrotask (setTimeout callback, B) - microtasks always run before the next macrotask, even a 0ms timeout.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "event loop",
+      "microtask",
+      "macrotask"
+    ],
+    "code_snippet": "console.log('A');\nsetTimeout(() => console.log('B'), 0);\nPromise.resolve().then(() => console.log('C'));\nconsole.log('D');",
+    "id": "javascript_126",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "DOM Manipulation",
+    "difficulty": "Medium",
+    "question": "What is the difference between `element.textContent` and `element.innerHTML`?",
+    "answer": "`textContent` sets/gets the raw text (any HTML-like string is inserted literally as text, not parsed); `innerHTML` parses the string as HTML markup and inserts the resulting elements",
+    "explanation": "Using `innerHTML` with untrusted/user-supplied content is a common XSS (cross-site scripting) vulnerability, since it will execute embedded `<script>`-adjacent markup/attributes - `textContent` is the safe choice when you only need to display text.",
+    "question_type": "Technical",
+    "keywords": [
+      "textcontent",
+      "innerhtml",
+      "xss"
+    ],
+    "id": "javascript_127",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Events",
+    "difficulty": "Medium",
+    "question": "What is event delegation, and why is it useful for a list where items are added/removed dynamically?",
+    "answer": "Event delegation attaches a single listener to a common ancestor element instead of individual listeners on each child, relying on event bubbling and checking `event.target` to determine which child was actually interacted with",
+    "explanation": "This avoids the overhead and bookkeeping of attaching/removing a listener every time a list item is added or removed - the single ancestor listener automatically covers new children as long as they bubble events up to it.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "event delegation",
+      "event bubbling"
+    ],
+    "id": "javascript_128",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "What is the purpose of the `finally` block in a try/catch/finally statement?",
+    "answer": "Code in `finally` always runs after the try/catch completes, regardless of whether an exception was thrown, caught, or neither - commonly used for cleanup (closing a resource, hiding a loading spinner)",
+    "explanation": "`finally` even runs if the `try` or `catch` block contains a `return` statement - the return value is computed but the function doesn't actually return until `finally` finishes (and a `return` inside `finally` itself would override the earlier one).",
+    "question_type": "Technical",
+    "keywords": [
+      "finally",
+      "try catch",
+      "cleanup"
+    ],
+    "id": "javascript_129",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Modules (import/export)",
+    "difficulty": "Medium",
+    "question": "Can you have both a default export and named exports in the same module file?",
+    "answer": "Yes - a single file can export one default AND any number of named exports simultaneously",
+    "explanation": "For example, `export default function App() {}` alongside `export const version = '1.0';` in the same file - importers can then write `import App, { version } from './App'` to grab both in one statement.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "default export",
+      "named export",
+      "mixed exports"
+    ],
+    "id": "javascript_130",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JSON",
+    "difficulty": "Medium",
+    "question": "What happens if you call `JSON.stringify()` on an object containing a function or `undefined` value as a property?",
+    "answer": "Properties whose value is a function or `undefined` are simply OMITTED from the resulting JSON string (silently, no error)",
+    "explanation": "This is different from array elements that are `undefined` or functions, which get converted to `null` in the resulting JSON array instead of being omitted - a subtle asymmetry between object and array serialization.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "json.stringify",
+      "undefined",
+      "functions"
+    ],
+    "code_snippet": "console.log(JSON.stringify({ a: 1, b: undefined, c: () => {}, d: 2 }));",
+    "id": "javascript_131",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Higher-Order Functions",
+    "difficulty": "Medium",
+    "question": "What makes a function a 'higher-order function'?",
+    "answer": "It either accepts one or more functions as arguments, returns a function, or both",
+    "explanation": "Array methods like `map`, `filter`, and `reduce` are higher-order functions because they accept a callback function as an argument; `debounce`/`throttle`/`compose` utilities are higher-order because they RETURN a new function.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "higher-order function",
+      "callbacks"
+    ],
+    "id": "javascript_132",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `isPalindrome(str)` that returns true if a string reads the same forwards and backwards, ignoring case.",
+    "answer": "function isPalindrome(str) { const s = str.toLowerCase(); return s === s.split('').reverse().join(''); }",
+    "explanation": "Splitting into an array of characters, reversing that array, and rejoining produces the reversed string, which is then compared against the lowercased original.",
+    "question_type": "Coding",
+    "keywords": [
+      "palindrome",
+      "string reversal"
+    ],
+    "starter_code": "function isPalindrome(str) {\n  // your code here\n}",
+    "expected_solution": "function isPalindrome(str) { const s = str.toLowerCase(); return s === s.split('').reverse().join(''); }",
+    "test_cases": [
+      {
+        "input": "isPalindrome('Racecar')",
+        "expected_output": "true"
+      },
+      {
+        "input": "isPalindrome('hello')",
+        "expected_output": "false"
+      }
+    ],
+    "id": "javascript_133",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `titleCase(str)` that capitalizes the first letter of every word in a string.",
+    "answer": "function titleCase(str) { return str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '); }",
+    "explanation": "Splitting on spaces produces individual words; mapping each word to its first character uppercased plus the rest unchanged, then rejoining with spaces, reconstructs the title-cased string.",
+    "question_type": "Coding",
+    "keywords": [
+      "title case",
+      "string manipulation"
+    ],
+    "id": "javascript_134",
+    "technology": "JavaScript",
+    "starter_code": "function titleCase(str) {\n  // your code here\n}",
+    "expected_solution": "function titleCase(str) { return str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '); }",
+    "test_cases": [
+      {
+        "input": "titleCase('hello world')",
+        "expected_output": "'Hello World'"
+      },
+      {
+        "input": "titleCase('the quick fox')",
+        "expected_output": "'The Quick Fox'"
+      }
+    ]
+  },
+  {
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Hard",
+    "question": "Write a function `memoize(fn)` that caches results of `fn` by its arguments, so repeated calls with the same arguments skip re-computation.",
+    "answer": "function memoize(fn) { const cache = new Map(); return function(...args) { const key = JSON.stringify(args); if (cache.has(key)) return cache.get(key); const result = fn.apply(this, args); cache.set(key, result); return result; }; }",
+    "explanation": "The cache key is derived by serializing the arguments; subsequent calls with an identical argument list hit the cache instead of re-invoking the (potentially expensive) original function.",
+    "question_type": "Programming Problem",
+    "keywords": [
+      "memoization",
+      "caching",
+      "closures"
+    ],
+    "starter_code": "function memoize(fn) {\n  // your code here\n}",
+    "expected_solution": "function memoize(fn) { const cache = new Map(); return function(...args) { const key = JSON.stringify(args); if (cache.has(key)) return cache.get(key); const result = fn.apply(this, args); cache.set(key, result); return result; }; }",
+    "test_cases": [
+      {
+        "input": "const slow = memoize(x => x * 2); slow(5); slow(5)",
+        "expected_output": "both calls return 10, but the underlying function only actually runs once"
+      },
+      {
+        "input": "const add = memoize((a,b) => a+b); add(1,2); add(2,3)",
+        "expected_output": "3 then 5, each computed once and cached separately by argument key"
+      }
+    ],
+    "id": "javascript_135",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Debugging",
+    "difficulty": "Medium",
+    "question": "A function meant to add a property to every object in an array only ends up adding it to the LAST object, with all array elements pointing at that same object reference. What's the likely bug?",
+    "answer": "The array was probably filled by pushing the SAME object reference repeatedly (e.g. reusing one object variable inside a loop) instead of creating a new object each iteration",
+    "explanation": "If `const obj = {}; for (...) { obj.x = i; arr.push(obj); }` is used, every array slot holds a reference to the SAME object, so mutating it later affects what looks like every element identically - the fix is to create a fresh object literal inside the loop body each iteration.",
+    "question_type": "Debugging",
+    "keywords": [
+      "object reference",
+      "mutation",
+      "loop bug"
+    ],
+    "buggy_code": "const obj = {};\nconst arr = [];\nfor (let i = 0; i < 3; i++) {\n  obj.value = i;\n  arr.push(obj);\n}",
+    "fixed_code": "const arr = [];\nfor (let i = 0; i < 3; i++) {\n  arr.push({ value: i });\n}",
+    "id": "javascript_136",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Debugging",
+    "difficulty": "Hard",
+    "question": "A React-style state update `count = count + 1` called three times in a row inside one event handler only increments the displayed count by 1, not 3. Assuming `count` comes from `useState`, why?",
+    "answer": "State updates based on the stale `count` value from the current render's closure don't accumulate correctly when called multiple times synchronously - each call reads the SAME stale `count` from this render, not the pending update from the previous call",
+    "explanation": "The fix is to use the functional updater form, `setCount(prev => prev + 1)`, which always receives the latest pending value rather than the closed-over value from the render that scheduled it.",
+    "question_type": "Debugging",
+    "keywords": [
+      "stale closure",
+      "state update",
+      "react hooks"
+    ],
+    "buggy_code": "function handleClick() {\n  setCount(count + 1);\n  setCount(count + 1);\n  setCount(count + 1);\n}",
+    "fixed_code": "function handleClick() {\n  setCount(prev => prev + 1);\n  setCount(prev => prev + 1);\n  setCount(prev => prev + 1);\n}",
+    "id": "javascript_137",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JS Basics",
+    "difficulty": "Easy",
+    "question": "Which of the following is a primitive data type in JavaScript?",
+    "answer": "boolean",
+    "explanation": "JavaScript's primitives are: string, number, bigint, boolean, undefined, symbol, and null. Arrays and objects (including functions) are reference types, not primitives.",
+    "question_type": "MCQ",
+    "keywords": [
+      "primitive types"
+    ],
+    "options": [
+      "Array",
+      "Object",
+      "boolean",
+      "Function"
+    ],
+    "correct_option": 2,
+    "id": "javascript_138",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JS Basics",
+    "difficulty": "Medium",
+    "question": "What does `NaN === NaN` evaluate to, and how do you correctly check if a value is NaN?",
+    "answer": "`NaN === NaN` is `false`; use `Number.isNaN(value)` (or `Object.is(value, NaN)`) to correctly test for NaN",
+    "explanation": "NaN is the only JavaScript value that is not equal to itself by design (per the IEEE 754 standard it follows), which is why a dedicated `isNaN` check is required instead of a direct equality comparison.",
+    "question_type": "Technical",
+    "keywords": [
+      "nan",
+      "equality",
+      "number.isnan"
+    ],
+    "id": "javascript_139",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Variables (var/let/const)",
+    "difficulty": "Easy",
+    "question": "Which variable declaration keyword is function-scoped rather than block-scoped?",
+    "answer": "var",
+    "explanation": "`var` ignores block boundaries (if/for/while blocks) and is scoped to the nearest enclosing function (or global scope); `let`/`const` respect block scope.",
+    "question_type": "MCQ",
+    "keywords": [
+      "var",
+      "function scope"
+    ],
+    "options": [
+      "let",
+      "const",
+      "var",
+      "class"
+    ],
+    "correct_option": 2,
+    "id": "javascript_140",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Data Types",
+    "difficulty": "Medium",
+    "question": "What does `[] + []` evaluate to in JavaScript, and why?",
+    "answer": "An empty string `''`",
+    "explanation": "The `+` operator with non-number operands triggers coercion to primitives via `toString()`; an empty array's `toString()` is `''`, so `'' + '' === ''`.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "type coercion",
+      "plus operator",
+      "arrays"
+    ],
+    "code_snippet": "console.log([] + []);",
+    "id": "javascript_141",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Data Types",
+    "difficulty": "Hard",
+    "question": "What does `[] + {}` evaluate to, and separately what does `{} + []` evaluate to when run in a browser console vs inside an expression?",
+    "answer": "`[] + {}` is `'[object Object]'`; `{} + []` can be `0` in a bare console statement (because `{}` is parsed as an empty BLOCK, not an object literal, leaving `+[]` which coerces to 0) but is `'[object Object]'` when explicitly part of an expression like `console.log({} + [])`",
+    "explanation": "This is a classic JS gotcha caused by parser ambiguity: a leading `{}` at the start of a statement is ambiguous between a block statement and an object literal, and the parser defaults to treating it as a block in that position.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "type coercion",
+      "parser ambiguity"
+    ],
+    "code_snippet": "console.log([] + {}); // vs a bare line: {} + []",
+    "id": "javascript_142",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Operators",
+    "difficulty": "Medium",
+    "question": "What is the difference between `==` and `===`?",
+    "answer": "`==` (loose equality) performs type coercion before comparing; `===` (strict equality) requires both value AND type to match with no coercion",
+    "explanation": "`'5' == 5` is `true` (the string is coerced to a number) but `'5' === 5` is `false` - using `===` is generally recommended to avoid the sometimes-surprising rules of JS's coercion algorithm.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "loose equality",
+      "strict equality",
+      "coercion"
+    ],
+    "id": "javascript_143",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Control Flow",
+    "difficulty": "Medium",
+    "question": "Does a `switch` statement in JavaScript use strict (`===`) or loose (`==`) comparison to match `case` values?",
+    "answer": "Strict comparison (`===`)",
+    "explanation": "This means `switch (x) { case '5': ... }` will NOT match if `x` is the number `5` - the case value must match both type and value exactly, unlike loose-equality-based comparisons elsewhere in JS.",
+    "question_type": "Technical",
+    "keywords": [
+      "switch statement",
+      "strict equality"
+    ],
+    "id": "javascript_144",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Medium",
+    "question": "What is a default parameter value, and when is it applied?",
+    "answer": "A value assigned to a parameter in the function signature (e.g. `function f(x = 10)`) that is used ONLY when the argument is omitted or explicitly passed as `undefined`",
+    "explanation": "Passing `null` explicitly does NOT trigger the default - only a missing argument or an explicit `undefined` does, since the check internally is against `undefined` specifically.",
+    "question_type": "Technical",
+    "keywords": [
+      "default parameters",
+      "undefined"
+    ],
+    "id": "javascript_145",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Functions",
+    "difficulty": "Hard",
+    "question": "What is 'currying' a function, and how would you curry a simple two-argument `add(a, b)` function?",
+    "answer": "Currying transforms a function taking multiple arguments into a sequence of functions each taking one argument; `const curriedAdd = a => b => a + b;` then `curriedAdd(2)(3)` returns 5",
+    "explanation": "Currying enables partial application - `const add5 = curriedAdd(5);` creates a reusable function that always adds 5, useful for building specialized functions from general ones.",
+    "question_type": "Programming Problem",
+    "keywords": [
+      "currying",
+      "partial application"
+    ],
+    "starter_code": "function curry(fn) {\n  // return a curried version of fn\n}",
+    "expected_solution": "function curry(fn) { return function curried(...args) { if (args.length >= fn.length) return fn.apply(this, args); return (...more) => curried.apply(this, args.concat(more)); }; }",
+    "test_cases": [
+      {
+        "input": "const add = (a,b,c) => a+b+c; const curried = curry(add); curried(1)(2)(3)",
+        "expected_output": "6"
+      },
+      {
+        "input": "curried(1,2)(3)",
+        "expected_output": "6 (partial application works with multiple args per call too)"
+      }
+    ],
+    "id": "javascript_146",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Arrow Functions",
+    "difficulty": "Medium",
+    "question": "Why is it awkward to write an arrow function that immediately returns an object literal, like `() => { name: 'A' }`, and what's the fix?",
+    "answer": "The `{` is parsed as the start of a function BODY block, not an object literal, so this actually returns `undefined` (with `name: 'A'` treated as an unused labeled statement); wrap the object in parentheses: `() => ({ name: 'A' })`",
+    "explanation": "The parentheses disambiguate the `{` as the start of an expression (an object literal) rather than a block statement, which is the same category of ambiguity that causes the `{} + []` gotcha.",
+    "question_type": "Debugging",
+    "keywords": [
+      "arrow function",
+      "object literal",
+      "parser ambiguity"
+    ],
+    "buggy_code": "const makeUser = () => { name: 'A' };\nconsole.log(makeUser());",
+    "fixed_code": "const makeUser = () => ({ name: 'A' });\nconsole.log(makeUser());",
+    "id": "javascript_147",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Closures",
+    "difficulty": "Medium",
+    "question": "Write a function `createCounter()` that returns an object with `increment()` and `getValue()` methods, using a closure to keep the count private.",
+    "answer": "function createCounter() { let count = 0; return { increment: () => { count++; }, getValue: () => count }; }",
+    "explanation": "`count` is only accessible through the returned methods' closures - there's no way to directly read or modify it from outside, which is a common pattern for emulating private state before class private fields existed.",
+    "question_type": "Coding",
+    "keywords": [
+      "closure",
+      "private state",
+      "encapsulation"
+    ],
+    "starter_code": "function createCounter() {\n  // your code here\n}",
+    "expected_solution": "function createCounter() { let count = 0; return { increment: () => { count++; }, getValue: () => count }; }",
+    "test_cases": [
+      {
+        "input": "const c = createCounter(); c.increment(); c.increment(); c.getValue()",
+        "expected_output": "2"
+      },
+      {
+        "input": "const c2 = createCounter(); c2.getValue()",
+        "expected_output": "0 (each call to createCounter has its own independent closure)"
+      }
+    ],
+    "id": "javascript_148",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "this Keyword",
+    "difficulty": "Medium",
+    "question": "What does `this` refer to inside an arrow function defined at the top level of a module?",
+    "answer": "`undefined` in an ES module (strict mode is implicit); in a non-module script, it would be the global object",
+    "explanation": "Arrow functions never have their own `this` - they always inherit it lexically from the enclosing scope, and at the top level of a module there's no enclosing function providing one.",
+    "question_type": "Technical",
+    "keywords": [
+      "this",
+      "arrow function",
+      "modules"
+    ],
+    "id": "javascript_149",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Objects",
+    "difficulty": "Medium",
+    "question": "What is the difference between shallow copy and deep copy of an object, and which does the spread operator (`{...obj}`) perform?",
+    "answer": "A shallow copy duplicates only the top-level properties (nested objects/arrays are still shared references); a deep copy recursively duplicates everything. The spread operator performs a SHALLOW copy",
+    "explanation": "Mutating a nested object inside a spread-copied object will still affect the 'original' since both point to the same nested reference - `structuredClone()` or a recursive clone function is needed for a true deep copy.",
+    "question_type": "Technical",
+    "keywords": [
+      "shallow copy",
+      "deep copy",
+      "spread"
+    ],
+    "id": "javascript_150",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Medium",
+    "question": "What does `Array.prototype.some()` return, and how does it differ from `every()`?",
+    "answer": "`some()` returns `true` if AT LEAST ONE element passes the test function; `every()` returns `true` only if ALL elements pass",
+    "explanation": "Both short-circuit: `some()` stops and returns true as soon as one match is found, `every()` stops and returns false as soon as one non-match is found.",
+    "question_type": "MCQ",
+    "keywords": [
+      "some",
+      "every",
+      "array methods"
+    ],
+    "options": [
+      "some() requires all to pass",
+      "every() requires at least one to pass",
+      "some() requires at least one to pass, every() requires all",
+      "they behave identically"
+    ],
+    "correct_option": 2,
+    "id": "javascript_151",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Arrays & Array Methods",
+    "difficulty": "Hard",
+    "question": "Why does `[10, 1, 2].sort()` produce `[1, 10, 2]` instead of `[1, 2, 10]`?",
+    "answer": "The default `sort()` comparator converts elements to STRINGS and compares them lexicographically, not numerically - '10' comes before '2' as strings since '1' < '2'",
+    "explanation": "To sort numbers correctly, a comparator function must be provided explicitly: `[10, 1, 2].sort((a, b) => a - b)`, which returns a negative/zero/positive number to indicate relative order.",
+    "question_type": "Output Prediction",
+    "keywords": [
+      "sort",
+      "lexicographic",
+      "comparator"
+    ],
+    "code_snippet": "console.log([10, 1, 2].sort());",
+    "id": "javascript_152",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Prototypes & Prototypal Inheritance",
+    "difficulty": "Hard",
+    "question": "How does JavaScript resolve `obj.someMethod()` if `someMethod` isn't found directly on `obj`?",
+    "answer": "It walks up the prototype chain (obj's [[Prototype]], then that object's [[Prototype]], and so on) until it finds a property named `someMethod`, or reaches `null` and throws a TypeError if never found",
+    "explanation": "This lookup happens on every property/method access, which is why deeply nested prototype chains can have a (usually negligible) performance cost compared to own properties.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "prototype chain",
+      "method lookup"
+    ],
+    "id": "javascript_153",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "ES6+ Features",
+    "difficulty": "Medium",
+    "question": "Can optional chaining `?.` be combined with a function call, e.g. `obj.method?.()`? What does that guard against?",
+    "answer": "Yes - `obj.method?.()` only calls `method` if it exists (is not null/undefined); if `method` is undefined, the whole expression short-circuits to `undefined` instead of throwing 'method is not a function'",
+    "explanation": "This is useful for optional callback props or methods that may or may not be implemented, avoiding a manual `if (typeof obj.method === 'function')` guard before every call.",
+    "question_type": "Technical",
+    "keywords": [
+      "optional chaining",
+      "function call",
+      "guard"
+    ],
+    "id": "javascript_154",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Destructuring",
+    "difficulty": "Medium",
+    "question": "Write a destructuring statement to swap the values of two variables `a` and `b` without a temporary variable.",
+    "answer": "[a, b] = [b, a];",
+    "explanation": "The right side creates a temporary array `[b, a]` which is then destructured back into `a` and `b` in that swapped order - no explicit temp variable is needed.",
+    "question_type": "Coding",
+    "keywords": [
+      "destructuring",
+      "array swap"
+    ],
+    "starter_code": "let a = 1, b = 2;\n// swap them here",
+    "expected_solution": "[a, b] = [b, a];",
+    "test_cases": [
+      {
+        "input": "a=1, b=2, then swap",
+        "expected_output": "a=2, b=1"
+      },
+      {
+        "input": "a='x', b='y', then swap",
+        "expected_output": "a='y', b='x'"
+      }
+    ],
+    "id": "javascript_155",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Spread/Rest Operators",
+    "difficulty": "Medium",
+    "question": "How would you merge two objects, with the second object's properties overriding the first's on key conflicts?",
+    "answer": "const merged = { ...obj1, ...obj2 };",
+    "explanation": "Spread applies properties in order, so later spreads overwrite earlier ones for the same key - this is a shallow merge (nested objects on the same key are replaced entirely, not deep-merged).",
+    "question_type": "Coding",
+    "keywords": [
+      "object spread",
+      "merging objects"
+    ],
+    "starter_code": "function mergeObjects(obj1, obj2) {\n  // your code here\n}",
+    "expected_solution": "function mergeObjects(obj1, obj2) { return { ...obj1, ...obj2 }; }",
+    "test_cases": [
+      {
+        "input": "mergeObjects({a:1,b:2}, {b:3,c:4})",
+        "expected_output": "{a:1, b:3, c:4}"
+      },
+      {
+        "input": "mergeObjects({}, {x:1})",
+        "expected_output": "{x:1}"
+      }
+    ],
+    "id": "javascript_156",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Promises",
+    "difficulty": "Medium",
+    "question": "What does `Promise.race()` do?",
+    "answer": "It returns a promise that settles (fulfills or rejects) as soon as the FIRST of the input promises settles, ignoring the rest",
+    "explanation": "A common use case is implementing a timeout: racing a real request promise against a promise that rejects after N milliseconds, so whichever settles first 'wins'.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "promise.race",
+      "timeout pattern"
+    ],
+    "id": "javascript_157",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Async/Await",
+    "difficulty": "Medium",
+    "question": "Why does running multiple `await`ed operations sequentially in a loop (`for (const x of items) { await process(x); }`) potentially perform worse than necessary when the operations are independent?",
+    "answer": "Sequential awaiting processes each item one at a time, waiting for each to fully finish before starting the next, even though independent operations could run concurrently via `Promise.all(items.map(process))`",
+    "explanation": "If the operations don't depend on each other's results, running them concurrently with `Promise.all` can be dramatically faster (total time approaches the slowest single operation instead of the sum of all of them).",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "async await",
+      "promise.all",
+      "concurrency"
+    ],
+    "id": "javascript_158",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Event Loop & Concurrency Model",
+    "difficulty": "Medium",
+    "question": "Is JavaScript single-threaded? If so, how does it handle things like network requests without blocking?",
+    "answer": "Yes, JavaScript's execution is single-threaded, but the runtime environment (browser or Node.js) offloads I/O operations (network, timers, file access) to separate background threads/APIs, and their completion callbacks are queued back onto the single JS thread via the event loop",
+    "explanation": "This is why long-running SYNCHRONOUS code (a tight CPU-bound loop) blocks everything, including timers and rendering, while asynchronous I/O doesn't block because the actual waiting happens outside the JS thread entirely.",
+    "question_type": "Conceptual",
+    "keywords": [
+      "single-threaded",
+      "event loop",
+      "non-blocking i/o"
+    ],
+    "id": "javascript_159",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "DOM Manipulation",
+    "difficulty": "Medium",
+    "question": "What is the performance concern with repeatedly reading a layout property (like `offsetHeight`) and writing a style change in a tight loop?",
+    "answer": "It can cause 'layout thrashing' - each read forces the browser to synchronously recalculate layout if a prior write invalidated it, so alternating reads/writes in a loop triggers many forced synchronous reflows instead of one batched reflow",
+    "explanation": "The fix is to batch all reads first, then all writes, so the browser can compute layout once instead of being forced to recompute it on every iteration.",
+    "question_type": "Scenario Based",
+    "keywords": [
+      "layout thrashing",
+      "reflow",
+      "performance"
+    ],
+    "id": "javascript_160",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Events",
+    "difficulty": "Medium",
+    "question": "What does `event.preventDefault()` do, and what does `event.stopPropagation()` do differently?",
+    "answer": "`preventDefault()` stops the browser's default action for that event (like a link navigating, or a form submitting); `stopPropagation()` stops the event from continuing to bubble (or capture) to ancestor elements' listeners",
+    "explanation": "These solve different problems and are often confused: you might want to prevent a form's default submit behavior WITHOUT stopping the event from also being handled by a parent's delegated listener, or vice versa.",
+    "question_type": "Technical",
+    "keywords": [
+      "preventdefault",
+      "stoppropagation"
+    ],
+    "id": "javascript_161",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Error Handling",
+    "difficulty": "Medium",
+    "question": "How do you create and throw a custom error type in JavaScript?",
+    "answer": "class ValidationError extends Error { constructor(message) { super(message); this.name = 'ValidationError'; } } then `throw new ValidationError('...')`",
+    "explanation": "Extending the built-in `Error` class preserves stack trace behavior while letting you add custom properties and a distinct `name`, and callers can then use `instanceof ValidationError` to handle specific error types differently.",
+    "question_type": "Coding",
+    "keywords": [
+      "custom error",
+      "extends error"
+    ],
+    "starter_code": "class ValidationError extends Error {\n  // your code here\n}",
+    "expected_solution": "class ValidationError extends Error { constructor(message) { super(message); this.name = 'ValidationError'; } }",
+    "test_cases": [
+      {
+        "input": "try { throw new ValidationError('bad input'); } catch (e) { e instanceof ValidationError }",
+        "expected_output": "true, and e.message === 'bad input', e.name === 'ValidationError'"
+      },
+      {
+        "input": "new ValidationError('x') instanceof Error",
+        "expected_output": "true (it still inherits from Error)"
+      }
+    ],
+    "id": "javascript_162",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Modules (import/export)",
+    "difficulty": "Medium",
+    "question": "What is a 'tree-shaking' friendly way to structure exports, and why does `export default` sometimes hinder it?",
+    "answer": "Named exports (`export const a = ...; export const b = ...;`) let bundlers statically determine exactly which exports are used and drop unused ones; a single `export default { a, b }` object bundles everything together, making it harder for the bundler to know which properties are actually used",
+    "explanation": "Tree-shaking relies on static analysis of import/export statements, which works cleanly with named exports since each is a separately trackable binding, unlike properties nested inside one default-exported object.",
+    "question_type": "Technical",
+    "keywords": [
+      "tree shaking",
+      "named exports",
+      "bundling"
+    ],
+    "id": "javascript_163",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JSON",
+    "difficulty": "Medium",
+    "question": "What is the second argument to `JSON.stringify()` used for (the 'replacer')?",
+    "answer": "It can be a function to customize/filter how each key-value pair is serialized, or an array of key names to whitelist which properties get included",
+    "explanation": "A common use is passing a function that returns `undefined` for sensitive fields (like a password) to exclude them from the serialized output without mutating the original object.",
+    "question_type": "Technical",
+    "keywords": [
+      "json.stringify",
+      "replacer"
+    ],
+    "id": "javascript_164",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "Higher-Order Functions",
+    "difficulty": "Hard",
+    "question": "Write a higher-order function `pipe(...fns)` that composes functions left-to-right (opposite order of a typical `compose`), so `pipe(f, g)(x)` equals `g(f(x))`.",
+    "answer": "function pipe(...fns) { return x => fns.reduce((acc, fn) => fn(acc), x); }",
+    "explanation": "`reduce` threads the initial value `x` through each function in the array in order, feeding each function's output as the next function's input - this reads left-to-right, matching the intuitive order functions are listed in.",
+    "question_type": "Coding",
+    "keywords": [
+      "pipe",
+      "function composition",
+      "reduce"
+    ],
+    "starter_code": "function pipe(...fns) {\n  // your code here\n}",
+    "expected_solution": "function pipe(...fns) { return x => fns.reduce((acc, fn) => fn(acc), x); }",
+    "test_cases": [
+      {
+        "input": "pipe(x => x + 1, x => x * 2)(3)",
+        "expected_output": "8 (3+1=4, then 4*2=8)"
+      },
+      {
+        "input": "pipe(x => x.toUpperCase())('hi')",
+        "expected_output": "'HI'"
+      }
+    ],
+    "id": "javascript_165",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Medium",
+    "question": "Write a function `findMax(arr)` that returns the largest number in an array of numbers, without using `Math.max(...arr)`.",
+    "answer": "function findMax(arr) { return arr.reduce((max, n) => n > max ? n : max, arr[0]); }",
+    "explanation": "Reducing with a running 'largest so far' accumulator, initialized to the first element, avoids spreading the whole array as arguments (which `Math.max(...arr)` does and which can hit a call-stack argument limit on very large arrays).",
+    "question_type": "Coding",
+    "keywords": [
+      "max value",
+      "reduce"
+    ],
+    "starter_code": "function findMax(arr) {\n  // your code here\n}",
+    "expected_solution": "function findMax(arr) { return arr.reduce((max, n) => n > max ? n : max, arr[0]); }",
+    "test_cases": [
+      {
+        "input": "findMax([3, 7, 2, 9, 4])",
+        "expected_output": "9"
+      },
+      {
+        "input": "findMax([-5, -1, -10])",
+        "expected_output": "-1"
+      }
+    ],
+    "id": "javascript_166",
+    "technology": "JavaScript"
+  },
+  {
+    "topic": "JavaScript Coding Problems",
+    "difficulty": "Hard",
+    "question": "Write a function `throttle(fn, limit)` that returns a throttled version of `fn`, which can only run at most once every `limit` milliseconds regardless of how often it's called.",
+    "answer": "function throttle(fn, limit) { let inThrottle = false; return function(...args) { if (!inThrottle) { fn.apply(this, args); inThrottle = true; setTimeout(() => { inThrottle = false; }, limit); } }; }",
+    "explanation": "Unlike debounce (which waits for calls to STOP before running), throttle guarantees the function runs at a steady maximum rate even under continuous calling - useful for scroll/resize handlers where you want periodic updates, not just a final one.",
+    "question_type": "Programming Problem",
+    "keywords": [
+      "throttle",
+      "rate limiting"
+    ],
+    "starter_code": "function throttle(fn, limit) {\n  // your code here\n}",
+    "expected_solution": "function throttle(fn, limit) { let inThrottle = false; return function(...args) { if (!inThrottle) { fn.apply(this, args); inThrottle = true; setTimeout(() => { inThrottle = false; }, limit); } }; }",
+    "test_cases": [
+      {
+        "input": "10 rapid calls within limit ms",
+        "expected_output": "fn runs only on the first call; subsequent calls within the window are ignored"
+      },
+      {
+        "input": "a call after limit ms has passed since the last run",
+        "expected_output": "fn runs again, since the throttle window has reset"
+      }
+    ],
+    "id": "javascript_167",
+    "technology": "JavaScript"
+  }
+]

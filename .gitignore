@@ -39,6 +39,11 @@ venv/
 # ML model weights
 ai-services/models/
 ai-services/weights/
+ai-services/training/checkpoints/
+ai-services/training/eval_results/
+
+# Runtime state (global cross-user question-history store)
+ai-services/data/*.sqlite
 
 # Editor & OS
 .vscode/*
@@ -57,3 +62,6 @@ coverage/
 
 # TypeScript
 *.tsbuildinfo
+
+# Fine-tuned chatbot encoder (reproduce with: cd ai-services && python -m chatbot.train)
+ai-services/chatbot/model/

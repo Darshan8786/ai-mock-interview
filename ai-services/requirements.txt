@@ -21,3 +21,14 @@ onnxruntime
 # Utilities
 requests
 python-dotenv
+
+# Local interview-question generator (training + inference) - offline, no API key
+torch
+transformers
+datasets
+accelerate
+peft
+
+# Local tech-question dataset QA classifier (TF-IDF + Logistic Regression) - offline, no API key
+scikit-learn
+joblib

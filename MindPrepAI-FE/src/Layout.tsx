@@ -173,9 +173,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navLinks = [
     { label: "Dashboard", path: "/dashboard" },
     { label: "Profile", path: "/profile" },
-    { label: "Quiz", path: "/quizpage" },
     { label: "Aptitude", path: "/aptitude" },
     { label: "Interview", path: "/mock-interview/dashboard" },
+    { label: "Tech Practice", path: "/tech-practice" },
     { label: "Jobs", path: "/jobs" },
     { label: "My Apps", path: "/my-applications" },
     { label: "Analytics", path: "/personalizedreport" },

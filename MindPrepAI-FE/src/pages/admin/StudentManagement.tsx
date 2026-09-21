@@ -279,7 +279,6 @@ export function StudentManagement() {
               <Metric label="Readiness" value={`${selected.placementReadiness}%`} />
               <Metric label="Avg Interview" value={`${selected.averageInterviewScore}%`} />
               <Metric label="Interviews" value={selected.interviewsTaken} />
-              <Metric label="Quiz Attempts" value={selected.quizAttempts} />
               <Metric label="Joined" value={new Date(selected.createdAt).toLocaleDateString()} />
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm">

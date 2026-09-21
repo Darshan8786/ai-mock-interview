@@ -4,6 +4,7 @@ import {
   getMyAptitudeResults,
   getMyAptitudeStats,
   getAptitudeTopics,
+  getAptitudeCompanies,
   getAptitudeTests,
   getAptitudeTest,
   getTestQuestions,
@@ -31,6 +32,7 @@ router.get("/my-stats", getMyAptitudeStats);
 
 // Topics & test configs
 router.get("/topics", getAptitudeTopics);
+router.get("/companies", getAptitudeCompanies);
 router.get("/tests", getAptitudeTests);
 router.get("/tests/:id", getAptitudeTest);
 router.get("/tests/:id/questions", getTestQuestions);

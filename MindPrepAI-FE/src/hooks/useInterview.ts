@@ -17,12 +17,20 @@ export interface Evaluation {
   feedback: string;
 }
 
+// The parts of an uploaded resume a resume-based interview is built from.
+export interface ResumeProfile {
+  skills: string[];
+  projects: Array<{ name: string; description: string; technologies: string[] }>;
+}
+
 export interface InterviewConfig {
   jobRole: string;
   experienceLevel: string;
   interviewType: string;
   difficulty: string;
   totalQuestions: number;
+  // Required by the server when interviewType is "Resume".
+  resume?: ResumeProfile;
 }
 
 export type InterviewErrorKind = "timeout" | "auth" | "server" | "network" | "generic" | null;
