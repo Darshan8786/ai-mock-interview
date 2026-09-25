@@ -30,6 +30,8 @@ import json
 import os
 import re
 
+import interview_feedback_analysis as fa
+
 TRAINING_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "training", "data", "interview_questions")
 TOPIC_CONCEPTS_PATH = os.path.join(TRAINING_DIR, "topic_concepts.json")
 HR_BEHAVIORAL_PATH = os.path.join(TRAINING_DIR, "hr_behavioral_dataset.json")
@@ -140,6 +142,18 @@ def _expected_concepts(question: str, interview_type: str, skill: str = "", topi
     return _generic_concepts_from_question(question)
 
 
+def _concept_source(question: str, interview_type: str, skill: str, topic: str, explicit: list) -> str:
+    """Where the expected concepts came from (mirrors _expected_concepts' lookup order). Reported so
+    feedback can say honestly when scoring used the question's own wording instead of an answer key."""
+    if explicit:
+        return "question-concepts"
+    if interview_type in ("HR", "Behavioral"):
+        return "hr-dataset" if _load_hr_behavioral_concepts().get(normalize_for_compare(question)) else "question-words"
+    if skill and topic and _load_topic_concepts().get(skill, {}).get(topic):
+        return "topic-dataset"
+    return "question-words"
+
+
 def _single_concept_matched(concept: str, answer_stems: set, answer_norm: str) -> bool:
     concept_norm = normalize_for_compare(concept)
     if concept_norm and concept_norm in answer_norm:
@@ -200,6 +214,9 @@ def evaluate_answer(
     skill: str = "",
     topic: str = "",
     concepts: list = None,
+    answer_type: str = "text",
+    speech: dict = None,
+    time_taken: float = 0,
 ) -> dict:
     """Locally evaluates ONE answer against the expected concepts for THIS
     question. Never calls any network service. Returns the same schema the
@@ -208,7 +225,12 @@ def evaluate_answer(
     `concepts`, when given, are the question's own expected concepts (stored
     with the question when it was generated - used by resume-based interview
     questions, which are built from the candidate's own projects and so have
-    no entry in the static topic/HR concept files)."""
+    no entry in the static topic/HR concept files).
+
+    `answer_type` / `speech` / `time_taken` are optional and only feed the extended,
+    explainable analysis (see interview_feedback_analysis): `speech` carries audio
+    measurements taken on the client (recording length, measured pauses). The six legacy
+    scores never depend on them."""
     answer = (answer or "").strip()
     word_count = len(answer.split())
     explicit_concepts = [str(c) for c in (concepts or []) if str(c).strip()]
@@ -284,7 +306,7 @@ def evaluate_answer(
         matched, missing, technical_score, word_count, hedge_count, filler_count, interview_type
     )
 
-    return {
+    result = {
         "technicalScore": technical_score,
         "communicationScore": communication_score,
         "confidenceScore": confidence_score,
@@ -292,6 +314,180 @@ def evaluate_answer(
         "fluencyScore": fluency_score,
         "relevanceScore": relevance_score,
         "feedback": feedback,
+    }
+    try:
+        result.update(
+            _extended_analysis(
+                question=question, answer=answer, interview_type=interview_type, skill=skill, topic=topic,
+                explicit_concepts=explicit_concepts, matched=matched, missing=missing,
+                coverage=coverage, answer_tokens=answer_tokens, answer_stems=answer_stems,
+                word_count=word_count, unique_ratio=unique_ratio, avg_sentence_len=avg_sentence_len,
+                hedge_count=hedge_count, filler_count=filler_count, scores=result,
+                answer_type=answer_type, speech=speech, time_taken=time_taken,
+            )
+        )
+    except Exception as exc:  # the six legacy scores must always be returned
+        print(f"[local_answer_evaluator] extended analysis failed: {exc}")
+    return result
+
+
+def _first_index(tokens: list, words: list):
+    """Index of the first token matching the first stem of `words` (None when absent)."""
+    if not words:
+        return None
+    target = _stem(words[0])
+    for i, t in enumerate(tokens):
+        if _stem(t) == target:
+            return i
+    return None
+
+
+def _concept_position(concept: str, tokens: list):
+    best = None
+    for alt in concept.split("|"):
+        words = [w for w in normalize_for_compare(alt).split() if w not in _STOPWORDS]
+        idx = _first_index(tokens, words)
+        if idx is not None and (best is None or idx < best):
+            best = idx
+    return best
+
+
+def _phrase_positions(tokens: list, phrases: list) -> list:
+    """[(phrase, first token index)] for each phrase that occurs; phrases contained in a longer
+    found phrase (e.g. 'not sure' inside 'i'm not sure') are dropped."""
+    found = []
+    for phrase in phrases:
+        ptoks = normalize_for_compare(phrase).split()
+        if not ptoks:
+            continue
+        for i in range(len(tokens) - len(ptoks) + 1):
+            if tokens[i : i + len(ptoks)] == ptoks:
+                found.append((phrase, i))
+                break
+    return [f for f in found if not any(f[0] != o[0] and f[0] in o[0] for o in found)]
+
+
+def _extended_analysis(
+    question, answer, interview_type, skill, topic, explicit_concepts, matched, missing, coverage,
+    answer_tokens, answer_stems, word_count, unique_ratio, avg_sentence_len, hedge_count,
+    filler_count, scores, answer_type, speech, time_taken,
+) -> dict:
+    """Four extra scores + the structured, explainable analysis. Reads the same measurements the six
+    legacy scores were built from, so every explanation lines up with the number it explains."""
+    source = _concept_source(question, interview_type, skill, topic, explicit_concepts)
+    qtype = fa.classify_question(question, interview_type, skill)
+    speech_clean = fa.sanitize_speech(speech) if answer_type == "voice" else {}
+    token_count = max(len(answer_tokens), 1)
+
+    # ---- sentence layout (word-index based, so unpunctuated voice transcripts still work)
+    sents = fa._split_sentences(answer)
+    starts, running = [], 0
+    for sent in sents:
+        starts.append(running)
+        running += len(sent.split())
+
+    structure = fa.analyze_structure(qtype, sents, word_count, starts)
+
+    # ---- positions of things we can locate in the transcript
+    concept_positions = {}
+    for c in (matched if source != "question-words" else []):
+        idx = _concept_position(c, answer_tokens)
+        if idx is not None:
+            concept_positions[_concept_label(c)] = idx
+    matched_labels = [_concept_label(c) for c in matched] if source != "question-words" else []
+    # "Main point" claims need real expected concepts; with question-wording-only concepts they would be noise.
+    first_concept = min(concept_positions.values()) if concept_positions and source != "question-words" else None
+    main_point_late = bool(word_count >= 40 and first_concept is not None and first_concept / token_count > 0.45)
+    answered_directly = bool(word_count >= 15 and first_concept is not None and first_concept / token_count <= 0.2)
+
+    filler_positions = [(t, i) for i, t in enumerate(answer_tokens) if t in _FILLER_WORDS]
+    hedge_positions = _phrase_positions(answer_tokens, _HEDGING_PHRASES)
+    hedges_found = [h for h, _ in hedge_positions]
+    repeats = fa.find_repeats(answer_tokens, _STOPWORDS)
+
+    communication = fa.analyze_communication(
+        answer, answer_tokens, qtype, [t for t, _ in filler_positions], repeats, hedges_found,
+        answer_type, speech_clean, time_taken, main_point_late,
+    )
+    lower, upper = fa._LENGTH_RANGE[qtype]
+
+    # ---- four extra scores
+    run_on = bool(answer_type != "voice" and word_count > 25 and len(sents) == 1)
+    filler_ratio = filler_count / word_count if word_count else 0
+    repeat_ratio = len(repeats) / word_count if word_count else 0
+
+    completeness = fa._clip(100 * (0.7 * coverage + 0.3 * min(1.0, word_count / lower)))
+
+    clarity = 85 - 6 * min(4, hedge_count) - (25 if avg_sentence_len > 35 else 0) - (20 if run_on else 0)
+    clarity -= min(20, len(repeats) * 5) + min(15, filler_ratio * 60)
+    clarity = fa._clip(clarity)
+    if word_count < 15:
+        clarity = min(clarity, 60)
+
+    over = max(0.0, (word_count - upper) / upper)
+    concise = 100 - 40 * min(1.0, over) - 25 * min(1.0, filler_ratio * 8) - 20 * min(1.0, repeat_ratio * 10)
+    concise -= 10 if main_point_late else 0
+    concise = fa._clip(concise)
+    if word_count < 10:
+        concise = min(concise, 40)  # too short to be "concise" - it is incomplete
+
+    grammar_issues = []
+    voice_note = (
+        " (speech-recognition transcripts usually lack punctuation, so this reflects the transcript)"
+        if answer_type == "voice"
+        else ""
+    )
+    if not re.search(r"[.!?]$", answer) and word_count > 12:
+        grammar_issues.append("The answer does not end with sentence punctuation" + voice_note)
+    if answer == answer.lower() and word_count > 8:
+        grammar_issues.append("No capital letters were used" + voice_note)
+    if re.search(r"[!?]{2,}", answer):
+        grammar_issues.append("Repeated '!' or '?' punctuation")
+
+    q_terms = []
+    for w in _tokenize(question):
+        if w not in _STOPWORDS and len(w) > 2 and w not in q_terms and _stem(w) not in answer_stems:
+            q_terms.append(w)
+
+    measurements = {
+        "word_count": word_count, "matched": matched, "missing": missing, "coverage": coverage,
+        "concept_source": source, "answer_type": answer_type, "skill": skill, "topic": topic, "question_type": qtype,
+        "technical": scores["technicalScore"], "communication": scores["communicationScore"],
+        "confidence": scores["confidenceScore"], "grammar": scores["grammarScore"],
+        "fluency": scores["fluencyScore"], "relevance": scores["relevanceScore"],
+        "structure": structure, "completeness": completeness, "clarity": clarity, "conciseness": concise,
+        "hedges_found": hedges_found, "filler_count": filler_count,
+        "filler_items": communication["fillerWords"]["items"], "avg_sentence_len": avg_sentence_len,
+        "unique_ratio": unique_ratio, "grammar_issues": grammar_issues, "unaddressed_terms": q_terms,
+        "communication_data": communication, "communication_feedback": communication["feedback"],
+        "communication_flagged": communication["flagged"], "run_on": run_on,
+        "repeat_count": len(repeats), "main_point_late": main_point_late,
+        "ideal_min": lower, "ideal_max": upper,
+    }
+    explanations = fa.build_explanations(measurements)
+    summary = fa.summarize(measurements, explanations)
+    timeline = fa.build_timeline(
+        structure, matched_labels, concept_positions, filler_positions, repeats, hedge_positions,
+        token_count, communication, main_point_late, answered_directly,
+    )
+
+    return {
+        "structureScore": structure["score"],
+        "completenessScore": completeness,
+        "clarityScore": clarity,
+        "concisenessScore": concise,
+        "analysis": {
+            "version": fa.ANALYSIS_VERSION,
+            "questionType": qtype,
+            "conceptSource": source,
+            "matchedConcepts": matched_labels[:8],
+            "missingConcepts": [_concept_label(c) for c in missing][:8],
+            "structure": structure,
+            "communication": communication,
+            "timeline": timeline,
+            "explanations": explanations,
+            **summary,
+        },
     }
 
 

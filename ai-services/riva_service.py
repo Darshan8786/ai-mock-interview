@@ -2,10 +2,29 @@ import os
 import io
 import wave
 import tempfile
+import threading
 from typing import Optional
 
 RIVA_ENABLED = os.getenv("RIVA_ENABLED", "false").lower() == "true"
 RIVA_SERVER = os.getenv("RIVA_SERVER", "localhost:50051")
+
+# Local, offline speech-to-text (faster-whisper, CPU, int8) - the default
+# (RIVA_ENABLED=false) STT path. Loaded lazily once per process and reused;
+# WHISPER_MODEL_SIZE picks the tradeoff (tiny/base/small/medium/large-v3).
+# No external API, no API key, no network call.
+_whisper_model = None
+_whisper_lock = threading.Lock()
+
+
+def _get_whisper_model():
+    global _whisper_model
+    if _whisper_model is None:
+        with _whisper_lock:
+            if _whisper_model is None:
+                from faster_whisper import WhisperModel
+                size = os.getenv("WHISPER_MODEL_SIZE", "base")
+                _whisper_model = WhisperModel(size, device="cpu", compute_type="int8")
+    return _whisper_model
 
 try:
     if RIVA_ENABLED:
@@ -36,7 +55,7 @@ def text_to_speech(text: str, language: str = "en-US") -> Optional[bytes]:
 
 def speech_to_text(audio_bytes: bytes, language: str = "en-US") -> Optional[str]:
     if not RIVA_ENABLED:
-        return _fallback_stt()
+        return _fallback_stt(audio_bytes)
 
     try:
         auth = riva.client.Auth(uri=RIVA_SERVER)
@@ -59,7 +78,7 @@ def speech_to_text(audio_bytes: bytes, language: str = "en-US") -> Optional[str]
                     return response.results[0].alternatives[0].transcript
     except Exception as e:
         print(f"Riva STT error: {e}")
-        return _fallback_stt()
+        return _fallback_stt(audio_bytes)
 
     return None
 
@@ -102,18 +121,22 @@ def _fallback_tts(text: str) -> Optional[bytes]:
     return None
 
 
-def _fallback_stt() -> Optional[str]:
+def _fallback_stt(audio_bytes: bytes) -> Optional[str]:
+    """Transcribes the given audio locally with faster-whisper (CPU, int8).
+    Replaces the previous implementation, which ignored `audio_bytes` entirely
+    and instead recorded from the server's own microphone via
+    speech_recognition.Microphone(), then sent that recording to Google's
+    cloud Web Speech API (recognize_google) - never transcribing the
+    candidate's actual answer, and calling an external service to boot.
+    faster-whisper decodes webm/opus (the format the frontend records)
+    directly via PyAV - no ffmpeg install, no network call required."""
+    if not audio_bytes:
+        return None
     try:
-        import speech_recognition as sr
-        recognizer = sr.Recognizer()
-        with sr.Microphone() as source:
-            print("Listening...")
-            audio = recognizer.listen(source, timeout=5, phrase_time_limit=15)
-        try:
-            return recognizer.recognize_google(audio)
-        except sr.UnknownValueError:
-            return "Could not understand audio"
-        except sr.RequestError:
-            return None
-    except ImportError:
+        model = _get_whisper_model()
+        segments, _info = model.transcribe(io.BytesIO(audio_bytes), language="en", beam_size=1)
+        text = " ".join(seg.text.strip() for seg in segments).strip()
+        return text or None
+    except Exception as e:
+        print(f"Local STT (faster-whisper) error: {e}")
         return None

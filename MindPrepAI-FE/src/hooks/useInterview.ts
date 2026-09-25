@@ -1,10 +1,83 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { BACKEND_URL } from "../config/config";
 import { fetchWithTimeout, messageForError, RequestError } from "../utils/fetchWithTimeout";
+import type { SpeechMetrics } from "../types/mockFeedback";
 
 export interface Question {
   question: string;
   index: number;
+  // College-authored interviews only (never includes the answer key).
+  type?: "MCQ" | "Technical" | "Coding" | "Behavioral" | "HR" | "Subjective";
+  options?: string[];
+  marks?: number;
+  language?: string;
+}
+
+/** A question as sent by the server: either the session document or the /state payload. */
+interface ServerQuestion {
+  question: string;
+  type?: Question["type"];
+  questionType?: Question["type"];
+  options?: string[];
+  marks?: number;
+  language?: string;
+  skill?: string;
+}
+
+/** Shapes a session question (server doc or /state payload) into the client Question. */
+function toQuestion(q: ServerQuestion, index: number): Question {
+  const base: Question = { question: q.question, index };
+  const type = q.type ?? q.questionType;
+  if (type) {
+    base.type = type;
+    base.options = Array.from(q.options || []);
+    base.marks = q.marks;
+    base.language = q.language ?? q.skill ?? "";
+  }
+  return base;
+}
+
+// ── Active-interview pointer ────────────────────────────────────────────
+// The interview id otherwise lives only in React state, so a page refresh used to
+// abandon the session and start a fresh one (resetting every counter). Remembering
+// the id (per tab, like the tab-switch counter) lets the room resume it instead.
+const ACTIVE_KEY = "mindprep:activeInterview";
+export interface ActiveInterviewPointer {
+  id: string;
+  /** Fingerprint of the config it was started with; resume is only offered for the same config. */
+  configKey: string;
+}
+export function interviewConfigKey(c: {
+  source?: string;
+  collegeInterviewId?: string;
+  jobRole?: string;
+  interviewType?: string;
+  difficulty?: string;
+  totalQuestions?: number;
+}) {
+  return [c.source || "AI", c.collegeInterviewId || "", c.jobRole || "", c.interviewType || "", c.difficulty || "", c.totalQuestions || ""].join("|");
+}
+export function saveActiveInterview(p: ActiveInterviewPointer) {
+  try {
+    sessionStorage.setItem(ACTIVE_KEY, JSON.stringify(p));
+  } catch {
+    /* storage unavailable — resume just won't be offered */
+  }
+}
+export function readActiveInterview(): ActiveInterviewPointer | null {
+  try {
+    const raw = sessionStorage.getItem(ACTIVE_KEY);
+    return raw ? (JSON.parse(raw) as ActiveInterviewPointer) : null;
+  } catch {
+    return null;
+  }
+}
+export function clearActiveInterview() {
+  try {
+    sessionStorage.removeItem(ACTIVE_KEY);
+  } catch {
+    /* nothing to clear */
+  }
 }
 
 export interface Evaluation {
@@ -31,6 +104,9 @@ export interface InterviewConfig {
   totalQuestions: number;
   // Required by the server when interviewType is "Resume".
   resume?: ResumeProfile;
+  // "COLLEGE": load the college's own questions instead of generating them.
+  source?: "AI" | "RESUME" | "COLLEGE";
+  collegeInterviewId?: string;
 }
 
 export type InterviewErrorKind = "timeout" | "auth" | "server" | "network" | "generic" | null;
@@ -113,7 +189,7 @@ export function useInterview() {
         if (data.data.questions && data.data.questions.length > 0) {
           const idx = data.data.currentQuestionIndex || 0;
           const q = data.data.questions[idx] || data.data.questions[0];
-          setCurrentQuestion({ question: q.question, index: idx });
+          setCurrentQuestion(toQuestion(q, idx));
           setQuestionsStatus("ready");
         }
 
@@ -152,7 +228,7 @@ export function useInterview() {
 
         const st = data.data;
         if (st.questionsStatus === "ready" && st.currentQuestion) {
-          setCurrentQuestion(st.currentQuestion);
+          setCurrentQuestion(toQuestion(st.currentQuestion, st.currentQuestion.index));
           setQuestionsStatus("ready");
           clearError();
         } else if (st.questionsStatus === "failed") {
@@ -181,6 +257,16 @@ export function useInterview() {
       window.clearInterval(id);
     };
   }, [interviewId, questionsStatus, getToken, clearError, applyError]);
+
+  // Re-attach to an interview that is still in progress on the server (page refresh).
+  // The question comes back through the normal /state poll, so nothing is regenerated.
+  const resumeInterview = useCallback((id: string) => {
+    clearError();
+    setIsComplete(false);
+    setCurrentQuestion(null);
+    setInterviewId(id);
+    setQuestionsStatus("generating");
+  }, [clearError]);
 
   // Ask the server to regenerate questions for the existing session. Never
   // touches the proctoring socket or webcam.
@@ -224,7 +310,7 @@ export function useInterview() {
   }, [interviewId, regenerateQuestions, startInterview]);
 
   const submitAnswer = useCallback(
-    async (answer: string, answerType: "voice" | "text", timeTaken: number) => {
+    async (answer: string, answerType: "voice" | "text", timeTaken: number, speech?: SpeechMetrics) => {
       if (!interviewId) return null;
 
       setLoading(true);
@@ -240,7 +326,7 @@ export function useInterview() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ answer, answerType, timeTaken }),
+            body: JSON.stringify({ answer, answerType, timeTaken, ...(speech ? { speech } : {}) }),
           },
           ACTION_TIMEOUT_MS
         );
@@ -253,7 +339,7 @@ export function useInterview() {
         }
 
         if (data.data.nextQuestion) {
-          setCurrentQuestion(data.data.nextQuestion);
+          setCurrentQuestion(toQuestion(data.data.nextQuestion, data.data.nextQuestion.index));
         } else {
           setCurrentQuestion(null);
         }
@@ -296,7 +382,7 @@ export function useInterview() {
       if (!data.success) throw new Error(data.message || "Failed to skip question");
 
       if (data.data.nextQuestion) {
-        setCurrentQuestion(data.data.nextQuestion);
+        setCurrentQuestion(toQuestion(data.data.nextQuestion, data.data.nextQuestion.index));
       } else {
         setCurrentQuestion(null);
       }
@@ -314,7 +400,7 @@ export function useInterview() {
     }
   }, [interviewId, getToken, clearError, applyError]);
 
-  const terminateInterview = useCallback(async () => {
+  const terminateInterview = useCallback(async (reason?: string) => {
     if (!interviewId) return;
 
     try {
@@ -327,6 +413,7 @@ export function useInterview() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
+          body: JSON.stringify(reason ? { reason } : {}),
         },
         READ_TIMEOUT_MS
       );
@@ -368,6 +455,7 @@ export function useInterview() {
     errorKind,
     lastEvaluation,
     startInterview,
+    resumeInterview,
     retryStartInterview,
     regenerateQuestions,
     submitAnswer,

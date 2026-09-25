@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getAvailableJobs, type StudentJob } from "../services/jobsApi";
 import { AlumniOpenings } from "../components/AlumniOpenings";
+import { FloatingCard } from "../components/3d/FloatingCard";
 
 const jobTypes = ["All", "Full-time", "Internship", "Part-time", "Contract", "Remote", "On-site", "Hybrid"];
 
@@ -94,8 +95,9 @@ export function Jobs() {
             {sorted.map((job) => {
               const deadlinePassed = new Date(job.lastDateToApply).getTime() < Date.now();
               return (
-                <div
+                <FloatingCard
                   key={job.id}
+                  intensity={4}
                   className="group rounded-2xl bg-gray-900 border border-gray-700 p-6 transition-all hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col"
                 >
                   <div className="flex items-start justify-between gap-3 mb-3">
@@ -163,7 +165,7 @@ export function Jobs() {
                       </button>
                     )}
                   </div>
-                </div>
+                </FloatingCard>
               );
             })}
           </div>

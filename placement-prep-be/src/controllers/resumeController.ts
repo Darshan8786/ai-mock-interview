@@ -110,6 +110,30 @@ export function analyzeJobSkillGaps(resumeSkills: string[], jobs: any[]): SkillG
   return jobs.map((j, i) => computeSkillGapLocally(resumeSkills, { title: j.title, description: j.description }, i));
 }
 
+// Optional additional signal from the local resume-category classifier
+// (ai-services/resume_training/ - TF-IDF + calibrated Linear SVM, trained on
+// snehaanbhawal/resume-dataset; test macro-F1 ~0.60 across 24 classes). Not a
+// replacement for the deterministic top_roles in analyzeResumeLocally - this
+// is a broad field/category label (e.g. "HEALTHCARE", "ADVOCATE"), whereas
+// top_roles is narrow and tech-job-search-oriented. Returns null on any
+// failure (model not loaded, ai-service down, etc.) so the main analysis is
+// never affected - purely additive.
+async function classifyResumeCategory(resumeText: string): Promise<{ category: string; confidence: number; top_3: { category: string; confidence: number }[] } | null> {
+  try {
+    const response = await axios.post(
+      `${AI_SERVICE_URL}/classify-resume-category`,
+      { resume_text: resumeText },
+      { timeout: 8000, headers: { "X-AI-Service-Key": AI_SERVICE_KEY } }
+    );
+    if (!response.data?.available) return null;
+    const { category, confidence, top_3 } = response.data;
+    return { category, confidence, top_3 };
+  } catch (err: any) {
+    console.error(`[ResumeCategory] classifier unavailable, omitting: ${err?.message}`);
+    return null;
+  }
+}
+
 async function fetchLiveJobsWithSkillGap(resumeSkills: string[], topRole?: string) {
   const what = topRole || "software engineer";
   const jobs = await fetchLiveJobsFromAdzuna(what, "Bengaluru", 6);
@@ -157,6 +181,8 @@ export const analyzeResume = asyncHandler(async (req: AuthRequest, res: Response
     console.error("[LiveJobs Skill Gap Error]", err);
   }
 
+  const predictedCategory = await classifyResumeCategory(text);
+
   res.json({
     success: true,
     data: {
@@ -165,6 +191,7 @@ export const analyzeResume = asyncHandler(async (req: AuthRequest, res: Response
       extractedLength: text.length,
       analysis,
       liveJobs,
+      predictedCategory,
     },
   });
 });

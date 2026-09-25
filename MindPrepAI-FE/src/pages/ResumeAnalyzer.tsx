@@ -1,7 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useRef, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "../config/config";
+
+const AtsScoreScene = lazy(() => import("../components/3d/AtsScoreScene"));
+const SkillSphereScene = lazy(() => import("../components/3d/SkillSphereScene"));
 
 interface Suggestion {
   skill: string;
@@ -112,6 +115,7 @@ export function ResumeAnalyzer() {
 
   const getScoreColor = (s: number) =>
     s >= 80 ? "text-emerald-400" : s >= 60 ? "text-yellow-400" : "text-red-400";
+  const getScoreHex = (s: number) => (s >= 80 ? "#34d399" : s >= 60 ? "#facc15" : "#f87171");
   const getPriColor = (p: string) =>
     p === "high" ? "bg-red-500/20 text-red-400" : p === "medium" ? "bg-yellow-500/20 text-yellow-400" : "bg-blue-500/20 text-blue-400";
 
@@ -186,7 +190,18 @@ export function ResumeAnalyzer() {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <StatBox label="ATS Score" value={`${analysis.ats_score}%`} color={getScoreColor(analysis.ats_score)} />
+                <div className="relative bg-gray-800/50 rounded-2xl border border-gray-700 text-center h-28 overflow-hidden">
+                  <Suspense
+                    fallback={
+                      <div className="w-full h-full flex items-center justify-center">
+                        <p className={`text-2xl font-bold ${getScoreColor(analysis.ats_score)}`}>{analysis.ats_score}%</p>
+                      </div>
+                    }
+                  >
+                    <AtsScoreScene score={analysis.ats_score} color={getScoreHex(analysis.ats_score)} />
+                  </Suspense>
+                  <p className="text-xs text-gray-400 absolute bottom-1.5 left-0 right-0 pointer-events-none">ATS Score</p>
+                </div>
                 <StatBox label="Experience" value={`${analysis.experience_years}yrs`} color="text-white" />
                 <StatBox label="Skills Found" value={`${analysis.skills.length}`} color="text-blue-400" />
                 <StatBox label="Live Jobs" value={`${liveJobs.length}`} color="text-emerald-400" />
@@ -373,7 +388,16 @@ export function ResumeAnalyzer() {
 
                 <div className="space-y-6">
                   <motion.div className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
-                    <h3 className="text-lg font-semibold text-white mb-4">Skills</h3>
+                    <div className="flex items-center gap-3 mb-4">
+                      {analysis.skills.length > 0 && (
+                        <div className="w-12 h-12 shrink-0">
+                          <Suspense fallback={<div className="w-full h-full" />}>
+                            <SkillSphereScene skillCount={analysis.skills.length} />
+                          </Suspense>
+                        </div>
+                      )}
+                      <h3 className="text-lg font-semibold text-white">Skills ({analysis.skills.length})</h3>
+                    </div>
                     <div className="flex flex-wrap gap-1.5">
                       {analysis.skills.map((s, i) => (
                         <span key={i} className="text-xs px-2.5 py-1 bg-gray-700 rounded-lg text-gray-300">{s}</span>

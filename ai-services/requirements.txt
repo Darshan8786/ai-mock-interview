@@ -32,3 +32,8 @@ peft
 # Local tech-question dataset QA classifier (TF-IDF + Logistic Regression) - offline, no API key
 scikit-learn
 joblib
+
+# Local speech (STT/TTS) - offline, no API key, no network call
+faster-whisper
+pyttsx3
+pywin32; sys_platform == "win32"

@@ -76,6 +76,7 @@ const sanitizeUser = (user: any) => {
     name: user.name,
     email: user.email,
     role: user.role,
+    college: user.college ?? null,
     usn: user.usn,
     registerNumber: user.registerNumber,
     collegeEmail: user.collegeEmail,

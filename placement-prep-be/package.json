@@ -15,13 +15,10 @@
     "chatbot:unanswered": "tsx src/scripts/chatbotUnanswered.ts",
     "export:chatbot": "tsx src/scripts/exportChatbotData.ts",
     "eval:hybrid": "tsx src/scripts/evalHybrid.ts",
+    "create:college-admin": "tsx src/scripts/createCollegeAdmin.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.2.1",
-    "@langchain/community": "^1.1.29",
-    "@langchain/groq": "^1.3.1",
-    "@langchain/openai": "^1.5.5",
     "@pinecone-database/pinecone": "^4.0.0",
     "axios": "^1.18.1",
     "bcrypt": "^5.1.1",

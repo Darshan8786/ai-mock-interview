@@ -11,6 +11,7 @@ import notificationRoutes from "./notificationRoutes";
 import aptitudeRoutes from "./aptitudeRoutes";
 import adminRoutes from "./adminRoutes";
 import techQuizRoutes from "./techQuizRoutes";
+import collegeRoutes from "./collegeRoutes";
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use("/notifications", notificationRoutes);
 router.use("/aptitude", aptitudeRoutes);
 router.use("/admin", adminRoutes);
 router.use("/tech-quiz", techQuizRoutes);
+router.use("/colleges", collegeRoutes);
 
 export default router;

@@ -1,11 +1,20 @@
+import { lazy, Suspense } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { TechQuizResultDTO } from "../services/techQuizApi";
+
+const ProgressRingScene = lazy(() => import("../components/3d/AtsScoreScene"));
 
 function scoreColor(score: number): string {
   if (score >= 80) return "text-emerald-400";
   if (score >= 60) return "text-yellow-400";
   return "text-red-400";
+}
+
+function scoreHex(score: number): string {
+  if (score >= 80) return "#34d399";
+  if (score >= 60) return "#facc15";
+  return "#f87171";
 }
 
 export function TechQuizResult() {
@@ -40,9 +49,20 @@ export function TechQuizResult() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200 }}
-            className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 mb-4"
+            className="relative inline-flex items-center justify-center w-28 h-28 mb-4"
           >
-            <span className="text-4xl font-bold text-white">{result.score}</span>
+            <Suspense
+              fallback={
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 flex items-center justify-center">
+                  <span className="text-4xl font-bold text-white">{result.score}</span>
+                </div>
+              }
+            >
+              <ProgressRingScene score={result.score} color={scoreHex(result.score)} />
+            </Suspense>
+            <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold text-white pointer-events-none">
+              {result.score}
+            </span>
           </motion.div>
           <h1 className="text-3xl font-bold text-white mb-1">{result.technology} Practice Complete</h1>
           <p className="text-gray-400">

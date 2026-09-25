@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { CollegeInterviewList } from "./CollegeInterviewList";
 import { adminApi } from "../../admin/api";
 import { useLoad } from "../../admin/useLoad";
 import type { AdminInterview } from "../../admin/types";
@@ -29,7 +31,8 @@ function ScoreBar({ label, value }: { label: string; value: number }) {
   );
 }
 
-export function InterviewManagement() {
+/** The original page: AI interview sessions taken by students. */
+function StudentInterviews() {
   const { data: interviews, loading, error, reload } = useLoad(() => adminApi.getInterviews());
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -212,6 +215,36 @@ function Metric({ label, value }: { label: string; value: number }) {
     <div className="bg-gray-800/60 rounded-xl p-3 text-center">
       <p className={`text-xl font-bold ${color}`}>{value}</p>
       <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+    </div>
+  );
+}
+
+/**
+ * Interview Management: the existing student-session monitor, plus the college's own
+ * interviews (create / edit / publish). The tab is kept in the URL (?tab=college).
+ */
+export function InterviewManagement() {
+  const [params, setParams] = useSearchParams();
+  const tab = params.get("tab") === "college" ? "college" : "student";
+
+  const tabClass = (active: boolean) =>
+    `px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${
+      active
+        ? "bg-blue-600/15 border-blue-500/40 text-white"
+        : "bg-gray-800/60 border-gray-700 text-gray-400 hover:text-gray-200 hover:border-gray-600"
+    }`;
+
+  return (
+    <div>
+      <div className="flex gap-2 mb-6" role="tablist">
+        <button role="tab" aria-selected={tab === "student"} className={tabClass(tab === "student")} onClick={() => setParams({})}>
+          Student Interviews
+        </button>
+        <button role="tab" aria-selected={tab === "college"} className={tabClass(tab === "college")} onClick={() => setParams({ tab: "college" })}>
+          College Interviews
+        </button>
+      </div>
+      {tab === "college" ? <CollegeInterviewList /> : <StudentInterviews />}
     </div>
   );
 }

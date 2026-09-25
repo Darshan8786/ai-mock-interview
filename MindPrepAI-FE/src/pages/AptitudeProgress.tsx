@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getAptitudeProgress } from "../services/profileApi";
 import type { AptitudeProgress as ProgressData } from "../services/profileApi";
+
+// Reused from the resume analyzer - it's a generic {score, color} progress
+// ring, not ATS-specific despite the filename.
+const ProgressRingScene = lazy(() => import("../components/3d/AtsScoreScene"));
 
 export function AptitudeProgress() {
   const navigate = useNavigate();
@@ -73,21 +77,32 @@ export function AptitudeProgress() {
             </div>
 
             <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6 mb-8">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-white">Overall Accuracy</span>
-                <span className="text-lg font-bold text-emerald-400">{progress.accuracy}%</span>
+              <div className="flex items-center gap-5">
+                <div className="w-20 h-20 shrink-0 relative">
+                  <Suspense
+                    fallback={<div className="w-full h-full flex items-center justify-center text-sm font-bold text-emerald-400">{progress.accuracy}%</div>}
+                  >
+                    <ProgressRingScene score={progress.accuracy} color="#34d399" />
+                  </Suspense>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-white">Overall Accuracy</span>
+                    <span className="text-lg font-bold text-emerald-400">{progress.accuracy}%</span>
+                  </div>
+                  <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progress.accuracy}%` }}
+                      transition={{ duration: 0.8 }}
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-blue-500"
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    {progress.totalCorrect} correct · {progress.totalIncorrect} incorrect out of {progress.totalAnswered} answered
+                  </p>
+                </div>
               </div>
-              <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress.accuracy}%` }}
-                  transition={{ duration: 0.8 }}
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-blue-500"
-                />
-              </div>
-              <p className="text-xs text-gray-500 mt-2">
-                {progress.totalCorrect} correct · {progress.totalIncorrect} incorrect out of {progress.totalAnswered} answered
-              </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

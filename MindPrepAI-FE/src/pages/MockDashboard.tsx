@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { CollegeInterviewsSection } from "../components/CollegeInterviewsSection";
+import { FloatingCard } from "../components/3d/FloatingCard";
 import { BACKEND_URL } from "../config/config";
+import { getProgress } from "../services/mockInterviewApi";
+import type { ProgressData } from "../types/mockFeedback";
+import { ProgressCharts } from "../components/mock-interview/feedback/ProgressCharts";
+import { WeaknessMapCard } from "../components/mock-interview/feedback/WeaknessMapCard";
 
 interface DashboardData {
   interviews: any[];
@@ -20,9 +26,15 @@ export function MockDashboard() {
   const navigate = useNavigate();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState<ProgressData | null>(null);
 
   useEffect(() => {
     fetchDashboard();
+    getProgress()
+      .then((r) => {
+        if (r?.success) setProgress(r.data);
+      })
+      .catch((err) => console.error("Progress fetch error:", err));
   }, []);
 
   const fetchDashboard = async () => {
@@ -74,6 +86,8 @@ export function MockDashboard() {
             New Interview
           </button>
         </div>
+
+        <CollegeInterviewsSection />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <StatCard
@@ -164,6 +178,21 @@ export function MockDashboard() {
           </div>
         </div>
 
+        {progress && progress.points.length > 0 && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div className="lg:col-span-2">
+              <ProgressCharts progress={progress} />
+            </div>
+            {progress.weaknessMap && (
+              <WeaknessMapCard
+                map={progress.weaknessMap}
+                title="Recurring Weaknesses"
+                scope={`Across your last ${Math.min(10, progress.points.length)} interviews`}
+              />
+            )}
+          </div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -229,19 +258,16 @@ function StatCard({
   scoreColor?: boolean;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-      className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-700"
-    >
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-2xl">{icon}</span>
-      </div>
-      <p className={`text-2xl font-bold ${scoreColor ? "text-emerald-400" : "text-white"}`}>
-        {value}
-      </p>
-      <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}>
+      <FloatingCard intensity={5} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-700">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-2xl">{icon}</span>
+        </div>
+        <p className={`text-2xl font-bold ${scoreColor ? "text-emerald-400" : "text-white"}`}>
+          {value}
+        </p>
+        <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+      </FloatingCard>
     </motion.div>
   );
 }

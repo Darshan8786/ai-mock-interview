@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -8,6 +8,88 @@
 
 body {
   margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+/* ── Dark glassmorphic design system ─────────────────────────
+   Shared across the app: frosted-glass surfaces, gradient accents,
+   glow effects. Apply `.glass` to cards/panels, `.glass-strong` to
+   nav/modals/dropdowns that need to sit above content, `.gradient-text`
+   to headings, `.btn-gradient` to primary CTAs. */
+
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-strong {
+  background: rgba(8, 8, 14, 0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-hover {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+.glass-hover:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow: 0 8px 32px -8px rgba(139, 92, 246, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.gradient-text {
+  background-image: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-border {
+  position: relative;
+  isolation: isolate;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.7), rgba(167, 139, 250, 0.7), rgba(244, 114, 182, 0.7));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.btn-gradient {
+  background-image: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+  background-size: 160% 160%;
+  background-position: 0% 50%;
+  color: #fff;
+  transition: background-position 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 8px 24px -8px rgba(168, 85, 247, 0.55);
+}
+.btn-gradient:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 10px 32px -6px rgba(168, 85, 247, 0.7);
+}
+
+.glow-orb {
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-18px) translateX(10px); }
+}
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
 }
 
 

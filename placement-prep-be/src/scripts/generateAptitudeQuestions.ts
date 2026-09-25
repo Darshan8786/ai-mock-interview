@@ -1,3 +1,11 @@
+// Deliberate, documented exception to the local-AI migration (see
+// docs/LOCAL_AI_MIGRATION_AUDIT.md): a one-off, developer-run CLI for bulk-
+// authoring the aptitude question bank (`npm run gen:aptitude`). It never
+// runs as part of the deployed app, is never invoked by any request, and
+// requires an operator to explicitly supply GROQ_API_KEY to use it at all.
+// Left as an optional external tool rather than migrated, since doing so
+// would mean building a full local MCQ-with-options-and-answer-key
+// generation pipeline for a script that isn't part of the running system.
 import "dotenv/config";
 import mongoose from "mongoose";
 import OpenAI from "openai";
@@ -326,6 +334,13 @@ async function fillTopic(category: string, topic: string, description: string): 
 }
 
 async function main() {
+  if ((process.env.LOCAL_ONLY || "").toLowerCase() === "true") {
+    console.error(
+      "LOCAL_ONLY=true: refusing to run — this script calls Groq (an external API) to author aptitude questions. Unset LOCAL_ONLY, or run without it, to use this tool."
+    );
+    process.exit(1);
+  }
+
   await connectDB();
 
   const args = process.argv.slice(2);

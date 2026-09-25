@@ -1,29 +1,21 @@
-import { index } from "../config/pinecone";
+import { upsertVector as storeUpsert, queryVectors as storeQuery } from "./vectorStore";
 import { AppError } from "../utils/AppError";
 
+// Default (unnamespaced) vector store, used by the quiz-question RAG feature.
+// Backed by Pinecone when configured, otherwise a local MongoDB-based store —
+// see vectorStore.ts.
 export const upsertVector = async (id: string, vector: number[], metadata: any) => {
   try {
-    await index.upsert([
-      {
-        id,
-        values: vector,
-        metadata,
-      },
-    ]);
+    await storeUpsert("", id, vector, metadata);
   } catch (error) {
-    throw new AppError(`Pinecone Upsert failed: ${(error as Error).message}`, 500);
+    throw new AppError(`Vector upsert failed: ${(error as Error).message}`, 500);
   }
 };
 
 export const queryVectors = async (vector: number[], topK: number = 5) => {
   try {
-    const queryResponse = await index.query({
-      vector,
-      topK,
-      includeMetadata: true,
-    });
-    return queryResponse.matches;
+    return await storeQuery("", vector, topK);
   } catch (error) {
-    throw new AppError(`Pinecone Query failed: ${(error as Error).message}`, 500);
+    throw new AppError(`Vector query failed: ${(error as Error).message}`, 500);
   }
 };

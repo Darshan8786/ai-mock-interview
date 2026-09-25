@@ -1,0 +1,61 @@
+{
+  "inputs": {
+    "kaggle_rows": 200,
+    "curated_rows": 900
+  },
+  "records_after_basic_validation": 1099,
+  "removed_total": 51,
+  "removed_by_reason": {
+    "question too short": 1,
+    "duplicate question": 50
+  },
+  "unique_questions_kept": 1049,
+  "with_answer": 174,
+  "duplicate_copies_merged": 50,
+  "difficulty_conflicts_set_to_null": 10,
+  "difficulty_conflicts_resolved_by_majority": 2,
+  "near_duplicate_clusters_with_2plus": 50,
+  "imperative_task_prompts": 47,
+  "by_source": {
+    "curated": 875,
+    "kaggle": 170,
+    "both": 4
+  },
+  "by_difficulty": {
+    "Medium": 379,
+    "Hard": 371,
+    "Easy": 289,
+    "None": 10
+  },
+  "by_topic": {
+    "Web Development": 87,
+    "Data Structures": 67,
+    "SQL": 67,
+    "Algorithms": 66,
+    "Machine Learning": 65,
+    "DBMS": 63,
+    "Operating Systems": 62,
+    "Computer Networks": 61,
+    "Artificial Intelligence": 60,
+    "Python": 60,
+    "C": 59,
+    "OOP": 59,
+    "Java": 58,
+    "C++": 58,
+    "JavaScript": 58,
+    "System Design": 29,
+    "DevOps": 15,
+    "Security": 13,
+    "General Programming": 10,
+    "Programming Languages": 10,
+    "Software Testing": 10,
+    "Version Control": 10,
+    "Data Engineering": 2
+  },
+  "by_question_type": {
+    "conceptual": 945,
+    "scenario": 57,
+    "task": 28,
+    "design": 19
+  }
+}

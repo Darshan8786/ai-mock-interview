@@ -3,11 +3,20 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ScoreCard } from "../components/mock-interview/ScoreCard";
 import { BACKEND_URL } from "../config/config";
+import type { ReportFeedback } from "../types/mockFeedback";
+import { PerformanceSummaryCard } from "../components/mock-interview/feedback/PerformanceSummaryCard";
+import { WeaknessMapCard } from "../components/mock-interview/feedback/WeaknessMapCard";
+import { ProctoringSummaryCard } from "../components/mock-interview/feedback/ProctoringSummaryCard";
+import { NextInterviewPlan } from "../components/mock-interview/feedback/NextInterviewPlan";
+import { ProgressCharts } from "../components/mock-interview/feedback/ProgressCharts";
+import { QuestionFeedbackAccordion } from "../components/mock-interview/feedback/QuestionFeedbackAccordion";
 
 interface ReportData {
   interview: any;
   report: any;
   cheatingEvents: any[];
+  // Explainable-feedback layer; null/absent if it could not be assembled (the classic report still renders).
+  feedback?: ReportFeedback | null;
 }
 
 export function InterviewResult() {
@@ -116,7 +125,7 @@ ${report.finalFeedback || "N/A"}
     );
   }
 
-  const { report, interview, cheatingEvents } = data;
+  const { report, interview, cheatingEvents, feedback } = data;
   const isTerminated = interview?.status === "terminated";
 
   const getStatusBadge = () => {
@@ -128,6 +137,8 @@ ${report.finalFeedback || "N/A"}
 
   const badge = getStatusBadge();
   const tabSwitchTerminated = interview?.terminationReason === "TAB_SWITCH_LIMIT_EXCEEDED";
+  const fullscreenTerminated = interview?.terminationReason === "FULLSCREEN_EXIT_LIMIT_EXCEEDED";
+  const timeLimitEnded = interview?.terminationReason === "TIME_LIMIT_REACHED";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-8 px-4">
@@ -159,6 +170,18 @@ ${report.finalFeedback || "N/A"}
             </span>
           </div>
         </div>
+
+        {fullscreenTerminated && (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-8 text-center text-sm text-red-300">
+            This interview was automatically terminated after you left full-screen mode {interview.fullScreenExitCount ?? 3} times, exceeding the 3-exit limit.
+          </div>
+        )}
+
+        {timeLimitEnded && (
+          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 mb-8 text-center text-sm text-yellow-300">
+            The time limit for this interview was reached, so it was ended automatically. Answers submitted before then were scored.
+          </div>
+        )}
 
         {tabSwitchTerminated && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-8 text-center text-sm text-red-300">
@@ -281,8 +304,45 @@ ${report.finalFeedback || "N/A"}
           </motion.div>
         )}
 
-        {/* Per-question breakdown */}
-        {interview?.questions?.length > 0 && (
+        {feedback && (
+          <div className="space-y-6 mb-8">
+            {feedback.personalizationApplied?.message && (
+              <div className="rounded-xl border border-purple-500/30 bg-purple-500/10 p-4 text-sm text-purple-100">
+                <span className="font-semibold text-purple-300">Personalised interview: </span>
+                {feedback.personalizationApplied.message}
+                {feedback.personalizationApplied.targetedQuestions > 0
+                  ? ` (${feedback.personalizationApplied.targetedQuestions} question${feedback.personalizationApplied.targetedQuestions === 1 ? "" : "s"} targeted these areas.)`
+                  : " (The question service fell back to its standard set, so no question was targeted this time.)"}
+              </div>
+            )}
+
+            <PerformanceSummaryCard summary={feedback.performance} />
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <WeaknessMapCard map={feedback.weaknessMap} />
+              <div className="space-y-6">
+                <ProctoringSummaryCard summary={feedback.proctoring} />
+                {feedback.nextInterview && <NextInterviewPlan plan={feedback.nextInterview} />}
+              </div>
+            </div>
+
+            {feedback.progress && feedback.progress.points.length > 0 && (
+              <ProgressCharts progress={feedback.progress} currentId={interview?._id} />
+            )}
+
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-1">Question-wise Feedback</h3>
+              <p className="text-sm text-gray-400 mb-4">
+                Open a question to see your answer, why each score was given, and how to improve. Use “Practice Again” to
+                retry it and compare attempts.
+              </p>
+              <QuestionFeedbackAccordion interview={interview} feedback={feedback} />
+            </div>
+          </div>
+        )}
+
+        {/* Per-question breakdown (classic view - kept as the fallback when the explainable layer is unavailable) */}
+        {!feedback && interview?.questions?.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

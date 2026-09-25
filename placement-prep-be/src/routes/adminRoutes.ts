@@ -63,6 +63,19 @@ import {
   recalculateEligibility,
   notifyEligibleStudents,
 } from "../controllers/admin/jobsController";
+import {
+  listCollegeInterviews,
+  createCollegeInterview,
+  getCollegeInterview,
+  updateCollegeInterview,
+  setCollegeInterviewStatus,
+  deleteCollegeInterview,
+  addCollegeQuestion,
+  updateCollegeQuestion,
+  deleteCollegeQuestion,
+  duplicateCollegeQuestion,
+  reorderCollegeQuestions,
+} from "../controllers/admin/collegeInterviewsController";
 
 const router = Router();
 
@@ -136,5 +149,18 @@ router.post("/jobs/:id/notify-eligible", notifyEligibleStudents);
 
 // Applications
 router.patch("/applications/:id/status", updateApplicationStatus);
+
+// ── College-created interviews (scoped to the admin's own college) ──
+router.get("/college-interviews", listCollegeInterviews);
+router.post("/college-interviews", createCollegeInterview);
+router.get("/college-interviews/:id", getCollegeInterview);
+router.put("/college-interviews/:id", updateCollegeInterview);
+router.patch("/college-interviews/:id/status", setCollegeInterviewStatus);
+router.delete("/college-interviews/:id", deleteCollegeInterview);
+router.post("/college-interviews/:id/questions", addCollegeQuestion);
+router.put("/college-interviews/:id/questions/reorder", reorderCollegeQuestions);
+router.put("/college-interviews/:id/questions/:qid", updateCollegeQuestion);
+router.post("/college-interviews/:id/questions/:qid/duplicate", duplicateCollegeQuestion);
+router.delete("/college-interviews/:id/questions/:qid", deleteCollegeQuestion);
 
 export default router;

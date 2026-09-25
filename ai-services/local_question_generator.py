@@ -169,10 +169,41 @@ class LocalQuestionGenerator:
         self._load_error = None
         self.last_load_time_ms = None
         self.bank = QuestionBank()
+        self._interviewer = None          # fine-tuned software-engineering interviewer (interviewer_llm/), optional
+        self._interviewer_lock = threading.Lock()
 
     @property
     def is_loaded(self) -> bool:
         return self._model is not None
+
+    # ── Fine-tuned interviewer LLM (first link of the fallback chain) ───────────
+    # chain: interviewer LLM -> the original small local model -> offline question bank -> rule-based sentence.
+    # Fully local; INTERVIEWER_LLM=off disables it and restores the previous behaviour exactly.
+    def interviewer(self):
+        """The InterviewerLLM instance, or None if disabled / not trained / its package can't be imported."""
+        if os.environ.get("INTERVIEWER_LLM", "on").lower() in ("off", "0", "false", "no"):
+            return None
+        if self._interviewer is None:
+            with self._interviewer_lock:
+                if self._interviewer is None:
+                    try:
+                        from interviewer_llm.inference import InterviewerLLM
+                        self._interviewer = InterviewerLLM()
+                    except Exception:  # noqa: BLE001 - never let an optional component break interviews
+                        self._interviewer = False
+        return self._interviewer or None
+
+    def warm_interviewer(self) -> None:
+        llm = self.interviewer()
+        if llm is not None:
+            llm.warm()
+
+    def interviewer_status(self) -> dict:
+        llm = self.interviewer()
+        if llm is None:
+            return {"enabled": False}
+        return {"enabled": True, "trained_model_present": llm.available(), "loaded": llm.loaded,
+                "device": llm.device, "load_error": llm.load_error, "load_ms": llm.load_ms}
 
     def _ensure_loaded(self):
         if self._model is not None or self._load_error is not None:
@@ -272,12 +303,37 @@ class LocalQuestionGenerator:
         resume_skills: list | None = None,
         exclude_questions: list | None = None,
         max_retries: int = 6,
+        job_role: str = "",
+        reject_if=None,
     ) -> dict:
-        """Returns {"question": str, "source": "model"|"bank", "generation_time_ms": float, "attempts": int}.
-        Never raises - any failure degrades to the offline question bank."""
+        """Returns {"question": str, "source": "interviewer_llm"|"model"|"bank", "generation_time_ms": float, "attempts": int}.
+        Never raises - any failure degrades down the chain to the offline question bank.
+
+        `job_role` is passed to the interviewer LLM as the prompt's Role; `reject_if(question) -> bool` lets the caller
+        veto candidates (used for the global cross-user history check)."""
         exclude = {normalize_for_compare(q) for q in (exclude_questions or [])}
         start = time.time()
 
+        # 1) fine-tuned interviewer LLM - only if it is already in memory, so a slow load never stalls a request.
+        llm = self.interviewer()
+        if llm is not None and llm.loaded:
+            try:
+                future = _executor.submit(
+                    llm.generate_from_model, skill, difficulty, job_role or None, topic or None,
+                    list(exclude_questions or []), 4, 4, reject_if,
+                )
+                got = future.result(timeout=config.GENERATION_TIMEOUT_SECONDS * 3)
+            except (concurrent.futures.TimeoutError, Exception):  # noqa: BLE001
+                got = None
+            if got:
+                return {
+                    "question": got["question"],
+                    "source": "interviewer_llm",
+                    "generation_time_ms": round((time.time() - start) * 1000, 1),
+                    "attempts": got["attempts"],
+                }
+
+        # 2) the original small local model
         self._ensure_loaded()
 
         if self._model is not None:

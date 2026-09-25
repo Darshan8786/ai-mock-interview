@@ -105,10 +105,10 @@ function NotificationsBell({ isResumeAnalyzer }: { isResumeAnalyzer: boolean }) 
       </button>
 
       {open && (
-        <div className={`absolute right-0 mt-2 w-80 max-h-[420px] overflow-hidden rounded-2xl border shadow-2xl z-50 flex flex-col ${
-          isResumeAnalyzer ? "bg-white border-gray-200" : "bg-gray-900 border-gray-700"
+        <div className={`absolute right-0 mt-2 w-80 max-h-[420px] overflow-hidden rounded-2xl shadow-2xl z-50 flex flex-col ${
+          isResumeAnalyzer ? "bg-white border border-gray-200" : "glass-strong"
         }`}>
-          <div className={`flex items-center justify-between px-4 py-3 border-b ${isResumeAnalyzer ? "border-gray-200" : "border-gray-700"}`}>
+          <div className={`flex items-center justify-between px-4 py-3 border-b ${isResumeAnalyzer ? "border-gray-200" : "border-white/10"}`}>
             <p className={`text-sm font-semibold ${isResumeAnalyzer ? "text-black" : "text-white"}`}>Notifications</p>
             {unread > 0 && (
               <button
@@ -134,7 +134,7 @@ function NotificationsBell({ isResumeAnalyzer }: { isResumeAnalyzer: boolean }) 
                   className={`block w-full text-left px-4 py-3 transition-colors border-b last:border-b-0 ${
                     isResumeAnalyzer
                       ? "hover:bg-gray-50 border-gray-100"
-                      : "hover:bg-white/5 border-gray-800"
+                      : "hover:bg-white/5 border-white/5"
                   } ${n.read ? "opacity-60" : ""}`}
                 >
                   <div className="flex items-start gap-2.5">
@@ -190,41 +190,45 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-black relative">
+    <div className="min-h-screen w-full bg-[#050508] relative">
       <Toaster />
-      {/* Black Basic Grid Background */}
-      <div
-        className="fixed inset-0 z-0"
-        style={{
-          background: "#000000",
-          backgroundImage: `
-            linear-gradient(to right, rgba(75, 85, 99, 0.4) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(75, 85, 99, 0.4) 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-        }}
-      />
+      {/* Aurora gradient + grid background */}
+      <div className="fixed inset-0 z-0 overflow-hidden bg-[#050508]">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px)
+            `,
+            backgroundSize: "44px 44px",
+          }}
+        />
+        <div className="glow-orb animate-float-slow absolute -top-32 -left-24 w-96 h-96 bg-violet-600/20" />
+        <div className="glow-orb animate-float-slow absolute top-1/3 -right-32 w-[28rem] h-[28rem] bg-fuchsia-600/15" style={{ animationDelay: "2s" }} />
+        <div className="glow-orb animate-float-slow absolute bottom-0 left-1/4 w-96 h-96 bg-cyan-500/10" style={{ animationDelay: "4s" }} />
+      </div>
 
       {/* Header Navigation */}
       {!isAuthPage && (
-        <header className={`sticky top-0 z-20 backdrop-blur-md ${isResumeAnalyzer
-          ? 'border-b border-gray-200 bg-white/95'
-          : 'border-b border-gray-700 bg-black'
+        <header className={`sticky top-0 z-20 ${isResumeAnalyzer
+          ? 'backdrop-blur-md border-b border-gray-200 bg-white/95'
+          : 'glass-strong border-b-0'
           }`}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
               <button
                 onClick={() => navigate("/dashboard")}
-                className="flex items-center gap-2 hover:opacity-80 transition"
+                className="flex items-center gap-2.5 hover:opacity-90 transition"
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isResumeAnalyzer
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-lg ${isResumeAnalyzer
                   ? 'bg-gradient-to-br from-blue-500 to-blue-600'
-                  : 'bg-gradient-to-br from-blue-600 to-blue-700'
+                  : 'bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500 shadow-violet-500/40'
                   }`}>
                   <span className="text-white font-bold text-lg">M</span>
                 </div>
-                <span className={`hidden sm:inline font-bold text-lg ${isResumeAnalyzer ? 'text-black' : 'text-white'}`}>MindPrep AI</span>
+                <span className={`hidden sm:inline font-bold text-lg font-poppins ${isResumeAnalyzer ? 'text-black' : 'text-white'}`}>MindPrep <span className={isResumeAnalyzer ? '' : 'gradient-text'}>AI</span></span>
               </button>
 
               {/* Desktop Navigation */}
@@ -234,13 +238,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <button
                       key={link.path}
                       onClick={() => navigate(link.path)}
-                      className={`px-4 py-2 rounded-lg font-medium transition-all ${location.pathname === link.path
+                      className={`px-3.5 py-2 rounded-full text-sm font-medium transition-all ${location.pathname === link.path
                         ? isResumeAnalyzer
                           ? 'bg-blue-100 text-blue-700'
-                          : 'bg-blue-600 text-white'
+                          : 'btn-gradient'
                         : isResumeAnalyzer
                           ? 'text-gray-600 hover:text-black hover:bg-gray-100'
-                          : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                          : 'text-gray-300 hover:text-white hover:bg-white/10'
                         }`}
                     >
                       {link.label}
@@ -278,9 +282,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     {location.pathname !== "/signup" && (
                       <button
                         onClick={() => navigate("/signup")}
-                        className={`px-4 py-2 rounded-lg font-medium transition-all ${isResumeAnalyzer
+                        className={`px-4 py-2 rounded-full font-medium transition-all ${isResumeAnalyzer
                           ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'btn-gradient'
                           }`}
                       >
                         Sign Up
@@ -308,7 +312,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Mobile Navigation Menu */}
             {isAuthenticated && mobileMenuOpen && (
-              <nav className={`md:hidden pb-4 space-y-2 pt-4 ${isResumeAnalyzer ? 'border-t border-gray-200' : 'border-t border-gray-700'}`}>
+              <nav className={`md:hidden pb-4 space-y-1.5 pt-4 ${isResumeAnalyzer ? 'border-t border-gray-200' : 'border-t border-white/10'}`}>
                 {navLinks.map((link) => (
                   <button
                     key={link.path}
@@ -316,13 +320,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       navigate(link.path);
                       setMobileMenuOpen(false);
                     }}
-                    className={`block w-full text-left px-4 py-2 rounded-lg font-medium transition-all ${location.pathname === link.path
+                    className={`block w-full text-left px-4 py-2 rounded-xl font-medium transition-all ${location.pathname === link.path
                       ? isResumeAnalyzer
                         ? 'bg-blue-100 text-blue-700'
-                        : 'bg-blue-600 text-white'
+                        : 'btn-gradient'
                       : isResumeAnalyzer
                         ? 'text-gray-600 hover:text-black hover:bg-gray-100'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                        : 'text-gray-300 hover:text-white hover:bg-white/10'
                       }`}
                   >
                     {link.label}
@@ -333,9 +337,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     handleSignOut();
                     setMobileMenuOpen(false);
                   }}
-                  className={`block w-full text-left px-4 py-2 rounded-lg font-medium transition-all ${isResumeAnalyzer
+                  className={`block w-full text-left px-4 py-2 rounded-xl font-medium transition-all ${isResumeAnalyzer
                     ? 'text-gray-600 hover:text-black hover:bg-gray-100'
-                    : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
                     }`}
                 >
                   Sign Out

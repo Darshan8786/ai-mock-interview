@@ -1,0 +1,210 @@
+
+==============================================================================
+DATASET OVERVIEW
+==============================================================================
+location : C:\Users\Darshan A\.cache\kagglehub\datasets\syedmharis\software-engineering-interview-questions-dataset\versions\1
+files    : 1   total 41,552 bytes
+  - Software Questions.csv  (41,552 bytes)
+
+==============================================================================
+FILE: Software Questions.csv
+==============================================================================
+size            : 41,552 bytes (40.6 KB)
+format          : csv
+encoding        : cp1252
+delimiter       : ,
+header          : ['Question Number', 'Question', 'Answer', 'Category', 'Difficulty']
+rows_with_extra_fields: 0
+rows_with_missing_fields: 0
+records         : 200
+columns (5)     : ['Question Number', 'Question', 'Answer', 'Category', 'Difficulty']
+
+Detected structure (from the data, not assumed):
+  id         : 'Question Number'      - name matches 'Question Number'
+  question   : 'Question'             - name matches 'Question'
+  answer     : 'Answer'               - name matches 'Answer'
+  category   : 'Category'             - name matches 'Category'
+  difficulty : 'Difficulty'           - name matches 'Difficulty'
+
+Columns:
+  column                type      missing  unique   text length (chars)
+  Question Number       integer         0     200   -
+  Question              text            0     174   min 22 · median 53 · mean 54 · max 88
+  Answer                text            0     174   min 79 · median 121 · mean 126 · max 277
+  Category              text            0      22   min 6 · median 13 · mean 13 · max 24
+  Difficulty            text            0       3   min 4 · median 6 · mean 5 · max 6
+
+Example records (first 3, then 3 random):
+  [row 1]
+     Question Number: 1
+     Question: What is the difference between compilation and interpretation?
+     Answer: Compilation translates source code into machine code creating an executable file. Interpretation translates and executes code line by line without an executable…
+     Category: General Programming
+     Difficulty: Medium
+  [row 2]
+     Question Number: 2
+     Question: Explain the concept of polymorphism.
+     Answer: Polymorphism allows objects of different classes to be treated as objects of a common superclass, enabling method overriding.
+     Category: General Programming
+     Difficulty: Medium
+  [row 3]
+     Question Number: 3
+     Question: Define encapsulation and give an example.
+     Answer: Encapsulation bundles data and methods in a class, restricting direct data access. Example: class with private data and public methods.
+     Category: General Programming
+     Difficulty: Hard
+  [row 86]
+     Question Number: 86
+     Question: How do you protect against session fixation attacks?
+     Answer: Protect by regenerating session IDs post-authentication, using unpredictable IDs, and tying IDs to user authentication.
+     Category: Security
+     Difficulty: Medium
+  [row 42]
+     Question Number: 42
+     Question: Explain the difference between HTTP and HTTPS.
+     Answer: HTTP is an unsecured data transmission protocol; HTTPS is secure, encrypting data in transit using SSL/TLS.
+     Category: Web Development
+     Difficulty: Medium
+  [row 105]
+     Question Number: 105
+     Question: What is the difference between SQL and NoSQL databases?
+     Answer: SQL databases are structured, use SQL, and are better for complex queries. NoSQL databases are flexible, scale well, and are good for hierarchical data storage.
+     Category: Back-end
+     Difficulty: Medium
+
+Exact duplicate rows                    : 0
+
+==============================================================================
+QUALITY: questions (column 'Question')
+==============================================================================
+Empty / missing questions               : 0
+Very short (<15 chars or <4 words)      : 0
+Very long (>400 chars)                  : 0
+Not question-like (no '?' / no leading verb): 18
+Ends with '?'                           : 84 of 200
+Encoding damage (mojibake)              : 0
+HTML / URLs inside the text             : 0
+Leading/trailing whitespace             : 0
+Question length (chars)                 : min 22 · median 53 · mean 54 · max 88
+     e.g. not question-like: row 157: 'Optimize a global, high-traffic content delivery network.'
+     e.g. not question-like: row 163: 'Find the Kth largest element in a stream of numbers.'
+     e.g. not question-like: row 166: 'Optimize database queries for a high-traffic website.'
+
+Duplicate questions (exact text)        : 26 extra rows in 24 groups
+Duplicate questions (ignoring case/punct): 26 extra rows in 24 groups
+     e.g. rows [101, 125, 149]: "Explain the concept of 'closure' in JavaScript."
+     e.g. rows [102, 126, 150]: 'Describe the use of Docker in a DevOps environment.'
+     e.g. rows [103, 127]: "What is a 'race condition' in software development?"
+Near-duplicate pairs (similarity >= 0.85): 5
+     0.91  row 61: 'What is Git, and how does it work?'
+           row 85: 'What is OAuth, and how does it work?'
+     0.89  row 45: 'What is a cookie, and how does it work?'
+           row 91: 'What is Docker, and how does it work?'
+     0.87  row 45: 'What is a cookie, and how does it work?'
+           row 61: 'What is Git, and how does it work?'
+     0.87  row 85: 'What is OAuth, and how does it work?'
+           row 91: 'What is Docker, and how does it work?'
+
+==============================================================================
+QUALITY: answers (column 'Answer')
+==============================================================================
+Empty / missing answers                 : 0
+Very short (<20 chars)                  : 0
+Very long (>1500 chars)                 : 0
+Answer identical to the question        : 0
+Placeholder / junk answers              : 0
+Encoding damage (mojibake)              : 0
+Answer length (chars)                   : min 79 · median 121 · mean 126 · max 277
+Answer length (words)                   : min 10 · median 16 · mean 17 · max 34
+Same question, DIFFERENT answers        : 0 groups
+Same answer used for DIFFERENT questions: 0 groups
+
+==============================================================================
+DISTRIBUTION: category (column 'Category')
+==============================================================================
+22 distinct value(s)
+     24   12.0%  System Design
+     21   10.5%  DevOps
+     17    8.5%  Front-end
+     14    7.0%  Back-end
+     13    6.5%  Security
+     11    5.5%  Data Structures
+     10    5.0%  Languages and Frameworks
+     10    5.0%  Database and SQL
+     10    5.0%  Web Development
+     10    5.0%  Software Testing
+     10    5.0%  Version Control
+     10    5.0%  Algorithms
+      9    4.5%  General Programming
+      8    4.0%  Full-stack
+      5    2.5%  Machine Learning
+      5    2.5%  Distributed Systems
+      3    1.5%  Networking
+      3    1.5%  Low-level Systems
+      3    1.5%  Database Systems
+      2    1.0%  Data Engineering
+      1    0.5%  General Program
+      1    0.5%  Artificial Intelligence
+
+==============================================================================
+DISTRIBUTION: difficulty (column 'Difficulty')
+==============================================================================
+3 distinct value(s)
+    111   55.5%  Medium
+     82   41.0%  Hard
+      7    3.5%  Easy
+
+==============================================================================
+CROSS-TAB: category x difficulty
+==============================================================================
+                                   Easy     Hard   Medium
+  Algorithms                          0       10        0
+  Artificial Intelligence             0        1        0
+  Back-end                            1        2       11
+  Data Engineering                    0        2        0
+  Data Structures                     1        4        6
+  Database Systems                    0        3        0
+  Database and SQL                    1        2        7
+  DevOps                              1        4       16
+  Distributed Systems                 0        5        0
+  Front-end                           1        4       12
+  Full-stack                          0        3        5
+  General Program                     0        1        0
+  General Programming                 0        1        8
+  Languages and Frameworks            0        1        9
+  Low-level Systems                   0        3        0
+  Machine Learning                    0        5        0
+  Networking                          0        3        0
+  Security                            0        5        8
+  Software Testing                    1        3        6
+  System Design                       1       16        7
+  Version Control                     0        2        8
+  Web Development                     0        2        8
+
+==============================================================================
+TOPIC COVERAGE (keyword search over question + answer text)
+==============================================================================
+  subject area                     matching records
+  Object-Oriented Programming                     9
+  DBMS / SQL                                     25
+  Operating Systems                              16
+  Computer Networks                              30
+  SDLC / Agile                                    4   <-- little or no data
+  Testing                                        12
+  Design / Architecture                          34
+  Data Structures / Algorithms                   24
+  Version control / DevOps                       26
+  Programming languages                          21
+  Web / APIs / Security                          42
+
+==============================================================================
+USABLE RECORD ESTIMATE
+==============================================================================
+Total records                                   : 200
+  removed: empty/short/long/not a question      : 18
+  removed: duplicate question (keep first)      : 26
+  removed: near-duplicate (keep first)          : 3
+Usable for QUESTION generation                  : 153
+  removed additionally: bad/empty answer        : 0
+Usable as QUESTION + ANSWER pairs               : 153
+After an 80/10/10 split (question generation)   : train 122 / val 15 / test 16

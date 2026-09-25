@@ -65,3 +65,14 @@ coverage/
 
 # Fine-tuned chatbot encoder (reproduce with: cd ai-services && python -m chatbot.train)
 ai-services/chatbot/model/
+
+# Interviewer LLM fine-tuning (ai-services/interviewer_llm): machine-specific path + large model outputs
+ai-services/interviewer_llm/data/dataset_path.txt
+ai-services/interviewer_llm/models/
+ai-services/interviewer_llm/outputs/
+
+# Resume-classifier training (ai-services/resume_training): downloaded/derived
+# Kaggle dataset copies (not ours to redistribute) + reproducible model
+# artifacts (reproduce with the scripts in TRAINING_RESUME_MODEL.md)
+ai-services/resume_training/data/
+ai-services/resume_training/models/

@@ -10,6 +10,8 @@ interface TimerProps {
 export interface TimerHandle {
   reset: () => void;
   getElapsed: () => number;
+  /** Stops the countdown (used when an interview is terminated). */
+  stop: () => void;
 }
 
 export const Timer = forwardRef<TimerHandle, TimerProps>(
@@ -27,6 +29,7 @@ export const Timer = forwardRef<TimerHandle, TimerProps>(
         startTimeRef.current = Date.now();
       },
       getElapsed: () => elapsedRef.current,
+      stop: () => setIsRunning(false),
     }));
 
     useEffect(() => {

@@ -24,6 +24,8 @@ interface QuestionPanelProps {
   onTextAnswerChange: (v: string) => void;
   onSubmit: () => void;
   onSkip: () => void;
+  /** True once the interview is terminated: nothing more can be answered. */
+  locked?: boolean;
 }
 
 /**
@@ -54,10 +56,14 @@ export function QuestionPanel({
   onTextAnswerChange,
   onSubmit,
   onSkip,
+  locked = false,
 }: QuestionPanelProps) {
   const isGenerating =
     !currentQuestion && (questionsStatus === "generating" || (loading && !error));
   const isFailed = !currentQuestion && (questionsStatus === "failed" || (!!error && !loading));
+  // College-authored questions carry a type; MCQs are picked, code is typed (no voice for either).
+  const isMcq = currentQuestion?.type === "MCQ";
+  const isCoding = currentQuestion?.type === "Coding";
 
   return (
     <div className="lg:col-span-2 space-y-4">
@@ -152,6 +158,24 @@ export function QuestionPanel({
         )}
       </AnimatePresence>
 
+      {currentQuestion?.type && (
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">
+            {currentQuestion.type}
+          </span>
+          {currentQuestion.marks != null && (
+            <span className="px-2.5 py-1 rounded-full bg-gray-700/60 text-gray-300 border border-gray-600">
+              {currentQuestion.marks} {currentQuestion.marks === 1 ? "mark" : "marks"}
+            </span>
+          )}
+          {isCoding && currentQuestion.language && (
+            <span className="px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">
+              {currentQuestion.language}
+            </span>
+          )}
+        </div>
+      )}
+
       {error && currentQuestion && (
         <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">
           {error}
@@ -165,6 +189,7 @@ export function QuestionPanel({
           animate={{ opacity: 1, y: 0 }}
           className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
         >
+          {!isMcq && !isCoding && (
           <div className="flex gap-2 mb-4">
             <button
               onClick={onVoiceToggle}
@@ -187,17 +212,55 @@ export function QuestionPanel({
               ⌨️ Text
             </button>
           </div>
+          )}
 
-          {answerMode === "text" && (
+          {isMcq && (
+            <div role="radiogroup" aria-label="Answer options" className="space-y-2">
+              {(currentQuestion?.options ?? []).map((opt, i) => {
+                const letter = String.fromCharCode(65 + i);
+                const selected = textAnswer === letter;
+                return (
+                  <button
+                    key={letter}
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    disabled={locked}
+                    onClick={() => onTextAnswerChange(letter)}
+                    className={`w-full flex items-start gap-3 text-left px-4 py-3 rounded-xl border transition-all disabled:opacity-60 ${
+                      selected
+                        ? "bg-emerald-500/15 border-emerald-500/60 text-white"
+                        : "bg-gray-700/40 border-gray-600 text-gray-200 hover:border-gray-500"
+                    }`}
+                  >
+                    <span
+                      className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                        selected ? "bg-emerald-500 text-black" : "bg-gray-600 text-gray-200"
+                      }`}
+                    >
+                      {letter}
+                    </span>
+                    <span className="text-sm">{opt}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {answerMode === "text" && !isMcq && (
             <textarea
               value={textAnswer}
               onChange={(e) => onTextAnswerChange(e.target.value)}
-              placeholder="Type your answer here..."
-              className="w-full h-32 bg-gray-700/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors resize-none"
+              disabled={locked}
+              spellCheck={!isCoding}
+              placeholder={isCoding ? "Write your code here..." : "Type your answer here..."}
+              className={`w-full bg-gray-700/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors resize-none disabled:opacity-60 ${
+                isCoding ? "h-64 font-mono text-sm" : "h-32"
+              }`}
             />
           )}
 
-          {answerMode === "voice" && (
+          {answerMode === "voice" && !isMcq && !isCoding && (
             <>
               {isRecording ? (
                 <div className="bg-gray-700/30 rounded-xl border border-gray-600 overflow-hidden">
@@ -234,14 +297,14 @@ export function QuestionPanel({
           <div className="flex gap-3 mt-4">
             <button
               onClick={onSubmit}
-              disabled={loading || (!textAnswer && !isRecording && answerMode === "text")}
+              disabled={loading || locked || (!textAnswer && !isRecording && answerMode === "text")}
               className="flex-1 px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all disabled:opacity-50"
             >
               {loading ? "Submitting..." : "Submit Answer"}
             </button>
             <button
               onClick={onSkip}
-              disabled={loading}
+              disabled={loading || locked}
               className="px-6 py-3 bg-gray-700/50 text-gray-300 rounded-xl font-medium border border-gray-600 hover:border-gray-500 transition-all"
             >
               Skip

@@ -1,4 +1,5 @@
 import { BACKEND_URL, AI_SERVICE_URL, AI_SERVICE_KEY } from "../config/config";
+import type { SpeechMetrics } from "../types/mockFeedback";
 
 function getAuthHeaders() {
   const token = localStorage.getItem("token");
@@ -76,14 +77,28 @@ export async function reportCheating(
   return res.json();
 }
 
-export async function terminateInterview(id: string) {
+export type TerminationReason =
+  | "FULLSCREEN_EXIT_LIMIT_EXCEEDED"
+  | "TAB_SWITCH_LIMIT_EXCEEDED"
+  | "TIME_LIMIT_REACHED";
+
+export async function terminateInterview(id: string, reason?: TerminationReason) {
   const res = await fetch(
     `${BACKEND_URL}/api/v1/mock-interview/${id}/terminate`,
     {
       method: "POST",
       headers: getAuthHeaders(),
+      body: JSON.stringify(reason ? { reason } : {}),
     }
   );
+  return res.json();
+}
+
+/** Lightweight session state incl. the persisted proctoring counters (used to resume after a refresh). */
+export async function getInterviewState(id: string) {
+  const res = await fetch(`${BACKEND_URL}/api/v1/mock-interview/${id}/state`, {
+    headers: getAuthHeaders(),
+  });
   return res.json();
 }
 
@@ -91,6 +106,42 @@ export async function getInterviewReport(id: string) {
   const res = await fetch(`${BACKEND_URL}/api/v1/mock-interview/${id}/report`, {
     headers: getAuthHeaders(),
   });
+  return res.json();
+}
+
+/** Every attempt for one question (attempt 1 = the interview answer) plus the before/after comparison. */
+export async function getQuestionHistory(id: string, questionId: string) {
+  const res = await fetch(`${BACKEND_URL}/api/v1/mock-interview/${id}/question/${questionId}/history`, {
+    headers: getAuthHeaders(),
+  });
+  return res.json();
+}
+
+/** Practice Again: a new attempt at the same question. Never overwrites earlier attempts. */
+export async function reattemptQuestion(
+  id: string,
+  questionId: string,
+  body: { answer: string; answerType: "voice" | "text"; timeTaken: number; speech?: SpeechMetrics }
+) {
+  const res = await fetch(`${BACKEND_URL}/api/v1/mock-interview/${id}/question/${questionId}/reattempt`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body),
+  });
+  return res.json();
+}
+
+export async function getProgress() {
+  const res = await fetch(`${BACKEND_URL}/api/v1/mock-interview/progress`, { headers: getAuthHeaders() });
+  return res.json();
+}
+
+/** What the next interview of this type will be tailored to, from the candidate's own history. */
+export async function getPersonalization(interviewType: string) {
+  const res = await fetch(
+    `${BACKEND_URL}/api/v1/mock-interview/personalization?interviewType=${encodeURIComponent(interviewType)}`,
+    { headers: getAuthHeaders() }
+  );
   return res.json();
 }
 

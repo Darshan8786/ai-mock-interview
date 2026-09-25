@@ -1,0 +1,126 @@
+{
+  "location": "C:\\Users\\Darshan A\\.cache\\kagglehub\\datasets\\syedmharis\\software-engineering-interview-questions-dataset\\versions\\1",
+  "files": [
+    {
+      "file": "Software Questions.csv",
+      "bytes": 41552,
+      "info": {
+        "format": "csv",
+        "encoding": "cp1252",
+        "delimiter": ",",
+        "header": "['Question Number', 'Question', 'Answer', 'Category', 'Difficulty']",
+        "rows_with_extra_fields": "0",
+        "rows_with_missing_fields": "0"
+      },
+      "records": 200,
+      "columns": [
+        "Question Number",
+        "Question",
+        "Answer",
+        "Category",
+        "Difficulty"
+      ],
+      "roles": {
+        "id": "Question Number",
+        "question": "Question",
+        "answer": "Answer",
+        "category": "Category",
+        "difficulty": "Difficulty"
+      },
+      "column_report": {
+        "Question Number": {
+          "type": "integer",
+          "missing": 0,
+          "unique": 200
+        },
+        "Question": {
+          "type": "text",
+          "missing": 0,
+          "unique": 174
+        },
+        "Answer": {
+          "type": "text",
+          "missing": 0,
+          "unique": 174
+        },
+        "Category": {
+          "type": "text",
+          "missing": 0,
+          "unique": 22
+        },
+        "Difficulty": {
+          "type": "text",
+          "missing": 0,
+          "unique": 3
+        }
+      },
+      "duplicate_rows": 0,
+      "question_quality": {
+        "empty": 0,
+        "very_short": 0,
+        "very_long": 0,
+        "not_question_like": 18,
+        "mojibake": 0,
+        "html_or_url": 0,
+        "duplicate_exact_extra": 26,
+        "duplicate_normalised_extra": 26,
+        "near_duplicate_pairs": 5
+      },
+      "answer_quality": {
+        "empty": 0,
+        "very_short": 0,
+        "very_long": 0,
+        "identical_to_question": 0,
+        "junk": 0,
+        "conflicting_answers": 0
+      },
+      "category_values": {
+        "General Programming": 9,
+        "General Program": 1,
+        "Data Structures": 11,
+        "Languages and Frameworks": 10,
+        "Database and SQL": 10,
+        "Web Development": 10,
+        "Software Testing": 10,
+        "Version Control": 10,
+        "System Design": 24,
+        "Security": 13,
+        "DevOps": 21,
+        "Front-end": 17,
+        "Back-end": 14,
+        "Full-stack": 8,
+        "Algorithms": 10,
+        "Machine Learning": 5,
+        "Distributed Systems": 5,
+        "Networking": 3,
+        "Low-level Systems": 3,
+        "Database Systems": 3,
+        "Data Engineering": 2,
+        "Artificial Intelligence": 1
+      },
+      "difficulty_values": {
+        "Medium": 111,
+        "Hard": 82,
+        "Easy": 7
+      },
+      "topic_coverage": {
+        "Object-Oriented Programming": 9,
+        "DBMS / SQL": 25,
+        "Operating Systems": 16,
+        "Computer Networks": 30,
+        "SDLC / Agile": 4,
+        "Testing": 12,
+        "Design / Architecture": 34,
+        "Data Structures / Algorithms": 24,
+        "Version control / DevOps": 26,
+        "Programming languages": 21,
+        "Web / APIs / Security": 42
+      },
+      "usable": {
+        "total": 200,
+        "usable_questions": 153,
+        "usable_qa_pairs": 153
+      }
+    }
+  ]
+}

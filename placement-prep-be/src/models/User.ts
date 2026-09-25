@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ["user", "admin"], default: "user" },
+    // The college this admin manages / this student belongs to. Authorisation for
+    // college-created interviews is derived from this (never from the client).
+    college: { type: mongoose.Schema.Types.ObjectId, ref: "College", default: null, index: true },
 
     // ── Student profile (as entered on the Profile page) ─
     usn: { type: String, trim: true, uppercase: true, default: "" },

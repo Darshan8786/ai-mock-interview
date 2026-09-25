@@ -1,8 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../config/config";
 import type { ResumeProfile } from "../hooks/useInterview";
+import { getPersonalization } from "../services/mockInterviewApi";
+import type { Personalization } from "../types/mockFeedback";
+import { NextInterviewPlan } from "../components/mock-interview/feedback/NextInterviewPlan";
 
 const jobRoles = [
   "Software Engineer",
@@ -98,6 +101,22 @@ export function InterviewSetup() {
   const filteredRoles = jobRoles.filter((r) =>
     r.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // What this interview will be tailored to, from the candidate's own earlier interviews (best effort).
+  const [plan, setPlan] = useState<Personalization | null>(null);
+  useEffect(() => {
+    if (!interviewType) return;
+    let cancelled = false;
+    setPlan(null);
+    getPersonalization(interviewType)
+      .then((r) => {
+        if (!cancelled && r?.success) setPlan(r.data);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [interviewType]);
 
   const isResumeInterview = interviewType === "Resume";
   const canStart = isResumeInterview
@@ -230,6 +249,12 @@ export function InterviewSetup() {
                 </button>
               ))}
             </div>
+
+            {plan && (plan.message || plan.suggestions.length > 0) && (
+              <div className="mt-5">
+                <NextInterviewPlan plan={plan} title="Personalised for you" compact />
+              </div>
+            )}
 
             {isResumeInterview && (
               <div className="mt-5 rounded-xl border border-violet-500/30 bg-violet-500/5 p-4">

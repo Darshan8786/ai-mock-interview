@@ -23,6 +23,14 @@ from local_question_generator import get_generator
 # Resume summary/bullet rewriting runs on a second locally fine-tuned model
 # (falls back to a local rule-based rewrite) - no external API required.
 from resume_enhancer import get_enhancer, enhance_resume_content
+# Resume-category classification: local TF-IDF + calibrated Linear SVM,
+# trained on snehaanbhawal/resume-dataset - see
+# resume_training/data/reports/dataset_usage_report.md and
+# resume_classifier_eval.json for how it was chosen and its real accuracy
+# (test macro-F1 ~0.60 across 24 classes - an additional signal, not a
+# replacement for the existing deterministic resume parser/analyzer). No
+# external API; returns None on any load failure so callers fall back cleanly.
+from resume_training.inference import classify_resume as classify_resume_category
 from riva_service import text_to_speech, speech_to_text
 from face_detection import analyze_frame, release_resources
 # Trained tech-question practice system (Python/Java/SQL/C++/C/HTML/CSS/
@@ -44,6 +52,9 @@ AI_SERVICE_KEY = os.getenv("AI_SERVICE_KEY", "mindprep-ai-key-2026")
 # the offline question bank per-request instead.
 threading.Thread(target=lambda: get_generator()._ensure_loaded(), daemon=True).start()
 threading.Thread(target=lambda: get_enhancer()._ensure_loaded(), daemon=True).start()
+# Fine-tuned software-engineering interviewer (interviewer_llm/): warmed in its own thread; until it is loaded (or if it
+# is not trained / fails to load) questions come from the previous chain, so this can never block or break a request.
+get_generator().warm_interviewer()
 
 # Tech-question index is a plain JSON load (no model weights) - cheap enough
 # to load synchronously at startup so a missing/invalid index is surfaced in
@@ -76,6 +87,7 @@ def model_status():
             "model_loaded": generator.is_loaded,
             "load_error": generator._load_error,
             "last_load_time_ms": generator.last_load_time_ms,
+            "interviewer_llm": generator.interviewer_status(),
             "requires_api_key": False,
         }
     )
@@ -97,8 +109,37 @@ def api_generate_questions():
         user_id=data.get("userId", ""),
         session_id=data.get("interviewId", ""),
         resume=data.get("resume") or {},
+        focus_areas=data.get("focusAreas") or [],
     )
     return jsonify(result)
+
+
+@app.route("/generate-quiz-question", methods=["POST"])
+@require_auth
+def api_generate_quiz_question():
+    """Backs the Node backend's legacy POST /questions/generate (topic +
+    difficulty -> a single standalone quiz question) - previously a live
+    Gemini call (aiService.ts::generateQuestion), now local like everything
+    else. Reuses the same fine-tuned interviewer LLM / offline question bank
+    as the mock-interview path (get_generator().generate_question).
+
+    No verified local reference answer exists for a freshly generated
+    question (the runtime question bank carries skill/topic/difficulty/
+    question only, not an answer key) - "answer" is intentionally left blank
+    here rather than fabricated. See docs/LOCAL_AI_MIGRATION_AUDIT.md."""
+    data = request.json or {}
+    topic = (data.get("topic") or "General").strip()
+    difficulty = (data.get("difficulty") or "Medium").strip()
+    result = get_generator().generate_question(skill=topic, topic=topic, difficulty=difficulty)
+    return jsonify(
+        {
+            "question": result["question"],
+            "answer": "",
+            "topic": topic,
+            "difficulty": difficulty,
+            "source": result["source"],
+        }
+    )
 
 
 @app.route("/evaluate-answer", methods=["POST"])
@@ -114,6 +155,9 @@ def api_evaluate_answer():
         skill=data.get("skill", ""),
         topic=data.get("topic", ""),
         concepts=data.get("concepts") or None,
+        answer_type=data.get("answerType") or "text",
+        speech=data.get("speech") or None,
+        time_taken=data.get("timeTaken") or 0,
     )
     return jsonify({"evaluation": evaluation})
 
@@ -157,6 +201,22 @@ def api_enhance_resume_content():
     if not enhanced_text:
         return jsonify({"error": "Could not enhance content"}), 500
     return jsonify({"enhanced_text": enhanced_text})
+
+
+@app.route("/classify-resume-category", methods=["POST"])
+@require_auth
+def api_classify_resume_category():
+    data = request.json or {}
+    text = data.get("resume_text", "")
+    if not text or not text.strip():
+        return jsonify({"error": "resume_text is required"}), 400
+
+    result = classify_resume_category(text)
+    if result is None:
+        # Model artifacts missing/failed to load - not a request error, just
+        # an unavailable optional signal. Caller should proceed without it.
+        return jsonify({"available": False}), 200
+    return jsonify({"available": True, **result})
 
 
 @app.route("/text-to-speech", methods=["POST"])

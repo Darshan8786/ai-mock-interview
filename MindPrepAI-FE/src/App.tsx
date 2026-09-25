@@ -38,6 +38,9 @@ import { JobApplications } from "./pages/admin/JobApplications";
 import { JobEligibility } from "./pages/admin/JobEligibility";
 import { ReportsAnalytics } from "./pages/admin/ReportsAnalytics";
 import { AlumniManagement } from "./pages/admin/AlumniManagement";
+import { CollegeInterviewForm } from "./pages/admin/CollegeInterviewForm";
+import { CollegeInterviewDetails } from "./pages/admin/CollegeInterviewDetails";
+import { CollegeInterviewQuestions } from "./pages/admin/CollegeInterviewQuestions";
 import { AlumniForm } from "./pages/admin/AlumniForm";
 import { AlumniDetails } from "./pages/admin/AlumniDetails";
 import { Announcements } from "./pages/admin/Announcements";
@@ -83,6 +86,10 @@ function App() {
               <Route path="students" element={<StudentManagement />} />
               <Route path="resumes" element={<ResumeManagement />} />
               <Route path="interviews" element={<InterviewManagement />} />
+              <Route path="college-interviews/new" element={<CollegeInterviewForm />} />
+              <Route path="college-interviews/:id" element={<CollegeInterviewDetails />} />
+              <Route path="college-interviews/:id/edit" element={<CollegeInterviewForm />} />
+              <Route path="college-interviews/:id/questions" element={<CollegeInterviewQuestions />} />
               <Route path="aptitude" element={<AptitudeManagement />} />
               <Route path="jobs" element={<JobManagement />} />
               <Route path="jobs/create" element={<JobForm />} />

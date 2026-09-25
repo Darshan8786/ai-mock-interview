@@ -157,6 +157,7 @@ def generate_technical_questions(
     previous_questions: str = "",
     user_id: str = "",
     session_id: str = "",
+    focus_areas: list = None,
 ) -> list:
     """Returns a list of {"question", "skill", "topic"} dicts. Every accepted
     question passes BOTH the per-request exclude list AND the GLOBAL,
@@ -172,15 +173,35 @@ def generate_technical_questions(
     exclude_norms = {normalize_for_compare(q) for q in exclude}
     questions = []
 
+    # Personalisation: the candidate's own previous interviews showed weakness in these
+    # skill/topic areas, so a share of this interview's questions is drawn from them
+    # (never all of them - the rest still follows the role/resume mix). Only skills that
+    # exist in the local dataset are honoured, so nothing is invented.
+    known_skills = {r["skill"] for r in _load_raw_dataset()}
+    focus = [
+        f for f in (focus_areas or [])
+        if isinstance(f, dict) and f.get("skill") in known_skills
+    ][:4]
+    focus_target = min(total_questions, max(1, round(total_questions * 0.4))) if focus else 0
+    focus_used = 0
+    focus_failures = 0
+
     attempts = 0
     max_attempts = total_questions * 8  # generous ceiling so we never loop forever
     skill_idx = 0
     while len(questions) < total_questions and attempts < max_attempts:
         attempts += 1
-        skill = skills[skill_idx % len(skills)]
-        skill_idx += 1
-        topics = _topics_for_skill(skill)
-        topic = random.choice(topics)
+        is_focus = bool(focus) and focus_used < focus_target and focus_failures < 6
+        if is_focus:
+            area = focus[focus_used % len(focus)]
+            skill = area["skill"]
+            topics = _topics_for_skill(skill)
+            topic = area.get("topic") if area.get("topic") in topics else random.choice(topics)
+        else:
+            skill = skills[skill_idx % len(skills)]
+            skill_idx += 1
+            topics = _topics_for_skill(skill)
+            topic = random.choice(topics)
 
         result = generator.generate_question(
             skill=skill,
@@ -189,12 +210,17 @@ def generate_technical_questions(
             candidate_level=level,
             resume_skills=resume_skills,
             exclude_questions=exclude + [q["question"] for q in questions],
+            job_role=job_role,
+            # global cross-user history is checked INSIDE the model's retry loop, so a repeat is re-sampled at once
+            reject_if=lambda q, _s=skill, _t=topic: store.is_duplicate(q, skill=_s, topic=_t),
         )
         question = result["question"]
         norm = normalize_for_compare(question)
         if norm in exclude_norms or norm in {normalize_for_compare(q["question"]) for q in questions}:
+            focus_failures += 1 if is_focus else 0
             continue
         if store.is_duplicate(question, skill=skill, topic=topic):
+            focus_failures += 1 if is_focus else 0
             continue  # already shown to some user, ever - reject and try another
 
         store.mark_used(
@@ -202,7 +228,11 @@ def generate_technical_questions(
             difficulty=difficulty, experience_level=experience_level, job_role=job_role,
             user_id=user_id, session_id=session_id, source=result.get("source", ""),
         )
-        questions.append({"question": question, "skill": skill, "topic": topic})
+        item = {"question": question, "skill": skill, "topic": topic}
+        if is_focus:
+            focus_used += 1
+            item["focusArea"] = f"{skill}: {topic}" if topic else skill
+        questions.append(item)
 
     return questions
 
@@ -354,6 +384,7 @@ def generate_resume_questions(
     previous_questions: str = "",
     user_id: str = "",
     session_id: str = "",
+    focus_areas: list = None,
 ) -> list:
     """Resume-based interview: about half the questions probe the candidate's
     own projects (why this stack, hardest problem, scaling, testing...), the
@@ -367,6 +398,9 @@ def generate_resume_questions(
 
     candidates = _project_question_candidates(resume.get("projects") or [], exclude_norms)
     project_target = min(len(candidates), max(1, (total_questions + 1) // 2)) if candidates else 0
+    # Personalisation: earlier interviews showed weak project explanations -> more project-depth questions.
+    if candidates and any(isinstance(f, dict) and f.get("skill") == "Project" for f in (focus_areas or [])):
+        project_target = min(len(candidates), max(project_target, round(total_questions * 0.7)))
     project_questions = candidates[:project_target]
 
     skill_questions = []
@@ -374,7 +408,7 @@ def generate_resume_questions(
     if remaining > 0:
         skill_questions = generate_technical_questions(
             job_role, experience_level, difficulty, remaining, resume.get("skills") or [],
-            previous_questions, user_id, session_id,
+            previous_questions, user_id, session_id, focus_areas,
         )
 
     return project_questions + skill_questions
@@ -392,6 +426,7 @@ def generate_questions(
     user_id: str = "",
     session_id: str = "",
     resume: dict = None,
+    focus_areas: list = None,
 ) -> dict:
     """Zero external API calls for question generation. Returns
     {"questions": [{"question","skill","topic"}, ...], "requested": int,
@@ -405,12 +440,12 @@ def generate_questions(
     elif interview_type == "Resume":
         questions = generate_resume_questions(
             job_role, experience_level, difficulty, total_questions, resume or {},
-            previous_questions, user_id, session_id,
+            previous_questions, user_id, session_id, focus_areas,
         )
     else:
         questions = generate_technical_questions(
             job_role, experience_level, difficulty, total_questions, resume_skills,
-            previous_questions, user_id, session_id,
+            previous_questions, user_id, session_id, focus_areas,
         )
     return {
         "questions": questions,

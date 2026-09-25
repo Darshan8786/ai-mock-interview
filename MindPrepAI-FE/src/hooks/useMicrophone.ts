@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import type { SpeechMetrics } from "../types/mockFeedback";
 
 type SpeechRecognitionLike = {
   lang: string;
@@ -18,7 +19,31 @@ function getSpeechRecognition(): SpeechRecognitionLike | null {
   return Ctor ? new Ctor() : null;
 }
 
+// ── Audio measurements (pauses, recording length) ───────────────────────────
+// A simple energy-based silence detector on the same microphone stream. It measures the REAL audio:
+// a silence longer than PAUSE_MIN_SECONDS that happens after the candidate started speaking is a
+// pause (leading and trailing silence are ignored). It is approximate - a noisy room raises the
+// noise floor and quiet speech can read as silence - and if the browser cannot run it, `pauseDetection`
+// stays false so the report shows "Not available" instead of a guess.
+const METER_INTERVAL_MS = 100;
+const PAUSE_MIN_SECONDS = 1.0; // recorded from 1s; the backend applies its own "long pause" threshold
+const MAX_PAUSES = 50;
+
+interface MeterState {
+  ctx: AudioContext;
+  timer: number;
+  startedAt: number;
+  endedAt: number | null;
+  floor: number;
+  hasSpoken: boolean;
+  silenceStart: number | null;
+  lastTick: number;
+  speechMs: number;
+  pauses: Array<{ startSeconds: number; durationSeconds: number }>;
+}
+
 export function useMicrophone() {
+  const meterRef = useRef<MeterState | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const isRecordingRef = useRef(false);
@@ -30,9 +55,88 @@ export function useMicrophone() {
   const [recordingDuration, setRecordingDuration] = useState(0);
   const durationIntervalRef = useRef<number | null>(null);
 
+  // Stops sampling and releases the AudioContext but KEEPS the collected numbers (read by getSpeechMetrics).
+  const freezeMeter = useCallback(() => {
+    const m = meterRef.current;
+    if (!m || m.endedAt !== null) return;
+    window.clearInterval(m.timer);
+    m.endedAt = performance.now();
+    m.ctx.close().catch(() => {});
+  }, []);
+
+  const startMeter = useCallback((stream: MediaStream) => {
+    try {
+      const Ctor = window.AudioContext || (window as any).webkitAudioContext;
+      if (!Ctor) return;
+      const ctx: AudioContext = new Ctor();
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 1024;
+      ctx.createMediaStreamSource(stream).connect(analyser);
+      const buf = new Float32Array(analyser.fftSize);
+      const now = performance.now();
+      const m: MeterState = {
+        ctx, timer: 0, startedAt: now, endedAt: null, floor: 0.05, hasSpoken: false,
+        silenceStart: null, lastTick: now, speechMs: 0, pauses: [],
+      };
+      m.timer = window.setInterval(() => {
+        analyser.getFloatTimeDomainData(buf);
+        let sum = 0;
+        for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
+        const rms = Math.sqrt(sum / buf.length);
+        const t = performance.now();
+        // Noise floor: jumps down to any quieter reading, drifts up slowly.
+        m.floor = Math.min(rms, m.floor * 1.002 + 1e-5);
+        const speaking = rms > Math.max(0.012, m.floor * 3);
+        if (speaking) {
+          if (m.hasSpoken && m.silenceStart !== null) {
+            const dur = (t - m.silenceStart) / 1000;
+            if (dur >= PAUSE_MIN_SECONDS && m.pauses.length < MAX_PAUSES) {
+              m.pauses.push({
+                startSeconds: Math.round(((m.silenceStart - m.startedAt) / 1000) * 10) / 10,
+                durationSeconds: Math.round(dur * 10) / 10,
+              });
+            }
+          }
+          m.hasSpoken = true;
+          m.silenceStart = null;
+          m.speechMs += t - m.lastTick;
+        } else if (m.hasSpoken && m.silenceStart === null) {
+          m.silenceStart = t;
+        }
+        m.lastTick = t;
+      }, METER_INTERVAL_MS);
+      meterRef.current = m;
+    } catch (err) {
+      // Measurement is optional: recording and transcription must never depend on it.
+      console.warn("Pause detection unavailable:", err);
+      meterRef.current = null;
+    }
+  }, []);
+
+  /** Audio measurements for the answer being recorded (or just recorded). Undefined if nothing was recorded. */
+  const getSpeechMetrics = useCallback((): SpeechMetrics | undefined => {
+    const m = meterRef.current;
+    if (!m) return undefined;
+    const end = m.endedAt ?? performance.now();
+    const recordingSeconds = Math.round(((end - m.startedAt) / 1000) * 10) / 10;
+    if (recordingSeconds < 0.5) return undefined;
+    return {
+      recordingSeconds,
+      speechSeconds: Math.round(m.speechMs / 100) / 10,
+      pauseDetection: true,
+      pauses: m.pauses.map((p) => ({ ...p })),
+    };
+  }, []);
+
   const startRecording = useCallback(async (): Promise<boolean> => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Fresh measurement for this recording (discard any earlier meter).
+      if (meterRef.current) {
+        freezeMeter();
+        meterRef.current = null;
+      }
+      startMeter(stream);
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
           ? "audio/webm;codecs=opus"
@@ -106,11 +210,12 @@ export function useMicrophone() {
       console.error("Microphone error:", err);
       return false;
     }
-  }, []);
+  }, [freezeMeter, startMeter]);
 
   const stopRecording = useCallback((): Blob | null => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
+      freezeMeter();
       setIsRecording(false);
       isRecordingRef.current = false;
 
@@ -132,7 +237,7 @@ export function useMicrophone() {
       return audioBlob;
     }
     return null;
-  }, [isRecording, audioBlob]);
+  }, [isRecording, audioBlob, freezeMeter]);
 
   const getAudioBase64 = useCallback(async (): Promise<string | null> => {
     if (!audioBlob) return null;
@@ -149,6 +254,8 @@ export function useMicrophone() {
   }, [audioBlob]);
 
   const resetRecording = useCallback(() => {
+    freezeMeter();
+    meterRef.current = null;
     isRecordingRef.current = false;
     audioChunksRef.current = [];
     if (recognitionRef.current) {
@@ -163,7 +270,7 @@ export function useMicrophone() {
     setIsTranscribing(false);
     setAudioBlob(null);
     setRecordingDuration(0);
-  }, []);
+  }, [freezeMeter]);
 
   return {
     isRecording,
@@ -174,6 +281,7 @@ export function useMicrophone() {
     startRecording,
     stopRecording,
     getAudioBase64,
+    getSpeechMetrics,
     resetRecording,
   };
 }

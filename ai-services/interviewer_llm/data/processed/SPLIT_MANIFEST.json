@@ -1,0 +1,29 @@
+{
+  "seed": 42,
+  "records": {
+    "train": 836,
+    "validation": 107,
+    "test": 106
+  },
+  "examples": {
+    "train": {
+      "qgen": 1672,
+      "qa": 139
+    },
+    "validation": {
+      "qgen": 107,
+      "qa": 16
+    },
+    "test": {
+      "qgen": 106,
+      "qa": 19
+    }
+  },
+  "sha256": {
+    "train": "e7540259843941a385a8b4f680d6f5ad29d9d679054b34eae41b8bd14212945c",
+    "validation": "3cf61edb9624db5d5d394ab8d361a6c37c56815db1cfe3fbb6dda689fe561a04",
+    "test": "1d2d520af149565c8c4ee47c32123b53e30d7ba196b8f2a7e646153c9b24fa93"
+  },
+  "leakage_check": "passed: no exact or near-duplicate question across splits",
+  "note": "test.jsonl is locked; its hash is verified by train.py and evaluate.py."
+}
