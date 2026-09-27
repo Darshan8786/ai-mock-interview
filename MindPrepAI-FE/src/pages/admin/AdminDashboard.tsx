@@ -25,48 +25,36 @@ export function AdminDashboard() {
       value: stats.data?.totalStudents ?? 0,
       icon: <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
       color: "bg-blue-500/15",
-      trend: "12%",
-      trendUp: true,
     },
     {
       label: "Total Interviews",
       value: stats.data?.totalInterviews ?? 0,
       icon: <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>,
       color: "bg-purple-500/15",
-      trend: "8%",
-      trendUp: true,
     },
     {
       label: "Total Resume Analyses",
       value: stats.data?.totalResumeAnalyses ?? 0,
       icon: <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>,
       color: "bg-emerald-500/15",
-      trend: "18%",
-      trendUp: true,
     },
     {
       label: "Total Jobs",
       value: stats.data?.totalJobs ?? 0,
       icon: <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
       color: "bg-cyan-500/15",
-      trend: "3%",
-      trendUp: false,
     },
     {
       label: "Average ATS Score",
       value: `${stats.data?.avgAtsScore ?? 0}%`,
       icon: <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>,
       color: "bg-red-500/15",
-      trend: "4%",
-      trendUp: true,
     },
     {
       label: "Placement Readiness",
       value: `${stats.data?.placementReadiness ?? 0}%`,
       icon: <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
       color: "bg-green-500/15",
-      trend: "2%",
-      trendUp: true,
     },
   ];
 
@@ -105,7 +93,7 @@ export function AdminDashboard() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Interview Performance */}
-          <ChartCard title="Interview Performance" subtitle="Average scores across last 6 months">
+          <ChartCard title="Interview Performance" subtitle="Interviews taken - last 30 days">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={charts.data?.interviewPerformance ?? []} barGap={4}>
                 <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
@@ -155,16 +143,17 @@ export function AdminDashboard() {
           </ChartCard>
 
           {/* Weekly User Activity */}
-          <ChartCard title="Weekly User Activity" subtitle="Logins and interviews" className="lg:col-span-2">
+          <ChartCard title="Student Activity" subtitle="Interviews, aptitude and tech-practice sessions - last 30 days" className="lg:col-span-2">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={weekly}>
                 <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
-                <XAxis dataKey="day" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
+                <XAxis dataKey="label" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                 <YAxis stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                 <Tooltip contentStyle={chartTooltipStyle} />
                 <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
-                <Line type="monotone" dataKey="logins" name="Logins" stroke={chartColors.blue} strokeWidth={2} dot={false} />
-                <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.emerald} strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.blue} strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="aptitude" name="Aptitude" stroke={chartColors.emerald} strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="tech" name="Tech practice" stroke="#f59e0b" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </ChartCard>

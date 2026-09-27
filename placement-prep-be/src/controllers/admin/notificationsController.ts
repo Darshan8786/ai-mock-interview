@@ -1,3 +1,4 @@
+import { StudentNotification } from "../../models/StudentNotification";
 import { Request, Response } from "express";
 import { Notification } from "../../models/Notification";
 import { User } from "../../models/User";
@@ -71,7 +72,19 @@ export const createNotification = asyncHandler(async (req: AuthRequest, res: Res
     createdBy: req.user?._id,
   });
 
-  res.status(201).json({ status: "success", data: notification });
+  // Deliver it to every recipient's notification feed (the student bell reads StudentNotification). For "general"
+  // rows jobId carries this notification's id: it is only the uniqueness key of StudentNotification's existing
+  // (studentId, jobId, type) index - students are shown the empty job snapshot, never jobId, so no job link appears.
+  if (recipients.length) {
+    await StudentNotification.insertMany(
+      recipients.map((studentId) => ({ studentId, jobId: notification._id, type: "general", title, body })),
+      { ordered: false }
+    ).catch((err: any) => {
+      if (err?.code !== 11000) throw err; // a duplicate just means that student already has it
+    });
+  }
+
+  res.status(201).json({ status: "success", data: notification, delivered: recipients.length });
 });
 
 export const getNotifications = asyncHandler(async (_req: Request, res: Response) => {
@@ -94,5 +107,6 @@ export const deleteNotification = asyncHandler(async (req: Request, res: Respons
   if (!notification) {
     return res.status(404).json({ status: "fail", message: "Notification not found" });
   }
+  await StudentNotification.deleteMany({ jobId: notification._id, type: "general" });
   res.json({ status: "success", message: "Notification deleted" });
 });

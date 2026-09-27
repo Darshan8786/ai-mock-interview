@@ -24,6 +24,7 @@ import type {
   AptitudeQuestion,
   AptitudeTopic,
   AptitudeTestConfig,
+  ReportsData,
 } from "./types";
 
 const API = `${BACKEND_URL}/api/v1/admin`;
@@ -93,6 +94,10 @@ const mapStudent = (s: any): AdminStudent => ({
   placementStatus: s.placementStatus || "not_applied",
   verificationStatus: s.verificationStatus || "pending",
   atsScore: s.atsScore ?? 0,
+  atsScoreRaw: typeof s.atsScore === "number" ? s.atsScore : null,
+  atsAnalyzedAt: s.atsAnalyzedAt || null,
+  atsTopRole: s.atsTopRole || "",
+  atsFileName: s.atsFileName || "",
   placementReadiness: s.profileCompletion ?? 0,
   interviewsTaken: s.interviewsTaken ?? 0,
   averageInterviewScore: s.averageInterviewScore ?? 0,
@@ -182,44 +187,35 @@ const mapApplicant = (a: any): JobApplicant => ({
 export const adminApi = {
   // ── Dashboard ────────────────────────────────────────────
   async getStats(): Promise<AdminStats> {
-    const r = await adminFetch("/dashboard");
+    const [r, rep] = await Promise.all([adminFetch("/dashboard"), this.getReports(30)]);
     const c = r.data?.counts || {};
     return {
       totalStudents: c.totalStudents ?? 0,
       totalInterviews: c.totalInterviews ?? 0,
-      totalResumeAnalyses: 0,
+      totalResumeAnalyses: rep.kpis.resumesAnalyzed,
       totalJobs: c.totalJobs ?? 0,
       activeJobs: c.activeJobs ?? 0,
       expiredJobs: c.expiredJobs ?? 0,
       totalApplications: c.totalApplications ?? 0,
       shortlistedStudents: c.shortlistedStudents ?? 0,
       selectedStudents: c.selectedStudents ?? 0,
-      avgAtsScore: 0,
-      placementReadiness: Math.min(100, Math.round((c.averageCgpa ?? 0) * 10)),
+      avgAtsScore: rep.kpis.avgAtsScore,
+      placementReadiness: rep.kpis.avgReadiness,
       todayProctoringViolations: c.totalCheatingEvents ?? 0,
     };
   },
-  async getCharts(): Promise<DashboardCharts> {
-    const r = await adminFetch("/dashboard");
-    const dist = r.data?.distribution || {};
-    const deptEntries = Object.entries(dist.departmentWise || {});
-    const colors = ["#3b82f6", "#8b5cf6", "#10b981", "#f59e0b", "#ef4444", "#06b6d4"];
-    const placementReady: any[] = deptEntries.map(([name, value], idx) => ({
-      name,
-      value,
-      color: colors[idx % colors.length],
-    }));
-    const interviewPerformance: DashboardCharts["interviewPerformance"] = Object.entries(
-      dist.monthlyInterviews || {}
-    ).map(([label, value]) => ({
-      label,
-      interviews: value as number,
-    }));
+  // ── Reports / charts (real data: GET /admin/reports) ────
+  async getReports(days = 30): Promise<ReportsData> {
+    const r = await adminFetch(`/reports?days=${days}`);
+    return r.data as ReportsData;
+  },
+  async getCharts(days = 30): Promise<DashboardCharts> {
+    const rep = await this.getReports(days);
     return {
-      interviewPerformance,
-      atsDistribution: [],
-      placementReady,
-      weeklyActivity: [],
+      interviewPerformance: rep.interviewPerformance,
+      atsDistribution: rep.atsDistribution,
+      placementReady: rep.placementReadiness,
+      weeklyActivity: rep.activity,
     };
   },
 
@@ -258,23 +254,23 @@ export const adminApi = {
 
   // ── Resumes ──────────────────────────────────────────────
   async getResumes(): Promise<AdminResume[]> {
-    // Resume analyses are currently AI-on-the-fly; derive from students' resumeUrl
+    // Students who uploaded a resume and/or ran the resume analyzer (whose latest ATS result is saved).
     const students = await this.getStudents();
     return students
-      .filter((s) => (s as any).resumeUrl)
+      .filter((s) => (s as any).resumeUrl || typeof (s as any).atsScoreRaw === "number")
       .map((s) => ({
         id: s.id,
         studentId: s.id,
         studentName: s.name,
         studentEmail: s.email,
-        fileName: (s as any).resumeFileName || "resume.pdf",
+        fileName: (s as any).atsFileName || (s as any).resumeFileName || "resume.pdf",
         fileSize: "—",
-        uploadedAt: s.createdAt,
+        uploadedAt: (s as any).atsAnalyzedAt || s.createdAt,
         atsScore: s.atsScore ?? 0,
-        status: "analyzed" as const,
+        status: typeof (s as any).atsScoreRaw === "number" ? ("analyzed" as const) : ("pending" as const),
         missingKeywords: [],
-        topRole: "",
-        skills: s.strongSubjects ?? [],
+        topRole: (s as any).atsTopRole || "",
+        skills: s.skills ?? [],
       }));
   },
   async deleteResume(id: string): Promise<void> {

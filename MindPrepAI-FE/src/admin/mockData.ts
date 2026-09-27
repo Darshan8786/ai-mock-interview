@@ -344,9 +344,10 @@ export function getDashboardCharts(): DashboardCharts {
       { name: "Almost Ready", value: 27, color: "#f59e0b" },
       { name: "Needs Work", value: 15, color: "#ef4444" },
     ],
-    weeklyActivity: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => ({
-      day,
-      logins: 120 + i * 25,
+    weeklyActivity: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((label, i) => ({
+      label,
+      aptitude: 120 + i * 25,
+      tech: 10 + i * 3,
       interviews: 18 + i * 7,
     })),
   };

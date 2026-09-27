@@ -47,6 +47,11 @@ export interface AdminStudent {
   averageInterviewScore: number;
   weakSubjects: string[];
   strongSubjects: string[];
+  /** Latest saved resume-analysis result (null if the student never ran the analyzer). */
+  atsScoreRaw?: number | null;
+  atsAnalyzedAt?: string | null;
+  atsTopRole?: string;
+  atsFileName?: string;
 }
 
 export interface AdminResume {
@@ -305,6 +310,7 @@ export interface AdminStats {
 export interface PerformancePoint {
   label: string;
   interviews: number;
+  avgScore?: number;
 }
 
 export interface AtsDistribution {
@@ -319,9 +325,10 @@ export interface ReadinessSlice {
 }
 
 export interface ActivityPoint {
-  day: string;
-  logins: number;
+  label: string;
   interviews: number;
+  aptitude: number;
+  tech: number;
 }
 
 export interface DashboardCharts {
@@ -329,4 +336,46 @@ export interface DashboardCharts {
   atsDistribution: AtsDistribution[];
   placementReady: ReadinessSlice[];
   weeklyActivity: ActivityPoint[];
+}
+
+export interface TopicAccuracy {
+  topic: string;
+  answered: number;
+  correct: number;
+  accuracy: number;
+}
+
+/** GET /admin/reports?days=N - every number comes from stored records (see reportsController.ts). */
+export interface ReportsData {
+  range: { days: number; since: string; bucket: "day" | "week" | "month" };
+  kpis: {
+    totalStudents: number;
+    activeStudents: number;
+    interviewsTaken: number;
+    interviewsCompleted: number;
+    interviewsTerminated: number;
+    avgInterviewScore: number;
+    aptitudeSessions: number;
+    avgAptitudeScore: number;
+    techSessions: number;
+    avgTechScore: number;
+    resumesAnalyzed: number;
+    avgAtsScore: number;
+    placementReady: number;
+    avgReadiness: number;
+    cheatingEvents: number;
+    applications: number;
+  };
+  interviewPerformance: PerformancePoint[];
+  activity: ActivityPoint[];
+  atsDistribution: AtsDistribution[];
+  placementReadiness: ReadinessSlice[];
+  readinessMethod: string;
+  weakestAptitudeTopics: TopicAccuracy[];
+  weakestTechTopics: TopicAccuracy[];
+  interviews: Array<{
+    id: string; studentName: string; studentEmail: string; jobRole: string; interviewType: string; difficulty: string;
+    status: string; overallScore: number; technicalScore: number; communicationScore: number; confidenceScore: number;
+    grammarScore: number; fluencyScore: number; cheatingCount: number; date: string;
+  }>;
 }

@@ -56,6 +56,10 @@ const shapeStudent = (s: any) => ({
   isActive: s.isActive,
   lastLoginAt: s.lastLoginAt,
   createdAt: s.createdAt,
+  atsScore: typeof s.atsScore === "number" ? s.atsScore : null,
+  atsAnalyzedAt: s.atsAnalyzedAt || null,
+  atsTopRole: s.atsTopRole || "",
+  atsFileName: s.atsFileName || "",
   profileCompletion: computeProfileCompletion(s),
 });
 
