@@ -293,8 +293,65 @@ async function runFallback() {
   check("fallback: tech reports failure + retry instead of crashing", ts.nextStatus === "failed" && !!ts.nextError, ts.nextStatus);
 }
 
+/** Backend pointed at fakeAiService.ts (malformed / empty / 401 / slow): every flow must stay usable, nothing may 500,
+ *  and nothing malformed may be stored or shown. */
+async function runAiFaults() {
+  const mode = process.env.FAKE_AI_MODE || "?";
+  const c = await user(`fault_${mode}`);
+  // Aptitude: falls back to the verified DB bank, fully usable
+  const a = await c.post("/aptitude/adaptive/start", { category: "Quantitative", topic: "Percentages", count: 3 });
+  check(`[${mode}] aptitude: start ok`, a.status === 201, String(a.status));
+  for (let i = 0; i < 3; i++) {
+    const s = await pollAptitude(c, a.data.data.attemptId, 90000);
+    const q = s.currentQuestion;
+    check(`[${mode}] aptitude Q${i + 1}: well-formed fallback question`, !!q && q.source === "bank-db" && q.options.length === 4 && new Set(q.options).size === 4 && !!q.question,
+      q ? `${q.source} ${q.options.length}` : s.nextStatus);
+    if (!q) break;
+    const ans = await c.post(`/aptitude/adaptive/${a.data.data.attemptId}/answer`, { itemIndex: q.itemIndex, selected: 0, responseTime: 10 });
+    check(`[${mode}] aptitude Q${i + 1}: answer graded`, ans.status === 200 && typeof ans.data.data.isCorrect === "boolean" && !!ans.data.data.correctOption);
+  }
+  const rep = await c.post(`/aptitude/adaptive/${a.data.data.attemptId}/finish`, { timeTaken: 30 });
+  check(`[${mode}] aptitude: report`, rep.status === 200 && rep.data.data.summary.total === 3);
+
+  // Tech: the dataset lives in ai-services, so with a broken AI layer the session must report failure + retry,
+  // never store / show a malformed question
+  const t = await c.post("/tech-quiz/adaptive/start", { technology: "Java", count: 3, availableTopics: ["OOP"] });
+  check(`[${mode}] tech: start ok`, t.status === 201, String(t.status));
+  const ts = await pollTech(c, t.data.data.attemptId, 90000);
+  check(`[${mode}] tech: no malformed question shown; failure + retry offered`, !ts.currentQuestion && ts.nextStatus === "failed" && !!ts.nextError,
+    ts.currentQuestion ? JSON.stringify(ts.currentQuestion).slice(0, 120) : ts.nextStatus);
+  const stored: any = await db().collection("techquizattempts").findOne({ _id: new mongoose.Types.ObjectId(t.data.data.attemptId) });
+  check(`[${mode}] tech: nothing malformed stored`, (stored.questions || []).length === 0, String((stored.questions || []).length));
+  check(`[${mode}] tech: retry endpoint ok`, (await c.post(`/tech-quiz/adaptive/${t.data.data.attemptId}/retry`)).status === 200);
+
+  // Mock interview: static fallback questions + fallback evaluation, report still builds
+  const iv = await c.post("/mock-interview/create", { jobRole: "Frontend Developer", experienceLevel: "junior", interviewType: "Technical", difficulty: "Easy", totalQuestions: 2 });
+  check(`[${mode}] interview: create`, iv.status === 201, String(iv.status));
+  let st: any = null;
+  for (let i = 0; i < 40; i++) {
+    st = (await c.get(`/mock-interview/${iv.data.data._id}/state`)).data.data;
+    if (st.questionsStatus === "ready" && st.currentQuestion) break;
+    await sleep(1000);
+  }
+  check(`[${mode}] interview: fallback questions ready`, st?.questionsStatus === "ready" && typeof st.currentQuestion?.question === "string" && st.currentQuestion.question.length > 10, st?.questionsStatus);
+  const a1 = await c.post(`/mock-interview/${iv.data.data._id}/answer`, { answer: "The virtual DOM is an in-memory tree React diffs to apply minimal real DOM updates.", answerType: "text", timeTaken: 20 });
+  const a2 = await c.post(`/mock-interview/${iv.data.data._id}/answer`, { answer: "CSS specificity decides which rule wins: inline, then ids, then classes, then elements.", answerType: "text", timeTaken: 20 });
+  check(`[${mode}] interview: answers accepted`, a1.status === 200 && a2.status === 200 && a2.data.data.isComplete === true, `${a1.status} ${a2.status}`);
+  const r = await c.get(`/mock-interview/${iv.data.data._id}/report`);
+  const evs = r.data.data?.interview?.questions?.map((q: any) => q.evaluation) || [];
+  check(`[${mode}] interview: report builds`, r.status === 200 && !!r.data.data.report, String(r.status));
+  check(`[${mode}] interview: no fake scores - evaluations flagged as fallback`, evs.length === 2 && evs.every((e: any) => e && e.source !== "local"),
+    JSON.stringify(evs.map((e: any) => e?.source)));
+}
+
 (async () => {
   await mongoose.connect(MONGO);
+  if (ONLY.includes("ai-faults")) {
+    try { await runAiFaults(); } catch (e: any) { failed++; console.log(`FAIL  harness error: ${e?.stack || e}`); }
+    console.log(`\n${passed} passed, ${failed} failed`);
+    await mongoose.disconnect();
+    process.exit(failed ? 1 : 0);
+  }
   try {
     if (ONLY.includes("aptitude")) await runAptitude();
     if (ONLY.includes("tech")) await runTech();

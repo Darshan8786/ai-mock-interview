@@ -59,6 +59,19 @@ async function historyRows(userId: any, technology: string) {
     .map((q: any) => ({ topic: q.topic, correct: !!q.isCorrect, responseTime: q.responseTime ?? null })));
 }
 
+const DATASET_TYPES = ["MCQ", "Conceptual", "Technical", "Scenario Based", "Output Prediction", "Debugging", "Coding", "Programming Problem", "SQL Query"];
+
+/** Shape check on what the ai-service returned - a malformed record is never stored or shown (treated as a failure). */
+export function isWellFormedTechRecord(r: any): boolean {
+  if (!r || typeof r.id !== "string" || typeof r.question !== "string" || !r.question.trim()) return false;
+  if (!DATASET_TYPES.includes(r.question_type) || typeof r.topic !== "string") return false;
+  if (r.question_type === "MCQ") {
+    return Array.isArray(r.options) && r.options.length >= 2 && r.options.every((o: unknown) => typeof o === "string")
+      && Number.isInteger(r.correct_option) && r.correct_option >= 0 && r.correct_option < r.options.length;
+  }
+  return typeof r.answer === "string" && r.answer.trim().length > 0;
+}
+
 function levelOf(q: any): Level {
   return toLevel(q.difficulty, "medium");
 }
@@ -94,7 +107,7 @@ async function generateNext(attemptId: string): Promise<void> {
       session: qs.map((q) => q.questionText).filter(Boolean),
       excludeIds: [...seen.map((s) => s.question), ...qs.map((q) => q.questionId)],
     });
-    if (!gen || (gen as any).error || !gen.question) {
+    if (!gen || (gen as any).error || !isWellFormedTechRecord(gen)) {
       await TechQuizAttempt.updateOne({ _id: attemptId }, {
         $set: { "adaptive.nextStatus": "failed", "adaptive.nextError": "The local question engine is unavailable. Retry in a moment." },
       });

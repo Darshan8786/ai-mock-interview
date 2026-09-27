@@ -137,7 +137,10 @@ async function generateNext(attemptId: string): Promise<void> {
       category: ad.category, topic: choice.topic, difficulty: level,
       exclude: seen.texts, session: sessionDocs.map((d) => d.question),
     });
-    if (gen && !(gen as any).error && Array.isArray(gen.options) && gen.options.length === 4 && gen.answer_index >= 0) {
+    const wellFormed = !!gen && !(gen as any).error && typeof gen.question === "string" && gen.question.trim().length > 0
+      && Array.isArray(gen.options) && gen.options.length === 4 && gen.options.every((o) => typeof o === "string" && o.trim())
+      && Number.isInteger(gen.answer_index) && gen.answer_index >= 0 && gen.answer_index < 4 && typeof gen.topic === "string";
+    if (gen && wellFormed) {
       questionId = await persistGenerated(gen);
       meta = { category: gen.category, topic: gen.topic, level: toLevel(gen.difficulty, level), source: gen.source,
                verification: gen.verification, estimatedTime: gen.estimated_time || 60 };
