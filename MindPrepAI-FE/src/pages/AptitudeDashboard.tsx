@@ -14,6 +14,7 @@ import type {
   CompanyInfo,
   AptitudeProgress,
 } from "../services/profileApi";
+import { AdaptiveAptitudeCard } from "../components/adaptive/AdaptiveSetupCards";
 
 const CATEGORY_META: Record<string, { icon: string }> = {
   Quantitative: { icon: "📊" },
@@ -188,6 +189,12 @@ export function AptitudeDashboard() {
                 {startError}
               </div>
             )}
+
+            {/* AI adaptive practice (one generated, answer-checked question at a time) */}
+            <AdaptiveAptitudeCard topicsByCategory={topics} />
+
+            {/* AI adaptive practice (one generated question at a time) */}
+            <AdaptiveAptitudeCard topicsByCategory={topics} />
 
             {/* Topic-wise / Company-wise */}
             <section className="mb-12">

@@ -308,7 +308,7 @@ export const getTechQuizHistory = asyncHandler(async (req: AuthRequest, res: Res
   const attempts = await TechQuizAttempt.find({ user: req.user._id, status: "completed" })
     .sort({ createdAt: -1 })
     .limit(50)
-    .select("technology difficulty totalQuestions correctAnswers score createdAt")
+    .select("technology difficulty totalQuestions correctAnswers score createdAt mode")
     .lean();
   res.json({ success: true, data: attempts });
 });

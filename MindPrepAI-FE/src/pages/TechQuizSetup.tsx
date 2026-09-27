@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { isAxiosError } from "axios";
 import { getTechnologies, startTechQuiz } from "../services/techQuizApi";
 import type { TechnologyMeta } from "../services/techQuizApi";
+import { AdaptiveTechCard } from "../components/adaptive/AdaptiveSetupCards";
 
 const TECH_ICONS: Record<string, string> = {
   Python: "🐍", Java: "☕", SQL: "🗄️", "C++": "➕", C: "🔧",
@@ -23,6 +24,7 @@ export function TechQuizSetup() {
   const [technology, setTechnology] = useState("Python");
   const [difficulty, setDifficulty] = useState("Mixed");
   const [count, setCount] = useState(10);
+  const [mode, setMode] = useState<"adaptive" | "classic">("adaptive");
 
   useEffect(() => {
     getTechnologies()
@@ -94,6 +96,30 @@ export function TechQuizSetup() {
           </div>
         </div>
 
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          {(
+            [
+              { key: "adaptive", label: "AI Adaptive Session", desc: "One question at a time - difficulty and topics adapt to your answers" },
+              { key: "classic", label: "Classic Quiz", desc: "A fixed set of verified questions, scored at the end" },
+            ] as const
+          ).map((m) => (
+            <button
+              key={m.key}
+              onClick={() => setMode(m.key)}
+              className={`text-left rounded-2xl border p-4 transition-all ${
+                mode === m.key ? "bg-emerald-500/15 border-emerald-500/50" : "bg-gray-800/50 border-gray-700 hover:border-gray-600"
+              }`}
+            >
+              <p className={`font-semibold ${mode === m.key ? "text-emerald-400" : "text-white"}`}>{m.label}</p>
+              <p className="text-xs text-gray-400 mt-0.5">{m.desc}</p>
+            </button>
+          ))}
+        </div>
+
+        {mode === "adaptive" ? (
+          <AdaptiveTechCard technology={technology} topics={meta?.topics || []} />
+        ) : (
+        <>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
           <div>
             <h3 className="text-sm font-medium text-gray-400 mb-3">Difficulty</h3>
@@ -156,6 +182,8 @@ export function TechQuizSetup() {
         >
           {starting ? "Preparing questions…" : `Start ${technology} Practice →`}
         </button>
+        </>
+        )}
       </motion.div>
     </div>
   );

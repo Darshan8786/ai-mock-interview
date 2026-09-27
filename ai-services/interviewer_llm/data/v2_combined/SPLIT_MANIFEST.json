@@ -1,0 +1,47 @@
+{
+  "seed": 42,
+  "records": {
+    "train": {
+      "interview": 836,
+      "aptitude": 1165,
+      "tech": 1736
+    },
+    "validation": {
+      "interview": 106,
+      "aptitude": 151,
+      "tech": 140
+    },
+    "test": {
+      "interview": 105,
+      "aptitude": 151,
+      "tech": 139
+    }
+  },
+  "examples": {
+    "train": {
+      "qgen_tech": 1736,
+      "mcq_answer": 1639,
+      "qgen_aptitude": 1165,
+      "qgen_interview": 1672
+    },
+    "validation": {
+      "qgen_aptitude": 151,
+      "mcq_answer": 185,
+      "qgen_interview": 106,
+      "qgen_tech": 140
+    },
+    "test": {
+      "qgen_aptitude": 151,
+      "mcq_answer": 189,
+      "qgen_interview": 105,
+      "qgen_tech": 139
+    }
+  },
+  "sha256": {
+    "train": "e2ca5f933b59524989f9c4cb5c853119756440319bce569908321955405fb5af",
+    "validation": "90fc551b2dc729c4aad11abe1d08ae25614bf4c99cc999e6b18b6b3a7e91f4b1",
+    "test": "cf20ef00055a8b404971aa1ee73379e4c63c3ba6a0c4d394cd8a889b4b16c4f3"
+  },
+  "leakage_check": "passed: no exact or near-duplicate question across splits",
+  "note": "v2 combined interview+aptitude+tech split; test.jsonl is locked (hash-verified by train.py)."
+}

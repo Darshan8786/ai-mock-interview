@@ -30,7 +30,9 @@ const AptitudeQuestionSchema = new Schema(
     correctAnswer: { type: Number, required: true }, // index of correct option
     explanation: { type: String, default: "" },
     estimatedTime: { type: Number, default: 60 }, // seconds
-    source: { type: String, enum: ["hand", "ai"], default: "hand" }, // ai-generated questions need review
+    source: { type: String, enum: ["hand", "ai", "model", "template", "bank"], default: "hand" }, // ai-generated questions need review
+    // How the answer key was checked for generated questions: deterministic | self_consistency | human/curated.
+    verification: { type: String, default: "" },
     verified: { type: Boolean, default: false }, // passed the self-check / admin review
     isActive: { type: Boolean, default: true, index: true },
     createdBy: { type: Schema.Types.ObjectId, ref: "User", default: null },

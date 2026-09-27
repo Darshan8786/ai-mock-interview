@@ -47,7 +47,7 @@ _STOPWORDS = {
     "it", "its", "this", "that", "be", "by", "as", "at", "from", "not", "have", "has",
 }
 
-CODE_SHAPE_RE = re.compile(r"[{};()=]|def |function |class |SELECT |select ")
+CODE_SHAPE_RE = re.compile(r"[{};()=]|</?[a-zA-Z][^>]*>|def |function |class |SELECT |select ")
 
 
 def _normalize(text: str) -> str:
@@ -98,19 +98,34 @@ def _evaluate_output_prediction(record: dict, submitted: str) -> dict:
     }
 
 
+def _concept_hit(concept: str, submitted: str, stems: set) -> bool:
+    """A concept counts as covered if the phrase appears (hyphens/underscores treated as spaces: "floating-point" covers
+    "floating point") or every word of it appears in stemmed form."""
+    c = re.sub(r"[-_]", " ", concept.lower()).strip()
+    text = re.sub(r"[-_]", " ", _normalize(submitted))
+    if c and c in text:
+        return True
+    words = [w for w in re.findall(r"[a-z0-9']+", c) if w not in _STOPWORDS]
+    return bool(words) and all(_stem(w) in stems for w in words)
+
+
 def _evaluate_debugging(record: dict, submitted: str) -> dict:
     fixed_code = record.get("fixed_code", "")
-    if fixed_code and CODE_SHAPE_RE.search(submitted or ""):
+    reference = record.get("answer", "")
+    if fixed_code and CODE_SHAPE_RE.search(submitted or "") and _similarity_ratio(submitted, reference) < 0.75:
         ratio = _similarity_ratio(submitted, fixed_code)
         is_correct = ratio >= 0.80
         score = round(ratio * 100)
     else:
         expected_concepts = record.get("keywords", [])
-        submitted_stems = _stemmed_tokens(submitted)
-        matched = [c for c in expected_concepts if _stem(c.lower()) in submitted_stems or c.lower() in _normalize(submitted)]
+        submitted_stems = _stemmed_tokens(re.sub(r"[-_]", " ", submitted or ""))
+        matched = [c for c in expected_concepts if _concept_hit(c, submitted, submitted_stems)]
         coverage = len(matched) / len(expected_concepts) if expected_concepts else 0.0
-        is_correct = coverage >= 0.6
-        score = round(coverage * 100)
+        # a description that closely matches the reference bug description is correct even if it words the
+        # concepts differently (the keyword list can name things the reference text never mentions)
+        similarity = _similarity_ratio(submitted, reference) if reference else 0.0
+        is_correct = coverage >= 0.6 or similarity >= 0.75
+        score = round(max(coverage, similarity) * 100)
     return {
         "isCorrect": is_correct,
         "score": score,
@@ -135,6 +150,8 @@ def _evaluate_structural(record: dict, submitted: str, reference_field: str) -> 
     # correct solution phrased differently from the reference (different
     # variable names, equivalent SQL clause order) can still score well.
     score = round((0.5 * ratio + 0.5 * keyword_coverage) * 100)
+    if ratio >= 0.9:                  # essentially the reference solution - concept words need not appear in code
+        score = max(score, round(ratio * 100))
     is_correct = score >= 65
     return {
         "isCorrect": is_correct,
@@ -147,16 +164,16 @@ def _evaluate_structural(record: dict, submitted: str, reference_field: str) -> 
 
 def _evaluate_concept_coverage(record: dict, submitted: str) -> dict:
     expected_concepts = record.get("keywords", [])
-    submitted_stems = _stemmed_tokens(submitted)
-    submitted_norm = _normalize(submitted)
-    matched = [
-        c for c in expected_concepts
-        if _stem(c.lower()) in submitted_stems or c.lower() in submitted_norm
-    ]
+    submitted_stems = _stemmed_tokens(re.sub(r"[-_]", " ", submitted or ""))
+    matched = [c for c in expected_concepts if _concept_hit(c, submitted, submitted_stems)]
     coverage = len(matched) / len(expected_concepts) if expected_concepts else 0.0
     word_count = len((submitted or "").split())
     length_factor = 0.0 if word_count == 0 else (0.4 if word_count < 8 else (0.75 if word_count < 20 else 1.0))
     score = round(100 * (0.7 * coverage + 0.3 * length_factor))
+    reference = record.get("answer", "")
+    if reference and _similarity_ratio(submitted, reference) >= 0.75:     # essentially the reference answer
+        score = max(score, round(100 * _similarity_ratio(submitted, reference)))
+        coverage = max(coverage, 0.5)
     is_correct = coverage >= 0.5
     return {
         "isCorrect": is_correct,
@@ -184,18 +201,41 @@ def evaluate_tech_answer(question_id: str, submitted_answer) -> dict:
             "error": f"Unknown question id: {question_id}",
         }
 
+    return evaluate_tech_record(record, submitted_answer)
+
+
+def evaluate_tech_record(record: dict, submitted_answer) -> dict:
+    """Grades against a FULL question record (dataset schema). Used for dataset questions (looked up by id above) and
+    for model-generated questions, whose record - answer key included - the backend holds server-side and passes in
+    here; the key never comes from the student's client. Adds expected/missing concepts and a recommendation."""
     qtype = record.get("question_type")
     submitted_text = "" if submitted_answer is None else str(submitted_answer)
 
     if qtype == "MCQ":
-        return _evaluate_mcq(record, submitted_answer)
-    if qtype == "Output Prediction":
-        return _evaluate_output_prediction(record, submitted_text)
-    if qtype == "Debugging":
-        return _evaluate_debugging(record, submitted_text)
-    if qtype in ("Coding", "Programming Problem"):
-        return _evaluate_structural(record, submitted_text, "expected_solution")
-    if qtype == "SQL Query":
-        return _evaluate_structural(record, submitted_text, "answer")
-    # Technical / Conceptual / Scenario Based
-    return _evaluate_concept_coverage(record, submitted_text)
+        result = _evaluate_mcq(record, submitted_answer)
+    elif qtype == "Output Prediction":
+        result = _evaluate_output_prediction(record, submitted_text)
+    elif qtype == "Debugging":
+        result = _evaluate_debugging(record, submitted_text)
+    elif qtype in ("Coding", "Programming Problem"):
+        result = _evaluate_structural(record, submitted_text, "expected_solution")
+    elif qtype == "SQL Query":
+        result = _evaluate_structural(record, submitted_text, "answer")
+    else:  # Technical / Conceptual / Scenario Based
+        result = _evaluate_concept_coverage(record, submitted_text)
+
+    concepts = [str(k) for k in record.get("keywords", [])]
+    norm_answer = _normalize(submitted_text)
+    stems = _stemmed_tokens(submitted_text)
+    missing = result.get("missedKeywords")
+    if missing is None:
+        missing = [] if result["isCorrect"] else [c for c in concepts if not (_stem(c.lower()) in stems or c.lower() in norm_answer)]
+    topic = record.get("topic", "")
+    result["expectedConcepts"] = concepts
+    result["missingConcepts"] = missing
+    result["recommendation"] = (
+        f"Good - keep practising {topic} at a higher difficulty." if result["isCorrect"]
+        else f"Review {topic}" + (f": focus on {', '.join(missing[:3])}." if missing else ".") + " Then use Practice Again on this question."
+    )
+    result["evaluationSource"] = "local"
+    return result

@@ -10,9 +10,66 @@ const categoryScoreSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// ── Adaptive (AI-generated, one-question-at-a-time) sessions ──
+// Practice Again: attempt 1 is the in-session answer; later attempts are appended, never overwritten.
+const practiceAttemptSchema = new mongoose.Schema(
+  {
+    attemptNumber: { type: Number, required: true },
+    selectedText: { type: String, default: "" },
+    isCorrect: { type: Boolean, default: false },
+    score: { type: Number, default: 0 },
+    timeTaken: { type: Number, default: 0 },
+    createdAt: { type: Date, default: Date.now },
+  },
+  { _id: false }
+);
+
+const adaptiveItemSchema = new mongoose.Schema(
+  {
+    question: { type: mongoose.Schema.Types.ObjectId, ref: "AptitudeQuestion", required: true },
+    category: { type: String, default: "" },
+    topic: { type: String, default: "" },
+    difficulty: { type: String, default: "medium" }, // easy | medium | hard
+    servedOptions: { type: [String], default: [] },
+    servedCorrect: { type: Number, default: 0 }, // server-side only
+    source: { type: String, default: "" }, // model | template | bank | bank-db
+    verification: { type: String, default: "" },
+    focusArea: { type: String, default: "" },
+    topicReason: { type: String, default: "" },
+    difficultyReason: { type: String, default: "" },
+    estimatedTime: { type: Number, default: 60 },
+    shownAt: { type: Date, default: Date.now },
+    answered: { type: Boolean, default: false },
+    selected: { type: Number, default: null },
+    isCorrect: { type: Boolean, default: false },
+    responseTime: { type: Number, default: null },
+    answeredAt: { type: Date, default: null },
+    attempts: { type: [practiceAttemptSchema], default: [] },
+  },
+  { _id: false }
+);
+
+const adaptiveSchema = new mongoose.Schema(
+  {
+    category: { type: String, default: "" },
+    topic: { type: String, default: "" }, // "" = mixed topics of the category
+    startDifficulty: { type: String, default: "easy" },
+    currentDifficulty: { type: String, default: "easy" },
+    timeLimitMinutes: { type: Number, default: 0 },
+    nextStatus: { type: String, enum: ["idle", "generating", "ready", "failed", "done"], default: "idle" },
+    nextError: { type: String, default: "" },
+    lastDecision: { type: String, default: "" },
+    personalization: { type: mongoose.Schema.Types.Mixed, default: null },
+    items: { type: [adaptiveItemSchema], default: [] },
+  },
+  { _id: false }
+);
+
 const aptitudeAttemptSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    mode: { type: String, enum: ["classic", "adaptive"], default: "classic" },
+    adaptive: { type: adaptiveSchema, default: null },
     status: { type: String, enum: ["started", "completed"], default: "started", index: true },
     testType: { type: String, default: "" }, // practice | mock | daily | mixed | company | difficulty
     difficulty: { type: String, default: "" },

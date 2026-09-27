@@ -706,9 +706,10 @@ export const getAptitudeHistoryDetail = asyncHandler(async (req: AuthRequest, re
   if (!attempt) throw new AppError("Attempt not found", 404);
 
   const byId = new Map<string, any>(attempt.questions.map((s: any) => [s.question.toString(), s]));
+  // No isActive filter: a past attempt shows every question it contained, including generated ones (stored inactive
+  // so they never enter the classic tests) and questions an admin retired since.
   const docs: any[] = await AptitudeQuestion.find({
     _id: { $in: attempt.questions.map((s: any) => s.question) },
-    isActive: true,
   }).lean();
   const fullById = new Map<string, any>(docs.map((d: any) => [d._id.toString(), d]));
   const answeredById = new Map<string, any>(
