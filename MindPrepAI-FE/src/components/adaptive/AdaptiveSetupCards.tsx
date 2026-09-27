@@ -19,12 +19,13 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
   return <div><label className={labelCls}>{label}</label>{children}</div>;
 }
 
-/** "AI Adaptive Practice" configuration for Aptitude (category -> topic -> difficulty -> count -> time limit). */
-export function AdaptiveAptitudeCard({ topicsByCategory }: { topicsByCategory: Record<string, { name: string }[]> }) {
+/** "AI Adaptive Practice" configuration for Aptitude (category -> difficulty -> count -> time limit). A session
+ *  mixes all topics of the chosen category; topics are not offered individually. */
+export function AdaptiveAptitudeCard() {
   const navigate = useNavigate();
   const categories = ["Quantitative", "Logical Reasoning", "Verbal Ability", "Data Interpretation"];
   const [category, setCategory] = useState("Quantitative");
-  const [topic, setTopic] = useState("");
+  const topic = ""; // whole category, mixed topics
   const [difficulty, setDifficulty] = useState("adaptive");
   const [count, setCount] = useState(10);
   const [timeLimit, setTimeLimit] = useState(0);
@@ -57,16 +58,10 @@ export function AdaptiveAptitudeCard({ topicsByCategory }: { topicsByCategory: R
         One question at a time, generated and answer-checked on this machine. Difficulty adjusts to your answers and weak topics from your history are targeted.
       </p>
       <div className="bg-gray-800/50 rounded-2xl border border-emerald-500/30 p-6">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Field label="Category">
-            <select className={selectCls} value={category} onChange={(e) => { setCategory(e.target.value); setTopic(""); }}>
+            <select className={selectCls} value={category} onChange={(e) => setCategory(e.target.value)}>
               {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </Field>
-          <Field label="Topic">
-            <select className={selectCls} value={topic} onChange={(e) => setTopic(e.target.value)}>
-              <option value="">Mixed topics</option>
-              {(topicsByCategory[category] || []).map((t) => <option key={t.name} value={t.name}>{t.name}</option>)}
             </select>
           </Field>
           <Field label="Difficulty">
@@ -89,7 +84,7 @@ export function AdaptiveAptitudeCard({ topicsByCategory }: { topicsByCategory: R
         {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
         <button onClick={start} disabled={busy}
           className="mt-5 w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50">
-          {busy ? "Starting…" : `Start Adaptive ${topic || category} Practice →`}
+          {busy ? "Starting…" : `Start Adaptive ${category} Practice →`}
         </button>
       </div>
     </section>

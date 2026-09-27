@@ -15,6 +15,7 @@ import { verbalSeed1 } from "../data/verbalSeed1.js";
 import { verbalSeed2 } from "../data/verbalSeed2.js";
 import { diSeed2 } from "../data/diSeed2.js";
 import { SeedQuestion } from "../data/seedTypes.js";
+import { upsertCompanyQuestions } from "./seedCompanyQuestions.js";
 
 const COMPANY_STYLES: Record<string, string> = {
   TCS: "tcs-style",
@@ -202,6 +203,7 @@ export async function seedAptitude() {
 
   const topicCount = await seedTopics();
   const result = await seedQuestions();
+  const company = await upsertCompanyQuestions(); // company-wise pool: >= 200 verified questions per company
   const touched = await syncTopicCounts();
   await seedDefaults();
 
@@ -209,7 +211,7 @@ export async function seedAptitude() {
   console.log("\n✅ Aptitude seed complete");
   console.log(`   Topics: ${aptitudeTopics.length} (${topicCount} new, ${touched} counts synced)`);
   console.log(`   Wiped questions: ${result.wipedQ}, history: ${result.wipedH}, attempts: ${result.wipedA}`);
-  console.log(`   Inserted: ${result.inserted}`);
+  console.log(`   Inserted: ${result.inserted} (+${company.inserted} company-wise)`);
   console.log(`   Total active questions: ${total}`);
 
   await mongoose.disconnect();

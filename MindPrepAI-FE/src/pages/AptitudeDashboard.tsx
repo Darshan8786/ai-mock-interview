@@ -135,7 +135,7 @@ export function AptitudeDashboard() {
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-white">Aptitude Preparation</h1>
           <p className="text-gray-400 mt-2">
-            Practice topic by topic or company by company. After each attempt you get your score, the correct answers and
+            Practice category by category or company by company. After each attempt you get your score, the correct answers and
             the logic behind them.
           </p>
           <div className="flex justify-center gap-3 mt-4">
@@ -191,17 +191,14 @@ export function AptitudeDashboard() {
             )}
 
             {/* AI adaptive practice (one generated, answer-checked question at a time) */}
-            <AdaptiveAptitudeCard topicsByCategory={topics} />
+            <AdaptiveAptitudeCard />
 
-            {/* AI adaptive practice (one generated question at a time) */}
-            <AdaptiveAptitudeCard topicsByCategory={topics} />
-
-            {/* Topic-wise / Company-wise */}
+            {/* Category-wise / Company-wise */}
             <section className="mb-12">
               <div className="grid grid-cols-2 gap-3 mb-5">
                 {(
                   [
-                    { key: "topic", label: "Topic-wise", icon: "📚", desc: "Practice one topic at a time" },
+                    { key: "topic", label: "Category-wise", icon: "📚", desc: "Practice one category at a time" },
                     { key: "company", label: "Company-wise", icon: "🏢", desc: "Questions asked by companies" },
                   ] as const
                 ).map((s) => (
@@ -244,27 +241,9 @@ export function AptitudeDashboard() {
                       ))}
                     </div>
 
-                    {categoryTopics.length === 0 ? (
-                      <p className="text-sm text-gray-500">No topics are available in this category yet.</p>
-                    ) : (
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                        <TopicCard
-                          label={`All ${category}`}
-                          sub={`${categoryTotal} questions`}
-                          active={topic === ""}
-                          onClick={() => setTopic("")}
-                        />
-                        {categoryTopics.map((t) => (
-                          <TopicCard
-                            key={t.id}
-                            label={t.name}
-                            sub={`${t.questionCount} questions`}
-                            active={topic === t.name}
-                            disabled={t.questionCount === 0}
-                            onClick={() => setTopic(t.name)}
-                          />
-                        ))}
-                      </div>
+                    {/* The whole category is practised as one mixed set - no individual topics are offered. */}
+                    {categoryTopics.length === 0 && (
+                      <p className="text-sm text-gray-500">No questions are available in this category yet.</p>
                     )}
                   </>
                 )}
@@ -279,7 +258,6 @@ export function AptitudeDashboard() {
                           <TopicCard
                             key={c.name}
                             label={c.name}
-                            sub={`${c.questionCount} questions`}
                             active={company === c.name}
                             onClick={() => setCompany(c.name)}
                           />
@@ -438,13 +416,11 @@ export function AptitudeDashboard() {
 
 function TopicCard({
   label,
-  sub,
   active,
   disabled,
   onClick,
 }: {
   label: string;
-  sub: string;
   active: boolean;
   disabled?: boolean;
   onClick: () => void;
@@ -460,7 +436,6 @@ function TopicCard({
       }`}
     >
       <p className={`text-sm font-medium ${active ? "text-emerald-400" : "text-gray-200"}`}>{label}</p>
-      <p className="text-[11px] text-gray-500 mt-0.5">{sub}</p>
     </button>
   );
 }
