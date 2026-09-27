@@ -80,8 +80,6 @@ export function Dashboard() {
     ];
 
     const stats = [
-        { label: "Total Users", value: "8+", icon: "👥" },
-        { label: "Questions Covered", value: "500+", icon: "❓" },
         { label: "Success Rate", value: "92%", icon: "🎯" },
         { label: "Company Wise", value: "5+", icon: "🏢" },
     ];
@@ -185,7 +183,7 @@ export function Dashboard() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                        className="grid grid-cols-2 gap-4 max-w-2xl mx-auto"
                     >
                         {stats.map((stat, idx) => (
                             <motion.div key={idx} variants={itemVariants} whileHover={{ y: -5 }}>
