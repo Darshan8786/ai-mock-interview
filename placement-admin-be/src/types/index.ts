@@ -18,6 +18,8 @@ export interface AuthenticatedAdmin {
   id: string;
   email: string;
   role: "admin";
+  /** "local": this service's own admin account; "main": an admin of placement-prep-be (MindPrep admin panel). */
+  source?: "local" | "main";
 }
 
 declare global {

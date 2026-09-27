@@ -2,7 +2,7 @@
 // Alumni API client
 //
 // Talks to placement-admin-be (default http://localhost:5001). The alumni
-// endpoints are open (no login), like that service's other admin resources.
+// admin endpoints require the admin login token; the public openings list does not.
 // ─────────────────────────────────────────────────────────────
 import { ADMIN_API_URL } from "../config/config";
 
@@ -76,16 +76,26 @@ interface Envelope<T> {
 }
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<Envelope<T>> {
+  // The admin endpoints require the admin's login token (the same one the rest of the admin panel uses);
+  // the public alumni-openings list works without it.
+  const token = localStorage.getItem("adminToken");
   let res: Response;
   try {
     res = await fetch(`${ADMIN_API_URL}${path}`, {
       ...init,
-      headers: { "Content-Type": "application/json", ...(init.headers || {}) },
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(init.headers || {}),
+      },
     });
   } catch {
     throw new Error(`Can't reach the alumni service at ${ADMIN_API_URL}. Make sure placement-admin-be is running.`);
   }
   const body = await res.json().catch(() => null);
+  if (res.status === 401 || res.status === 403) {
+    throw new Error(body?.message || "Your admin session is not valid for the alumni service. Please sign in again as admin.");
+  }
   if (!res.ok) throw new Error(body?.message || `Request failed: ${res.status}`);
   return body as Envelope<T>;
 }
