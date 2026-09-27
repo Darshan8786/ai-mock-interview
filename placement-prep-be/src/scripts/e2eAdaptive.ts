@@ -344,8 +344,44 @@ async function runAiFaults() {
     JSON.stringify(evs.map((e: any) => e?.source)));
 }
 
+/** Company-wise pool: >= 200 questions per company, and a student never gets a repeat until the pool is exhausted. */
+async function runCompany() {
+  const c = await user("company");
+  const companies = (await c.get("/aptitude/companies")).data.data as Array<{ name: string; questionCount: number }>;
+  check("company: 9 companies listed", companies.length === 9, companies.map((x) => `${x.name}:${x.questionCount}`).join(" "));
+  check("company: every company has >= 200 questions", companies.every((x) => x.questionCount >= 200), companies.map((x) => `${x.name}:${x.questionCount}`).join(" "));
+  const target = companies.slice().sort((a, b) => a.questionCount - b.questionCount)[0];
+  const seen = new Set<string>();
+  let dup = 0;
+  let sessions = 0;
+  while (seen.size + 20 <= target.questionCount) {
+    const s = await c.post("/aptitude/test/start", { mode: "company", tag: target.name, count: 20 });
+    if (s.status !== 201) break;
+    sessions++;
+    for (const q of s.data.data.questions) {
+      if (seen.has(String(q.id))) dup++;
+      seen.add(String(q.id));
+      if (!(q.companyTags || []).some((t: any) => t.name === target.name)) dup += 1000; // wrong company
+    }
+    check(`company: ${target.name} session ${sessions} has no repeated questions`, s.data.data.repeatedIds.length === 0);
+    await c.post(`/aptitude/test/${s.data.data.attemptId}/submit`, { answers: {}, timeTaken: 60 });
+  }
+  check(`company: ${seen.size} ${target.name} questions served across ${sessions} sessions, zero repeats`, dup === 0 && seen.size >= 200, `dup=${dup}`);
+  const rest = target.questionCount - seen.size;
+  const last = await c.post("/aptitude/test/start", { mode: "company", tag: target.name, count: 20 });
+  const fresh = last.data.data.questions.filter((q: any) => !seen.has(String(q.id))).length;
+  check(`company: once the pool runs out, the ${rest} unseen questions come first and only the rest are marked repeated`,
+    fresh === rest && last.data.data.repeatedIds.length > 0, `fresh=${fresh} repeatedFlagged=${last.data.data.repeatedIds.length}`);
+}
+
 (async () => {
   await mongoose.connect(MONGO);
+  if (ONLY.includes("company")) {
+    try { await runCompany(); } catch (e: any) { failed++; console.log(`FAIL  harness error: ${e?.stack || e}`); }
+    console.log(`\n${passed} passed, ${failed} failed`);
+    await mongoose.disconnect();
+    process.exit(failed ? 1 : 0);
+  }
   if (ONLY.includes("ai-faults")) {
     try { await runAiFaults(); } catch (e: any) { failed++; console.log(`FAIL  harness error: ${e?.stack || e}`); }
     console.log(`\n${passed} passed, ${failed} failed`);

@@ -16,7 +16,8 @@
     "export:chatbot": "tsx src/scripts/exportChatbotData.ts",
     "eval:hybrid": "tsx src/scripts/evalHybrid.ts",
     "create:college-admin": "tsx src/scripts/createCollegeAdmin.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:company": "tsx src/seed/seedCompanyQuestions.ts"
   },
   "dependencies": {
     "@pinecone-database/pinecone": "^4.0.0",
