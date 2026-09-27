@@ -8,7 +8,7 @@ The project is a **monorepo** with **four independent services**:
 |---|---|---|---|
 | `MindPrepAI-FE` | Frontend web app (student + admin UI) | React 18 + TypeScript + Vite 7 + Tailwind v4 | `5173` |
 | `placement-prep-be` | Main backend API (auth, quizzes, mock interviews, resume, jobs, colleges) | Node.js + Express + TypeScript + MongoDB (Mongoose) | `5000`* |
-| `placement-admin-be` | Alumni-network admin backend | Node.js + Express + TypeScript + MongoDB (Mongoose) | `5001` |
+| `placement-admin-be` | Placement-admin backend (alumni network + admin resources, admin-only) | Node.js + Express + TypeScript + MongoDB (Mongoose) | `5001` |
 | `ai-services` | AI / proctoring / speech microservice(s) | Python + FastAPI + Flask + OpenCV + MediaPipe + YOLO + local LLM | `8000` (Flask) / `8001` (FastAPI) |
 
 \* The frontend's default `BACKEND_URL` is `http://localhost:3001` — set `PORT=3001` in `placement-prep-be/.env` (see [Environment Variables](#environment-variables)) so the two agree, or override `VITE_BACKEND_URL` on the frontend instead.
@@ -61,10 +61,10 @@ The project is a **monorepo** with **four independent services**:
            │        │  Python                    │  FastAPI (:8001) — live proctoring WebSocket
            │        └──────────────────────────┘
            │
-           │ REST (open, no auth)
+           │ REST (admin JWT; SSO via MAIN_JWT_SECRET)
            └───────►┌──────────────────────────┐
-                    │  placement-admin-be         │  Alumni network — CRUD + public openings
-                    │  Express + TS  (:5001)     │
+                    │  placement-admin-be         │  Alumni network + admin resources (admin-only)
+                    │  Express + TS  (:5001)     │  public: alumni openings list
                     └──────────────────────────┘
 ```
 
@@ -72,7 +72,7 @@ The project is a **monorepo** with **four independent services**:
 - The **browser (React)** is the only client. It talks to **`placement-prep-be`** for everything student/admin-facing (auth, quizzes, interviews, resume, jobs, colleges) and directly to **`ai-services`** for live webcam proctoring frames and voice.
 - **`placement-prep-be`** talks to **MongoDB** (all core data, plus a local, MongoDB-backed vector store used for semantic search / RAG by default) and calls into **`ai-services`** (Flask, `:8000`) for AI question generation, resume analysis/enhancement, and answer evaluation — all of which run on local models with zero external AI API calls. **Pinecone is optional** (dotted line above): if `PINECONE_API_KEY` is set, it's used instead of the local vector store for the same RAG feature; if not (or if `LOCAL_ONLY=true`), the local store is used automatically. Nothing about vector search requires Pinecone.
 - **`ai-services`** runs **two independent Python processes**: a **FastAPI** app (`run.py`, `:8001`) that accepts a WebSocket per interview session and runs real-time face/eye/head-pose tracking (MediaPipe) + phone/object detection (YOLO) on incoming webcam frames; and a **Flask** app (`server.py`, `:8000`) that serves question generation (via a **locally fine-tuned LLM**, no external API key required — see [Local Interview-Question LLM](#local-interview-question-llm)), resume enhancement, tech-quiz question selection, and **local** speech-to-text/text-to-speech (faster-whisper + pyttsx3/SAPI — see [Zero External AI by Default](#zero-external-ai-by-default)).
-- **`placement-admin-be`** is a **separate, standalone Node service** for the **Alumni Network** feature only. It has no login (open endpoints) and is called directly by the frontend's admin **Alumni Management** pages via `ADMIN_API_URL`. It is not otherwise wired into the rest of the app.
+- **`placement-admin-be`** is a **separate, standalone Node service**. The frontend's admin **Alumni Management** pages call it directly via `ADMIN_API_URL`. **Every admin resource requires an admin token** (dashboard, students, companies, jobs, applications, interviews, aptitude tests, alumni); only the student-facing alumni-openings list (`GET /api/alumni-openings`) is public. It accepts either its own admin login token or — **single sign-on** — the token of an admin signed in to the MindPrep admin panel (issued by `placement-prep-be`), verified with `MAIN_JWT_SECRET`. Student and forged tokens are rejected.
 
 ---
 
@@ -99,17 +99,20 @@ The project is a **monorepo** with **four independent services**:
 - 🧠 **RAG (local by default)** — embeddings (local, via Ollama) + semantic retrieval to reuse stored questions and enrich AI answers, backed by a local MongoDB vector store by default (Pinecone optional — see [Zero External AI by Default](#zero-external-ai-by-default)).
 
 ### Admin panel (`/admin`, part of the same frontend, `placement-prep-be`)
-- Dashboard with platform-wide stats.
-- Student management (view/edit/verify/reject, set placement status).
+- **Dashboard** with real platform-wide stats (students, interviews, resume analyses, jobs, average ATS score, placement readiness) and four charts (interview performance, ATS score distribution, placement readiness, student activity) — all computed from stored data, no placeholder numbers.
+- **Reports & Analytics** (`GET /admin/reports?days=7|30|90|365`): KPIs, interview performance, ATS distribution, placement readiness, student activity and the **weakest aptitude / tech topics**, filtered by the selected date range; **export to PDF or Excel (CSV)**.
+- Student management (view/edit/verify/reject, set placement status); the ATS column shows the student's latest saved Resume Analyzer score (or "Not analysed").
 - Resume, interview, and aptitude oversight; aptitude question/topic/test bank CRUD.
 - **Jobs**: create/edit/delete/activate/deactivate/close; per-job applications with shortlist/reject/select.
 - **Eligibility & notifications**: eligibility computed purely from **CGPA, backlogs, and department** (see [Eligibility Model](#-jobs--eligibility)); eligible/not-eligible lists with reasons; one-click "notify eligible students" (deduped); Excel/CSV export.
+- **Admin notifications** are delivered to each targeted student's notification feed; deleting one removes the students' copies too.
 - **College interviews**: create/edit/publish/close interview templates scoped to the admin's own college; author MCQ/technical/coding/behavioral/HR questions, reorder, duplicate.
-- Announcements, reports/analytics, settings.
+- Announcements and settings (admin display name/email).
+- **UI**: a glossy two-colour theme (indigo + violet) — frosted-glass cards, tables and inputs over a soft indigo/violet backdrop, a dark-glass sidebar with grouped navigation, glossy page banners, stat tiles and buttons. Red is used only for errors, destructive actions and problem indicators. See [Admin Panel UI](#-admin-panel-ui).
 
 ### Alumni network (`placement-admin-be`, separate service)
-- Admin CRUD for alumni records (name, grad year, department, current company/role, LinkedIn) and any job **opening** they're referring.
-- Public listing of current alumni openings, consumed by the frontend's Alumni pages (no login required for read).
+- Admin-only CRUD for alumni records (name, grad year, department, current company/role, LinkedIn) and any job **opening** they're referring.
+- Public listing of current alumni openings (`GET /api/alumni-openings`), consumed by the student-facing pages (no login required for read).
 
 ---
 
@@ -277,6 +280,8 @@ Then open **http://localhost:5173**.
 | `JWT_ACCESS_SECRET` / `JWT_REFRESH_SECRET` | ✅ | Min 32 chars each |
 | `JWT_ACCESS_EXPIRES_IN` / `JWT_REFRESH_EXPIRES_IN` | ⚠️ | Token lifetimes |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME` / `ADMIN_PHONE` | ⚠️ | Seeded on `npm run seed` |
+| `MAIN_JWT_SECRET` | ⚠️ | **Single sign-on with the MindPrep admin panel.** Set it to `placement-prep-be`'s `JWT_SECRET` so admins signed in to `/admin` can use the alumni pages with the same token. Leave empty to accept only this service's own admin tokens (the admin panel's Alumni pages will then get `401`) |
+| `CLIENT_URL` | ⚠️ | Frontend origin allowed by CORS (default `http://localhost:5173`) |
 | `SWAGGER_UI` | ⚠️ | Docs path, default `/api/docs` |
 
 ### `ai-services/.env`
@@ -322,14 +327,16 @@ See the table in [step 5](#5-frontend--mindprepai-fe) above (`VITE_BACKEND_URL`,
 
 **Analytics** — `GET /analytics/me`
 
-**Admin** (`protect` + `restrictTo("admin")`) — dashboard, students, interviews, aptitude results + question/topic/test bank, notifications, announcements, jobs (CRUD + status + applications + eligible/ineligible students + recalculate + notify-eligible), application status, and **college interviews** (`/admin/college-interviews...` — CRUD, status, question CRUD, reorder, duplicate). Full list in `src/routes/adminRoutes.ts`.
+**Admin** (`protect` + `restrictTo("admin")`) — dashboard (`GET /admin/dashboard`), **reports** (`GET /admin/reports?days=N`, also feeds the dashboard charts), students, interviews, aptitude results + question/topic/test bank, notifications (delivered to students' feeds), announcements, jobs (CRUD + status + applications + eligible/ineligible students + recalculate + notify-eligible), application status, and **college interviews** (`/admin/college-interviews...` — CRUD, status, question CRUD, reorder, duplicate). Full list in `src/routes/adminRoutes.ts`.
 
-### `placement-admin-be` — Alumni network, port 5001, no auth required for read
+### `placement-admin-be` — port 5001, admin-only (except the public openings list)
 
-- `GET /api/alumni` — list alumni
-- `POST /api/alumni` / `PATCH /api/alumni/:id` / `DELETE /api/alumni/:id` — admin CRUD
-- `GET /api/alumni/openings` (public) — current job openings referred by alumni
-- Swagger UI at `/api/docs` documents the full surface (this service also has broader student/job/interview/aptitude/company controllers scaffolded, but the frontend only consumes the alumni endpoints today).
+- `POST /api/admin/login`, `POST /api/admin/refresh`, `POST /api/admin/logout`, `GET /api/admin/me` — this service's own admin login
+- `GET|POST /api/admin/alumni`, `GET|PUT|DELETE /api/admin/alumni/:id` — alumni and their openings (**admin token required**)
+- `/api/admin/dashboard`, `/students`, `/companies`, `/jobs`, `/applications`, `/interviews`, `/aptitude-tests` — admin resources (**admin token required**); the frontend currently consumes only the alumni endpoints
+- `GET /api/alumni-openings` (**public**) — current job openings referred by alumni
+- Accepted tokens: this service's own admin access token, or a `placement-prep-be` admin token when `MAIN_JWT_SECRET` is set. No token → `401`; student / forged token → `401`/`403`.
+- Swagger UI at `/api/docs` documents the full surface.
 
 ### `ai-services` — Flask app, port 8000
 
@@ -376,7 +383,16 @@ Multi-step form (personal info, education, experience, skills, projects, summary
 Admin creates a job with an `eligibility` object: `{ minimumCGPA, maximumBacklogs, allowedDepartments[] }` (blank/empty = no restriction on that axis — **CGPA, backlogs, and department are the only criteria**, nothing else is hardcoded). `computeJobEligibility(job, student)` (`src/utils/jobEligibility.ts`) normalizes department names (e.g. `CSE` → `computer science`) and returns `{ eligible, reasons[] }`. A per-(student, job) `JobEligibility` snapshot is stored and **recalculated automatically** on job create/edit (and via manual recalculate); eligibility is **re-verified server-side** at apply time regardless of the snapshot. Admins can view eligible/not-eligible lists with reasons, export them (Excel/CSV, frontend-side), and **notify eligible students** — deduped via a unique `(student, job)` index so re-notifying never double-sends, and inactive accounts are skipped.
 
 ### 🎓 Alumni Network
-Admin manages alumni records and any job **opening** they're referring, through the separate `placement-admin-be` service (own JWT, own DB collection, no relation to student accounts). The public "openings" list is read with no login and rendered on the frontend's Alumni pages.
+Admin manages alumni records and any job **opening** they're referring, through the separate `placement-admin-be` service (own DB collection, no relation to student accounts). The admin panel's Alumni pages send the admin's token (`adminToken`); `placement-admin-be` accepts it when `MAIN_JWT_SECRET` matches `placement-prep-be`'s `JWT_SECRET`. The public "openings" list is read with no login.
+
+### 📈 Admin Reports & Analytics
+`GET /admin/reports?days=N` (`controllers/admin/reportsController.ts`) aggregates **stored** data for the chosen window: interviews (taken, completed, terminated, average score), aptitude and tech-practice sessions, saved ATS scores, cheating events and job applications, plus per-day activity and the weakest aptitude/tech topics (topics with at least 5 answers). **Placement readiness** is the average of each student's own interview, aptitude, tech-practice and ATS scores (whichever exist); students with none count as "No activity yet". The Resume Analyzer saves each student's latest ATS score on the `User`, which feeds the ATS KPI, chart and Resume/Student Management. The page exports the same data to PDF (`jsPDF`) or CSV.
+
+### 🎨 Admin Panel UI
+The admin pages share a small component kit in `MindPrepAI-FE/src/components/admin/` (`AdminLayout`, `PageHeader`, `StatCard`, `Card`, `ChartCard`, `Table`, `Button`, `Inputs`, `Modal`, `Badge`, …):
+- **Theme**: two colours only — indigo and violet (`gradients.ts`, `chartTheme.ts`), with slate neutrals; red only for errors, deletes and problem indicators.
+- **Glossy finish**: `admin.css` defines `.admin-backdrop` (soft indigo/violet mesh), `.glass` / `.glass-strong` / `.glass-dark` (frosted surfaces) and `.gloss` / `.gloss-sm` (specular shine + hover sweep) used by banners, stat tiles, buttons and icon chips.
+- **Layout**: dark-glass sidebar grouped into Overview, Students, Assessments, Placements and System, with the signed-in admin and logout at the bottom; sticky frosted top bar with a breadcrumb; responsive slide-in menu on phones.
 
 ### 🧠 RAG (local vector store, Pinecone optional)
 Attempts and questions are embedded **locally** (Ollama, `nomic-embed-text`) and stored in a vector index for semantic retrieval, so similar past Q&A can enrich AI-generated answers and reduce duplicate question generation. The index itself is a local, MongoDB-backed store (`src/services/vectorStore.ts` + `src/models/VectorEmbedding.ts`, brute-force cosine similarity — plenty fast at this app's scale) by default; if `PINECONE_API_KEY` is set (and `LOCAL_ONLY` isn't `true`), Pinecone's managed index is used instead with the exact same calling code. See [Zero External AI by Default](#zero-external-ai-by-default).
@@ -701,6 +717,8 @@ MindPrep AI runs with **no external AI inference API required** — every AI fea
 | Type checks | `cd placement-prep-be && npx tsc --noEmit -p .` · `cd MindPrepAI-FE && npx tsc -p tsconfig.app.json --noEmit` | (backend reports one long-standing stray-file error: `time_chain.ts` outside `rootDir`) |
 | Production build | `cd MindPrepAI-FE && npm run build` | type check + Vite bundle |
 | Proctoring engine | `cd ai-services && python -m unittest discover -s tests -p "test_proctoring.py"` | note: `test_12_cooldown` and `test_1_no_person` were failing when last run; this code is independent of the feedback system |
+| Admin panel API sweep | `cd placement-prep-be && E2E_API=http://127.0.0.1:3002/api/v1 E2E_MONGO=mongodb://127.0.0.1:27018/mindprep_e2e npx tsx src/scripts/e2eAdminPanel.ts` | every `/admin` endpoint incl. reports, dashboard, notification delivery (refuses to run against a non-local DB) |
+| Placement-admin API sweep | `cd placement-admin-be && E2E_API=http://127.0.0.1:5099 E2E_EMAIL=... E2E_PASSWORD=... [E2E_MAIN_TOKEN=<main admin JWT>] npx tsx src/scripts/e2eAdmin.ts` | auth on every admin resource, SSO token, rejected student/forged tokens, alumni CRUD, public openings |
 
 **End-to-end check used during development** (worth repeating after big changes): run a *throwaway* MongoDB on another port (`mongod --dbpath <tmp> --port 27931`), start the backend with `MONGO_URI` pointing at it, `LOCAL_ONLY=true` and a blank `PINECONE_API_KEY` so nothing touches real data, point `AI_SERVICE_URL` at a service exposing the real `evaluate_answer`, then drive the flow over HTTP: create → answer (text + voice with audio metrics) → report → Practice Again ×N → history → personalisation → progress → a legacy record → a college record → tab-switch termination, and finally kill the AI service to confirm the interview survives and recovers on the next report open.
 
@@ -720,6 +738,8 @@ MindPrep AI runs with **no external AI inference API required** — every AI fea
 | Main backend exits immediately | Missing `MONGO_URI`/`MONGO_URL` in `placement-prep-be/.env` — it's the only variable that blocks startup |
 | Frontend can't reach the main backend | Check `MindPrepAI-FE/src/config/config.ts` / `VITE_BACKEND_URL` matches the backend's actual `PORT` |
 | Alumni pages fail to load | `placement-admin-be` isn't running on `:5001`, or `.env` wasn't seeded (`npm run seed`) |
+| Admin Alumni pages return `401` | Set `MAIN_JWT_SECRET` in `placement-admin-be/.env` to the same value as `JWT_SECRET` in `placement-prep-be/.env`, restart it, and sign in to `/admin` again |
+| Reports & Analytics / dashboard charts are empty | They only show stored activity — no interviews, aptitude/tech sessions or resume analyses in the selected range means empty charts. Widen the range (e.g. 90 days) |
 | AI features (quiz/interview gen, resume) return errors | Check `ai-services` (`python server.py`) is up on `:8000` and `AI_SERVICE_URL`/`AI_SERVICE_KEY` match between backend and `ai-services` |
 | Proctoring never connects, or takes ~2s every time | Use `127.0.0.1`, not `localhost`, for `PROCTOR_WS_URL`/`VITE_PROCTOR_WS_URL` (Windows IPv6-first resolution) |
 | Interview questions look generic/repeated | The `interviewer_llm` weights may be missing — check `ai-services/interviewer_llm/models/`; falls back to a smaller local model, then the offline question bank, automatically (no external call at any step) |
@@ -744,6 +764,7 @@ MindPrep-AI/
 │   └── src/
 │       ├── admin/                     # Admin API clients (jobs, alumni, college interviews) + types
 │       ├── components/                # Shared UI, admin/, interview/, mock-interview/, resume-builder/, common/ (FullscreenGuardModal, ...)
+│       │   └── admin/                 # Admin UI kit: AdminLayout, PageHeader, StatCard, Card, Table, ... + admin.css (glossy theme), gradients.ts, chartTheme.ts
 │       │   └── mock-interview/feedback/   # Explainable-feedback UI: score grid, Why-this-score drawer, structure, speaking, timeline, Practice Again, comparison, weakness map, progress charts
 │       ├── types/                     # mockFeedback.ts (feedback API types)
 │       ├── pages/                     # Student pages + admin/ pages
@@ -763,11 +784,13 @@ MindPrep-AI/
 │       ├── middleware/                # auth, restrictTo, error handlers
 │       └── config/                    # db, env (LOCAL_ONLY, no AI key required to boot), pinecone (optional)
 │
-├── placement-admin-be/                # Alumni-network backend (Express + TypeScript, standalone)
+├── placement-admin-be/                # Placement-admin backend (Express + TypeScript, standalone, admin-only)
 │   └── src/
-│       ├── controllers/               # alumni, + scaffolded application/aptitude/company/interview/job/student
-│       ├── routes/                    # alumni.routes.ts (the one actually consumed by the frontend), + others
-│       ├── models/                    # Alumni, Admin, + scaffolded models
+│       ├── controllers/               # alumni, application, aptitude, company, interview, job, student, dashboard
+│       ├── routes/                    # alumni.routes.ts (consumed by the frontend; + public openings router), + others
+│       ├── middleware/                # auth.middleware.ts — requireAdmin (own token or MindPrep SSO via MAIN_JWT_SECRET)
+│       ├── models/                    # Alumni, Admin, + others
+│       ├── scripts/                   # e2eAdmin.ts — endpoint/auth sweep
 │       └── config/                    # db, env, swagger
 │
 └── ai-services/                       # Python AI + proctoring microservice(s)
