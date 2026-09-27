@@ -18,6 +18,11 @@ const TechQuestionHistorySchema = new Schema(
     // True when this id had to be reused because the unseen pool for this
     // user+technology was exhausted (mirrors AptitudeQuestionHistory.repeated).
     repeated: { type: Boolean, default: false },
+    // Text of the question (generated questions have no dataset entry) - used for duplicate prevention.
+    questionText: { type: String, default: "" },
+    topic: { type: String, default: "" },
+    answered: { type: Boolean, default: false },
+    correct: { type: Boolean, default: null },
   },
   { timestamps: { createdAt: "shownAt", updatedAt: false } }
 );

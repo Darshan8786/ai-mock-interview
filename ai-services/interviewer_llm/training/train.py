@@ -39,7 +39,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--data-dir", default=str(PROCESSED))
     p.add_argument("--output-dir", default=str(ROOT / "outputs" / "run"), help="checkpoints + logs go here")
     p.add_argument("--final-dir", default=None, help="also copy the final adapter here (e.g. models/software-engineering-interviewer)")
-    p.add_argument("--tasks", default="qgen,qa", help="comma list of tasks to train on")
+    p.add_argument("--tasks", default="qgen,qa", help="comma list of tasks to train on "
+                   "(v2 combined data: qgen_interview,qgen_aptitude,qgen_tech,mcq_answer)")
+    p.add_argument("--group-by-length", action="store_true", help="batch examples of similar length (less padding)")
     p.add_argument("--epochs", type=float, default=4)
     p.add_argument("--lr", type=float, default=1.5e-4)
     p.add_argument("--batch-size", type=int, default=4, help="per-device micro-batch")
@@ -231,6 +233,7 @@ def main() -> int:
         save_strategy="steps", save_steps=eval_steps, save_total_limit=args.save_total_limit,
         load_best_model_at_end=True, metric_for_best_model="eval_loss", greater_is_better=False,
         remove_unused_columns=False, dataloader_pin_memory=False, gradient_checkpointing=False,
+        group_by_length=args.group_by_length,
     )
     targs = TrainingArguments(**ta_kwargs)
     trainer_kwargs = pick(Trainer.__init__, model=model, args=targs, train_dataset=train_ds, eval_dataset=val_ds,
@@ -269,7 +272,11 @@ def main() -> int:
         final = Path(args.final_dir) / "adapter"
         final.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(adapter_dir, final, dirs_exist_ok=True)
+        v2 = any(t.startswith("qgen_") or t == "mcq_answer" for t in tasks)
         (Path(args.final_dir) / "training_info.json").write_text(json.dumps({"base_model": args.model, "quantized_4bit": use_4bit, "metrics": metrics,
+                                                                            "prompt_format": "v2" if v2 else "v1", "tasks": sorted(tasks),
+                                                                            "data_dir": str(data_dir), "epochs": args.epochs,
+                                                                            "max_seq_len": args.max_seq_len,
                                                                             "lora": {"r": args.lora_r, "alpha": args.lora_alpha, "dropout": args.lora_dropout},
                                                                             "trained_examples": len(train_ds)}, indent=2), encoding="utf-8")
         print(f"final adapter    : {final}")
@@ -281,6 +288,19 @@ def main() -> int:
         model.eval()
         model.config.use_cache = True
         print("\nsample generations:")
+        if any(t.startswith("qgen_") for t in tasks):
+            from prompting import QGEN_V2_INSTRUCTION, qgen_v2_input
+
+            for ctx in [{"domain": "interview", "skill": "Java", "topic": "OOP", "difficulty": "medium", "question_type": "technical"},
+                        {"domain": "aptitude", "category": "Quantitative", "topic": "Percentages", "difficulty": "medium", "question_type": "mcq"},
+                        {"domain": "tech", "technology": "Java", "topic": "Collections", "difficulty": "medium", "question_type": "mcq"}][: args.sample_after]:
+                ids = tokenizer.apply_chat_template(build_messages(f"qgen_{ctx['domain']}", QGEN_V2_INSTRUCTION, qgen_v2_input(ctx)),
+                                                    add_generation_prompt=True, return_tensors="pt", return_dict=True)
+                ids = {k: v.to(model.device) for k, v in ids.items()}
+                with torch.no_grad():
+                    gen = model.generate(**ids, max_new_tokens=320, do_sample=True, temperature=0.7, top_p=0.9, pad_token_id=tokenizer.pad_token_id)
+                print(f"  [{ctx['domain']} / {ctx['topic']}] " + tokenizer.decode(gen[0][ids["input_ids"].shape[1]:], skip_special_tokens=True).strip())
+            return 0
         for topic, diff, role in [("SQL", "Medium", "Backend Developer"), ("Operating Systems", "Easy", None), ("Java", "Hard", "Java Developer")][: args.sample_after]:
             inp = "\n".join(([f"Role: {role}"] if role else []) + [f"Topic: {topic}", f"Difficulty: {diff}"])
             ids = tokenizer.apply_chat_template(build_messages("qgen", QGEN_INSTRUCTION, inp), add_generation_prompt=True, return_tensors="pt", return_dict=True)

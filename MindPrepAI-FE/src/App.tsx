@@ -21,6 +21,8 @@ import { AptitudeHistory } from "./pages/AptitudeHistory";
 import { TechQuizSetup } from "./pages/TechQuizSetup";
 import { TechQuizSession } from "./pages/TechQuizSession";
 import { TechQuizResult } from "./pages/TechQuizResult";
+import { AdaptiveAptitudeSession } from "./pages/AdaptiveAptitudeSession";
+import { AdaptiveTechSession } from "./pages/AdaptiveTechSession";
 import { Profile } from "./pages/Profile";
 import { Jobs } from "./pages/Jobs";
 import { JobDetails } from "./pages/JobDetails";
@@ -72,9 +74,11 @@ function App() {
             <Route path="/aptitude/progress" element={<AptitudeProgress />} />
             <Route path="/aptitude/history" element={<AptitudeHistory />} />
             <Route path="/aptitude/result" element={<AptitudeResult />} />
+            <Route path="/aptitude/adaptive/:attemptId" element={<AdaptiveAptitudeSession />} />
             <Route path="/tech-practice" element={<TechQuizSetup />} />
             <Route path="/tech-practice/quiz" element={<TechQuizSession />} />
             <Route path="/tech-practice/result" element={<TechQuizResult />} />
+            <Route path="/tech-practice/adaptive/:attemptId" element={<AdaptiveTechSession />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/jobs/:id" element={<JobDetails />} />

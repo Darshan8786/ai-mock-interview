@@ -1,0 +1,2 @@
+# Hash-locked training splits (SPLIT_MANIFEST.json stores their sha256) - keep bytes exactly as written
+ai-services/interviewer_llm/data/v2_combined/*.jsonl -text

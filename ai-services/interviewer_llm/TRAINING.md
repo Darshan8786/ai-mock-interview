@@ -194,3 +194,91 @@ phrases, off-topic content) — all correctly rejected.
 - No second, independent interview system — this plugs into the existing `/generate-questions` endpoint and
   `interview_question_service.py`, HR/Behavioral/Resume question generation is untouched.
 - Full training was not started before the smoke test passed and was reviewed.
+
+## 12. v2 — combined INTERVIEW + APTITUDE + TECH model
+
+The v1 model above only ever generated interview questions (and its full run never finished: only the smoke adapter
+existed, so the mock interview was actually served by the offline bank). v2 extends the SAME pipeline — same base
+model (Qwen2.5-0.5B-Instruct), same LoRA recipe, same `train.py` — to three domains. Nothing from v1 was overwritten:
+v2 data lives in `data/v2_combined/`, the model in `models/v2_combined/`, runs in `outputs/v2_*`.
+
+### 12.1 Data (`training/build_multidomain_dataset.py`)
+
+| domain | source | notes |
+|---|---|---|
+| interview | `data/processed/interview_cleaned.jsonl` (v1) + `hr_behavioral_dataset.json` | v1 split preserved (the v1 locked test set stays test data) |
+| aptitude | `training/data/aptitude_questions/seed_export.json` — exported from the backend seed banks by `placement-prep-be/src/scripts/exportAptitudeDataset.ts` — + correct-by-construction items from `aptitude_templates.py` | topic names normalised to the 64-topic catalog; difficulty beginner/intermediate/advanced → easy/medium/hard |
+| tech | `training/data/tech_questions/*.json` | types mapped to mcq / conceptual / output_prediction / debugging / coding |
+
+Every record goes through `structured_validator.py` (the same gate used at runtime). Numerical aptitude keys go through
+`numeric_verifier.py` (topic solvers + explanation arithmetic + variable back-substitution); a CONTRADICTED key is
+rejected, never trained on. De-duplication: exact duplicates anywhere, near duplicates within a domain+technology
+(aptitude near-duplicates must also share their numbers). Split: near-duplicate clusters (union-find over an exhaustive
+length-windowed pair scan, across ALL domains) are split 80/10/10 per (domain, technology/category, topic); a final
+independent re-scan fails the build if any exact/near duplicate straddles two splits. Report:
+`data/reports/v2_dataset_report.{json,txt}`.
+
+Result of the run in this repo (from the report file, not estimated): 4529 accepted records (interview 1047, aptitude
+1467 incl. 295 template items, tech 2015); 259 rejected (240 duplicates; 7 aptitude items with a wrong / ambiguous key
+or inconsistent working, listed by id in the report — e.g. `quantSeed-0026` has no valid solution, `quantSeed-0023`
+and `quantSeed-0088` offer two equal options; 6 debugging items without distinct buggy/fixed code; 6 explanations that
+only restate the answer). Split records: train 3737 / validation 397 / test 395. Examples (tasks):
+train 6212 (qgen_interview 1672, qgen_aptitude 1165, qgen_tech 1736, mcq_answer 1639).
+
+### 12.2 Prompt / output format (`training/prompting.py`, v2 section)
+
+```
+system: domain-specific (qgen_interview / qgen_aptitude / qgen_tech / mcq_answer)
+user:   Generate one question.
+        Context: {"domain": "aptitude", "category": "Quantitative", "topic": "Percentages", "difficulty": "medium", "question_type": "mcq"}
+        Schema: {"question": str, "options": [4 x str], "answer": str, "explanation": str (answer is one of the options)}
+assistant: one JSON object in that schema
+```
+`mcq_answer` (question + options → the correct option text) is trained too; at runtime it is the self-consistency
+check for generated MCQs whose key cannot be verified deterministically.
+
+### 12.3 Training
+
+```bash
+# from ai-services/interviewer_llm, CUDA venv
+python training/build_multidomain_dataset.py
+python training/train.py --smoke --no-4bit --data-dir data/v2_combined --output-dir outputs/v2_smoke \
+    --tasks qgen_interview,qgen_aptitude,qgen_tech,mcq_answer --batch-size 2 --grad-accum 8 --max-seq-len 512 --group-by-length
+python training/train.py --no-4bit --data-dir data/v2_combined --output-dir outputs/v2_run --final-dir models/v2_combined \
+    --tasks qgen_interview,qgen_aptitude,qgen_tech,mcq_answer --batch-size 2 --grad-accum 8 --max-seq-len 512 --epochs 3 \
+    --group-by-length [--resume-from-checkpoint auto]
+python training/export_merged.py --final-dir models/v2_combined       # merged weights for the Flask venv (no peft there)
+python training/evaluate_v2.py                                      # fine-tuned, locked test split
+python training/evaluate_v2.py --no-adapter                          # base-model baseline
+```
+max_seq_len 512 truncates nothing (longest v2 example: 487 tokens). Smoke run: exit 0, validation loss 1.216.
+
+### 12.4 Runtime (`question_engine.py`, `interviewer_llm/multidomain.py`)
+
+`QuestionGenerationService.generate_aptitude_question / generate_tech_question / generate_interview_question`:
+model (only if already loaded; bounded budget) → `structured_validator` → answer check (deterministic for numerical
+aptitude; model self-consistency otherwise, or rejected entirely with `QUESTION_ENGINE_STRICT=on`) → duplicate check
+(student history + session, incl. same-template-different-numbers) → on failure: templates (quant/series) → cleaned
+seed bank (aptitude) / curated dataset (tech). `generate_interview_question` delegates to the existing mock-interview
+chain unchanged. `MULTIDOMAIN_LLM=off` disables the model; everything still works from verified fallbacks.
+Endpoints: `POST /aptitude/generate-question`, `POST /tech-practice/generate-question`, `POST /tech-practice/evaluate`,
+`GET /question-engine/status`.
+
+### 12.5 What actually ran (this repo, 2026-09-26)
+
+- The 3-epoch run was stopped three times by Claude Code's low-memory guard (7.8 GB RAM machine); epoch 3 was then
+  finished from checkpoint-778 in a plain terminal. Validation loss: epoch 1 0.952, epoch 2 **0.939**, epoch 3 0.979
+  (overfitting). The trainer restored the best checkpoint, so the final model (`models/v2_combined_e3`) is
+  byte-identical to the deployed epoch-2 model in `models/v2_combined/{adapter,merged}` (smoke run: 1.216).
+- `evaluate_v2.py --per-domain 20 --samples 2 --mcq 80` on the locked test split (`outputs/eval/v2_eval_v2_combined.json`):
+
+| domain | parse | valid (production gate) | novel (of valid) | notes |
+|---|---|---|---|---|
+| interview | 1.00 | 0.875 | 0.83 | rejections: off_topic 3, invalid_format 2 |
+| aptitude | 1.00 | 0.60 | 0.63 | of 16 numeric items: key PROVEN 25%, key CONTRADICTED 50% (caught + rejected) |
+| tech | 0.925 | 0.925 (structure only) | 0.97 | a live sample passed structure + self-consistency but was factually wrong |
+| mcq_answer | | accuracy 0.625 (80 items) | | too weak to certify answer keys |
+
+  Consequence: `QUESTION_ENGINE_STRICT` defaults to ON - the model is served only for numerical aptitude, where
+  numeric_verifier proves the key; tech and verbal/logical aptitude come from the curated verified banks. No base-model
+  baseline was run (time/memory); `evaluate_v2.py --no-adapter` does it.

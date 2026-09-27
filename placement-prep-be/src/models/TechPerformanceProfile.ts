@@ -9,6 +9,9 @@ const techTopicStatSchema = new mongoose.Schema(
     topic: { type: String, required: true },
     correct: { type: Number, default: 0 },
     total: { type: Number, default: 0 },
+    responseTimeTotal: { type: Number, default: 0 }, // seconds, over answers that recorded a time
+    timedAnswers: { type: Number, default: 0 },
+    lastSeen: { type: Date, default: null },
   },
   { _id: false }
 );

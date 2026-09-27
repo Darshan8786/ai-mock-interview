@@ -1,0 +1,30 @@
+total_accepted_records: 4529
+accepted_by_domain: {"interview": 1047, "aptitude": 1467, "tech": 2015}
+aptitude_template_records: 295
+aptitude_verification: {"deterministic": 763, "unverified_human_authored": 177, "human_authored_non_numeric": 527}
+accepted_before_dedupe: {"interview": 1115, "aptitude_seed": 1197, "tech": 2073}
+rejected_total: 259
+rejected_by_domain: {"aptitude": 127, "tech": 64, "interview": 68}
+rejected_reasons: {"answer_key_contradicted": 5, "explanation_arithmetic_error": 2, "missing_explanation": 6, "explanation_reaches_other_option": 1, "duplicate_option_values": 2, "duplicate_options": 2, "debugging_needs_buggy_and_fixed_code": 6, "exact_duplicate": 16, "near_duplicate": 224}
+duplicates_removed: 240
+split_records: {"train": {"interview": 836, "aptitude": 1165, "tech": 1736}, "validation": {"interview": 106, "aptitude": 151, "tech": 140}, "test": {"interview": 105, "aptitude": 151, "tech": 139}}
+split_examples: {"train": {"qgen_tech": 1736, "mcq_answer": 1639, "qgen_aptitude": 1165, "qgen_interview": 1672}, "validation": {"qgen_aptitude": 151, "mcq_answer": 185, "qgen_interview": 106, "qgen_tech": 140}, "test": {"qgen_aptitude": 151, "mcq_answer": 189, "qgen_interview": 105, "qgen_tech": 139}}
+not_trained_on_output_too_long: {}
+tech_notes: {}
+split_notes: {"clusters": 4473, "multi_record_clusters": 37}
+
+Aptitude records rejected for a wrong / ambiguous answer key or inconsistent working:
+  - quantSeed1-0031 [HCF & LCM] ['answer_key_contradicted', 'explanation_arithmetic_error'] ['false equality: 10000 + (63 − 37) = 10017']
+      The least number of five digits which is exactly divisible by 63 is:
+  - logicalSeed2-0130 [Calendars] ['answer_key_contradicted', 'explanation_reaches_other_option'] ["working ends at 4.0 ~ '4', key says '5'"]
+      If the 3rd day of a month is Monday, how many Sundays are there in that month if the month has 31 days?
+  - quantSeed-0023 [Ratio & Proportion] ['answer_key_contradicted', 'duplicate_option_values'] []
+      If A:B = 3:4 and B:C = 6:5, then A:C is:
+  - quantSeed-0026 [Ratio & Proportion] ['answer_key_contradicted', 'explanation_arithmetic_error'] ['false equality: 5x−6y = 600']
+      The ratio of incomes of A and B is 4:5 and their expenditures are 5:6. If each saves ₹600, A's income is:
+  - quantSeed-0088 [Simplification] ['answer_key_contradicted', 'duplicate_option_values'] []
+      0.05 as a fraction in lowest terms is:
+  - verbalSeed-0011 [Vocabulary] ['duplicate_options'] []
+      Select the correct spelling:
+  - verbalSeed-0024 [Para Jumbles] ['duplicate_options'] []
+      Arrange: (P) to the station (Q) we hurried (R) before the train left (S) as fast as we could

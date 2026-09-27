@@ -19,6 +19,16 @@ import {
   getAptitudeHistoryDetail,
   getAptitudeQuestions,
 } from "../controllers/aptitudeController";
+import {
+  getAdaptivePersonalization,
+  startAdaptiveAptitude,
+  getAdaptiveAptitudeState,
+  retryAdaptiveAptitude,
+  answerAdaptiveAptitude,
+  finishAdaptiveAptitude,
+  getAdaptiveAptitudeReport,
+  reattemptAdaptiveAptitude,
+} from "../controllers/aptitudeAdaptiveController";
 import { protect } from "../middleware/auth";
 
 const router = Router();
@@ -51,6 +61,16 @@ router.post("/test/:attemptId/submit", submitAptitudeTest);
 router.get("/progress", getAptitudeProgress);
 router.get("/history", getAptitudeHistory);
 router.get("/history/:attemptId", getAptitudeHistoryDetail);
+
+// Adaptive AI-generated practice (one question at a time; see aptitudeAdaptiveController.ts)
+router.get("/adaptive/personalization", getAdaptivePersonalization);
+router.post("/adaptive/start", startAdaptiveAptitude);
+router.get("/adaptive/:attemptId/state", getAdaptiveAptitudeState);
+router.post("/adaptive/:attemptId/retry", retryAdaptiveAptitude);
+router.post("/adaptive/:attemptId/answer", answerAdaptiveAptitude);
+router.post("/adaptive/:attemptId/finish", finishAdaptiveAptitude);
+router.get("/adaptive/:attemptId/report", getAdaptiveAptitudeReport);
+router.post("/adaptive/:attemptId/items/:itemIndex/reattempt", reattemptAdaptiveAptitude);
 
 // Public question bank (no answers)
 router.get("/questions", getAptitudeQuestions);

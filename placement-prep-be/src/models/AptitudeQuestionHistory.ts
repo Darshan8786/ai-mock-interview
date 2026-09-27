@@ -20,6 +20,11 @@ const AptitudeQuestionHistorySchema = new Schema(
     // Index the student selected within servedOptions.
     selected: { type: Number, default: null },
     correct: { type: Boolean, default: null },
+    // Adaptive sessions: signals used for personalisation.
+    topic: { type: String, default: "" },
+    difficulty: { type: String, default: "" },
+    responseTime: { type: Number, default: null }, // seconds
+    source: { type: String, default: "" },
   },
   { timestamps: { createdAt: "shownAt", updatedAt: false } }
 );
