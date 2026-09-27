@@ -140,42 +140,42 @@ export function CollegeInterviewList() {
             renderRow={(i) => (
               <>
                 <td className="py-3 px-4">
-                  <p className="text-white font-medium">{i.name}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-slate-900 font-medium">{i.name}</p>
+                  <p className="text-xs text-slate-500">
                     {i.difficulty} · {i.timeLimit} min{i.programmingLanguage !== "None" ? ` · ${i.programmingLanguage}` : ""}
                   </p>
                 </td>
-                <td className="py-3 px-4 text-gray-300">{i.jobRole}</td>
-                <td className="py-3 px-4 text-gray-300">{i.interviewType}</td>
+                <td className="py-3 px-4 text-slate-700">{i.jobRole}</td>
+                <td className="py-3 px-4 text-slate-700">{i.interviewType}</td>
                 <td className="py-3 px-4">
-                  <span className={i.questionsAuthored === i.questionCount ? "text-emerald-400" : "text-yellow-400"}>
+                  <span className={i.questionsAuthored === i.questionCount ? "text-emerald-700" : "text-yellow-700"}>
                     {i.questionsAuthored}
                   </span>
-                  <span className="text-gray-500">/{i.questionCount}</span>
+                  <span className="text-slate-500">/{i.questionCount}</span>
                 </td>
                 <td className="py-3 px-4">
                   <Badge tone={statusTone(i.status)}>{i.status}</Badge>
                 </td>
                 <td className="py-3 px-4 text-right">
                   <div className="flex flex-wrap items-center justify-end gap-1">
-                    <button className={`${link} text-blue-400 hover:bg-blue-500/10`} onClick={() => navigate(`/admin/college-interviews/${i._id}`)}>View</button>
+                    <button className={`${link} text-indigo-700 hover:bg-indigo-100`} onClick={() => navigate(`/admin/college-interviews/${i._id}`)}>View</button>
                     <button
-                      className={`${link} text-gray-300 hover:bg-gray-700/50 disabled:opacity-40`}
+                      className={`${link} text-slate-700 hover:bg-slate-200 disabled:opacity-40`}
                       disabled={i.status === "closed"}
                       onClick={() => navigate(`/admin/college-interviews/${i._id}/edit`)}
                     >
                       Edit
                     </button>
-                    <button className={`${link} text-purple-300 hover:bg-purple-500/10`} onClick={() => navigate(`/admin/college-interviews/${i._id}/questions`)}>Questions</button>
+                    <button className={`${link} text-purple-700 hover:bg-purple-100`} onClick={() => navigate(`/admin/college-interviews/${i._id}/questions`)}>Questions</button>
                     {i.status !== "published" && (
-                      <button className={`${link} text-emerald-400 hover:bg-emerald-500/10 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "published")}>
+                      <button className={`${link} text-emerald-700 hover:bg-emerald-100 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "published")}>
                         {i.status === "closed" ? "Reopen" : "Publish"}
                       </button>
                     )}
                     {i.status === "published" && (
-                      <button className={`${link} text-yellow-400 hover:bg-yellow-500/10 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "closed")}>Close</button>
+                      <button className={`${link} text-yellow-700 hover:bg-yellow-100 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "closed")}>Close</button>
                     )}
-                    <button className={`${link} text-red-400 hover:bg-red-500/10`} onClick={() => setDeleting(i)}>Delete</button>
+                    <button className={`${link} text-red-700 hover:bg-red-100`} onClick={() => setDeleting(i)}>Delete</button>
                   </div>
                 </td>
               </>
@@ -196,8 +196,8 @@ export function CollegeInterviewList() {
           </>
         }
       >
-        <p className="text-gray-300 text-sm">
-          Delete <span className="text-white font-semibold">{deleting?.name}</span> and all of its questions? This cannot be undone.
+        <p className="text-slate-700 text-sm">
+          Delete <span className="text-slate-900 font-semibold">{deleting?.name}</span> and all of its questions? This cannot be undone.
         </p>
       </Modal>
 
@@ -208,10 +208,10 @@ export function CollegeInterviewList() {
         size="md"
         footer={<Button variant="ghost" onClick={() => setProblems(null)}>OK</Button>}
       >
-        <p className="text-gray-300 text-sm mb-3">
-          <span className="text-white font-semibold">{problems?.name}</span> needs these fixes before students can see it:
+        <p className="text-slate-700 text-sm mb-3">
+          <span className="text-slate-900 font-semibold">{problems?.name}</span> needs these fixes before students can see it:
         </p>
-        <ul className="list-disc pl-5 space-y-1 text-sm text-yellow-300">
+        <ul className="list-disc pl-5 space-y-1 text-sm text-yellow-700">
           {problems?.list.map((p) => (
             <li key={p}>{p}</li>
           ))}

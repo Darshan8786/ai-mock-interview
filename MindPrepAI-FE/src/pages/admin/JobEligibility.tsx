@@ -21,12 +21,12 @@ import { ErrorState } from "../../components/admin/ErrorState";
 type Tab = "eligible" | "ineligible";
 
 const statCards = [
-  { key: "total", label: "Total Students", color: "text-gray-200" },
-  { key: "eligible", label: "Eligible", color: "text-emerald-400" },
-  { key: "ineligible", label: "Not Eligible", color: "text-red-400" },
-  { key: "applications", label: "Applications", color: "text-blue-400" },
-  { key: "shortlisted", label: "Shortlisted", color: "text-yellow-400" },
-  { key: "selected", label: "Selected", color: "text-purple-400" },
+  { key: "total", label: "Total Students", color: "text-slate-800" },
+  { key: "eligible", label: "Eligible", color: "text-emerald-700" },
+  { key: "ineligible", label: "Not Eligible", color: "text-red-700" },
+  { key: "applications", label: "Applications", color: "text-indigo-700" },
+  { key: "shortlisted", label: "Shortlisted", color: "text-yellow-700" },
+  { key: "selected", label: "Selected", color: "text-purple-700" },
 ];
 
 export function JobEligibility() {
@@ -227,24 +227,24 @@ export function JobEligibility() {
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
             {statCards.map((s) => (
-              <div key={s.key} className="rounded-2xl bg-gray-900 border border-gray-800 p-4">
-                <p className="text-2xl font-bold text-white">{stats[s.key as keyof typeof stats]}</p>
+              <div key={s.key} className="rounded-xl bg-white border border-slate-200 p-4 shadow-sm">
+                <p className="text-2xl font-bold text-slate-900">{stats[s.key as keyof typeof stats]}</p>
                 <p className={`text-xs font-medium uppercase tracking-wider mt-1 ${s.color}`}>{s.label}</p>
               </div>
             ))}
           </div>
 
           {/* Eligibility criteria summary */}
-          <div className="rounded-2xl bg-gray-900 border border-gray-800 p-4 mb-6 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-            <span className="text-gray-400">
-              CGPA ≥ <span className="text-white font-semibold">{job?.eligibility?.minimumCGPA ?? "Any"}</span>
+          <div className="rounded-xl bg-white border border-slate-200 p-4 mb-6 flex flex-wrap gap-x-8 gap-y-2 text-sm shadow-sm">
+            <span className="text-slate-500">
+              CGPA ≥ <span className="text-slate-900 font-semibold">{job?.eligibility?.minimumCGPA ?? "Any"}</span>
             </span>
-            <span className="text-gray-400">
-              Backlogs ≤ <span className="text-white font-semibold">{job?.eligibility?.maximumBacklogs ?? "Any"}</span>
+            <span className="text-slate-500">
+              Backlogs ≤ <span className="text-slate-900 font-semibold">{job?.eligibility?.maximumBacklogs ?? "Any"}</span>
             </span>
-            <span className="text-gray-400">
+            <span className="text-slate-500">
               Departments:{" "}
-              <span className="text-white font-semibold">
+              <span className="text-slate-900 font-semibold">
                 {job?.eligibility?.allowedDepartments?.length
                   ? job.eligibility.allowedDepartments.join(", ")
                   : "All"}
@@ -254,11 +254,11 @@ export function JobEligibility() {
 
           {/* Tabs + actions */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
-            <div className="flex rounded-xl bg-gray-900 border border-gray-700 p-1 w-fit">
+            <div className="flex rounded-xl bg-white border border-slate-200 p-1 w-fit shadow-sm">
               <button
                 onClick={() => setTab("eligible")}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  tab === "eligible" ? "bg-emerald-600/20 text-emerald-400" : "text-gray-400 hover:text-white"
+                  tab === "eligible" ? "bg-emerald-50 text-emerald-700" : "text-slate-500 hover:text-slate-900"
                 }`}
               >
                 Eligible ({eligible.length})
@@ -266,7 +266,7 @@ export function JobEligibility() {
               <button
                 onClick={() => setTab("ineligible")}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  tab === "ineligible" ? "bg-red-600/20 text-red-400" : "text-gray-400 hover:text-white"
+                  tab === "ineligible" ? "bg-red-50 text-red-700" : "text-slate-500 hover:text-slate-900"
                 }`}
               >
                 Not Eligible ({ineligible.length})
@@ -300,7 +300,7 @@ export function JobEligibility() {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search USN, name, dept..."
                 spellCheck={false}
-                className="w-full sm:w-56 bg-gray-800/70 border border-gray-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                className="w-full sm:w-56 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-300"
               />
             }
           >
@@ -327,15 +327,15 @@ export function JobEligibility() {
                 renderRow={(s) => (
                   <>
                     <td className="py-3 px-4">
-                      <p className="text-white font-medium">{s.name}</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-slate-900 font-medium">{s.name}</p>
+                      <p className="text-xs text-slate-500">
                         {s.usn || "—"} {s.email && `• ${s.email}`}
                       </p>
                     </td>
-                    <td className="py-3 px-4 text-gray-300">{s.department || "—"}</td>
-                    <td className="py-3 px-4 text-gray-300">{s.cgpa != null ? s.cgpa.toFixed(2) : "—"}</td>
+                    <td className="py-3 px-4 text-slate-700">{s.department || "—"}</td>
+                    <td className="py-3 px-4 text-slate-700">{s.cgpa != null ? s.cgpa.toFixed(2) : "—"}</td>
                     <td className="py-3 px-4">
-                      <span className={s.backlogs > 0 ? "text-red-400 font-medium" : "text-gray-300"}>
+                      <span className={s.backlogs > 0 ? "text-red-700 font-medium" : "text-slate-700"}>
                         {s.backlogs}
                       </span>
                     </td>
@@ -371,9 +371,9 @@ export function JobEligibility() {
           </>
         }
       >
-        <p className="text-gray-300 text-sm">
-          Send the <span className="text-white font-semibold">"New Placement Opportunity"</span>{" "}
-          notification to all <span className="text-emerald-400 font-semibold">{eligible.length} eligible student(s)</span>?
+        <p className="text-slate-700 text-sm">
+          Send the <span className="text-slate-900 font-semibold">"New Placement Opportunity"</span>{" "}
+          notification to all <span className="text-emerald-700 font-semibold">{eligible.length} eligible student(s)</span>?
           Students already notified for this job will not be notified again.
         </p>
       </Modal>

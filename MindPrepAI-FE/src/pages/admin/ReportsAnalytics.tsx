@@ -140,7 +140,7 @@ export function ReportsAnalytics() {
         subtitle="Export placement reports and analyze platform performance"
         actions={
           <div className="flex flex-wrap items-center gap-2">
-            <Select value={range} onChange={(e) => onRange(e.target.value)}>
+            <Select value={range} onChange={(e) => onRange(e.target.value)} className="!w-auto">
               <option value="7">Last 7 days</option>
               <option value="30">Last 30 days</option>
               <option value="90">Last 90 days</option>
@@ -156,7 +156,7 @@ export function ReportsAnalytics() {
 
       {report.loading && !d ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {[0, 1, 2, 3].map((i) => <div key={i} className="bg-gray-800/70 rounded-2xl h-72 animate-pulse" />)}
+          {[0, 1, 2, 3].map((i) => <div key={i} className="bg-slate-50 rounded-xl h-72 animate-pulse" />)}
         </div>
       ) : d && k ? (
         <div className={report.loading ? "opacity-60 transition-opacity" : ""}>
@@ -246,36 +246,36 @@ export function ReportsAnalytics() {
 
 function Kpi({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
   return (
-    <div className="bg-gray-900/70 backdrop-blur-sm border border-gray-800 rounded-2xl p-4">
-      <p className="text-2xl font-bold text-white tracking-tight">{value}</p>
-      <p className="text-xs text-gray-400 mt-1">{label}</p>
-      {sub && <p className="text-[11px] text-gray-500 mt-0.5">{sub}</p>}
+    <div className="bg-white backdrop-blur-sm border border-slate-200 rounded-xl p-4 shadow-sm">
+      <p className="text-2xl font-bold text-slate-900 tracking-tight">{value}</p>
+      <p className="text-xs text-slate-500 mt-1">{label}</p>
+      {sub && <p className="text-[11px] text-slate-500 mt-0.5">{sub}</p>}
     </div>
   );
 }
 
 function Empty({ text }: { text: string }) {
-  return <div className="h-full flex items-center justify-center text-center text-sm text-gray-500 px-6">{text}</div>;
+  return <div className="h-full flex items-center justify-center text-center text-sm text-slate-500 px-6">{text}</div>;
 }
 
 function TopicTable({ title, rows }: { title: string; rows: TopicAccuracy[] }) {
   return (
-    <div className="bg-gray-900/70 border border-gray-800 rounded-2xl p-5">
-      <h3 className="text-white font-semibold">{title}</h3>
-      <p className="text-xs text-gray-500 mb-3">Lowest accuracy across all students in range (topics with 5+ answers)</p>
+    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+      <h3 className="text-slate-900 font-semibold">{title}</h3>
+      <p className="text-xs text-slate-500 mb-3">Lowest accuracy across all students in range (topics with 5+ answers)</p>
       {rows.length === 0 ? (
-        <p className="text-sm text-gray-500">Not enough answers in this range yet.</p>
+        <p className="text-sm text-slate-500">Not enough answers in this range yet.</p>
       ) : (
         <div className="space-y-2.5">
           {rows.map((r) => (
             <div key={r.topic}>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-300">{r.topic}</span>
-                <span className={r.accuracy >= 70 ? "text-emerald-400" : r.accuracy >= 50 ? "text-yellow-400" : "text-red-400"}>
-                  {r.accuracy}% <span className="text-gray-500 text-xs">({r.correct}/{r.answered})</span>
+                <span className="text-slate-700">{r.topic}</span>
+                <span className={r.accuracy >= 70 ? "text-emerald-700" : r.accuracy >= 50 ? "text-yellow-700" : "text-red-700"}>
+                  {r.accuracy}% <span className="text-slate-500 text-xs">({r.correct}/{r.answered})</span>
                 </span>
               </div>
-              <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+              <div className="h-1.5 bg-slate-50 rounded-full overflow-hidden">
                 <div className={`h-full rounded-full ${r.accuracy >= 70 ? "bg-emerald-500" : r.accuracy >= 50 ? "bg-yellow-500" : "bg-red-500"}`} style={{ width: `${r.accuracy}%` }} />
               </div>
             </div>

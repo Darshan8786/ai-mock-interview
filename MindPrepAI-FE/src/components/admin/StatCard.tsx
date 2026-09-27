@@ -1,38 +1,45 @@
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { FloatingCard } from "../3d/FloatingCard";
 
 interface StatCardProps {
   label: string;
   value: string | number;
-  icon: React.ReactNode;
+  icon: ReactNode;
+  /** Legacy dark-theme tint class (e.g. "bg-blue-500/15"); mapped to a light tint below. */
   color: string;
   trend?: string;
   trendUp?: boolean;
 }
 
+const TINTS: Record<string, string> = {
+  blue: "bg-indigo-50 text-indigo-600",
+  purple: "bg-violet-50 text-violet-600",
+  emerald: "bg-emerald-50 text-emerald-600",
+  cyan: "bg-cyan-50 text-cyan-600",
+  red: "bg-rose-50 text-rose-600",
+  green: "bg-emerald-50 text-emerald-600",
+  yellow: "bg-amber-50 text-amber-600",
+  amber: "bg-amber-50 text-amber-600",
+};
+
 export function StatCard({ label, value, icon, color, trend, trendUp }: StatCardProps) {
+  const hue = Object.keys(TINTS).find((h) => color.includes(h)) || "blue";
   return (
-    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -4 }}>
-      <FloatingCard intensity={5} className="bg-gray-900/70 backdrop-blur-sm border border-gray-800 rounded-2xl p-5">
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+      <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-5 h-full">
         <div className="flex items-start justify-between">
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${color}`}>
+          <p className="text-sm font-medium text-slate-500">{label}</p>
+          <div className={`w-9 h-9 rounded-lg flex items-center justify-center [&_svg]:text-current [&_svg]:w-[18px] [&_svg]:h-[18px] ${TINTS[hue]}`}>
             {icon}
           </div>
-          {trend && (
-            <span
-              className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                trendUp
-                  ? "bg-emerald-500/10 text-emerald-400"
-                  : "bg-red-500/10 text-red-400"
-              }`}
-            >
-              {trendUp ? "↑" : "↓"} {trend}
-            </span>
-          )}
         </div>
-        <p className="text-3xl font-bold text-white mt-4 tracking-tight">{value}</p>
-        <p className="text-sm text-gray-400 mt-1">{label}</p>
-      </FloatingCard>
+        <p className="text-3xl font-semibold text-slate-900 mt-2 tracking-tight">{value}</p>
+        {trend && (
+          <p className={`text-xs font-medium mt-2 ${trendUp ? "text-emerald-600" : "text-rose-600"}`}>
+            {trendUp ? "▲" : "▼"} {trend}
+          </p>
+        )}
+      </div>
     </motion.div>
   );
 }

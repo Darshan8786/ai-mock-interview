@@ -16,9 +16,9 @@ import { ErrorState } from "../../components/admin/ErrorState";
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-3 gap-3 py-2.5 border-b border-gray-800 last:border-0">
-      <dt className="text-xs font-medium text-gray-400 uppercase tracking-wider pt-0.5">{label}</dt>
-      <dd className="col-span-2 text-sm text-gray-200 break-words">{children}</dd>
+    <div className="grid grid-cols-3 gap-3 py-2.5 border-b border-slate-200 last:border-0">
+      <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider pt-0.5">{label}</dt>
+      <dd className="col-span-2 text-sm text-slate-800 break-words">{children}</dd>
     </div>
   );
 }
@@ -66,7 +66,7 @@ export function CollegeInterviewDetails() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center py-24 text-gray-400">Loading interview...</div>;
+  if (loading) return <div className="flex items-center justify-center py-24 text-slate-500">Loading interview...</div>;
 
   const i = detail?.interview;
   return (
@@ -88,7 +88,7 @@ export function CollegeInterviewDetails() {
       {error && <ErrorState message={error} onRetry={load} />}
 
       {problems.length > 0 && (
-        <div className="mb-4 rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-200">
+        <div className="mb-4 rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
           <p className="font-semibold mb-1">Can't publish yet:</p>
           <ul className="list-disc pl-5 space-y-0.5">{problems.map((p) => <li key={p}>{p}</li>)}</ul>
         </div>
@@ -104,7 +104,7 @@ export function CollegeInterviewDetails() {
               <Row label="Difficulty">{i.difficulty}</Row>
               <Row label="Questions">{detail.questions.length} written / {i.questionCount} required</Row>
               <Row label="Time Limit">{i.timeLimit} minutes</Row>
-              <Row label="Description">{i.description || <span className="text-gray-500">—</span>}</Row>
+              <Row label="Description">{i.description || <span className="text-slate-500">—</span>}</Row>
             </dl>
           </Card>
 
@@ -116,9 +116,9 @@ export function CollegeInterviewDetails() {
                 ["Completed", detail.attempts.completed],
                 ["Terminated", detail.attempts.terminated],
               ].map(([label, n]) => (
-                <div key={label as string} className="rounded-xl bg-gray-800/60 border border-gray-700 py-3">
-                  <p className="text-2xl font-bold text-white">{n}</p>
-                  <p className="text-xs text-gray-400">{label}</p>
+                <div key={label as string} className="rounded-xl bg-slate-50 border border-slate-200 py-3">
+                  <p className="text-2xl font-bold text-slate-900">{n}</p>
+                  <p className="text-xs text-slate-500">{label}</p>
                 </div>
               ))}
             </div>
@@ -126,26 +126,26 @@ export function CollegeInterviewDetails() {
 
           <Card title={`Questions (${detail.questions.length})`}>
             {detail.questions.length === 0 ? (
-              <p className="text-sm text-gray-500">No questions yet. Open "Questions" to add some.</p>
+              <p className="text-sm text-slate-500">No questions yet. Open "Questions" to add some.</p>
             ) : (
               <ol className="space-y-3">
                 {detail.questions.map((q) => (
-                  <li key={q._id} className="rounded-xl border border-gray-700 bg-gray-800/40 p-4">
+                  <li key={q._id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                     <div className="flex flex-wrap items-center gap-2 mb-1.5 text-xs">
-                      <span className="text-gray-400 font-medium">Q{q.order}</span>
+                      <span className="text-slate-500 font-medium">Q{q.order}</span>
                       <Badge tone="blue">{q.questionType}</Badge>
                       {q.topic && <Badge tone="gray">{q.topic}</Badge>}
                       <Badge tone="purple">{q.difficulty}</Badge>
-                      <span className="text-gray-400">{q.marks} {q.marks === 1 ? "mark" : "marks"}</span>
+                      <span className="text-slate-500">{q.marks} {q.marks === 1 ? "mark" : "marks"}</span>
                     </div>
-                    <p className="text-sm text-gray-100 whitespace-pre-line">{q.question}</p>
+                    <p className="text-sm text-slate-800 whitespace-pre-line">{q.question}</p>
                     {q.questionType === "MCQ" && (
                       <ul className="mt-2 space-y-1 text-sm">
                         {q.options.map((o, idx) => {
                           const letter = String.fromCharCode(65 + idx);
                           const right = q.correctAnswer === letter;
                           return (
-                            <li key={letter} className={right ? "text-emerald-400" : "text-gray-400"}>
+                            <li key={letter} className={right ? "text-emerald-700" : "text-slate-500"}>
                               {letter}. {o} {right && "✓"}
                             </li>
                           );

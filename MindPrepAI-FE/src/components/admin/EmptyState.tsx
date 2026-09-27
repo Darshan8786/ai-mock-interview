@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
 
 interface EmptyStateProps {
   icon?: ReactNode;
@@ -10,19 +9,15 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="flex flex-col items-center justify-center py-16 text-center"
-    >
+    <div className="flex flex-col items-center justify-center py-16 text-center">
       {icon && (
-        <div className="w-16 h-16 rounded-2xl bg-gray-800 flex items-center justify-center text-3xl mb-4">
+        <div className="w-14 h-14 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center text-2xl mb-4">
           {icon}
         </div>
       )}
-      <h3 className="text-white font-semibold text-lg">{title}</h3>
-      {description && <p className="text-gray-500 text-sm mt-1 max-w-sm">{description}</p>}
+      <h3 className="text-slate-900 font-semibold">{title}</h3>
+      {description && <p className="text-slate-500 text-sm mt-1 max-w-sm">{description}</p>}
       {action && <div className="mt-5">{action}</div>}
-    </motion.div>
+    </div>
   );
 }

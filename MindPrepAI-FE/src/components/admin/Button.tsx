@@ -8,11 +8,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants: Record<Variant, string> = {
-  primary: "bg-blue-600 text-white hover:bg-blue-700 border border-transparent",
-  secondary: "bg-gray-800 text-gray-200 hover:bg-gray-700 border border-gray-700",
-  danger: "bg-red-600/15 text-red-400 hover:bg-red-600/25 border border-red-500/30",
-  ghost: "bg-transparent text-gray-400 hover:text-white hover:bg-gray-800 border border-transparent",
-  success: "bg-emerald-600 text-white hover:bg-emerald-700 border border-transparent",
+  primary: "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-600/20 border border-transparent",
+  secondary: "bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 shadow-sm",
+  danger: "bg-white text-red-600 hover:bg-red-50 border border-red-200",
+  ghost: "bg-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-100 border border-transparent",
+  success: "bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm shadow-emerald-600/20 border border-transparent",
 };
 
 export function Button({
@@ -23,15 +23,14 @@ export function Button({
   children,
   ...rest
 }: ButtonProps) {
+  const spinner = variant === "primary" || variant === "success" ? "border-white/40 border-t-white" : "border-slate-300 border-t-slate-600";
   return (
     <button
       disabled={disabled || loading}
-      className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${variants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${className}`}
       {...rest}
     >
-      {loading && (
-        <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-      )}
+      {loading && <span className={`w-3.5 h-3.5 border-2 rounded-full animate-spin ${spinner}`} />}
       {children}
     </button>
   );
@@ -44,7 +43,7 @@ export function IconButton({
 }: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      className={`p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors ${className}`}
+      className={`p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors ${className}`}
       {...rest}
     >
       {children}

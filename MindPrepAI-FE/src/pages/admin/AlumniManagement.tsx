@@ -143,27 +143,27 @@ export function AlumniManagement() {
                 <>
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs font-bold text-white">
+                      <div className="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-xs font-bold text-slate-900">
                         {a.name.slice(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <p className="text-white font-medium">{a.name}</p>
-                        <p className="text-xs text-gray-500">{a.email}</p>
+                        <p className="text-slate-900 font-medium">{a.name}</p>
+                        <p className="text-xs text-slate-500">{a.email}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-4 text-gray-300">{a.graduationYear}</td>
-                  <td className="py-3 px-4 text-gray-300">{a.department}</td>
+                  <td className="py-3 px-4 text-slate-700">{a.graduationYear}</td>
+                  <td className="py-3 px-4 text-slate-700">{a.department}</td>
                   <td className="py-3 px-4">
-                    <p className="text-gray-200">{a.currentCompany}</p>
-                    <p className="text-xs text-gray-500">{a.currentJobRole}</p>
+                    <p className="text-slate-800">{a.currentCompany}</p>
+                    <p className="text-xs text-slate-500">{a.currentJobRole}</p>
                   </td>
                   <td className="py-3 px-4">
-                    {a.hasOpening ? <Badge tone="green">Job Opening Available</Badge> : <span className="text-gray-600">—</span>}
+                    {a.hasOpening ? <Badge tone="green">Job Opening Available</Badge> : <span className="text-slate-400">—</span>}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <div className="flex items-center justify-end gap-1">
-                      <IconButton title="View details" onClick={() => navigate(`/admin/alumni/${a._id}`)} className="hover:text-blue-400">
+                      <IconButton title="View details" onClick={() => navigate(`/admin/alumni/${a._id}`)} className="hover:text-indigo-700">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -174,7 +174,7 @@ export function AlumniManagement() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                       </IconButton>
-                      <IconButton title="Delete" onClick={() => setDeleting(a)} className="hover:text-red-400 hover:bg-red-500/10">
+                      <IconButton title="Delete" onClick={() => setDeleting(a)} className="hover:text-red-700 hover:bg-red-100">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -186,7 +186,7 @@ export function AlumniManagement() {
             />
 
             {pagination && pagination.totalPages > 1 && (
-              <div className="mt-4 flex items-center justify-between text-sm text-gray-400">
+              <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
                 <span>
                   Page {pagination.page} of {pagination.totalPages}
                 </span>
@@ -216,8 +216,8 @@ export function AlumniManagement() {
           </>
         }
       >
-        <p className="text-gray-300 text-sm">
-          Delete <span className="text-white font-semibold">{deleting?.name}</span>
+        <p className="text-slate-700 text-sm">
+          Delete <span className="text-slate-900 font-semibold">{deleting?.name}</span>
           {deleting?.hasOpening && " and their job opening"}? This cannot be undone.
         </p>
       </Modal>

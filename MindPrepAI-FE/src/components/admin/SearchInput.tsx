@@ -14,7 +14,7 @@ export function SearchInput({
   return (
     <div className={`relative ${className}`}>
       <svg
-        className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2"
+        className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -30,7 +30,7 @@ export function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-gray-800/70 border border-gray-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all"
+        className="w-full bg-white border border-slate-300 rounded-lg pl-10 pr-4 py-2 text-sm text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-colors"
       />
     </div>
   );

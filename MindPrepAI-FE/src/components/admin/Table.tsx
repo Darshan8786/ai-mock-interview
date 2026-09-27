@@ -12,21 +12,21 @@ export function Table<T>({ columns, rows, renderRow, emptyMessage = "No records 
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-gray-800">
+          <tr className="bg-slate-50 border-b border-slate-200">
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`text-left py-3 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider ${col.className || ""}`}
+                className={`text-left py-2.5 px-4 text-[11px] font-semibold text-slate-500 uppercase tracking-wider ${col.className || ""}`}
               >
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-800/70">
+        <tbody className="divide-y divide-slate-100">
           {rows.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="py-10 text-center text-gray-500">
+              <td colSpan={columns.length} className="py-12 text-center text-slate-500">
                 {emptyMessage}
               </td>
             </tr>
@@ -40,5 +40,5 @@ export function Table<T>({ columns, rows, renderRow, emptyMessage = "No records 
 }
 
 function FragmentRow({ children }: { children: ReactNode }) {
-  return <tr className="hover:bg-gray-800/40 transition-colors">{children}</tr>;
+  return <tr className="hover:bg-slate-50/80 transition-colors">{children}</tr>;
 }

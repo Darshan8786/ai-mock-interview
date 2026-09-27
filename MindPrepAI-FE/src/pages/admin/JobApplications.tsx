@@ -21,12 +21,12 @@ const applicantTone: Record<ApplicationStatus, "blue" | "yellow" | "red" | "gree
 };
 
 const statCards = [
-  { key: "total", label: "Total", color: "text-gray-200" },
-  { key: "applied", label: "Applied", color: "text-blue-400" },
-  { key: "shortlisted", label: "Shortlisted", color: "text-yellow-400" },
-  { key: "rejected", label: "Rejected", color: "text-red-400" },
-  { key: "selected", label: "Selected", color: "text-emerald-400" },
-  { key: "withdrawn", label: "Withdrawn", color: "text-gray-500" },
+  { key: "total", label: "Total", color: "text-slate-800" },
+  { key: "applied", label: "Applied", color: "text-indigo-700" },
+  { key: "shortlisted", label: "Shortlisted", color: "text-yellow-700" },
+  { key: "rejected", label: "Rejected", color: "text-red-700" },
+  { key: "selected", label: "Selected", color: "text-emerald-700" },
+  { key: "withdrawn", label: "Withdrawn", color: "text-slate-500" },
 ];
 
 export function JobApplications() {
@@ -100,8 +100,8 @@ export function JobApplications() {
       {stats && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
           {statCards.map((s) => (
-            <div key={s.key} className="rounded-2xl bg-gray-900 border border-gray-800 p-4">
-              <p className="text-2xl font-bold text-white">{stats[s.key as keyof typeof stats] ?? 0}</p>
+            <div key={s.key} className="rounded-xl bg-white border border-slate-200 p-4 shadow-sm">
+              <p className="text-2xl font-bold text-slate-900">{stats[s.key as keyof typeof stats] ?? 0}</p>
               <p className={`text-xs font-medium uppercase tracking-wider mt-1 ${s.color}`}>{s.label}</p>
             </div>
           ))}
@@ -127,14 +127,14 @@ export function JobApplications() {
             renderRow={(a) => (
               <>
                 <td className="py-3 px-4">
-                  <p className="text-white font-medium">{a.studentName || "Unknown"}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-slate-900 font-medium">{a.studentName || "Unknown"}</p>
+                  <p className="text-xs text-slate-500">
                     {a.usn || "—"} {a.email && `• ${a.email}`}
                   </p>
                 </td>
-                <td className="py-3 px-4 text-gray-300">{a.department || "—"}</td>
-                <td className="py-3 px-4 text-gray-300">{typeof a.cgpa === "number" ? a.cgpa.toFixed(2) : "—"}</td>
-                <td className="py-3 px-4 text-gray-300">{new Date(a.appliedAt).toLocaleDateString()}</td>
+                <td className="py-3 px-4 text-slate-700">{a.department || "—"}</td>
+                <td className="py-3 px-4 text-slate-700">{typeof a.cgpa === "number" ? a.cgpa.toFixed(2) : "—"}</td>
+                <td className="py-3 px-4 text-slate-700">{new Date(a.appliedAt).toLocaleDateString()}</td>
                 <td className="py-3 px-4">
                   <Badge tone={applicantTone[a.status] || "gray"}>{a.status}</Badge>
                 </td>
@@ -172,7 +172,7 @@ export function JobApplications() {
                     )}
                     <IconButton
                       title={a.resumeUrl ? "Open resume" : "No resume uploaded"}
-                      className={a.resumeUrl ? "hover:text-blue-400" : "opacity-40 cursor-not-allowed"}
+                      className={a.resumeUrl ? "hover:text-indigo-700" : "opacity-40 cursor-not-allowed"}
                       onClick={() => {
                         if (a.resumeUrl) window.open(a.resumeUrl, "_blank", "noopener,noreferrer");
                       }}
