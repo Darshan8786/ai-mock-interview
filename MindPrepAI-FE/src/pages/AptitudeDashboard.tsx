@@ -250,7 +250,6 @@ export function AptitudeDashboard() {
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                         <TopicCard
                           label={`All ${category}`}
-                          sub={`${categoryTotal} questions`}
                           active={topic === ""}
                           onClick={() => setTopic("")}
                         />
@@ -258,7 +257,6 @@ export function AptitudeDashboard() {
                           <TopicCard
                             key={t.id}
                             label={t.name}
-                            sub={`${t.questionCount} questions`}
                             active={topic === t.name}
                             disabled={t.questionCount === 0}
                             onClick={() => setTopic(t.name)}
@@ -279,7 +277,6 @@ export function AptitudeDashboard() {
                           <TopicCard
                             key={c.name}
                             label={c.name}
-                            sub={`${c.questionCount} questions`}
                             active={company === c.name}
                             onClick={() => setCompany(c.name)}
                           />
@@ -438,13 +435,11 @@ export function AptitudeDashboard() {
 
 function TopicCard({
   label,
-  sub,
   active,
   disabled,
   onClick,
 }: {
   label: string;
-  sub: string;
   active: boolean;
   disabled?: boolean;
   onClick: () => void;
@@ -460,7 +455,6 @@ function TopicCard({
       }`}
     >
       <p className={`text-sm font-medium ${active ? "text-emerald-400" : "text-gray-200"}`}>{label}</p>
-      <p className="text-[11px] text-gray-500 mt-0.5">{sub}</p>
     </button>
   );
 }
