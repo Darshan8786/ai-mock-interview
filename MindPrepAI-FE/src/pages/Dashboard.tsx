@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState, lazy, Suspense } from "react";
-import { FloatingCard } from "../components/3d/FloatingCard";
 import { getMyNotifications, type StudentNotification } from "../services/notificationsApi";
 
 // Code-split: three.js + @react-three/fiber only load on pages that render 3D.
@@ -77,11 +76,6 @@ export function Dashboard() {
             path: "/my-applications",
             color: "from-fuchsia-500 to-pink-500",
         },
-    ];
-
-    const stats = [
-        { label: "Success Rate", value: "92%", icon: "🎯" },
-        { label: "Company Wise", value: "5+", icon: "🏢" },
     ];
 
     return (
@@ -168,35 +162,6 @@ export function Dashboard() {
                     </div>
                 </div>
             </section>
-
-            {/* Stats Section */}
-            <motion.section
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="px-4 py-12 sm:px-6 lg:px-8"
-            >
-                <div className="mx-auto max-w-6xl">
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid grid-cols-2 gap-4 max-w-2xl mx-auto"
-                    >
-                        {stats.map((stat, idx) => (
-                            <motion.div key={idx} variants={itemVariants} whileHover={{ y: -5 }}>
-                                <FloatingCard className="rounded-2xl glass glass-hover p-6">
-                                    <span className="text-2xl">{stat.icon}</span>
-                                    <p className="text-gray-400 text-sm font-medium mt-2">{stat.label}</p>
-                                    <p className="text-3xl font-bold text-white mt-1 font-poppins">{stat.value}</p>
-                                </FloatingCard>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </div>
-            </motion.section>
 
             {/* Notifications Section */}
             {notifications.length > 0 && (
