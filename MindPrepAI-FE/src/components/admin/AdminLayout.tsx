@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import "./admin.css";
 
 interface NavItem {
   label: string;
   path: string;
   icon: React.ReactNode;
+  /** Icon-chip colour for this item. */
+  chip: string;
 }
 
 const icons = {
@@ -34,35 +37,35 @@ const navGroups: { title: string; items: NavItem[] }[] = [
   {
     title: "Overview",
     items: [
-      { label: "Dashboard", path: "/admin", icon: <NavIcon>{icons.dashboard}</NavIcon> },
-      { label: "Reports & Analytics", path: "/admin/reports", icon: <NavIcon>{icons.reports}</NavIcon> },
+      { label: "Dashboard", path: "/admin", icon: <NavIcon>{icons.dashboard}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Reports & Analytics", path: "/admin/reports", icon: <NavIcon>{icons.reports}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
     ],
   },
   {
     title: "Students",
     items: [
-      { label: "Students", path: "/admin/students", icon: <NavIcon>{icons.students}</NavIcon> },
-      { label: "Resumes", path: "/admin/resumes", icon: <NavIcon>{icons.resumes}</NavIcon> },
+      { label: "Students", path: "/admin/students", icon: <NavIcon>{icons.students}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Resumes", path: "/admin/resumes", icon: <NavIcon>{icons.resumes}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
     ],
   },
   {
     title: "Assessments",
     items: [
-      { label: "Interviews", path: "/admin/interviews", icon: <NavIcon>{icons.interviews}</NavIcon> },
-      { label: "Aptitude", path: "/admin/aptitude", icon: <NavIcon>{icons.aptitude}</NavIcon> },
+      { label: "Interviews", path: "/admin/interviews", icon: <NavIcon>{icons.interviews}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Aptitude", path: "/admin/aptitude", icon: <NavIcon>{icons.aptitude}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
     ],
   },
   {
     title: "Placements",
     items: [
-      { label: "Jobs", path: "/admin/jobs", icon: <NavIcon>{icons.jobs}</NavIcon> },
-      { label: "Alumni", path: "/admin/alumni", icon: <NavIcon>{icons.alumni}</NavIcon> },
-      { label: "Announcements", path: "/admin/announcements", icon: <NavIcon>{icons.announcements}</NavIcon> },
+      { label: "Jobs", path: "/admin/jobs", icon: <NavIcon>{icons.jobs}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Alumni", path: "/admin/alumni", icon: <NavIcon>{icons.alumni}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Announcements", path: "/admin/announcements", icon: <NavIcon>{icons.announcements}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
     ],
   },
   {
     title: "System",
-    items: [{ label: "Settings", path: "/admin/settings", icon: <NavIcon>{icons.settings}</NavIcon> }],
+    items: [{ label: "Settings", path: "/admin/settings", icon: <NavIcon>{icons.settings}</NavIcon>, chip: "from-indigo-400 to-violet-500" }],
   },
 ];
 const allItems = navGroups.flatMap((g) => g.items);
@@ -73,12 +76,12 @@ const isActive = (path: string, pathname: string) =>
 function Logo() {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-sm shadow-indigo-600/30">
+      <div className="w-9 h-9 rounded-xl gloss-sm bg-gradient-to-br from-indigo-400 to-violet-500 flex items-center justify-center">
         <span className="text-white font-bold text-sm">M</span>
       </div>
       <div className="leading-tight">
-        <p className="text-sm font-semibold text-slate-900">MindPrep AI</p>
-        <p className="text-[11px] text-slate-500">Placement Admin</p>
+        <p className="text-sm font-bold text-white">MindPrep AI</p>
+        <p className="text-[11px] text-white/70">Placement Admin</p>
       </div>
     </div>
   );
@@ -99,14 +102,14 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center px-5 h-16 border-b border-slate-200">
+      <div className="flex items-center px-5 h-16 border-b border-white/10">
         <Logo />
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
         {navGroups.map((group) => (
           <div key={group.title}>
-            <p className="px-3 mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{group.title}</p>
+            <p className="px-3 mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">{group.title}</p>
             <div className="space-y-0.5">
               {group.items.map((item) => {
                 const active = isActive(item.path, location.pathname);
@@ -117,13 +120,13 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                       navigate(item.path);
                       onNavigate?.();
                     }}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    className={`w-full flex items-center gap-3 px-2.5 py-2 rounded-xl text-sm font-medium transition-all ${
                       active
-                        ? "bg-indigo-50 text-indigo-700"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                        ? "bg-white/95 text-indigo-800 shadow-[inset_0_1px_0_#fff,0_8px_20px_-6px_rgba(0,0,0,0.45)]"
+                        : "text-white/80 hover:text-white hover:bg-white/10"
                     }`}
                   >
-                    <span className={active ? "text-indigo-600" : "text-slate-400"}>{item.icon}</span>
+                    <span className={`w-8 h-8 shrink-0 rounded-lg gloss-sm flex items-center justify-center text-white bg-gradient-to-br ${item.chip} [&_svg]:w-[18px] [&_svg]:h-[18px]`}>{item.icon}</span>
                     <span className="truncate">{item.label}</span>
                   </button>
                 );
@@ -133,19 +136,19 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         ))}
       </nav>
 
-      <div className="p-3 border-t border-slate-200">
-        <div className="flex items-center gap-3 px-2 py-2">
-          <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-semibold">
+      <div className="p-3 border-t border-white/10">
+        <div className="flex items-center gap-3 px-2 py-2 rounded-xl bg-white/10 ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
+          <div className="w-8 h-8 rounded-full gloss-sm bg-gradient-to-br from-indigo-400 to-violet-500 text-white flex items-center justify-center text-sm font-semibold">
             {adminName.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-slate-900 truncate">{adminName}</p>
-            <p className="text-xs text-slate-500 truncate">{adminEmail}</p>
+            <p className="text-sm font-medium text-white truncate">{adminName}</p>
+            <p className="text-xs text-white/60 truncate">{adminEmail}</p>
           </div>
           <button
             onClick={handleLogout}
             title="Log out"
-            className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+            className="p-1.5 rounded-md text-white/70 hover:text-white hover:bg-white/20 transition-colors"
           >
             <NavIcon>{icons.logout}</NavIcon>
           </button>
@@ -161,9 +164,9 @@ export function AdminLayout() {
   const current = allItems.find((i) => isActive(i.path, location.pathname));
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen admin-backdrop text-slate-900">
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 z-30">
+      <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 glass-dark z-30">
         <SidebarContent />
       </aside>
 
@@ -183,7 +186,7 @@ export function AdminLayout() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 26, stiffness: 260 }}
-              className="fixed inset-y-0 left-0 w-64 bg-white z-50 lg:hidden shadow-xl"
+              className="fixed inset-y-0 left-0 w-64 glass-dark z-50 lg:hidden"
             >
               <SidebarContent onNavigate={() => setMobileOpen(false)} />
             </motion.aside>
@@ -193,7 +196,7 @@ export function AdminLayout() {
 
       <div className="lg:pl-64">
         {/* Top bar */}
-        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 h-14 bg-white/85 backdrop-blur border-b border-slate-200">
+        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 h-14 glass-strong border-b border-white/70 shadow-[0_1px_0_rgba(255,255,255,0.9),0_6px_20px_-12px_rgba(49,46,129,0.25)]">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(true)}
@@ -207,11 +210,11 @@ export function AdminLayout() {
             <nav className="flex items-center gap-1.5 text-sm">
               <span className="text-slate-400">Admin</span>
               <span className="text-slate-300">/</span>
-              <span className="font-medium text-slate-900">{current?.label || "Dashboard"}</span>
+              <span className="font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">{current?.label || "Dashboard"}</span>
             </nav>
           </div>
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-500">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Live data
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-indigo-700 glass px-2.5 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" /> Live data
           </span>
         </header>
 

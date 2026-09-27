@@ -9,7 +9,7 @@ import { useLoad } from "../../admin/useLoad";
 import type { TopicAccuracy } from "../../admin/types";
 import { PageHeader } from "../../components/admin/PageHeader";
 import { ChartCard } from "../../components/admin/Charts";
-import { chartColors, chartTooltipStyle } from "../../components/admin/chartTheme";
+import { atsColors, chartColors, chartTooltipStyle, readinessColors } from "../../components/admin/chartTheme";
 import { Button } from "../../components/admin/Button";
 import { Select } from "../../components/admin/Inputs";
 import { ErrorState } from "../../components/admin/ErrorState";
@@ -161,31 +161,35 @@ export function ReportsAnalytics() {
       ) : d && k ? (
         <div className={report.loading ? "opacity-60 transition-opacity" : ""}>
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-4">
-            <Kpi label="Avg Interview Score" value={`${k.avgInterviewScore}%`} sub={`${k.interviewsCompleted + k.interviewsTerminated} finished`} />
-            <Kpi label="Avg ATS Score" value={`${k.avgAtsScore}%`} sub={`${k.resumesAnalyzed} resumes analysed`} />
-            <Kpi label="Placement Ready" value={`${k.placementReady}/${k.totalStudents}`} sub={`${readyPct}% of students`} />
-            <Kpi label="Completed Interviews" value={k.interviewsCompleted} sub={`${k.interviewsTaken} started`} />
-            <Kpi label="Terminated" value={k.interviewsTerminated} sub={`${k.cheatingEvents} cheating events`} />
-            <Kpi label="Total Students" value={k.totalStudents} sub={`${k.activeStudents} active in range`} />
+            <Kpi label="Avg Interview Score" tone={0} value={`${k.avgInterviewScore}%`} sub={`${k.interviewsCompleted + k.interviewsTerminated} finished`} />
+            <Kpi label="Avg ATS Score" tone={1} value={`${k.avgAtsScore}%`} sub={`${k.resumesAnalyzed} resumes analysed`} />
+            <Kpi label="Placement Ready" tone={2} value={`${k.placementReady}/${k.totalStudents}`} sub={`${readyPct}% of students`} />
+            <Kpi label="Completed Interviews" tone={3} value={k.interviewsCompleted} sub={`${k.interviewsTaken} started`} />
+            <Kpi label="Terminated" tone={4} value={k.interviewsTerminated} sub={`${k.cheatingEvents} cheating events`} />
+            <Kpi label="Total Students" tone={5} value={k.totalStudents} sub={`${k.activeStudents} active in range`} />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <Kpi label="Aptitude Sessions" value={k.aptitudeSessions} sub={`avg score ${k.avgAptitudeScore}%`} />
-            <Kpi label="Tech-Practice Sessions" value={k.techSessions} sub={`avg score ${k.avgTechScore}%`} />
-            <Kpi label="Avg Readiness" value={`${k.avgReadiness}%`} sub="students with activity" />
-            <Kpi label="Job Applications" value={k.applications} sub={rangeLabel.toLowerCase()} />
+            <Kpi label="Aptitude Sessions" tone={6} value={k.aptitudeSessions} sub={`avg score ${k.avgAptitudeScore}%`} />
+            <Kpi label="Tech-Practice Sessions" tone={7} value={k.techSessions} sub={`avg score ${k.avgTechScore}%`} />
+            <Kpi label="Avg Readiness" tone={8} value={`${k.avgReadiness}%`} sub="students with activity" />
+            <Kpi label="Job Applications" tone={9} value={k.applications} sub={rangeLabel.toLowerCase()} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <ChartCard title="Interview Performance" subtitle={`Interviews taken and average score - ${rangeLabel.toLowerCase()}`}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={d.interviewPerformance}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
+                  <defs>
+                  <linearGradient id="gInterviews" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#818cf8" /><stop offset="100%" stopColor="#4f46e5" /></linearGradient>
+                  <linearGradient id="gScore" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#7c3aed" /></linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
                   <XAxis dataKey="label" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 11 }} />
                   <YAxis allowDecimals={false} stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                   <Tooltip contentStyle={chartTooltipStyle} />
                   <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
-                  <Bar dataKey="interviews" name="Interviews" fill={chartColors.blue} radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="avgScore" name="Avg score %" fill={chartColors.emerald} radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="interviews" name="Interviews" fill="url(#gInterviews)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="avgScore" name="Avg score %" fill="url(#gScore)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </ChartCard>
@@ -200,7 +204,9 @@ export function ReportsAnalytics() {
                     <XAxis dataKey="range" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                     <YAxis allowDecimals={false} stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                     <Tooltip contentStyle={chartTooltipStyle} />
-                    <Bar dataKey="count" name="Students" fill={chartColors.emerald} radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="count" name="Students" radius={[6, 6, 0, 0]}>
+                  {(d.atsDistribution).map((_, i) => <Cell key={i} fill={atsColors[i % atsColors.length]} />)}
+                </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               )}
@@ -210,7 +216,7 @@ export function ReportsAnalytics() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={d.placementReadiness.filter((x) => x.value > 0)} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={3}>
-                    {d.placementReadiness.filter((x) => x.value > 0).map((entry) => <Cell key={entry.name} fill={entry.color} />)}
+                    {d.placementReadiness.map((entry, i) => ({ entry, fill: readinessColors[i % readinessColors.length] })).filter(({ entry }) => entry.value > 0).map(({ entry, fill }) => <Cell key={entry.name} fill={fill} />)}
                   </Pie>
                   <Tooltip contentStyle={chartTooltipStyle} />
                   <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
@@ -226,9 +232,9 @@ export function ReportsAnalytics() {
                   <YAxis allowDecimals={false} stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                   <Tooltip contentStyle={chartTooltipStyle} />
                   <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
-                  <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.blue} strokeWidth={2} dot={false} />
-                  <Line type="monotone" dataKey="aptitude" name="Aptitude" stroke={chartColors.emerald} strokeWidth={2} dot={false} />
-                  <Line type="monotone" dataKey="tech" name="Tech practice" stroke="#f59e0b" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.indigo} strokeWidth={3} dot={false} />
+                  <Line type="monotone" dataKey="aptitude" name="Aptitude" stroke={chartColors.pink} strokeWidth={3} dot={false} />
+                  <Line type="monotone" dataKey="tech" name="Tech practice" stroke={chartColors.amber} strokeWidth={3} dot={false} />
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
@@ -244,12 +250,18 @@ export function ReportsAnalytics() {
   );
 }
 
-function Kpi({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
+const KPI_TONES = [
+  "from-indigo-500 to-violet-600",
+  "from-violet-500 to-indigo-600",
+];
+function Kpi({ label, value, sub, tone }: { label: string; value: string | number; sub?: string; tone?: number }) {
+  const g = KPI_TONES[(tone ?? 0) % KPI_TONES.length];
   return (
-    <div className="bg-white backdrop-blur-sm border border-slate-200 rounded-xl p-4 shadow-sm">
-      <p className="text-2xl font-bold text-slate-900 tracking-tight">{value}</p>
-      <p className="text-xs text-slate-500 mt-1">{label}</p>
-      {sub && <p className="text-[11px] text-slate-500 mt-0.5">{sub}</p>}
+    <div className={`gloss rounded-2xl p-4 text-white bg-gradient-to-br ${g}`}>
+      <div className="absolute -right-5 -top-5 w-16 h-16 rounded-full bg-white/15" />
+      <p className="relative text-2xl font-bold tracking-tight">{value}</p>
+      <p className="relative text-xs font-medium text-white/90 mt-1">{label}</p>
+      {sub && <p className="relative text-[11px] text-white/75 mt-0.5">{sub}</p>}
     </div>
   );
 }
@@ -260,7 +272,7 @@ function Empty({ text }: { text: string }) {
 
 function TopicTable({ title, rows }: { title: string; rows: TopicAccuracy[] }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+    <div className="glass rounded-xl p-5">
       <h3 className="text-slate-900 font-semibold">{title}</h3>
       <p className="text-xs text-slate-500 mb-3">Lowest accuracy across all students in range (topics with 5+ answers)</p>
       {rows.length === 0 ? (
@@ -271,12 +283,12 @@ function TopicTable({ title, rows }: { title: string; rows: TopicAccuracy[] }) {
             <div key={r.topic}>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-slate-700">{r.topic}</span>
-                <span className={r.accuracy >= 70 ? "text-emerald-700" : r.accuracy >= 50 ? "text-yellow-700" : "text-red-700"}>
+                <span className={r.accuracy >= 70 ? "text-indigo-700" : r.accuracy >= 50 ? "text-violet-700" : "text-red-700"}>
                   {r.accuracy}% <span className="text-slate-500 text-xs">({r.correct}/{r.answered})</span>
                 </span>
               </div>
               <div className="h-1.5 bg-slate-50 rounded-full overflow-hidden">
-                <div className={`h-full rounded-full ${r.accuracy >= 70 ? "bg-emerald-500" : r.accuracy >= 50 ? "bg-yellow-500" : "bg-red-500"}`} style={{ width: `${r.accuracy}%` }} />
+                <div className={`h-full rounded-full ${r.accuracy >= 70 ? "bg-indigo-500" : r.accuracy >= 50 ? "bg-violet-500" : "bg-red-500"}`} style={{ width: `${r.accuracy}%` }} />
               </div>
             </div>
           ))}

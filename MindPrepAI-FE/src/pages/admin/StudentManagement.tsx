@@ -286,7 +286,7 @@ export function StudentManagement() {
                 <p className="text-xs text-slate-500 mb-2 font-medium">Strong Subjects</p>
                 <div className="flex flex-wrap gap-1.5">
                   {selected.strongSubjects.map((t) => (
-                    <span key={t} className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full px-2.5 py-0.5">
+                    <span key={t} className="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full px-2.5 py-0.5">
                       {t}
                     </span>
                   ))}
@@ -405,9 +405,9 @@ function LinkField({ label, value }: { label: string; value: string }) {
 
 function StudentLinks({ student }: { student: AdminStudent }) {
   const links: { label: string; href: string; tone: string }[] = [
-    ...(student.linkedin ? [{ label: "in", href: student.linkedin, tone: "text-sky-700 border-sky-200 hover:bg-sky-100" }] : []),
+    ...(student.linkedin ? [{ label: "in", href: student.linkedin, tone: "text-indigo-700 border-indigo-200 hover:bg-indigo-100" }] : []),
     ...(student.github ? [{ label: "gh", href: student.github, tone: "text-slate-700 border-slate-300 hover:bg-slate-200" }] : []),
-    ...(student.resumeUrl ? [{ label: "resume", href: student.resumeUrl, tone: "text-emerald-700 border-emerald-200 hover:bg-emerald-100" }] : []),
+    ...(student.resumeUrl ? [{ label: "resume", href: student.resumeUrl, tone: "text-indigo-700 border-indigo-200 hover:bg-indigo-100" }] : []),
   ];
   if (links.length === 0) {
     return <p className="text-slate-400 text-xs">—</p>;

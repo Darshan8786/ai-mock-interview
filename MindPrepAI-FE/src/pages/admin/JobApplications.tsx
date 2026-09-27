@@ -23,9 +23,9 @@ const applicantTone: Record<ApplicationStatus, "blue" | "yellow" | "red" | "gree
 const statCards = [
   { key: "total", label: "Total", color: "text-slate-800" },
   { key: "applied", label: "Applied", color: "text-indigo-700" },
-  { key: "shortlisted", label: "Shortlisted", color: "text-yellow-700" },
+  { key: "shortlisted", label: "Shortlisted", color: "text-violet-700" },
   { key: "rejected", label: "Rejected", color: "text-red-700" },
-  { key: "selected", label: "Selected", color: "text-emerald-700" },
+  { key: "selected", label: "Selected", color: "text-indigo-700" },
   { key: "withdrawn", label: "Withdrawn", color: "text-slate-500" },
 ];
 
@@ -100,7 +100,7 @@ export function JobApplications() {
       {stats && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
           {statCards.map((s) => (
-            <div key={s.key} className="rounded-xl bg-white border border-slate-200 p-4 shadow-sm">
+            <div key={s.key} className="rounded-xl glass p-4">
               <p className="text-2xl font-bold text-slate-900">{stats[s.key as keyof typeof stats] ?? 0}</p>
               <p className={`text-xs font-medium uppercase tracking-wider mt-1 ${s.color}`}>{s.label}</p>
             </div>

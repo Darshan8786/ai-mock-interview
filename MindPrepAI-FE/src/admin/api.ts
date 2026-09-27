@@ -54,7 +54,7 @@ export async function adminFetch<T = any>(path: string, init?: RequestInit): Pro
 // ── Response shape helpers ────────────────────────────────
 
 const avatarColor = (name: string) => {
-  const palette = ["#3b82f6", "#8b5cf6", "#10b981", "#f59e0b", "#ef4444", "#06b6d4", "#ec4899"];
+  const palette = ["#4f46e5", "#6366f1", "#7c3aed", "#8b5cf6"];
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) | 0;
   return palette[Math.abs(hash) % palette.length];

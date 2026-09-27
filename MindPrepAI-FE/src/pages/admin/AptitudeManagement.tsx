@@ -240,7 +240,7 @@ export function AptitudeManagement() {
         }
       />
 
-      <div className="flex gap-1 mb-4 p-1 bg-white rounded-xl border border-slate-200 w-fit shadow-sm">
+      <div className="flex gap-1 mb-4 p-1 glass rounded-xl w-fit">
         <TabButton active={tab === "questions"} onClick={() => setTab("questions")}>
           Question Bank ({questions.length})
         </TabButton>
@@ -463,7 +463,7 @@ export function AptitudeManagement() {
                       onClick={() => setQForm((p) => p && { ...p, correctAnswer: idx })}
                       className={`shrink-0 w-7 h-7 rounded-full border text-xs font-bold ${
                         qForm.correctAnswer === idx
-                          ? "bg-emerald-500 border-emerald-200 text-white"
+                          ? "bg-indigo-500 border-indigo-200 text-white"
                           : "bg-slate-50 border-slate-300 text-slate-500"
                       }`}
                       title={qForm.correctAnswer === idx ? "Correct answer" : "Set as correct"}
@@ -601,7 +601,7 @@ export function AptitudeManagement() {
                 type="checkbox"
                 checked={tForm.isActive}
                 onChange={(e) => setTForm((p) => p && { ...p, isActive: e.target.checked })}
-                className="w-4 h-4 accent-emerald-500"
+                className="w-4 h-4 accent-indigo-500"
               />
               Published (visible to students)
             </label>

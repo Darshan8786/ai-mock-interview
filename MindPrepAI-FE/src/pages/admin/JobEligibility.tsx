@@ -22,11 +22,11 @@ type Tab = "eligible" | "ineligible";
 
 const statCards = [
   { key: "total", label: "Total Students", color: "text-slate-800" },
-  { key: "eligible", label: "Eligible", color: "text-emerald-700" },
+  { key: "eligible", label: "Eligible", color: "text-indigo-700" },
   { key: "ineligible", label: "Not Eligible", color: "text-red-700" },
   { key: "applications", label: "Applications", color: "text-indigo-700" },
-  { key: "shortlisted", label: "Shortlisted", color: "text-yellow-700" },
-  { key: "selected", label: "Selected", color: "text-purple-700" },
+  { key: "shortlisted", label: "Shortlisted", color: "text-violet-700" },
+  { key: "selected", label: "Selected", color: "text-violet-700" },
 ];
 
 export function JobEligibility() {
@@ -227,7 +227,7 @@ export function JobEligibility() {
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
             {statCards.map((s) => (
-              <div key={s.key} className="rounded-xl bg-white border border-slate-200 p-4 shadow-sm">
+              <div key={s.key} className="rounded-xl glass p-4">
                 <p className="text-2xl font-bold text-slate-900">{stats[s.key as keyof typeof stats]}</p>
                 <p className={`text-xs font-medium uppercase tracking-wider mt-1 ${s.color}`}>{s.label}</p>
               </div>
@@ -235,7 +235,7 @@ export function JobEligibility() {
           </div>
 
           {/* Eligibility criteria summary */}
-          <div className="rounded-xl bg-white border border-slate-200 p-4 mb-6 flex flex-wrap gap-x-8 gap-y-2 text-sm shadow-sm">
+          <div className="rounded-xl glass p-4 mb-6 flex flex-wrap gap-x-8 gap-y-2 text-sm">
             <span className="text-slate-500">
               CGPA ≥ <span className="text-slate-900 font-semibold">{job?.eligibility?.minimumCGPA ?? "Any"}</span>
             </span>
@@ -254,11 +254,11 @@ export function JobEligibility() {
 
           {/* Tabs + actions */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
-            <div className="flex rounded-xl bg-white border border-slate-200 p-1 w-fit shadow-sm">
+            <div className="flex rounded-xl glass p-1 w-fit">
               <button
                 onClick={() => setTab("eligible")}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  tab === "eligible" ? "bg-emerald-50 text-emerald-700" : "text-slate-500 hover:text-slate-900"
+                  tab === "eligible" ? "bg-indigo-50 text-indigo-700" : "text-slate-500 hover:text-slate-900"
                 }`}
               >
                 Eligible ({eligible.length})
@@ -373,7 +373,7 @@ export function JobEligibility() {
       >
         <p className="text-slate-700 text-sm">
           Send the <span className="text-slate-900 font-semibold">"New Placement Opportunity"</span>{" "}
-          notification to all <span className="text-emerald-700 font-semibold">{eligible.length} eligible student(s)</span>?
+          notification to all <span className="text-indigo-700 font-semibold">{eligible.length} eligible student(s)</span>?
           Students already notified for this job will not be notified again.
         </p>
       </Modal>

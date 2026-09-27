@@ -303,7 +303,7 @@ export function CollegeInterviewQuestions() {
         </div>
       )}
       {problems.length > 0 && (
-        <div className="mb-4 rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
+        <div className="mb-4 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-800">
           <p className="font-semibold mb-1">Can't publish yet:</p>
           <ul className="list-disc pl-5 space-y-0.5">{problems.map((p) => <li key={p}>{p}</li>)}</ul>
         </div>
@@ -364,7 +364,7 @@ export function CollegeInterviewQuestions() {
                             name={`correct-${f.key}`}
                             checked={f.correctAnswer === letter}
                             onChange={() => patchForm(f.key, { correctAnswer: letter })}
-                            className="w-4 h-4 accent-emerald-500"
+                            className="w-4 h-4 accent-indigo-500"
                             aria-label={`Option ${letter} is correct`}
                           />
                           <span className="w-5 text-sm font-semibold text-slate-700">{letter}</span>
@@ -436,7 +436,7 @@ export function CollegeInterviewQuestions() {
           + Add Question
         </Button>
         <div className="flex items-center gap-2">
-          {dirtyCount > 0 && <span className="text-xs text-yellow-700">{dirtyCount} unsaved</span>}
+          {dirtyCount > 0 && <span className="text-xs text-violet-700">{dirtyCount} unsaved</span>}
           <Button variant="secondary" loading={busy} disabled={status === "closed"} onClick={saveDraft}>Save Draft</Button>
           <Button variant="success" loading={busy} disabled={status === "closed"} onClick={publish}>
             {status === "published" ? "Save & Keep Published" : "Publish Interview"}

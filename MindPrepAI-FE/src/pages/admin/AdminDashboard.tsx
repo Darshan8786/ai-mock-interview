@@ -9,7 +9,7 @@ import { useLoad } from "../../admin/useLoad";
 import { PageHeader } from "../../components/admin/PageHeader";
 import { StatCard } from "../../components/admin/StatCard";
 import { ChartCard } from "../../components/admin/Charts";
-import { chartColors, chartTooltipStyle } from "../../components/admin/chartTheme";
+import { atsColors, chartColors, chartTooltipStyle, readinessColors } from "../../components/admin/chartTheme";
 import { StatSkeleton } from "../../components/admin/Skeleton";
 import { ErrorState } from "../../components/admin/ErrorState";
 import { Button } from "../../components/admin/Button";
@@ -30,19 +30,19 @@ export function AdminDashboard() {
       label: "Total Interviews",
       value: stats.data?.totalInterviews ?? 0,
       icon: <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>,
-      color: "bg-purple-50",
+      color: "bg-violet-50",
     },
     {
       label: "Total Resume Analyses",
       value: stats.data?.totalResumeAnalyses ?? 0,
       icon: <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>,
-      color: "bg-emerald-50",
+      color: "bg-indigo-50",
     },
     {
       label: "Total Jobs",
       value: stats.data?.totalJobs ?? 0,
       icon: <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
-      color: "bg-cyan-50",
+      color: "bg-indigo-50",
     },
     {
       label: "Average ATS Score",
@@ -54,7 +54,7 @@ export function AdminDashboard() {
       label: "Placement Readiness",
       value: `${stats.data?.placementReadiness ?? 0}%`,
       icon: <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-      color: "bg-green-50",
+      color: "bg-indigo-50",
     },
   ];
 
@@ -96,11 +96,15 @@ export function AdminDashboard() {
           <ChartCard title="Interview Performance" subtitle="Interviews taken - last 30 days">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={charts.data?.interviewPerformance ?? []} barGap={4}>
+                <defs>
+                  <linearGradient id="gInterviews" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#818cf8" /><stop offset="100%" stopColor="#4f46e5" /></linearGradient>
+                  <linearGradient id="gScore" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#a78bfa" /><stop offset="100%" stopColor="#7c3aed" /></linearGradient>
+                </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} vertical={false} />
                 <XAxis dataKey="label" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                 <YAxis stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                 <Tooltip contentStyle={chartTooltipStyle} />
-                <Bar dataKey="interviews" name="Interviews" fill={chartColors.blue} radius={[6, 6, 0, 0]} />
+                <Bar dataKey="interviews" name="Interviews" fill="url(#gInterviews)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </ChartCard>
@@ -113,7 +117,9 @@ export function AdminDashboard() {
                 <XAxis dataKey="range" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                 <YAxis stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                 <Tooltip contentStyle={chartTooltipStyle} />
-                <Bar dataKey="count" name="Students" fill={chartColors.emerald} radius={[6, 6, 0, 0]} />
+                <Bar dataKey="count" name="Students" radius={[6, 6, 0, 0]}>
+                  {(charts.data?.atsDistribution ?? []).map((_, i) => <Cell key={i} fill={atsColors[i % atsColors.length]} />)}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </ChartCard>
@@ -132,8 +138,8 @@ export function AdminDashboard() {
                   outerRadius={90}
                   paddingAngle={3}
                 >
-                  {readiness.map((entry) => (
-                    <Cell key={entry.name} fill={entry.color} />
+                  {readiness.map((entry, i) => (
+                    <Cell key={entry.name} fill={readinessColors[i % readinessColors.length]} />
                   ))}
                 </Pie>
                 <Tooltip contentStyle={chartTooltipStyle} />
@@ -151,9 +157,9 @@ export function AdminDashboard() {
                 <YAxis stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                 <Tooltip contentStyle={chartTooltipStyle} />
                 <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
-                <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.blue} strokeWidth={2} dot={false} />
-                <Line type="monotone" dataKey="aptitude" name="Aptitude" stroke={chartColors.emerald} strokeWidth={2} dot={false} />
-                <Line type="monotone" dataKey="tech" name="Tech practice" stroke="#f59e0b" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.indigo} strokeWidth={3} dot={false} />
+                <Line type="monotone" dataKey="aptitude" name="Aptitude" stroke={chartColors.pink} strokeWidth={3} dot={false} />
+                <Line type="monotone" dataKey="tech" name="Tech practice" stroke={chartColors.amber} strokeWidth={3} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </ChartCard>

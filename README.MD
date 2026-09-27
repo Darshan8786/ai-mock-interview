@@ -25,11 +25,15 @@ The project is a **monorepo** with **four independent services**:
 6. [Environment Variables](#environment-variables)
 7. [API Endpoints](#api-endpoints)
 8. [How Each Feature Works, A→Z](#how-each-feature-works-az)
-9. [Custom Proctoring Model Training](#custom-proctoring-model-training)
-10. [Local Interview-Question LLM](#local-interview-question-llm)
-11. [Zero External AI by Default](#zero-external-ai-by-default)
-12. [Troubleshooting](#troubleshooting)
-13. [Project Structure](#project-structure)
+9. [AI Interview Performance & Improvement System (deep dive)](#ai-interview-performance--improvement-system-deep-dive)
+10. [Live Proctoring, Pin to Pin](#live-proctoring-pin-to-pin)
+11. [Reference: Frontend Routes, Backend Modules & Data Models](#reference-frontend-routes-backend-modules--data-models)
+12. [Custom Proctoring Model Training](#custom-proctoring-model-training)
+13. [Local Interview-Question LLM](#local-interview-question-llm)
+14. [Zero External AI by Default](#zero-external-ai-by-default)
+15. [Testing & Verification](#testing--verification)
+16. [Troubleshooting](#troubleshooting)
+17. [Project Structure](#project-structure)
 
 ---
 
@@ -84,6 +88,7 @@ The project is a **monorepo** with **four independent services**:
   - Phone / headset / object detection via a custom-trainable YOLO model.
   - Tab-switch detection and **fullscreen enforcement** (leaving fullscreen is tracked like a proctoring violation).
   - Escalating warnings → **auto-termination** after repeated violations (configurable, default 3).
+  - **Explainable feedback after every interview** — not just "Score: 72%": ten scored metrics per answer, a **"Why this score?"** drawer for each, answer-structure analysis (chosen per question type), speaking analysis and a quality timeline, question-wise verdicts, a recurring-weakness map, **Practice Again** with per-attempt storage and a before/after comparison, progress charts across interviews, and a **personalised next interview** built from your own history. See the [deep dive](#ai-interview-performance--improvement-system-deep-dive).
 - 🏫 **College interviews** — students can take interview templates **published by their own college's admin** (technical/HR/behavioral/coding/mixed, MCQ or subjective), shown alongside their regular AI mock interviews on the same dashboard and running through the exact same interview room, timer, proctoring, and report pipeline.
 - 📄 **Resume analyzer** — upload a PDF → text extraction → **ATS score**, strengths/weaknesses, missing keywords, plus **live jobs in Bengaluru** (Adzuna) with per-job skill-gap analysis and upskilling suggestions.
 - 🛠️ **Resume builder** — multi-step form, 3 templates, AI-assisted content generation, ATS evaluation, **PDF export**.
@@ -299,7 +304,7 @@ See the table in [step 5](#5-frontend--mindprepai-fe) above (`VITE_BACKEND_URL`,
 
 **Questions / Quizzes** — `POST /questions/generate`, `POST /questions/search`
 
-**Mock Interview** — `POST /mock-interview/create`, `GET /mock-interview/dashboard`, `GET /mock-interview/college-interviews`, `GET /mock-interview/college-interviews/:id`, `GET /mock-interview/:id`, `GET /mock-interview/:id/state`, `POST /mock-interview/:id/regenerate-questions`, `POST /mock-interview/:id/answer`, `POST /mock-interview/:id/skip`, `POST /mock-interview/:id/cheating`, `POST /mock-interview/:id/terminate`, `GET /mock-interview/:id/report`
+**Mock Interview** — `POST /mock-interview/create`, `GET /mock-interview/dashboard`, `GET /mock-interview/college-interviews`, `GET /mock-interview/college-interviews/:id`, `GET /mock-interview/:id`, `GET /mock-interview/:id/state`, `POST /mock-interview/:id/regenerate-questions`, `POST /mock-interview/:id/answer`, `POST /mock-interview/:id/skip`, `POST /mock-interview/:id/cheating`, `POST /mock-interview/:id/terminate`, `GET /mock-interview/:id/report`, and the feedback-loop endpoints `GET /mock-interview/progress`, `GET /mock-interview/personalization?interviewType=`, `GET /mock-interview/:id/question/:questionId/history`, `POST /mock-interview/:id/question/:questionId/reattempt` (request/response shapes in the [deep dive](#api-reference-mock-interview-feedback))
 
 **Resume** — `POST /resume/analyze`, `POST /resume/enhance`, `POST /resume/parse`, `POST /resume/parse-text`, `POST /resume/auto-fix`, `POST /resume/evaluate-builder`
 
@@ -349,7 +354,7 @@ Frontend posts credentials to `/auth/login`; the backend checks the bcrypt-hashe
 3. In the interview room, webcam frames stream to the `ai-services` FastAPI **WebSocket** (`/proctor/ws/{session_id}`), which runs MediaPipe (face/eye/head-pose) + YOLO (phone/object) per frame.
 4. Violations tracked in parallel: **proctoring** (looking away, eyes closed, phone detected), **tab-switch**, and **fullscreen exit** (`useFullscreenMonitor` + `FullscreenGuardModal` — leaving fullscreen shows an escalating warning modal and is reported to the backend just like other violations). Each channel escalates independently; by default the 2nd occurrence warns and the 3rd terminates the interview (`POST /mock-interview/:id/cheating`, `.../terminate`).
 5. Answers are given by voice (recorded, transcribed **locally** via `ai-services`' `faster-whisper` STT — no external call) or text, and each is scored by AI on technical accuracy, communication, confidence, grammar, fluency, and relevance.
-6. A final report is generated and stored; visible on the results page and the mock-interview dashboard.
+6. A final report is generated and stored; visible on the results page and the mock-interview dashboard. The report now includes the full explainable-feedback layer — why each score was given, answer structure, speaking analysis, weaknesses, **Practice Again**, progress and a personalised next interview — described in [AI Interview Performance & Improvement System](#ai-interview-performance--improvement-system-deep-dive).
 
 ### 🏫 College Interviews
 1. A **college admin** authors an interview template (`CollegeInterview` — role, type, language, difficulty, question count, time limit) and its questions (`CollegeInterviewQuestion` — MCQ / technical / coding / behavioral / HR, with an answer key that is never sent to the client) under `/admin/college-interviews`, scoped automatically to their own college.
@@ -378,6 +383,270 @@ Attempts and questions are embedded **locally** (Ollama, `nomic-embed-text`) and
 
 ### 🤖 Chatbot
 A separately trained (`npm run train:chatbot` in `placement-prep-be`) intent/QA model answers platform and placement-process questions; `npm run eval:chatbot` / `chatbotUnanswered` / `evalHybrid` support iterating on its accuracy.
+
+---
+
+## AI Interview Performance & Improvement System (deep dive)
+
+The mock-interview module does not stop at "Score: 72%". After every interview it explains **what went well, what went wrong, why each score was given, how to improve, what to practise, and whether you improved compared with earlier attempts** — and it feeds that knowledge back into your *next* interview. Everything runs on the existing **local** evaluator (`ai-services/local_answer_evaluator.py`); there is no OpenAI/Gemini/Claude/Groq dependency anywhere in this loop.
+
+### The feedback loop
+
+```
+START MOCK INTERVIEW ──► QUESTION ──► ANSWER (text or voice) ──► LOCAL AI EVALUATION
+        ▲                                                              │
+        │                                                              ▼
+ PERSONALISED NEXT ◄── UPDATE INTERVIEW ◄── BEFORE vs AFTER ◄── DETAILED FEEDBACK
+   INTERVIEW              PROFILE           (attempts 1..n)     + "WHY THIS SCORE?"
+        ▲                                                              │
+        │                                                              ▼
+        └───────────────  RE-EVALUATE  ◄───  PRACTICE AGAIN  ◄──  IDENTIFY WEAKNESS
+```
+
+| Loop step | Where it happens |
+|---|---|
+| Question, answer | `InterviewRoom.tsx` (proctored). Voice answers also send **audio measurements** (see [Speaking analysis](#speaking-analysis-and-what-is-never-invented)). |
+| AI evaluation | `POST /mock-interview/:id/answer` → Flask `POST /evaluate-answer` → `evaluate_answer()`. Non-final answers are evaluated in the background; the last one inline. |
+| Detailed feedback, Why this score, weaknesses | Report page (`InterviewResult.tsx`) built from `GET /mock-interview/:id/report` → `feedback`. |
+| Practice Again, re-evaluate, before/after | Report page → `POST …/question/:questionId/reattempt`. |
+| Update profile, personalise next interview | Derived from stored evaluations at read time (no separate profile collection); applied when the next interview is created. |
+
+### What is produced for every answer
+
+The evaluator returns the six original scores **unchanged** plus four new ones and a structured `analysis` object:
+
+| Metric | How it is computed (all from the answer text, the question's expected concepts, and — for voice — measured audio) |
+|---|---|
+| **Technical Accuracy** | `20 × lengthFactor + 80 × conceptCoverage` (share of the question's expected concepts found in the answer) |
+| **Relevance** | overlap between the answer's stemmed words and the question/concept vocabulary |
+| **Fluency** | length factor + filler-word ratio + sentence-length sanity |
+| **Grammar** | length factor + lexical variety, minus penalties (no ending punctuation, no capitals, repeated `!`/`?`) |
+| **Communication** | `0.4 × Fluency + 0.3 × Grammar + 0.3 × Relevance` |
+| **Confidence** | length factor + coverage, minus 10 per hedging phrase ("I think", "not sure", …) |
+| **Answer Structure** *(new)* | weighted share of the structure elements the answer contains (see below) |
+| **Completeness** *(new)* | `100 × (0.7 × coverage + 0.3 × min(1, words ÷ typical minimum length))` |
+| **Clarity** *(new)* | starts at 85; minus hedging, very long sentences, run-ons (typed answers only), repeated phrases, fillers |
+| **Conciseness** *(new)* | 100 minus over-length, filler, repetition and "main point arrived late" penalties; capped at 40 under 10 words (too short is *incomplete*, not concise) |
+
+`lengthFactor` is 0 for no words, 0.2 under 5, 0.55 under 15, 0.85 under 40, else 1.
+
+**Where the expected concepts come from** (reported in `analysis.conceptSource`): the question's own stored concepts (resume questions) → the `topic_concepts.json` entry for its skill/topic → the `hr_behavioral_dataset.json` tags → *last resort:* the meaningful words of the question itself (`question-words`). In that last case the feedback says so ("no stored answer key…") and the "main point"/"covered" claims are switched off, so weak evidence is never dressed up as strong evidence.
+
+### "Why this score?"
+
+Each score card has a **Why this score?** button that opens a drawer (right side on desktop, bottom sheet on phones; `Esc` closes it):
+
+```
+Technical Accuracy — 78%
+✓ What was good      • Correctly covered: normalization, redundancy
+✗ What was missing   • Did not mention: normal form, 1nf, 2nf
+→ How to improve     • Review normal form, 1nf, 2nf …  • Practice more DBMS – Normalization questions
+ℹ Note (only when relevant): no stored answer key existed, so scoring used the question's own wording
+```
+
+Every line is derived by `build_explanations()` in `ai-services/interview_feedback_analysis.py` from a measurement — matched/missing concepts, the actual hedging phrases found, filler counts, sentence length, structure elements, measured pauses. Nothing is written by a language model, so nothing is made up. Ten metrics → ten explanations, stored with the answer.
+
+### Answer structure analysis
+
+The structure is chosen **per question type**, never forced on every answer (`classify_question()`):
+
+| Question type | Chosen when | Framework checked |
+|---|---|---|
+| `technical` | default for technical questions | Definition → Explanation → Example → Conclusion |
+| `behavioral` | Behavioral interviews; HR questions with situational wording ("tell me about a time…", conflict, deadline…) | Situation → Task → Action → Result (STAR) |
+| `project` | resume-interview project questions (`skill = "Project"`) or wording like "your project" | Problem → Technology → Implementation → Your contribution → Result |
+| `hr` | other HR/opinion questions ("why should we hire you?") | Direct answer → Reason → Example → Link to the role |
+
+Detection is **cue-based** (transparent phrase patterns such as "for example", "as a result", "my task was"). Each element found records the sentence fragment it matched, shown under "Where I found each part". The UI shows the score, found/missing elements, and a recommendation such as *"Start with the problem, explain your implementation, then clearly state your contribution and result."* A footnote states it shows what the answer *contains*, not whether it is correct — correctness is the Technical score's job. Positions are word-based, so unpunctuated voice transcripts still work.
+
+### Speaking analysis (and what is never invented)
+
+| Metric | Source | If it cannot be measured |
+|---|---|---|
+| Speaking duration | Real recording length (`speech.recordingSeconds`) | falls back to **"Time on question"**, labelled as including thinking time; never mixed with recording durations |
+| Words, filler words, repeated phrases, hedging | Counted from the transcript / typed text | always available |
+| Long pauses (≥ 2 s) | **Measured audio**: `useMicrophone` runs an energy-based silence detector on the same mic stream; silences ≥ 1 s *after speech began* are recorded, the backend counts those ≥ 2 s. Leading/trailing silence is ignored. | **"Not available"** for typed answers, or when the browser could not run the detector |
+| Speaking rate | `words ÷ recorded minutes`, only with ≥ 8 s of audio and ≥ 10 words. Slow < 110, Normal 110–170, Fast > 170 wpm | **"Not available"** |
+| Length verdict | words vs a per-type typical range (technical 35–160, behavioral 70–220, project 60–220, HR 40–180) | always available |
+
+Honest caveats printed in the UI: filler counts on voice answers can under-report because speech recognition often drops "um/uh"; pause detection is approximate (a noisy room raises the noise floor).
+
+### Answer-quality timeline
+
+A track from the start to the end of the answer with 🟢 good / 🟡 watch / 🔴 missing markers (definition present, filler word "like", hedging "I think", long pause 3.4 s, missing conclusion, …). Rules that keep it honest:
+- Markers are placed at their **real position in the transcript** (fraction of the words).
+- **Clock times appear only for audio-measured pauses.** A typed answer has no timestamps at all, and the footnote says so.
+- Items that are simply absent ("Missing conclusion") are listed as "not found in the answer" instead of being pinned somewhere.
+
+### Practice Again, attempts, and Before vs After
+
+1. Under any answered question, **Practice Again** opens a panel with the same question (type or speak).
+2. `POST …/reattempt` stores a **new attempt** with its own answer, transcript, audio metrics, scores, feedback and timestamp. **Attempt 1 (the interview answer) and earlier attempts are never overwritten**, and practice **never changes the interview's official scores or its proctoring record**.
+3. Attempts live in `Interview.questions[i].attempts[]` (attempt 1 stays in the existing `answer`/`evaluation` fields, so every old reader keeps working). Up to **10 attempts** per question; a guarded atomic push prevents two simultaneous requests from creating duplicate attempt numbers (`409` for the loser).
+4. With ≥ 2 attempts the UI shows a **Before vs After** table and an "Improvement (attempt 1 → 5): Confidence +8 · Filler words −3" line. **Only metrics present on at least two attempts are shown**; filler words are "lower is better"; duration is compared only when every attempt measured the same thing.
+5. Practice is available only **after the interview has finished**, so the proctored session is never touched. It is **disabled for college interviews** — their feedback names the answer key, and they are assessments.
+
+### Question-wise feedback
+
+The report lists every question with a verdict — **✓ Strong answer / ⚠ Needs improvement / 🔴 Weak technical explanation / ✓ Excellent project explanation / Skipped / Not evaluated** (question score = the mean of the six original metrics: ≥ 75 strong, ≥ 55 improve, otherwise weak). Clicking a question opens: your answer (labelled *transcript* for voice), the score cards with Why-this-score, structure card, speaking analysis, timeline, strengths / weaknesses / how to improve / topics to practise, attempts + comparison, and Practice Again. Questions chosen because of your history carry a **Targeted: DBMS – Transactions** badge.
+
+### Overall performance summary & weakness map
+
+- **Overall Interview Performance**: per-metric averages over the *evaluated* answers, **strongest area**, **needs most improvement**, and one **main recommendation** (for a weak structure score it names the framework you most often missed, e.g. "Focus on structuring your answers using Definition → Explanation → Example → Conclusion"). A newer metric is shown only if *every* evaluated answer has it, so old and new data are never averaged together misleadingly.
+- **Weakness map**: buckets built only from real answers — **topics** (per skill, e.g. DBMS, or "Project explanation") and **skills** (Answer Structure, Communication, …). An answer is *weak* below 65. An area is listed when it was weak in **≥ 2 answers, or in ≥ 50 % of the answers that touched it**; bar length = frequency × how far below the threshold. **Strong areas** are those averaging ≥ 75 with no weak answer. Skipped, unanswered and un-evaluated answers are ignored.
+- **Proctoring summary**: only what is actually stored — tab switches, full-screen exits, any other recorded events, and whether the interview was auto-terminated. Camera detections (face/gaze/phone) run live and are **not persisted**, so the card says so instead of claiming "no phone detected".
+
+### Progress across interviews
+
+`GET /mock-interview/progress` returns one point per finished AI/resume interview (last 30, oldest → newest). The report and the mock dashboard render **six small charts** — Technical, Communication, Confidence, Fluency, Relevance, Structure (Recharts; single axis, hover tooltips, current interview highlighted, and a **View as table** toggle) — plus "▲ +15 (61→76)" chips. Improvement is shown only when both ends have the metric, so no trend is fabricated. The dashboard also shows recurring weaknesses over the last 10 interviews.
+
+### Personalised next interview
+
+`GET /mock-interview/personalization?interviewType=Technical` (shown on the setup page) and `POST /mock-interview/create` both use your last **6 finished, non-college interviews**:
+- A skill/topic becomes a **focus area** only if it was weak in **at least two answers** ("repeated struggle"; max 3 areas).
+- For **Technical** and **Resume** interviews the AI service draws about **40 %** of the questions from those areas (only skills that exist in the local dataset are honoured); the interview stores what was planned and how many questions were actually targeted (`Interview.personalization`).
+- Weak **project explanation** → in a Resume interview the project share rises to ~70 %; in other types you get a *suggestion* to try a Resume-based interview — never a false claim.
+- **HR/Behavioral** questions cannot be steered by topic, and skills like *Answer Structure* can't be fixed by choosing questions — those appear as **coaching** ("Answer Structure was weak in 3 of 4 answers…"), clearly separate from "what will change".
+- No history, or nothing repeatedly weak → the UI says so and changes nothing. Example message: *"Your previous interviews showed difficulty with DBMS: Transactions. Your next interview will include more DBMS: Transactions questions."*
+
+### Failure behaviour (the interview never breaks)
+
+- If the AI service is down or returns something invalid, the answer is **saved verbatim**, its evaluation is a **fixed neutral placeholder flagged `source: "fallback"`** (the old code used random numbers — removed), the UI says *"Automatic evaluation was unavailable… reopening this report retries"*, and **no explanation is shown for it**.
+- **Opening a report retries**: fallback answers *and* interviews saved before this feature existed are (re)evaluated (bounded to ~10 s overall; college interviews excluded), aggregates and the stored `InterviewReport` are recomputed, and the analysis appears.
+- Every AI response is validated with **zod** (scores clamped 0–100, strings and lists capped) before it is saved; an invalid `analysis` is dropped while the scores are kept. Incoming answers are validated too (`answerType` ∈ voice/text, `timeTaken` ≥ 0, answer ≤ 20 000 chars, audio metadata dropped if malformed or on a typed answer).
+
+### Backward compatibility
+
+New fields have **no defaults**, so older records simply lack them and the UI shows only what exists: an older answer shows its six scores plus its original AI feedback text and a note that detailed reasons weren't recorded (until the report upgrades it, see above). College interviews keep their own grading; their report renders, they get no personalization, and their questions are not practisable.
+
+### API reference (mock-interview feedback)
+
+| Method & path | Purpose | Notes |
+|---|---|---|
+| `POST /mock-interview/:id/answer` | Submit an answer | Body `{ answer, answerType: "voice"｜"text", timeTaken, speech? }`. `speech = { recordingSeconds, speechSeconds?, pauseDetection?, pauses?: [{ startSeconds, durationSeconds }] }`. `400` on invalid input. |
+| `GET /mock-interview/:id/report` | Classic report **plus** `feedback` | `feedback = { performance, weaknessMap, questions[], proctoring, nextInterview, progress, personalizationApplied }`. Triggers the retry/upgrade described above. |
+| `GET /mock-interview/:id/question/:questionId/history` | All attempts + comparison | `{ questionId, questionIndex, question, attempts[], comparison }`. `400` while the interview is unfinished. |
+| `POST /mock-interview/:id/question/:questionId/reattempt` | Practice Again | Body as `/answer`. `201 { attempt, attempts, comparison, summary }`. `400` unfinished / empty / max attempts / skipped question; `403` college; `404` unknown question; `409` concurrent attempt. |
+| `GET /mock-interview/progress` | Cross-interview series | `{ points[], improvement[], weaknessMap }` |
+| `GET /mock-interview/personalization?interviewType=` | Plan for the next interview | `{ hasHistory, basedOnInterviews, focusAreas[], message, coaching[], suggestions[] }` |
+| Flask `POST /evaluate-answer` | Local evaluation | Extra optional inputs `answerType`, `speech`, `timeTaken`; returns the legacy fields + `structureScore`, `completenessScore`, `clarityScore`, `concisenessScore`, `analysis`. |
+| Flask `POST /generate-questions` | Question generation | Extra optional input `focusAreas: [{ skill, topic }]`; targeted questions come back with `focusArea`. |
+
+### Data model additions (`Interview`)
+
+| Field | Purpose |
+|---|---|
+| `questions[].transcript`, `.speech`, `.answeredAt` | Spoken text, audio measurements, when attempt 1 was submitted |
+| `questions[].evaluation.{structureScore, completenessScore, clarityScore, concisenessScore, source, analysis}` | New scores, `"local"｜"fallback"`, and the validated analysis object |
+| `questions[].attempts[]` | `{ attemptNumber, answer, transcript, answerType, timeTaken, speech, evaluation, createdAt }` for attempts 2…n |
+| `questions[].focusArea` | Which weak area this question was chosen to target |
+| `personalization` | `{ basedOnInterviews, focusAreas[], message, targetedQuestions }` |
+
+### Where the code lives
+
+| Layer | Files |
+|---|---|
+| Analysis engine (Python) | `ai-services/interview_feedback_analysis.py` (structure, communication, timeline, explanations, summaries) · `ai-services/local_answer_evaluator.py` (scores + `_extended_analysis`) · `ai-services/interview_question_service.py` (focus areas) · `ai-services/server.py` (HTTP) |
+| Backend | `placement-prep-be/src/services/mockInterviewFeedback.ts` (validation, AI call + fallback, comparison, weakness map, progress, personalisation) · `controllers/mockInterviewController.ts` · `routes/mockInterviewRoutes.ts` · `models/Interview.ts` |
+| Frontend | `MindPrepAI-FE/src/components/mock-interview/feedback/` — `MetricScoreGrid`, `WhyScoreDrawer`, `AnswerStructureCard`, `CommunicationCard`, `AnswerTimeline`, `StrengthWeaknessCards`, `QuestionFeedbackAccordion`, `PracticeAgain`, `AttemptComparison`, `PerformanceSummaryCard`, `WeaknessMapCard`, `ProctoringSummaryCard`, `NextInterviewPlan`, `ProgressCharts` · `types/mockFeedback.ts` · `hooks/useMicrophone.ts` (audio measurement) · pages `InterviewResult`, `MockDashboard`, `InterviewSetup` |
+
+---
+
+## Live Proctoring, Pin to Pin
+
+**Two transports, two responsibilities.**
+
+1. **Camera frames → FastAPI WebSocket** (`ai-services`, `:8001`, `WS /proctor/ws/{session_id}`). `useProctoring` sends a webcam frame at **2 FPS** (base64 JPEG). The server decodes and analyses frames in a **worker thread** and keeps only the **newest frame** (a slow analysis skips the backlog instead of drifting). It replies with `{ faceCount, faceStatus, lookingAway, lookingDirection, mobilePhone, headset, cameraObstructed, violations[] }`. This endpoint is intentionally **unauthenticated and needs no API key**.
+2. **Browser-level rules → REST** (`placement-prep-be`). Tab switches and full-screen exits are detected in the browser and posted to `POST /mock-interview/:id/cheating`, which stores a `CheatingEvent`, increments persisted counters and can terminate the interview.
+
+**What the engine detects** (`app/services/proctoring_engine.py`):
+
+| Violation | How | Must persist for |
+|---|---|---|
+| `CAMERA_OBSTRUCTED` | cheap pixel-variance check that runs *before* the heavy models; a near-uniform frame means a covered lens (inference is skipped for that frame) | 2 s |
+| `NO_FACE` | MediaPipe `FaceLandmarker` finds no face | 2 s |
+| `MULTIPLE_FACES` | `FaceLandmarker` (configured for up to 5 faces) finds more than one | 1 s |
+| `LOOKING_AWAY` | head pose beyond **20°** left/right/up/down from face landmarks | 2 s |
+| `MOBILE_PHONE`, `HEADSET` | your custom YOLO weights (`models/proctor_yolo/weights/best.pt`), confidence > **0.6** (only active if the weights file exists) | instant |
+
+Frames are JPEG (quality 0.7) base64-encoded in the browser. A **5-second cooldown** after any violation stops one event being counted repeatedly. The per-session state lives in the engine (`sessions` dict, guarded by a lock because MediaPipe/YOLO are not thread-safe).
+
+**Escalation:** warnings escalate; **the 3rd violation terminates** the interview. Tab switches (`useTabSwitchMonitor`) and full-screen exits (`useFullscreenMonitor`) have their **own** counters (persisted in `Interview.tabSwitchCount` / `fullScreenExitCount`, so a refresh resumes where you left off); the 3rd of either sets `terminationReason` (`TAB_SWITCH_LIMIT_EXCEEDED`, `FULLSCREEN_EXIT_LIMIT_EXCEEDED`). College interviews add `TIME_LIMIT_REACHED` (server-enforced with a 30 s grace).
+
+**Design rules that must not be broken** (they exist because of past bugs):
+- Proctoring is **independent of question generation** — a slow or failed question pipeline must never delay or restart the camera. Question generation runs in the background; the interview session and its id exist immediately and the client polls `/state`.
+- The camera is "ready" only when the `<video>` really has a `MediaStream` and frames are flowing — not merely because `getUserMedia()` resolved.
+- The proctoring WebSocket must never require `AI_SERVICE_KEY`, `NIM_API_KEY` or any provider key.
+- The explainable-feedback system never modifies any of this: practice runs after the interview, outside the proctored room.
+
+---
+
+## Reference: Frontend Routes, Backend Modules & Data Models
+
+### Frontend routes (`MindPrepAI-FE/src/App.tsx`)
+
+| Area | Route → page |
+|---|---|
+| Public | `/signin`, `/signup`, `/admin/signin`; `/` redirects to `/dashboard` |
+| Student (`ProtectedRoute`) | `/dashboard`, `/profile`, `/personalizedreport` (cross-module analytics), `/resume-analyzer`, `/resume-builder`, `/jobs`, `/jobs/:id`, `/my-applications` |
+| Mock interview | `/mock-interview/setup` → `/mock-interview/room` (proctored) → `/mock-interview/result/:id` (report + feedback + practice); `/mock-interview/dashboard` (history, progress, weaknesses, college interviews) |
+| Aptitude | `/aptitude`, `/aptitude/test/:testId`, `/aptitude/practice`, `/aptitude/session/:attemptId`, `/aptitude/progress`, `/aptitude/history`, `/aptitude/result` |
+| Tech practice | `/tech-practice` → `/tech-practice/quiz` → `/tech-practice/result` |
+| Admin (`AdminRoute`, layout `/admin`) | index dashboard, `students`, `resumes`, `interviews`, `college-interviews/new｜:id｜:id/edit｜:id/questions`, `aptitude`, `jobs`, `jobs/create｜:id/edit｜:id/applications｜:id/eligibility`, `alumni…`, `reports`, `announcements`, `settings` |
+
+### Key hooks (`MindPrepAI-FE/src/hooks`)
+
+| Hook | Responsibility |
+|---|---|
+| `useInterview` | create/resume an interview, poll `/state` for questions, submit/skip/terminate, fetch the report; remembers the active interview per tab |
+| `useWebcam` | camera lifecycle with real-frame readiness checks and typed error kinds |
+| `useProctoring` | 2 FPS frame capture, WebSocket lifecycle, warning/violation counters |
+| `useTabSwitchMonitor`, `useFullscreenMonitor` | independent 3-strike monitors with persisted counts |
+| `useMicrophone` | recording, browser speech recognition transcript, **silence/pause measurement** for the feedback system |
+
+### Backend module map (`placement-prep-be/src/routes/index.ts`, all under `/api/v1`)
+
+| Mount | Controller(s) |
+|---|---|
+| `/auth` | `authController` (register, login, me, profile, change-password) |
+| `/questions` | `questionController` |
+| `/mock-interview` | `mockInterviewController`, `collegeInterviewStudentController`; logic in `services/mockInterviewFeedback.ts`, `interviewRagService.ts` |
+| `/resume` | `resumeController` + `localResumeParser/Analyzer`, `pdfTextExtractor`, `resumeValidator` |
+| `/aptitude`, `/tech-quiz` | `aptitudeController`, `techQuizController` |
+| `/jobs`, `/applications`, `/notifications`, `/colleges` | jobs/applications/notifications controllers, `eligibilityService` |
+| `/chatbot`, `/analytics` | `chatbotController` (+ `services/chatbot/`), `analyticsController` / `analyticsService` |
+| `/admin` | `controllers/admin/*` (dashboard, students, interviews, aptitude bank, jobs, announcements, notifications, college interviews) |
+
+Cross-cutting: `middleware/auth.ts` (JWT `protect`), `restrictTo.ts` (role gate), `error.ts`; `utils/asyncHandler`, `utils/AppError`; `config/env.ts` validates env at boot (only `MONGO_URI` is mandatory).
+
+### Data models (`placement-prep-be/src/models`)
+
+| Model | Holds |
+|---|---|
+| `User` | identity + role, college, USN, department, CGPA, backlogs, skills, projects, certifications, profile links, placement status |
+| `Interview` | one mock/college interview session: config, `source` (`AI`｜`RESUME`｜`COLLEGE`), questions with answers/evaluations/attempts, proctoring counters, `warnings`, `terminationReason`, aggregate scores, `personalization` |
+| `InterviewReport` | frozen aggregate scores/strengths/weaknesses/final feedback per finished interview (refreshed if a report re-evaluation changes scores) |
+| `CheatingEvent` | one stored proctoring event (`tab_switch`, `fullscreen_exit`, …) |
+| `CollegeInterview`, `CollegeInterviewQuestion`, `College` | admin-authored interviews and their questions (with answer keys that never leave the server) |
+| `Job`, `Application`, `JobEligibility` | job drives, applications (`applied → shortlisted → rejected → selected`), per-(student, job) eligibility snapshot |
+| `Notification`, `StudentNotification`, `Announcement` | admin broadcasts and per-student notification feed |
+| `AptitudeQuestion`, `AptitudeTopic`, `AptitudeTestConfig`, `AptitudeAttempt`, `AptitudeQuestionHistory` | aptitude bank, tests, attempts and per-user question-repeat tracking |
+| `TechQuizAttempt`, `TechPerformanceProfile`, `TechQuestionHistory` | tech-practice attempts, adaptive difficulty profile, repeat tracking |
+| `VectorEmbedding` | local MongoDB-backed vector store for RAG |
+| `ChatbotUnanswered` | chatbot queries it could not answer (drives retraining) |
+
+### AI service map (`ai-services`)
+
+| File | Role |
+|---|---|
+| `server.py` (Flask `:8000`) | question generation, evaluation, feedback, resume enhancement, STT/TTS, tech-quiz selection/evaluation, chatbot |
+| `run.py` → `app/` (FastAPI `:8001`) | proctoring WebSocket (`routes/proctor.py`), engine (`services/proctoring_engine.py`), face/YOLO/verification services |
+| `interview_question_service.py`, `local_question_generator.py`, `interviewer_llm/` | question pipeline: fine-tuned interviewer LLM → smaller local model → offline bank; global no-repeat history (`question_history_store.py`, SQLite) |
+| `local_answer_evaluator.py`, `interview_feedback_analysis.py` | evaluation and explainable feedback |
+| `tech_question_engine.py`, `tech_answer_evaluator.py` | tech-practice question selection and per-type grading |
+| `resume_enhancer.py`, `resume_training/` | local resume-rewrite model and resume-category classifier |
+| `riva_service.py` | local `faster-whisper` STT and `pyttsx3`/SAPI TTS (optional Riva) |
+| `chatbot/` | fine-tuned Q&A matcher |
 
 ---
 
@@ -422,10 +691,32 @@ MindPrep AI runs with **no external AI inference API required** — every AI fea
 
 ---
 
+## Testing & Verification
+
+| What | Command | Covers |
+|---|---|---|
+| Feedback analysis (Python) | `cd ai-services && python tests/test_interview_feedback.py` | legacy scores unchanged, four new scores, structure choice per question type, STAR/project detection, speaking-rate/pause rules, "Not available" rules, timeline honesty, hostile audio input, missing-answer-key note |
+| Personalised question focus | `cd ai-services && python tests/test_interview_focus_areas.py` | focus share, unknown skills ignored, topic fallback (mocks the generator and history store — never touches the real question history) |
+| Feedback logic (TypeScript) | `cd placement-prep-be && npx tsx --test src/services/mockInterviewFeedback.test.ts` | validation/clamping, fallback flagging, comparison rows, verdicts, weakness thresholds, personalisation rules, progress, proctoring summary |
+| Type checks | `cd placement-prep-be && npx tsc --noEmit -p .` · `cd MindPrepAI-FE && npx tsc -p tsconfig.app.json --noEmit` | (backend reports one long-standing stray-file error: `time_chain.ts` outside `rootDir`) |
+| Production build | `cd MindPrepAI-FE && npm run build` | type check + Vite bundle |
+| Proctoring engine | `cd ai-services && python -m unittest discover -s tests -p "test_proctoring.py"` | note: `test_12_cooldown` and `test_1_no_person` were failing when last run; this code is independent of the feedback system |
+
+**End-to-end check used during development** (worth repeating after big changes): run a *throwaway* MongoDB on another port (`mongod --dbpath <tmp> --port 27931`), start the backend with `MONGO_URI` pointing at it, `LOCAL_ONLY=true` and a blank `PINECONE_API_KEY` so nothing touches real data, point `AI_SERVICE_URL` at a service exposing the real `evaluate_answer`, then drive the flow over HTTP: create → answer (text + voice with audio metrics) → report → Practice Again ×N → history → personalisation → progress → a legacy record → a college record → tab-switch termination, and finally kill the AI service to confirm the interview survives and recovers on the next report open.
+
+> ⚠️ Never point tests at your real `MONGO_URI` — `.env` may hold an Atlas connection string.
+
+---
+
 ## Troubleshooting
 
 | Problem | Fix |
 |---|---|
+| Report shows "Automatic evaluation was unavailable" | The AI service (`:8000`) was down when the answer was submitted. The answer is saved; start the service and reopen the report — it re-evaluates automatically |
+| "Not available" for speaking rate / pauses | Expected for typed answers, recordings under 8 s / 10 words, or browsers where the Web Audio silence detector could not start. Never guessed |
+| Older interview has no "Why this score?" content | It upgrades the next time its report opens (needs the AI service running); college interviews are never upgraded |
+| Practice Again button missing | Interview not finished, question skipped/unanswered, college interview, or 10 attempts reached |
+| "Personalised for you" never appears | Needs a topic that was weak in ≥ 2 answers across your last 6 finished AI/resume interviews, and a Technical or Resume interview type |
 | Main backend exits immediately | Missing `MONGO_URI`/`MONGO_URL` in `placement-prep-be/.env` — it's the only variable that blocks startup |
 | Frontend can't reach the main backend | Check `MindPrepAI-FE/src/config/config.ts` / `VITE_BACKEND_URL` matches the backend's actual `PORT` |
 | Alumni pages fail to load | `placement-admin-be` isn't running on `:5001`, or `.env` wasn't seeded (`npm run seed`) |
@@ -453,6 +744,8 @@ MindPrep-AI/
 │   └── src/
 │       ├── admin/                     # Admin API clients (jobs, alumni, college interviews) + types
 │       ├── components/                # Shared UI, admin/, interview/, mock-interview/, resume-builder/, common/ (FullscreenGuardModal, ...)
+│       │   └── mock-interview/feedback/   # Explainable-feedback UI: score grid, Why-this-score drawer, structure, speaking, timeline, Practice Again, comparison, weakness map, progress charts
+│       ├── types/                     # mockFeedback.ts (feedback API types)
 │       ├── pages/                     # Student pages + admin/ pages
 │       ├── hooks/                     # useInterview, useFullscreenMonitor, useTabSwitchMonitor, ...
 │       ├── utils/                     # fullscreenTracker, ...
@@ -464,7 +757,8 @@ MindPrep-AI/
 │       ├── controllers/               # auth, questions, mock-interview, resume, jobs, aptitude, tech-quiz, admin/
 │       ├── routes/                    # /api/v1 route definitions (adminRoutes, collegeRoutes, mockInterviewRoutes, ...)
 │       ├── models/                    # User, Interview, College, CollegeInterview, CollegeInterviewQuestion, Job, VectorEmbedding, ...
-│       ├── services/                  # aiService, vectorStore (local RAG store), interviewRagService, localResumeParser/Analyzer, chatbot/
+│       ├── services/                  # aiService, vectorStore (local RAG store), interviewRagService, localResumeParser/Analyzer, chatbot/,
+│       │                              # mockInterviewFeedback.ts (+ .test.ts) — validation, comparison, weakness map, progress, personalisation
 │       ├── scripts/                   # createCollegeAdmin, generateAptitudeQuestions (LOCAL_ONLY-gated), chatbot train/eval scripts
 │       ├── middleware/                # auth, restrictTo, error handlers
 │       └── config/                    # db, env (LOCAL_ONLY, no AI key required to boot), pinecone (optional)
@@ -487,7 +781,9 @@ MindPrep-AI/
     ├── run.py                         # FastAPI entrypoint (proctoring WebSocket, :8001)
     ├── interview_question_service.py  # Question generation orchestration + local fallback chain
     ├── local_question_generator.py    # Local LLM-backed question generator
-    ├── local_answer_evaluator.py      # Local answer scoring
+    ├── local_answer_evaluator.py      # Local answer scoring (+ extended analysis hook)
+    ├── interview_feedback_analysis.py # Structure / speaking / timeline / "why this score" engine
+    ├── tests/                         # test_proctoring.py, test_interview_feedback.py, test_interview_focus_areas.py
     ├── resume_enhancer.py             # Resume content AI-enhancement (local model)
     ├── tech_question_engine.py        # Tech-quiz question selection
     ├── riva_service.py                # Local STT (faster-whisper) / TTS (pyttsx3+SAPI); optional NVIDIA Riva

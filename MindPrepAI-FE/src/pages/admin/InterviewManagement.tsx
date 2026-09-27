@@ -17,7 +17,7 @@ import { ErrorState } from "../../components/admin/ErrorState";
 import { Select } from "../../components/admin/Inputs";
 
 function ScoreBar({ label, value }: { label: string; value: number }) {
-  const color = value >= 75 ? "bg-emerald-500" : value >= 50 ? "bg-yellow-500" : "bg-red-500";
+  const color = value >= 75 ? "bg-indigo-500" : value >= 50 ? "bg-violet-500" : "bg-red-500";
   return (
     <div>
       <div className="flex justify-between text-xs mb-1">
@@ -128,7 +128,7 @@ function StudentInterviews() {
                     <span className="text-slate-500">—</span>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <span className={`text-sm font-bold ${i.overallScore >= 75 ? "text-emerald-700" : i.overallScore >= 50 ? "text-yellow-700" : "text-red-700"}`}>
+                      <span className={`text-sm font-bold ${i.overallScore >= 75 ? "text-indigo-700" : i.overallScore >= 50 ? "text-violet-700" : "text-red-700"}`}>
                         {i.overallScore}
                       </span>
                       <span className="text-xs text-slate-500">/100</span>
@@ -210,7 +210,7 @@ function StudentInterviews() {
 }
 
 function Metric({ label, value }: { label: string; value: number }) {
-  const color = value >= 75 ? "text-emerald-700" : value >= 50 ? "text-yellow-700" : "text-red-700";
+  const color = value >= 75 ? "text-indigo-700" : value >= 50 ? "text-violet-700" : "text-red-700";
   return (
     <div className="bg-slate-50 rounded-xl p-3 text-center">
       <p className={`text-xl font-bold ${color}`}>{value}</p>

@@ -123,7 +123,7 @@ export function Announcements() {
       ) : (
         <div className="space-y-3">
           {filtered.map((a) => (
-            <div key={a.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+            <div key={a.id} className="glass rounded-xl p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-1.5">

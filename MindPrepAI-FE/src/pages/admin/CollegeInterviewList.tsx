@@ -148,7 +148,7 @@ export function CollegeInterviewList() {
                 <td className="py-3 px-4 text-slate-700">{i.jobRole}</td>
                 <td className="py-3 px-4 text-slate-700">{i.interviewType}</td>
                 <td className="py-3 px-4">
-                  <span className={i.questionsAuthored === i.questionCount ? "text-emerald-700" : "text-yellow-700"}>
+                  <span className={i.questionsAuthored === i.questionCount ? "text-indigo-700" : "text-violet-700"}>
                     {i.questionsAuthored}
                   </span>
                   <span className="text-slate-500">/{i.questionCount}</span>
@@ -166,14 +166,14 @@ export function CollegeInterviewList() {
                     >
                       Edit
                     </button>
-                    <button className={`${link} text-purple-700 hover:bg-purple-100`} onClick={() => navigate(`/admin/college-interviews/${i._id}/questions`)}>Questions</button>
+                    <button className={`${link} text-violet-700 hover:bg-violet-100`} onClick={() => navigate(`/admin/college-interviews/${i._id}/questions`)}>Questions</button>
                     {i.status !== "published" && (
-                      <button className={`${link} text-emerald-700 hover:bg-emerald-100 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "published")}>
+                      <button className={`${link} text-indigo-700 hover:bg-indigo-100 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "published")}>
                         {i.status === "closed" ? "Reopen" : "Publish"}
                       </button>
                     )}
                     {i.status === "published" && (
-                      <button className={`${link} text-yellow-700 hover:bg-yellow-100 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "closed")}>Close</button>
+                      <button className={`${link} text-violet-700 hover:bg-violet-100 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "closed")}>Close</button>
                     )}
                     <button className={`${link} text-red-700 hover:bg-red-100`} onClick={() => setDeleting(i)}>Delete</button>
                   </div>
@@ -211,7 +211,7 @@ export function CollegeInterviewList() {
         <p className="text-slate-700 text-sm mb-3">
           <span className="text-slate-900 font-semibold">{problems?.name}</span> needs these fixes before students can see it:
         </p>
-        <ul className="list-disc pl-5 space-y-1 text-sm text-yellow-700">
+        <ul className="list-disc pl-5 space-y-1 text-sm text-violet-700">
           {problems?.list.map((p) => (
             <li key={p}>{p}</li>
           ))}

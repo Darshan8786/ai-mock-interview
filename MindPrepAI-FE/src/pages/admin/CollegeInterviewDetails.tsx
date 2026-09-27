@@ -88,7 +88,7 @@ export function CollegeInterviewDetails() {
       {error && <ErrorState message={error} onRetry={load} />}
 
       {problems.length > 0 && (
-        <div className="mb-4 rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
+        <div className="mb-4 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-800">
           <p className="font-semibold mb-1">Can't publish yet:</p>
           <ul className="list-disc pl-5 space-y-0.5">{problems.map((p) => <li key={p}>{p}</li>)}</ul>
         </div>
@@ -145,7 +145,7 @@ export function CollegeInterviewDetails() {
                           const letter = String.fromCharCode(65 + idx);
                           const right = q.correctAnswer === letter;
                           return (
-                            <li key={letter} className={right ? "text-emerald-700" : "text-slate-500"}>
+                            <li key={letter} className={right ? "text-indigo-700" : "text-slate-500"}>
                               {letter}. {o} {right && "✓"}
                             </li>
                           );

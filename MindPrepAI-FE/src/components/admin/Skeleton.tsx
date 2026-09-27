@@ -29,7 +29,7 @@ export function StatSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="bg-slate-100 rounded-xl h-32 animate-pulse" />
+        <div key={i} className="bg-gradient-to-br from-indigo-100 to-violet-100 rounded-2xl h-32 animate-pulse" />
       ))}
     </div>
   );

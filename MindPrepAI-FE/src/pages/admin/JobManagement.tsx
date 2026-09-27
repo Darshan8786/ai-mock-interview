@@ -118,7 +118,7 @@ export function JobManagement() {
                   </td>
                   <td className="py-3 px-4 text-slate-700">{j.location}</td>
                   <td className="py-3 px-4 text-slate-700">{j.jobType}</td>
-                  <td className="py-3 px-4 text-emerald-700 font-medium">{j.package || "—"}</td>
+                  <td className="py-3 px-4 text-indigo-700 font-medium">{j.package || "—"}</td>
                   <td className="py-3 px-4">
                     <span className={expired ? "text-red-700" : "text-slate-700"}>
                       {new Date(j.lastDateToApply).toLocaleDateString()}
@@ -128,7 +128,7 @@ export function JobManagement() {
                   <td className="py-3 px-4 text-slate-700">{j.applicants}</td>
                   <td className="py-3 px-4">
                     {j.eligibilityCounts ? (
-                      <span className="text-emerald-700 font-medium">
+                      <span className="text-indigo-700 font-medium">
                         {j.eligibilityCounts.eligible}
                         <span className="text-slate-500 font-normal">/{j.eligibilityCounts.total}</span>
                       </span>
@@ -146,7 +146,7 @@ export function JobManagement() {
                       <IconButton
                         title="Eligible students"
                         onClick={() => navigate(`/admin/jobs/${j.id}/eligibility`)}
-                        className="hover:text-emerald-700"
+                        className="hover:text-indigo-700"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

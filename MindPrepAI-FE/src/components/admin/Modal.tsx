@@ -32,14 +32,14 @@ export function Modal({ open, onClose, title, children, footer, size = "md" }: M
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.97, opacity: 0, y: 8 }}
             transition={{ duration: 0.16 }}
-            className={`bg-white border border-slate-200 rounded-xl w-full ${sizes[size]} max-h-[90vh] flex flex-col shadow-xl`}
+            className={`glass !bg-white/90 rounded-2xl overflow-hidden w-full ${sizes[size]} max-h-[90vh] flex flex-col shadow-2xl shadow-indigo-900/20`}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
-              <h3 className="text-base font-semibold text-slate-900">{title}</h3>
+            <div className="flex items-center justify-between px-6 py-4 gloss !shadow-none bg-gradient-to-r from-indigo-600 via-violet-600 to-violet-600">
+              <h3 className="text-base font-semibold text-white">{title}</h3>
               <button
                 onClick={onClose}
-                className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                className="p-1 rounded-md text-white/80 hover:text-white hover:bg-white/15 transition-colors"
                 aria-label="Close"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -49,7 +49,7 @@ export function Modal({ open, onClose, title, children, footer, size = "md" }: M
             </div>
             <div className="px-6 py-5 overflow-y-auto text-slate-700">{children}</div>
             {footer && (
-              <div className="px-6 py-3.5 border-t border-slate-200 bg-slate-50 rounded-b-xl flex justify-end gap-2">{footer}</div>
+              <div className="px-6 py-3.5 border-t border-white bg-indigo-50/50 flex justify-end gap-2">{footer}</div>
             )}
           </motion.div>
         </motion.div>

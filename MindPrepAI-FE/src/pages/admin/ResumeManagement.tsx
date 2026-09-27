@@ -16,7 +16,7 @@ import { TextInput, Select } from "../../components/admin/Inputs";
 
 function AtsBar({ score }: { score: number }) {
   const color =
-    score >= 75 ? "bg-emerald-500" : score >= 50 ? "bg-yellow-500" : "bg-red-500";
+    score >= 75 ? "bg-indigo-500" : score >= 50 ? "bg-violet-500" : "bg-red-500";
   return (
     <div className="flex items-center gap-2 min-w-[120px]">
       <div className="flex-1 h-1.5 bg-slate-50 rounded-full overflow-hidden">
@@ -111,7 +111,7 @@ export function ResumeManagement() {
                 </td>
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-red-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <div>
@@ -181,7 +181,7 @@ export function ResumeManagement() {
               <div className="h-3 bg-slate-50 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${
-                    selected.atsScore >= 75 ? "bg-emerald-500" : selected.atsScore >= 50 ? "bg-yellow-500" : "bg-red-500"
+                    selected.atsScore >= 75 ? "bg-indigo-500" : selected.atsScore >= 50 ? "bg-violet-500" : "bg-red-500"
                   }`}
                   style={{ width: `${selected.atsScore}%` }}
                 />
@@ -193,7 +193,7 @@ export function ResumeManagement() {
                 <p className="text-xs text-slate-500 uppercase tracking-wider mb-2 font-medium">Detected Skills</p>
                 <div className="flex flex-wrap gap-1.5">
                   {selected.skills.map((s) => (
-                    <span key={s} className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full px-2.5 py-0.5">
+                    <span key={s} className="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full px-2.5 py-0.5">
                       {s}
                     </span>
                   ))}
