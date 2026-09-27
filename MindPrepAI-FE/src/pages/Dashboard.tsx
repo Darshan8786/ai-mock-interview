@@ -79,15 +79,6 @@ export function Dashboard() {
         },
     ];
 
-    const subjects = [
-        { name: "DBMS", count: "25 Questions", icon: "🗄️" },
-        { name: "OOPS", count: "30 Questions", icon: "🏗️" },
-        { name: "Java Full Stack", count: "45 Questions", icon: "☕" },
-        { name: "OS", count: "20 Questions", icon: "⚙️" },
-        { name: "DSA", count: "50 Questions", icon: "📐" },
-        { name: "SQL", count: "35 Questions", icon: "📚" },
-    ];
-
     const stats = [
         { label: "Total Users", value: "8+", icon: "👥" },
         { label: "Questions Covered", value: "500+", icon: "❓" },
@@ -313,64 +304,6 @@ export function Dashboard() {
                                     </div>
                                 </div>
                             </motion.button>
-                        ))}
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Subjects Section */}
-            <section className="px-4 py-16 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-6xl">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-12"
-                    >
-                        <h2 className="text-4xl font-bold font-poppins mb-4 text-white">Subjects We Cover</h2>
-                        <p className="text-gray-400 text-lg">Comprehensive question banks across key technical domains</p>
-                    </motion.div>
-
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                    >
-                        {subjects.map((subject, idx) => (
-                            <motion.div
-                                key={idx}
-                                variants={itemVariants}
-                                whileHover={{ scale: 1.02 }}
-                                className="group cursor-pointer rounded-2xl glass glass-hover p-6"
-                            >
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-4">
-                                        <motion.span
-                                            animate={{ scale: [1, 1.1, 1] }}
-                                            transition={{ duration: 2, repeat: Infinity, delay: idx * 0.2 }}
-                                            className="text-4xl"
-                                        >
-                                            {subject.icon}
-                                        </motion.span>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-white group-hover:text-violet-300 transition-colors font-poppins">
-                                                {subject.name}
-                                            </h3>
-                                            <p className="text-sm text-gray-400">{subject.count}</p>
-                                        </div>
-                                    </div>
-                                    <motion.span
-                                        animate={{ x: [0, 3, 0] }}
-                                        transition={{ duration: 1, repeat: Infinity }}
-                                        className="text-gray-500 group-hover:text-violet-300 transition-colors"
-                                    >
-                                        →
-                                    </motion.span>
-                                </div>
-                            </motion.div>
                         ))}
                     </motion.div>
                 </div>
