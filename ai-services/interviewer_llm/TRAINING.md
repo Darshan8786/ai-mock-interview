@@ -266,9 +266,10 @@ Endpoints: `POST /aptitude/generate-question`, `POST /tech-practice/generate-que
 
 ### 12.5 What actually ran (this repo, 2026-09-26)
 
-- Full 3-epoch run was stopped TWICE by the OS for low memory (7.8 GB RAM machine). The deployed model is the complete
-  end-of-epoch-2 checkpoint (`outputs/v2_run/checkpoint-778` -> `models/v2_combined/{adapter,merged}`).
-  Validation loss: epoch 1 0.952, epoch 2 0.939 (smoke 1.216). Epoch 3 was not completed.
+- The 3-epoch run was stopped three times by Claude Code's low-memory guard (7.8 GB RAM machine); epoch 3 was then
+  finished from checkpoint-778 in a plain terminal. Validation loss: epoch 1 0.952, epoch 2 **0.939**, epoch 3 0.979
+  (overfitting). The trainer restored the best checkpoint, so the final model (`models/v2_combined_e3`) is
+  byte-identical to the deployed epoch-2 model in `models/v2_combined/{adapter,merged}` (smoke run: 1.216).
 - `evaluate_v2.py --per-domain 20 --samples 2 --mcq 80` on the locked test split (`outputs/eval/v2_eval_v2_combined.json`):
 
 | domain | parse | valid (production gate) | novel (of valid) | notes |
