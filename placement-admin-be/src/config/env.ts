@@ -19,6 +19,9 @@ const envSchema = z.object({
   ADMIN_NAME: z.string().default("Super Admin"),
   ADMIN_PHONE: z.string().default("+91 0000000000"),
   SWAGGER_UI: z.string().default("/api/docs"),
+  // JWT secret of placement-prep-be (the main MindPrep backend). When set, admins signed in to the MindPrep admin
+  // panel (which logs in through the main backend) can use this service with that same token. Optional.
+  MAIN_JWT_SECRET: z.preprocess((v) => (v === "" ? undefined : v), z.string().min(16, "MAIN_JWT_SECRET must be at least 16 chars").optional()),
 });
 
 const parsed = envSchema.safeParse(process.env);

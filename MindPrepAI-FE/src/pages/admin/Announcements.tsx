@@ -107,8 +107,8 @@ export function Announcements() {
       {error && <ErrorState message={error} onRetry={reload} />}
 
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-gray-400">Showing {filtered.length} announcement{filtered.length === 1 ? "" : "s"}</p>
-        <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="w-40">
+        <p className="text-sm text-slate-500">Showing {filtered.length} announcement{filtered.length === 1 ? "" : "s"}</p>
+        <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="!w-40">
           <option value="all">All Status</option>
           <option value="draft">Draft</option>
           <option value="published">Published</option>
@@ -123,15 +123,15 @@ export function Announcements() {
       ) : (
         <div className="space-y-3">
           {filtered.map((a) => (
-            <div key={a.id} className="bg-gray-900/70 border border-gray-800 rounded-2xl p-5">
+            <div key={a.id} className="glass rounded-xl p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                    <h3 className="text-white font-semibold">{a.title}</h3>
+                    <h3 className="text-slate-900 font-semibold">{a.title}</h3>
                     <Badge tone={priorityTone[a.priority]}>{a.priority}</Badge>
                   </div>
-                  <p className="text-gray-400 text-sm leading-relaxed">{a.body}</p>
-                  <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-gray-500">
+                  <p className="text-slate-500 text-sm leading-relaxed">{a.body}</p>
+                  <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-slate-500">
                     <Badge tone={audienceTone[a.audience]}>Audience: {a.audience}</Badge>
                     <Badge tone={statusTone(a.status)}>{a.status}</Badge>
                     {a.publishedAt && <span>Published {new Date(a.publishedAt).toLocaleDateString()}</span>}
@@ -150,7 +150,7 @@ export function Announcements() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                   </IconButton>
-                  <IconButton title="Delete" onClick={() => setDeleting(a)} className="hover:text-red-400 hover:bg-red-500/10">
+                  <IconButton title="Delete" onClick={() => setDeleting(a)} className="hover:text-red-700 hover:bg-red-100">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
@@ -240,8 +240,8 @@ export function Announcements() {
           </>
         }
       >
-        <p className="text-gray-300 text-sm">
-          Delete announcement <span className="text-white font-semibold">{deleting?.title}</span>?
+        <p className="text-slate-700 text-sm">
+          Delete announcement <span className="text-slate-900 font-semibold">{deleting?.title}</span>?
         </p>
       </Modal>
     </div>

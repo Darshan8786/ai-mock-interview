@@ -1,3 +1,4 @@
+import { User } from "../models/User";
 import { Response } from "express";
 import { AuthRequest } from "../middleware/auth";
 import { asyncHandler } from "../utils/asyncHandler";
@@ -182,6 +183,14 @@ export const analyzeResume = asyncHandler(async (req: AuthRequest, res: Response
   }
 
   const predictedCategory = await classifyResumeCategory(text);
+
+  // Keep the latest ATS result on the student so admins can see resume quality (best effort - never blocks the response).
+  if (typeof analysis.ats_score === "number") {
+    await User.updateOne(
+      { _id: req.user._id },
+      { $set: { atsScore: analysis.ats_score, atsAnalyzedAt: new Date(), atsTopRole: analysis.top_roles?.[0] || "", atsFileName: req.file.originalname } }
+    ).catch((err) => console.error(`[resume] could not save ATS score: ${err?.message}`));
+  }
 
   res.json({
     success: true,

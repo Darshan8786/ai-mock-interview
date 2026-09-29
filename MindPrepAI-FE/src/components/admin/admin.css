@@ -1,0 +1,92 @@
+/* Glossy admin theme: frosted glass surfaces over a soft colour mesh, with specular shine on coloured elements. */
+
+/* Page backdrop: soft colour mesh the glass panels float on. */
+.admin-backdrop {
+  background-color: #eef1fb;
+  background-image:
+    radial-gradient(at 8% 12%, rgba(129, 140, 248, 0.40) 0px, transparent 45%),
+    radial-gradient(at 92% 8%, rgba(167, 139, 250, 0.35) 0px, transparent 45%),
+    radial-gradient(at 85% 88%, rgba(129, 140, 248, 0.28) 0px, transparent 45%),
+    radial-gradient(at 15% 92%, rgba(167, 139, 250, 0.28) 0px, transparent 45%);
+  background-attachment: fixed;
+}
+
+/* Frosted glass panel. */
+.glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.55));
+  backdrop-filter: blur(18px) saturate(170%);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 10px 30px -10px rgba(49, 46, 129, 0.18),
+    0 2px 6px rgba(49, 46, 129, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* Stronger glass for bars that sit on top of content (top bar, modal footers). */
+.glass-strong {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* Dark glass (sidebar). */
+.glass-dark {
+  background: linear-gradient(160deg, rgba(30, 27, 75, 0.94), rgba(46, 16, 101, 0.92));
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.08), 8px 0 30px -12px rgba(30, 27, 75, 0.45);
+}
+
+/* Glossy shine for coloured elements (buttons, stat tiles, banners, chips). */
+.gloss {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.12),
+    0 8px 20px -8px rgba(49, 46, 129, 0.45);
+}
+.gloss::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 50% 0;
+  border-radius: inherit;
+  border-bottom-left-radius: 50% 18%;
+  border-bottom-right-radius: 50% 18%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.08));
+  pointer-events: none;
+  z-index: -1;
+}
+.gloss::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  z-index: -1;
+  transition: left 0.7s ease;
+}
+.gloss:hover::after {
+  left: 130%;
+}
+/* Softer shine for small chips / icons. */
+.gloss-sm {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 3px rgba(0, 0, 0, 0.15), 0 3px 8px -2px rgba(0, 0, 0, 0.3);
+}
+.gloss-sm::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 52% 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.05));
+  pointer-events: none;
+  z-index: -1;
+}

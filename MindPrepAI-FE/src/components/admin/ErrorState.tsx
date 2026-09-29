@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Button } from "./Button";
 
 interface ErrorStateProps {
@@ -8,13 +7,12 @@ interface ErrorStateProps {
 
 export function ErrorState({ message, onRetry }: ErrorStateProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-center"
-    >
-      <p className="text-red-400 font-medium mb-3">{message}</p>
+    <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 flex items-center justify-between gap-4 mb-4">
+      <div className="flex items-center gap-3">
+        <span className="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-sm font-bold">!</span>
+        <p className="text-sm text-rose-700 font-medium">{message}</p>
+      </div>
       {onRetry && <Button variant="danger" onClick={onRetry}>Retry</Button>}
-    </motion.div>
+    </div>
   );
 }

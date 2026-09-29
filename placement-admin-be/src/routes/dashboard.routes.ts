@@ -1,9 +1,8 @@
 import { Router } from "express";
 import { getDashboardStats } from "../controllers/dashboard.controller";
-import { protect } from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.get("/", protect, getDashboardStats);
+router.get("/", getDashboardStats); // admin check applied where the router is mounted (app.ts)
 
 export default router;

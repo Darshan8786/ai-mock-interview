@@ -1,3 +1,4 @@
+import { getReports } from "../controllers/admin/reportsController";
 import { Router } from "express";
 import { protect } from "../middleware/auth";
 import { restrictTo } from "../middleware/restrictTo";
@@ -84,6 +85,8 @@ router.use(protect, restrictTo("admin"));
 
 // Dashboard
 router.get("/dashboard", getDashboardStats);
+// Reports & analytics (Dashboard + Reports pages) - ?days=7|30|90|365
+router.get("/reports", getReports);
 
 // Students
 router.get("/students", getStudents);

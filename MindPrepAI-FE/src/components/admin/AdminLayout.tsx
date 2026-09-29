@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import "./admin.css";
 
 interface NavItem {
   label: string;
   path: string;
   icon: React.ReactNode;
+  /** Icon-chip colour for this item. */
+  chip: string;
 }
 
 const icons = {
@@ -30,22 +33,66 @@ function NavIcon({ children }: { children: React.ReactNode }) {
   );
 }
 
-const navItems: NavItem[] = [
-  { label: "Dashboard", path: "/admin", icon: <NavIcon>{icons.dashboard}</NavIcon> },
-  { label: "Student Management", path: "/admin/students", icon: <NavIcon>{icons.students}</NavIcon> },
-  { label: "Resume Management", path: "/admin/resumes", icon: <NavIcon>{icons.resumes}</NavIcon> },
-  { label: "Interview Management", path: "/admin/interviews", icon: <NavIcon>{icons.interviews}</NavIcon> },
-  { label: "Aptitude", path: "/admin/aptitude", icon: <NavIcon>{icons.aptitude}</NavIcon> },
-  { label: "Job Management", path: "/admin/jobs", icon: <NavIcon>{icons.jobs}</NavIcon> },
-  { label: "Alumni", path: "/admin/alumni", icon: <NavIcon>{icons.alumni}</NavIcon> },
-  { label: "Reports & Analytics", path: "/admin/reports", icon: <NavIcon>{icons.reports}</NavIcon> },
-  { label: "Announcements", path: "/admin/announcements", icon: <NavIcon>{icons.announcements}</NavIcon> },
-  { label: "Settings", path: "/admin/settings", icon: <NavIcon>{icons.settings}</NavIcon> },
+const navGroups: { title: string; items: NavItem[] }[] = [
+  {
+    title: "Overview",
+    items: [
+      { label: "Dashboard", path: "/admin", icon: <NavIcon>{icons.dashboard}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Reports & Analytics", path: "/admin/reports", icon: <NavIcon>{icons.reports}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+    ],
+  },
+  {
+    title: "Students",
+    items: [
+      { label: "Students", path: "/admin/students", icon: <NavIcon>{icons.students}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Resumes", path: "/admin/resumes", icon: <NavIcon>{icons.resumes}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+    ],
+  },
+  {
+    title: "Assessments",
+    items: [
+      { label: "Interviews", path: "/admin/interviews", icon: <NavIcon>{icons.interviews}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Aptitude", path: "/admin/aptitude", icon: <NavIcon>{icons.aptitude}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+    ],
+  },
+  {
+    title: "Placements",
+    items: [
+      { label: "Jobs", path: "/admin/jobs", icon: <NavIcon>{icons.jobs}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Alumni", path: "/admin/alumni", icon: <NavIcon>{icons.alumni}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Announcements", path: "/admin/announcements", icon: <NavIcon>{icons.announcements}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+    ],
+  },
+  {
+    title: "System",
+    items: [{ label: "Settings", path: "/admin/settings", icon: <NavIcon>{icons.settings}</NavIcon>, chip: "from-indigo-400 to-violet-500" }],
+  },
 ];
+const allItems = navGroups.flatMap((g) => g.items);
+
+const isActive = (path: string, pathname: string) =>
+  path === "/admin" ? pathname === "/admin" : pathname.startsWith(path);
+
+function Logo() {
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="w-9 h-9 rounded-xl gloss-sm bg-gradient-to-br from-indigo-400 to-violet-500 flex items-center justify-center">
+        <span className="text-white font-bold text-sm">M</span>
+      </div>
+      <div className="leading-tight">
+        <p className="text-sm font-bold text-white">MindPrep AI</p>
+        <p className="text-[11px] text-white/70">Placement Admin</p>
+      </div>
+    </div>
+  );
+}
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const adminName = localStorage.getItem("user_name") || "Administrator";
+  const adminEmail = localStorage.getItem("user_email") || "Placement cell";
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
@@ -55,50 +102,57 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-2.5 px-5 h-16 border-b border-gray-800">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-          <span className="text-white font-bold text-lg">M</span>
-        </div>
-        <div>
-          <p className="text-white font-bold leading-tight">MindPrep AI</p>
-          <p className="text-[11px] text-gray-500 leading-tight">Admin Console</p>
-        </div>
+      <div className="flex items-center px-5 h-16 border-b border-white/10">
+        <Logo />
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        {navItems.map((item) => {
-          const active =
-            item.path === "/admin"
-              ? location.pathname === "/admin"
-              : location.pathname.startsWith(item.path);
-          return (
-            <button
-              key={item.path}
-              onClick={() => {
-                navigate(item.path);
-                onNavigate?.();
-              }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                active
-                  ? "bg-blue-600/15 text-blue-400 border border-blue-500/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800/70 border border-transparent"
-              }`}
-            >
-              {item.icon}
-              <span className="truncate">{item.label}</span>
-            </button>
-          );
-        })}
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
+        {navGroups.map((group) => (
+          <div key={group.title}>
+            <p className="px-3 mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">{group.title}</p>
+            <div className="space-y-0.5">
+              {group.items.map((item) => {
+                const active = isActive(item.path, location.pathname);
+                return (
+                  <button
+                    key={item.path}
+                    onClick={() => {
+                      navigate(item.path);
+                      onNavigate?.();
+                    }}
+                    className={`w-full flex items-center gap-3 px-2.5 py-2 rounded-xl text-sm font-medium transition-all ${
+                      active
+                        ? "bg-white/95 text-indigo-800 shadow-[inset_0_1px_0_#fff,0_8px_20px_-6px_rgba(0,0,0,0.45)]"
+                        : "text-white/80 hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    <span className={`w-8 h-8 shrink-0 rounded-lg gloss-sm flex items-center justify-center text-white bg-gradient-to-br ${item.chip} [&_svg]:w-[18px] [&_svg]:h-[18px]`}>{item.icon}</span>
+                    <span className="truncate">{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
-      <div className="p-3 border-t border-gray-800">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 transition-all"
-        >
-          <NavIcon>{icons.logout}</NavIcon>
-          Logout
-        </button>
+      <div className="p-3 border-t border-white/10">
+        <div className="flex items-center gap-3 px-2 py-2 rounded-xl bg-white/10 ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
+          <div className="w-8 h-8 rounded-full gloss-sm bg-gradient-to-br from-indigo-400 to-violet-500 text-white flex items-center justify-center text-sm font-semibold">
+            {adminName.charAt(0).toUpperCase()}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-white truncate">{adminName}</p>
+            <p className="text-xs text-white/60 truncate">{adminEmail}</p>
+          </div>
+          <button
+            onClick={handleLogout}
+            title="Log out"
+            className="p-1.5 rounded-md text-white/70 hover:text-white hover:bg-white/20 transition-colors"
+          >
+            <NavIcon>{icons.logout}</NavIcon>
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -106,11 +160,13 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
 export function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const current = allItems.find((i) => isActive(i.path, location.pathname));
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen admin-backdrop text-slate-900">
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 bg-gray-900/60 border-r border-gray-800 z-30">
+      <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 glass-dark z-30">
         <SidebarContent />
       </aside>
 
@@ -122,7 +178,7 @@ export function AdminLayout() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+              className="fixed inset-0 bg-slate-900/40 z-40 lg:hidden"
               onClick={() => setMobileOpen(false)}
             />
             <motion.aside
@@ -130,7 +186,7 @@ export function AdminLayout() {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 26, stiffness: 260 }}
-              className="fixed inset-y-0 left-0 w-64 bg-gray-900 z-50 lg:hidden"
+              className="fixed inset-y-0 left-0 w-64 glass-dark z-50 lg:hidden"
             >
               <SidebarContent onNavigate={() => setMobileOpen(false)} />
             </motion.aside>
@@ -138,28 +194,31 @@ export function AdminLayout() {
         )}
       </AnimatePresence>
 
-      {/* Main content */}
       <div className="lg:pl-64">
-        {/* Mobile top bar */}
-        <div className="lg:hidden sticky top-0 z-20 flex items-center justify-between px-4 h-14 bg-gray-900/90 backdrop-blur border-b border-gray-800">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <span className="text-white font-bold">M</span>
-            </div>
-            <span className="text-white font-bold">Admin</span>
+        {/* Top bar */}
+        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 h-14 glass-strong border-b border-white/70 shadow-[0_1px_0_rgba(255,255,255,0.9),0_6px_20px_-12px_rgba(49,46,129,0.25)]">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="lg:hidden p-1.5 -ml-1.5 rounded-md text-slate-500 hover:bg-slate-100"
+              aria-label="Open menu"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <nav className="flex items-center gap-1.5 text-sm">
+              <span className="text-slate-400">Admin</span>
+              <span className="text-slate-300">/</span>
+              <span className="font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">{current?.label || "Dashboard"}</span>
+            </nav>
           </div>
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="p-2 text-gray-400 hover:text-white"
-            aria-label="Open menu"
-          >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-indigo-700 glass px-2.5 py-1 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" /> Live data
+          </span>
+        </header>
 
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1400px]">
           <Outlet />
         </main>
       </div>

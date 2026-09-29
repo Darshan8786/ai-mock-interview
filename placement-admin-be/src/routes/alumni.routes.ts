@@ -15,7 +15,7 @@ import {
   alumniQuerySchema,
 } from "../validators/alumni.validator";
 
-/** Admin CRUD. Open (no login), like the other admin resources in this service. */
+/** Admin CRUD - requires an admin (see requireAdmin where this router is mounted in app.ts). */
 const router = Router();
 
 router.get("/", validate(alumniQuerySchema), getAlumni);

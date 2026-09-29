@@ -1,7 +1,7 @@
-import type { InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 const baseInput =
-  "w-full bg-gray-800/70 border border-gray-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all";
+  "w-full bg-white/70 backdrop-blur border border-white shadow-[inset_0_1px_2px_rgba(49,46,129,0.08)] rounded-xl px-3 py-2 text-sm text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/15 disabled:bg-slate-50 disabled:text-slate-500 transition-colors";
 
 export function TextInput(props: InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`${baseInput} ${props.className || ""}`} />;
@@ -12,7 +12,7 @@ export function TextArea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
 }
 
 export function Select(props: SelectHTMLAttributes<HTMLSelectElement>) {
-  return <select {...props} className={`${baseInput} ${props.className || ""}`} />;
+  return <select {...props} className={`${baseInput} pr-8 ${props.className || ""}`} />;
 }
 
 export function Field({
@@ -20,13 +20,11 @@ export function Field({
   children,
 }: {
   label: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <label className="block">
-      <span className="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">
-        {label}
-      </span>
+      <span className="block text-xs font-semibold text-indigo-900/70 mb-1.5">{label}</span>
       {children}
     </label>
   );

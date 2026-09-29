@@ -70,6 +70,11 @@ const userSchema = new mongoose.Schema(
     },
     isActive: { type: Boolean, default: true },
     lastLoginAt: { type: Date },
+    // Latest resume analysis (saved by POST /resume/analyze) - feeds admin Reports & Resume Management.
+    atsScore: { type: Number, default: null },
+    atsAnalyzedAt: { type: Date, default: null },
+    atsTopRole: { type: String, default: "" },
+    atsFileName: { type: String, default: "" },
 
     // ── Aptitude no-repeat tracking ──────────────────────
     // Question ids this user has already been served, so draws avoid repeats.

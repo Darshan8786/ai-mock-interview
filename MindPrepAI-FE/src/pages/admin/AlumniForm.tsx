@@ -153,7 +153,7 @@ export function AlumniForm() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center py-24 text-gray-400">Loading alumni...</div>;
+    return <div className="flex items-center justify-center py-24 text-slate-500">Loading alumni...</div>;
   }
 
   return (
@@ -169,7 +169,7 @@ export function AlumniForm() {
       />
 
       {error && (
-        <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-sm text-red-400">{error}</div>
+        <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">{error}</div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -209,15 +209,15 @@ export function AlumniForm() {
           <label
             className={`flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-sm cursor-pointer transition-all ${
               form.hasOpening
-                ? "bg-blue-600/15 border-blue-500/40 text-white"
-                : "bg-gray-800/70 border-gray-700 text-gray-300 hover:border-gray-600"
+                ? "bg-indigo-50 border-indigo-200 text-slate-900"
+                : "bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300"
             }`}
           >
             <input
               type="checkbox"
               checked={form.hasOpening}
               onChange={(e) => setForm((p) => ({ ...p, hasOpening: e.target.checked }))}
-              className="w-4 h-4 accent-blue-500"
+              className="w-4 h-4 accent-indigo-500"
             />
             This alumnus has a job opening to share with students
           </label>

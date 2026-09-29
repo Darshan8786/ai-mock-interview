@@ -9,6 +9,7 @@ import { swaggerSpec } from "./config/swagger";
 import { apiRateLimiter } from "./middleware/rateLimit.middleware";
 import { notFound } from "./middleware/notFound.middleware";
 import { errorHandler } from "./middleware/error.middleware";
+import { requireAdmin } from "./middleware/auth.middleware";
 import { UPLOADS_DIR } from "./middleware/upload.middleware";
 import authRoutes from "./routes/auth.routes";
 import dashboardRoutes from "./routes/dashboard.routes";
@@ -58,14 +59,15 @@ app.use(env.SWAGGER_UI, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API routes
 app.use("/api/admin", authRoutes);
-app.use("/api/admin/dashboard", dashboardRoutes);
-app.use("/api/admin/students", studentRoutes);
-app.use("/api/admin/companies", companyRoutes);
-app.use("/api/admin/jobs", jobRoutes);
-app.use("/api/admin/applications", applicationRoutes);
-app.use("/api/admin/interviews", interviewRoutes);
-app.use("/api/admin/aptitude-tests", aptitudeRoutes);
-app.use("/api/admin/alumni", alumniRoutes);
+// Every admin data resource requires an admin (this service's own login, or a MindPrep admin-panel token).
+app.use("/api/admin/dashboard", requireAdmin, dashboardRoutes);
+app.use("/api/admin/students", requireAdmin, studentRoutes);
+app.use("/api/admin/companies", requireAdmin, companyRoutes);
+app.use("/api/admin/jobs", requireAdmin, jobRoutes);
+app.use("/api/admin/applications", requireAdmin, applicationRoutes);
+app.use("/api/admin/interviews", requireAdmin, interviewRoutes);
+app.use("/api/admin/aptitude-tests", requireAdmin, aptitudeRoutes);
+app.use("/api/admin/alumni", requireAdmin, alumniRoutes);
 
 // Public (student-facing) read-only endpoint
 app.use("/api/alumni-openings", publicAlumniOpeningsRouter);

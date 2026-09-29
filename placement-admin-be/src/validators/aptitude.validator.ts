@@ -2,13 +2,23 @@ import { z } from "zod";
 
 const objectIdSchema = z.string().regex(/^[a-f\d]{24}$/i, "Invalid ObjectId");
 
-const aptitudeQuestionSchema = z.object({
-  question: z.string().min(3, "Question must be at least 3 characters"),
-  options: z.array(z.string().trim().min(1)).min(2).max(6),
-  correctAnswer: z.string().trim().min(1),
-  difficulty: z.enum(["easy", "medium", "hard"]).optional(),
-  topic: z.string().optional(),
-});
+const aptitudeQuestionSchema = z
+  .object({
+    question: z.string().min(3, "Question must be at least 3 characters"),
+    options: z.array(z.string().trim().min(1)).min(2).max(6),
+    correctAnswer: z.string().trim().min(1),
+    difficulty: z.enum(["easy", "medium", "hard"]).optional(),
+    topic: z.string().optional(),
+  })
+  // an answer key that is not one of the options (or duplicated options) would make the question unanswerable
+  .refine((q) => q.options.includes(q.correctAnswer), {
+    message: "correctAnswer must be exactly one of the options",
+    path: ["correctAnswer"],
+  })
+  .refine((q) => new Set(q.options.map((o) => o.toLowerCase())).size === q.options.length, {
+    message: "Options must be unique",
+    path: ["options"],
+  });
 
 export const createAptitudeTestSchema = z.object({
   body: z.object({

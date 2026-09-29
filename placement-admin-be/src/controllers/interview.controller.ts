@@ -54,7 +54,7 @@ export const createInterview = catchAsync(async (req: Request, res: Response) =>
 
   const interview = await Interview.create({
     ...body,
-    conductedBy: req.admin?.id,
+    conductedBy: req.admin?.source === "local" ? req.admin.id : undefined,
   });
   sendCreated(res, interview, "Interview scheduled successfully");
 });

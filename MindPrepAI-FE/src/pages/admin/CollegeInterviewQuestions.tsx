@@ -267,7 +267,7 @@ export function CollegeInterviewQuestions() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center py-24 text-gray-400">Loading questions...</div>;
+  if (loading) return <div className="flex items-center justify-center py-24 text-slate-500">Loading questions...</div>;
 
   const writtenCount = forms.filter((f) => f.id).length;
   const dirtyCount = forms.filter((f) => f.dirty).length;
@@ -292,18 +292,18 @@ export function CollegeInterviewQuestions() {
       {error && <ErrorState message={error} onRetry={reload} />}
 
       {status === "published" && (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-200">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-sm text-indigo-800">
           <span>This interview is published. You can edit question wording and answers, but adding or removing questions needs it moved back to draft.</span>
           <Button variant="secondary" loading={busy} onClick={moveToDraft}>Move to draft</Button>
         </div>
       )}
       {status === "closed" && (
-        <div className="mb-4 rounded-xl border border-gray-600 bg-gray-800/60 p-4 text-sm text-gray-300">
+        <div className="mb-4 rounded-xl border border-slate-300 bg-slate-50 p-4 text-sm text-slate-700">
           This interview is closed and read-only. Reopen it from the interview list to make changes.
         </div>
       )}
       {problems.length > 0 && (
-        <div className="mb-4 rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-sm text-yellow-200">
+        <div className="mb-4 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-800">
           <p className="font-semibold mb-1">Can't publish yet:</p>
           <ul className="list-disc pl-5 space-y-0.5">{problems.map((p) => <li key={p}>{p}</li>)}</ul>
         </div>
@@ -324,7 +324,7 @@ export function CollegeInterviewQuestions() {
                   <IconButton title="Move up" disabled={!canEditContent || index === 0} onClick={() => move(index, -1)}>↑</IconButton>
                   <IconButton title="Move down" disabled={!canEditContent || index === forms.length - 1} onClick={() => move(index, 1)}>↓</IconButton>
                   <IconButton title="Duplicate" disabled={!canStructure} onClick={() => duplicate(f)}>⧉</IconButton>
-                  <IconButton title="Delete" disabled={!canStructure} onClick={() => remove(f)} className="hover:text-red-400 hover:bg-red-500/10">🗑</IconButton>
+                  <IconButton title="Delete" disabled={!canStructure} onClick={() => remove(f)} className="hover:text-red-700 hover:bg-red-100">🗑</IconButton>
                 </div>
               }
             >
@@ -354,7 +354,7 @@ export function CollegeInterviewQuestions() {
 
                 {isMcq && (
                   <div className="space-y-2">
-                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Options — select the correct one</p>
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Options — select the correct one</p>
                     {f.options.map((opt, i) => {
                       const letter = String.fromCharCode(65 + i) as "A" | "B" | "C" | "D";
                       return (
@@ -364,10 +364,10 @@ export function CollegeInterviewQuestions() {
                             name={`correct-${f.key}`}
                             checked={f.correctAnswer === letter}
                             onChange={() => patchForm(f.key, { correctAnswer: letter })}
-                            className="w-4 h-4 accent-emerald-500"
+                            className="w-4 h-4 accent-indigo-500"
                             aria-label={`Option ${letter} is correct`}
                           />
-                          <span className="w-5 text-sm font-semibold text-gray-300">{letter}</span>
+                          <span className="w-5 text-sm font-semibold text-slate-700">{letter}</span>
                           <TextInput
                             value={opt}
                             onChange={(e) => patchForm(f.key, { options: f.options.map((o, j) => (j === i ? e.target.value : o)) })}
@@ -406,12 +406,12 @@ export function CollegeInterviewQuestions() {
                     <Field label={`Evaluation criteria${needsKey ? " *" : ""} — key concepts, comma separated (kept private)`}>
                       <TextInput value={f.evaluationCriteria} onChange={(e) => patchForm(f.key, { evaluationCriteria: e.target.value })} placeholder="e.g. encapsulation, inheritance, polymorphism" />
                     </Field>
-                    {needsKey && <p className="text-xs text-gray-500">Provide an expected answer or evaluation criteria (or both) so answers can be scored.</p>}
+                    {needsKey && <p className="text-xs text-slate-500">Provide an expected answer or evaluation criteria (or both) so answers can be scored.</p>}
                   </div>
                 )}
               </fieldset>
 
-              {f.error && <p className="mt-3 text-sm text-red-400">{f.error}</p>}
+              {f.error && <p className="mt-3 text-sm text-red-700">{f.error}</p>}
 
               <div className="mt-4 flex justify-end">
                 <Button variant={f.dirty ? "primary" : "secondary"} disabled={!canEditContent || !f.dirty} onClick={() => saveQuestion(f)}>
@@ -423,7 +423,7 @@ export function CollegeInterviewQuestions() {
         })}
 
         {forms.length === 0 && (
-          <p className="text-center text-sm text-gray-500 py-6">No questions yet. Add the first one below.</p>
+          <p className="text-center text-sm text-slate-500 py-6">No questions yet. Add the first one below.</p>
         )}
       </div>
 
@@ -436,7 +436,7 @@ export function CollegeInterviewQuestions() {
           + Add Question
         </Button>
         <div className="flex items-center gap-2">
-          {dirtyCount > 0 && <span className="text-xs text-yellow-400">{dirtyCount} unsaved</span>}
+          {dirtyCount > 0 && <span className="text-xs text-violet-700">{dirtyCount} unsaved</span>}
           <Button variant="secondary" loading={busy} disabled={status === "closed"} onClick={saveDraft}>Save Draft</Button>
           <Button variant="success" loading={busy} disabled={status === "closed"} onClick={publish}>
             {status === "published" ? "Save & Keep Published" : "Publish Interview"}
