@@ -1,42 +1,42 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { GRADIENTS, type GradientName } from "./gradients";
 
 interface StatCardProps {
   label: string;
   value: string | number;
   icon: ReactNode;
-  /** Colour hint such as "bg-violet-50"; the hue picks the card gradient. */
+  /** Colour hint such as "bg-violet-50"; its hue tints the icon chip. */
   color: string;
   trend?: string;
   trendUp?: boolean;
 }
 
-const HUES: [string, GradientName][] = [
-  ["indigo", "indigo"],
-  ["purple", "violet"],
-  ["emerald", "deep"],
-  ["cyan", "soft"],
-  ["red", "violet"],
-  ["green", "indigo"],
+const TINTS: [string, string][] = [
+  ["indigo", "bg-indigo-500/10 text-indigo-600 dark:text-indigo-300"],
+  ["purple", "bg-violet-500/10 text-violet-600 dark:text-violet-300"],
+  ["violet", "bg-violet-500/10 text-violet-600 dark:text-violet-300"],
+  ["emerald", "bg-emerald-500/10 text-emerald-600 dark:text-emerald-300"],
+  ["green", "bg-emerald-500/10 text-emerald-600 dark:text-emerald-300"],
+  ["cyan", "bg-sky-500/10 text-sky-600 dark:text-sky-300"],
+  ["blue", "bg-sky-500/10 text-sky-600 dark:text-sky-300"],
+  ["amber", "bg-amber-500/10 text-amber-600 dark:text-amber-300"],
+  ["red", "bg-rose-500/10 text-rose-600 dark:text-rose-300"],
 ];
 
 export function StatCard({ label, value, icon, color, trend, trendUp }: StatCardProps) {
-  const g = HUES.find(([h]) => color.includes(h))?.[1] || "indigo";
+  const tint = TINTS.find(([h]) => color.includes(h))?.[1] || TINTS[0][1];
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -3 }} className="h-full">
-      <div className={`gloss rounded-2xl p-5 h-full text-white bg-gradient-to-br ${GRADIENTS[g]}`}>
-        <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/15" />
-        <div className="absolute -right-2 -bottom-10 w-20 h-20 rounded-full bg-white/10" />
-        <div className="relative flex items-start justify-between gap-2">
-          <p className="text-sm font-medium text-white/90">{label}</p>
-          <div className="w-10 h-10 shrink-0 rounded-xl gloss-sm bg-white/20 ring-1 ring-white/40 flex items-center justify-center [&_svg]:!text-white [&_svg]:w-5 [&_svg]:h-5">
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="h-full">
+      <div className="h-full rounded-xl bg-surface border border-line shadow-card p-5">
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-sm font-medium text-muted">{label}</p>
+          <span className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center [&_svg]:w-5 [&_svg]:h-5 [&_svg]:!text-current ${tint}`}>
             {icon}
-          </div>
+          </span>
         </div>
-        <p className="relative text-3xl font-bold mt-3 tracking-tight drop-shadow-sm">{value}</p>
+        <p className="text-3xl font-bold text-fg mt-2 tracking-tight">{value}</p>
         {trend && (
-          <p className="relative text-xs font-medium mt-2 text-white/90">
+          <p className={`text-xs font-medium mt-2 ${trendUp ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
             {trendUp ? "▲" : "▼"} {trend}
           </p>
         )}

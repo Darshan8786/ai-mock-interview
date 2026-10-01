@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import { isAxiosError } from "axios";
 import { getTechnologies, startTechQuiz } from "../services/techQuizApi";
 import type { TechnologyMeta } from "../services/techQuizApi";
 import { AdaptiveTechCard } from "../components/adaptive/AdaptiveSetupCards";
+import { Chip, ModuleHero, Panel, Segmented } from "../components/module/ModuleKit";
+import { labelCls } from "../components/module/styles";
+import { FloatingCard } from "../components/3d/FloatingCard";
 
-const TECH_ICONS: Record<string, string> = {
-  Python: "🐍", Java: "☕", SQL: "🗄️", "C++": "➕", C: "🔧",
-  HTML: "📄", CSS: "🎨", JavaScript: "📜", React: "⚛️", "Node.js": "🟢",
+// Technology -> file extension, shown on the picker tiles.
+const TECH_FILES: Record<string, string> = {
+  Python: ".py", Java: ".java", SQL: ".sql", "C++": ".cpp", C: ".c",
+  HTML: ".html", CSS: ".css", JavaScript: ".js", React: ".jsx", "Node.js": ".mjs",
 };
 
 const DIFFICULTIES = ["Mixed", "Easy", "Medium", "Hard"];
@@ -53,8 +56,8 @@ export function TechQuizSetup() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 flex items-center justify-center">
-        <div className="animate-spin w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full" />
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+        <div className="animate-spin w-10 h-10 border-4 border-accent border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -62,129 +65,105 @@ export function TechQuizSetup() {
   const meta = technologies[technology];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-8 px-4">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-1">Technical Practice</h1>
-        <p className="text-gray-400 text-sm mb-8">
-          Verified, locally-trained questions per technology — MCQ, coding, output prediction, debugging, and more. No external AI is used to generate or grade these.
-        </p>
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+      <ModuleHero
+        kind="tech"
+        kicker="// practice/tech"
+        title="Tech Practice"
+        description="Verified, locally trained questions for each technology: MCQ, conceptual, output prediction, debugging and coding. No external AI is used to generate or grade them."
+        stats={[
+          { label: "technologies", value: Object.keys(TECH_FILES).length },
+          { label: "topics", value: meta?.topics.length ?? "—" },
+          { label: "q types", value: meta ? Object.keys(meta.by_question_type || {}).length : "—" },
+        ]}
+      />
 
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm mb-6">{error}</div>
-        )}
+      {error && <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-400 text-sm">{error}</div>}
 
-        <div className="mb-8">
-          <h3 className="text-sm font-medium text-gray-400 mb-3">Technology</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            {Object.keys(TECH_ICONS).map((tech) => {
-              const active = technology === tech;
-              return (
+      <Panel kicker="// select(technology)" title="Choose a technology">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          {Object.entries(TECH_FILES).map(([tech, ext]) => {
+            const active = technology === tech;
+            return (
+              <FloatingCard key={tech} intensity={7}>
                 <button
-                  key={tech}
                   onClick={() => setTechnology(tech)}
-                  className={`rounded-xl p-4 border text-center transition-all ${
-                    active
-                      ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                      : "bg-gray-800/50 border-gray-700 text-gray-300 hover:border-gray-600"
+                  aria-pressed={active}
+                  className={`w-full text-left rounded-xl border p-4 transition-colors ${
+                    active ? "bg-accent-soft border-accent/40" : "bg-surface-2/60 border-line hover:border-accent/40"
                   }`}
                 >
-                  <div className="text-2xl mb-1">{TECH_ICONS[tech]}</div>
-                  <div className="text-sm font-medium">{tech}</div>
+                  <span className={`font-mono text-lg font-semibold ${active ? "text-accent-fg" : "text-subtle"}`}>{ext}</span>
+                  <span className={`block mt-1 text-sm font-semibold ${active ? "text-accent-fg" : "text-fg"}`}>{tech}</span>
                 </button>
-              );
-            })}
-          </div>
+              </FloatingCard>
+            );
+          })}
         </div>
+      </Panel>
 
-        <div className="grid grid-cols-2 gap-3 mb-8">
-          {(
-            [
-              { key: "adaptive", label: "AI Adaptive Session", desc: "One question at a time - difficulty and topics adapt to your answers" },
-              { key: "classic", label: "Classic Quiz", desc: "A fixed set of verified questions, scored at the end" },
-            ] as const
-          ).map((m) => (
-            <button
-              key={m.key}
-              onClick={() => setMode(m.key)}
-              className={`text-left rounded-2xl border p-4 transition-all ${
-                mode === m.key ? "bg-emerald-500/15 border-emerald-500/50" : "bg-gray-800/50 border-gray-700 hover:border-gray-600"
-              }`}
-            >
-              <p className={`font-semibold ${mode === m.key ? "text-emerald-400" : "text-white"}`}>{m.label}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{m.desc}</p>
-            </button>
-          ))}
+      <Panel className="mt-6" kicker={`// ${TECH_FILES[technology] ?? ""} session`} title={`Practise ${technology}`}>
+        <Segmented
+          value={mode}
+          onChange={setMode}
+          options={[
+            { value: "adaptive", label: "AI adaptive session", hint: "One question at a time; difficulty and topics adapt to you" },
+            { value: "classic", label: "Classic quiz", hint: "A fixed set of verified questions, scored at the end" },
+          ]}
+        />
+
+        <div className="mt-6">
+          {mode === "adaptive" ? (
+            <AdaptiveTechCard technology={technology} topics={meta?.topics || []} />
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <p className={labelCls}>difficulty</p>
+                  <div className="flex flex-wrap gap-2">
+                    {DIFFICULTIES.map((d) => (
+                      <Chip key={d} active={difficulty === d} onClick={() => setDifficulty(d)}>
+                        {d}
+                      </Chip>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className={labelCls}>questions</p>
+                  <div className="flex flex-wrap gap-2">
+                    {COUNTS.map((c) => (
+                      <Chip key={c} active={count === c} onClick={() => setCount(c)}>
+                        {c}
+                      </Chip>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {meta && (
+                <div className="mt-6 rounded-xl bg-surface-2/60 border border-line p-4">
+                  <p className={labelCls}>// topics covered</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {meta.topics.map((t) => (
+                      <span key={t} className="text-[11px] px-2 py-1 rounded-md bg-surface border border-line text-fg-2">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={handleStart}
+                disabled={starting}
+                className="mt-6 w-full py-3 bg-accent hover:bg-accent-hover text-white rounded-xl font-semibold transition-colors disabled:opacity-50"
+              >
+                {starting ? "Preparing questions…" : `Start ${technology} quiz →`}
+              </button>
+            </>
+          )}
         </div>
-
-        {mode === "adaptive" ? (
-          <AdaptiveTechCard technology={technology} topics={meta?.topics || []} />
-        ) : (
-        <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-          <div>
-            <h3 className="text-sm font-medium text-gray-400 mb-3">Difficulty</h3>
-            <div className="flex flex-wrap gap-2">
-              {DIFFICULTIES.map((d) => (
-                <button
-                  key={d}
-                  onClick={() => setDifficulty(d)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
-                    difficulty === d
-                      ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                      : "bg-gray-800/50 border-gray-700 text-gray-300 hover:border-gray-600"
-                  }`}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-medium text-gray-400 mb-3">Number of Questions</h3>
-            <div className="flex flex-wrap gap-2">
-              {COUNTS.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCount(c)}
-                  className={`px-5 py-2 rounded-xl text-sm font-medium border transition-all ${
-                    count === c
-                      ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400"
-                      : "bg-gray-800/50 border-gray-700 text-gray-300 hover:border-gray-600"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {meta && (
-          <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700 mb-8">
-            <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
-              {technology} topics covered
-            </h4>
-            <div className="flex flex-wrap gap-1.5">
-              {meta.topics.map((t) => (
-                <span key={t} className="text-[11px] px-2 py-1 rounded-full bg-gray-700/60 text-gray-300">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <button
-          onClick={handleStart}
-          disabled={starting}
-          className="w-full px-6 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-2xl font-bold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50"
-        >
-          {starting ? "Preparing questions…" : `Start ${technology} Practice →`}
-        </button>
-        </>
-        )}
-      </motion.div>
+      </Panel>
     </div>
   );
 }

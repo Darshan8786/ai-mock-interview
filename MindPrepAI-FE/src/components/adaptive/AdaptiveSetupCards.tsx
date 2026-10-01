@@ -4,9 +4,7 @@ import { isAxiosError } from "axios";
 import { getAptitudePlan, getTechPlan, startAdaptiveAptitude, startAdaptiveTech } from "../../services/adaptiveApi";
 import type { Plan } from "../../services/adaptiveApi";
 import { PlanCard } from "./AdaptiveUI";
-
-const selectCls = "w-full px-3 py-2.5 rounded-xl bg-gray-700/50 text-gray-200 border border-gray-600 focus:outline-none focus:border-emerald-500/50 text-sm";
-const labelCls = "block text-xs text-gray-400 mb-1.5 uppercase tracking-wide";
+import { labelCls, selectCls } from "../module/styles";
 const DIFFS = [
   { v: "adaptive", l: "Adaptive (from my history)" },
   { v: "easy", l: "Start at Easy" },
@@ -52,13 +50,8 @@ export function AdaptiveAptitudeCard() {
   };
 
   return (
-    <section className="mb-12">
-      <h2 className="text-lg font-semibold text-white mb-1 flex items-center gap-2"><span>🧠</span> AI Adaptive Practice</h2>
-      <p className="text-xs text-gray-400 mb-4">
-        One question at a time, generated and answer-checked on this machine. Difficulty adjusts to your answers and weak topics from your history are targeted.
-      </p>
-      <div className="bg-gray-800/50 rounded-2xl border border-emerald-500/30 p-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Field label="Category">
             <select className={selectCls} value={category} onChange={(e) => setCategory(e.target.value)}>
               {categories.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -81,13 +74,12 @@ export function AdaptiveAptitudeCard() {
           </Field>
         </div>
         <div className="mt-4"><PlanCard plan={plan} /></div>
-        {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
+        {error && <p className="text-red-600 dark:text-red-400 text-sm mt-3">{error}</p>}
         <button onClick={start} disabled={busy}
-          className="mt-5 w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50">
-          {busy ? "Starting…" : `Start Adaptive ${category} Practice →`}
+          className="mt-5 w-full py-3 rounded-xl bg-accent hover:bg-accent-hover text-white font-semibold transition-colors disabled:opacity-50">
+          {busy ? "Starting…" : `Start adaptive ${category} session →`}
         </button>
-      </div>
-    </section>
+    </div>
   );
 }
 
@@ -133,7 +125,7 @@ export function AdaptiveTechCard({ technology, topics }: { technology: string; t
 
   return (
     <div>
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Field label="Topic">
           <select className={selectCls} value={topic} onChange={(e) => setTopic(e.target.value)}>
             <option value="">All topics</option>
@@ -162,10 +154,10 @@ export function AdaptiveTechCard({ technology, topics }: { technology: string; t
         </Field>
       </div>
       <div className="mt-4"><PlanCard plan={plan} /></div>
-      {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
+      {error && <p className="text-red-600 dark:text-red-400 text-sm mt-3">{error}</p>}
       <button onClick={start} disabled={busy}
-        className="mt-5 w-full px-6 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-2xl font-bold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50">
-        {busy ? "Starting…" : `Start Adaptive ${technology} Practice →`}
+        className="mt-5 w-full py-3 bg-accent hover:bg-accent-hover text-white rounded-xl font-semibold transition-colors disabled:opacity-50">
+        {busy ? "Starting…" : `Start adaptive ${technology} session →`}
       </button>
     </div>
   );

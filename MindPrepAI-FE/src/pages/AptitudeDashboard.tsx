@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   getAptitudeTests,
   getAptitudeTopics,
@@ -15,12 +14,15 @@ import type {
   AptitudeProgress,
 } from "../services/profileApi";
 import { AdaptiveAptitudeCard } from "../components/adaptive/AdaptiveSetupCards";
+import { ModuleHero, Panel, Segmented } from "../components/module/ModuleKit";
+import { labelCls, selectCls } from "../components/module/styles";
+import { FloatingCard } from "../components/3d/FloatingCard";
 
 const CATEGORY_META: Record<string, { icon: string }> = {
-  Quantitative: { icon: "📊" },
-  "Logical Reasoning": { icon: "🧩" },
-  "Verbal Ability": { icon: "📝" },
-  "Data Interpretation": { icon: "📈" },
+  Quantitative: { icon: "∑" },
+  "Logical Reasoning": { icon: "⊢" },
+  "Verbal Ability": { icon: "Aa" },
+  "Data Interpretation": { icon: "▤" },
 };
 
 const QUICK_MODES = [
@@ -28,15 +30,13 @@ const QUICK_MODES = [
     mode: "daily",
     title: "Daily Aptitude",
     desc: "Balanced mix of all 4 sections — a quick daily warm-up.",
-    icon: "📅",
-    accent: "from-sky-500/20 to-sky-600/5 border-sky-500/30",
+    icon: "⟳",
   },
   {
     mode: "mixed",
     title: "Mixed Test",
     desc: "Custom-weighted sections in a single timed test.",
-    icon: "🎯",
-    accent: "from-fuchsia-500/20 to-fuchsia-600/5 border-fuchsia-500/30",
+    icon: "⧉",
   },
 ];
 
@@ -59,7 +59,6 @@ export function AptitudeDashboard() {
   const [section, setSection] = useState<Section>("topic");
   const [category, setCategory] = useState("Quantitative");
   const [topic, setTopic] = useState(""); // "" = every topic in the category
-  const [company, setCompany] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [count, setCount] = useState(10);
   const [quickDifficulty, setQuickDifficulty] = useState("beginner");
@@ -72,7 +71,6 @@ export function AptitudeDashboard() {
         setTests(t);
         setTopics(topicsData);
         setCompanies(companyList);
-        if (companyList.length > 0) setCompany(companyList[0].name);
         setProgress(prog);
         setLoading(false);
       })
@@ -89,11 +87,14 @@ export function AptitudeDashboard() {
   const categoryTopics = topics[category] || [];
   const categoryTotal = categoryTopics.reduce((sum, t) => sum + t.questionCount, 0);
   const selectedTopic = categoryTopics.find((t) => t.name === topic);
-  const selectedCompany = companies.find((c) => c.name === company);
+  // Company-wise practice is one mixed set; company names are never shown.
+  // (A question tagged with several companies is counted once per tag, so this
+  // can overstate the pool slightly - the backend then serves what exists.)
+  const companyPool = companies.reduce((sum, c) => sum + c.questionCount, 0);
 
   // How many questions the current selection can actually supply, so the count
   // choices never offer more than exist.
-  const pool = section === "topic" ? (selectedTopic ? selectedTopic.questionCount : categoryTotal) : selectedCompany?.questionCount || 0;
+  const pool = section === "topic" ? (selectedTopic ? selectedTopic.questionCount : categoryTotal) : companyPool;
   const countChoices = pool >= COUNT_CHOICES[0] ? COUNT_CHOICES.filter((n) => n <= pool) : pool > 0 ? [pool] : [];
   // The count actually shown and started: the chosen one, or the largest choice
   // that still fits when the selection changed to a smaller pool.
@@ -119,7 +120,7 @@ export function AptitudeDashboard() {
     startSession(payload);
   };
 
-  const startCompanyWise = () => startSession({ mode: "company", tag: company, count: effectiveCount });
+  const startCompanyWise = () => startSession({ mode: "company", count: effectiveCount });
 
   const startQuickMode = (mode: string) => {
     const payload: Record<string, any> = { mode, count: 10 };
@@ -130,152 +131,112 @@ export function AptitudeDashboard() {
   const startTest = (testId: string) => startSession({ testId });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-10 px-4">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-6xl mx-auto">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-white">Aptitude Preparation</h1>
-          <p className="text-gray-400 mt-2">
-            Practice category by category or company by company. After each attempt you get your score, the correct answers and
-            the logic behind them.
-          </p>
-          <div className="flex justify-center gap-3 mt-4">
-            <button
-              onClick={() => navigate("/aptitude/progress")}
-              className="px-4 py-2 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-sm font-medium hover:bg-emerald-500/25 transition-all"
-            >
-              📈 My Progress
-            </button>
-            <button
-              onClick={() => navigate("/aptitude/history")}
-              className="px-4 py-2 rounded-xl bg-blue-500/15 text-blue-400 border border-blue-500/30 text-sm font-medium hover:bg-blue-500/25 transition-all"
-            >
-              🕘 Test History
-            </button>
-          </div>
-        </div>
-
-        {loadError && (
-          <div className="max-w-lg mx-auto mb-8 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center">
-            {loadError}
-          </div>
-        )}
-
-        {loading && (
-          <div className="flex justify-center py-20">
-            <div className="animate-spin w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full" />
-          </div>
-        )}
-
-        {!loading && !loadError && (
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+      <ModuleHero
+        kind="aptitude"
+        kicker="// practice/aptitude"
+        title="Aptitude"
+        description="Practise quant, logical, verbal and data interpretation by category, by company, or in an adaptive session that tunes itself to you. Every attempt shows the correct answers and the logic behind them."
+        stats={[
+          { label: "accuracy", value: progress ? `${progress.accuracy}%` : "—" },
+          { label: "tests done", value: progress ? progress.completedTests : "—" },
+          { label: "categories", value: Object.keys(CATEGORY_META).length },
+        ]}
+        actions={
           <>
-            {progress && (
-              <section className="mb-10">
-                <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-                  {[
-                    { label: "Overall Accuracy", value: `${progress.accuracy}%`, accent: "text-emerald-400" },
-                    { label: "Tests Completed", value: String(progress.completedTests), accent: "text-fuchsia-400" },
-                  ].map((s) => (
-                    <div key={s.label} className="bg-gray-800/50 rounded-2xl border border-gray-700 p-4 text-center">
-                      <p className={`text-2xl font-bold ${s.accent}`}>{s.value}</p>
-                      <p className="text-[11px] text-gray-400 mt-1 uppercase tracking-wide">{s.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
+            <button onClick={() => navigate("/aptitude/progress")} className="px-4 py-2.5 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors">
+              My progress
+            </button>
+            <button onClick={() => navigate("/aptitude/history")} className="px-4 py-2.5 rounded-lg border border-line-strong bg-surface text-fg-2 hover:text-fg hover:bg-surface-2 text-sm font-medium transition-colors">
+              Test history
+            </button>
+          </>
+        }
+      />
 
-            {startError && (
-              <div className="max-w-lg mx-auto mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center">
-                {startError}
-              </div>
-            )}
+      {loadError && (
+        <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-400 text-sm">{loadError}</div>
+      )}
 
-            {/* AI adaptive practice (one generated, answer-checked question at a time) */}
-            <AdaptiveAptitudeCard />
+      {loading && (
+        <div className="flex justify-center py-20">
+          <div className="animate-spin w-10 h-10 border-4 border-accent border-t-transparent rounded-full" />
+        </div>
+      )}
 
-            {/* Category-wise / Company-wise */}
-            <section className="mb-12">
-              <div className="grid grid-cols-2 gap-3 mb-5">
-                {(
-                  [
-                    { key: "topic", label: "Category-wise", icon: "📚", desc: "Practice one category at a time" },
-                    { key: "company", label: "Company-wise", icon: "🏢", desc: "Questions asked by companies" },
-                  ] as const
-                ).map((s) => (
-                  <button
-                    key={s.key}
-                    onClick={() => setSection(s.key)}
-                    className={`text-left rounded-2xl border p-4 transition-all ${
-                      section === s.key
-                        ? "bg-emerald-500/15 border-emerald-500/50"
-                        : "bg-gray-800/50 border-gray-700 hover:border-gray-600"
-                    }`}
-                  >
-                    <span className="text-2xl">{s.icon}</span>
-                    <p className={`font-semibold mt-1 ${section === s.key ? "text-emerald-400" : "text-white"}`}>{s.label}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">{s.desc}</p>
-                  </button>
-                ))}
-              </div>
+      {!loading && !loadError && (
+        <>
+          {startError && (
+            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-400 text-sm">{startError}</div>
+          )}
 
-              <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6">
-                {section === "topic" && (
-                  <>
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {Object.entries(CATEGORY_META).map(([key, meta]) => (
-                        <button
-                          key={key}
-                          onClick={() => {
-                            setCategory(key);
-                            setTopic("");
-                          }}
-                          className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all ${
-                            category === key
-                              ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/50"
-                              : "bg-gray-700/40 text-gray-300 border-gray-600 hover:border-gray-500"
-                          }`}
-                        >
-                          <span className="mr-1.5">{meta.icon}</span>
-                          {key}
-                        </button>
-                      ))}
-                    </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+              <Panel
+                kicker="// adaptive.session()"
+                title="AI adaptive practice"
+                description="One question at a time, generated and answer-checked on this machine. Difficulty follows your answers and your weak topics get extra attention."
+              >
+                <AdaptiveAptitudeCard />
+              </Panel>
 
-                    {/* The whole category is practised as one mixed set - no individual topics are offered. */}
-                    {categoryTopics.length === 0 && (
-                      <p className="text-sm text-gray-500">No questions are available in this category yet.</p>
-                    )}
-                  </>
-                )}
+              <Panel kicker="// practice.set()" title="Category & company practice" description="A fixed set of questions, scored at the end.">
+                <Segmented
+                  value={section}
+                  onChange={setSection}
+                  options={[
+                    { value: "topic", label: "Category-wise", hint: "One category, mixed topics" },
+                    { value: "company", label: "Company-wise", hint: "Questions asked in placement tests" },
+                  ]}
+                />
 
-                {section === "company" && (
-                  <>
-                    {companies.length === 0 ? (
-                      <p className="text-sm text-gray-500">No company-tagged questions are available yet.</p>
-                    ) : (
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                        {companies.map((c) => (
-                          <TopicCard
-                            key={c.name}
-                            label={c.name}
-                            active={company === c.name}
-                            onClick={() => setCompany(c.name)}
-                          />
-                        ))}
+                <div className="mt-5">
+                  {section === "topic" && (
+                    <>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        {Object.entries(CATEGORY_META).map(([key, meta]) => {
+                          const active = category === key;
+                          return (
+                            <button
+                              key={key}
+                              onClick={() => {
+                                setCategory(key);
+                                setTopic("");
+                              }}
+                              aria-pressed={active}
+                              className={`text-left rounded-xl border p-3.5 transition-colors ${
+                                active ? "bg-accent-soft border-accent/40" : "bg-surface border-line-strong hover:border-accent/40"
+                              }`}
+                            >
+                              <span className={`font-mono text-lg ${active ? "text-accent-fg" : "text-subtle"}`}>{meta.icon}</span>
+                              <p className={`mt-1 text-sm font-semibold ${active ? "text-accent-fg" : "text-fg"}`}>{key}</p>
+                            </button>
+                          );
+                        })}
                       </div>
-                    )}
-                  </>
-                )}
+                      {categoryTopics.length === 0 && <p className="text-sm text-subtle mt-3">No questions are available in this category yet.</p>}
+                    </>
+                  )}
+
+                  {section === "company" &&
+                    (companies.length === 0 ? (
+                      <p className="text-sm text-subtle">No company questions are available yet.</p>
+                    ) : (
+                      <div className="rounded-xl border border-line bg-surface-2/60 p-4 flex items-start gap-3">
+                        <span className="w-10 h-10 shrink-0 rounded-lg bg-accent-soft text-accent-fg font-mono text-sm font-semibold flex items-center justify-center">{"{?}"}</span>
+                        <p className="text-sm text-fg-2">
+                          A mixed set of questions that have appeared in real company placement tests. Companies aren&apos;t named, so
+                          you practise the question, not the brand.
+                        </p>
+                      </div>
+                    ))}
+                </div>
 
                 <div className="flex flex-wrap items-end gap-4 mt-6">
                   {section === "topic" && (
-                    <div>
-                      <label className="block text-xs text-gray-400 mb-1.5 uppercase tracking-wide">Difficulty</label>
-                      <select
-                        value={difficulty}
-                        onChange={(e) => setDifficulty(e.target.value)}
-                        className="px-3 py-2.5 rounded-xl bg-gray-700/50 text-gray-200 border border-gray-600 focus:outline-none focus:border-emerald-500/50"
-                      >
+                    <div className="w-40">
+                      <label className={labelCls}>difficulty</label>
+                      <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className={selectCls}>
                         <option value="">Mixed</option>
                         <option value="beginner">Beginner</option>
                         <option value="intermediate">Intermediate</option>
@@ -283,13 +244,13 @@ export function AptitudeDashboard() {
                       </select>
                     </div>
                   )}
-                  <div>
-                    <label className="block text-xs text-gray-400 mb-1.5 uppercase tracking-wide">Questions</label>
+                  <div className="w-28">
+                    <label className={labelCls}>questions</label>
                     <select
                       value={effectiveCount}
                       onChange={(e) => setCount(Number(e.target.value))}
                       disabled={countChoices.length === 0}
-                      className="px-3 py-2.5 rounded-xl bg-gray-700/50 text-gray-200 border border-gray-600 focus:outline-none focus:border-emerald-500/50 disabled:opacity-50"
+                      className={`${selectCls} disabled:opacity-50`}
                     >
                       {countChoices.map((n) => (
                         <option key={n} value={n}>
@@ -300,142 +261,102 @@ export function AptitudeDashboard() {
                   </div>
                   <button
                     onClick={section === "topic" ? startTopicWise : startCompanyWise}
-                    disabled={starting || pool === 0 || (section === "company" && !company)}
-                    className="flex-1 min-w-[220px] py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50"
+                    disabled={starting || pool === 0}
+                    className="flex-1 min-w-[220px] py-2.5 rounded-lg bg-accent hover:bg-accent-hover text-white font-semibold transition-colors disabled:opacity-50"
                   >
                     {starting
                       ? "Preparing questions…"
                       : section === "topic"
-                      ? `Start ${topic || category} Practice`
-                      : `Start ${company || "Company"} Practice`}
+                      ? `Start ${topic || category} practice →`
+                      : "Start company practice →"}
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-3">
-                  {section === "company"
-                    ? "Marks: +1 per correct answer, −0.25 per wrong answer."
-                    : "Marks: +1 per correct answer, no negative marking."}
+                <p className="font-mono text-[11px] text-subtle mt-3">
+                  {section === "company" ? "// marks: +1 correct, −0.25 wrong" : "// marks: +1 correct, no negative marking"}
                 </p>
-              </div>
-            </section>
+              </Panel>
+            </div>
 
-            {/* Other ways to practice */}
-            <section className="mb-12">
-              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <span>⚡</span> More Ways to Practice
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {QUICK_MODES.map((m) => (
-                  <button
-                    key={m.mode}
-                    onClick={() => startQuickMode(m.mode)}
-                    disabled={starting}
-                    className={`text-left bg-gray-800/50 rounded-2xl border p-5 hover:-translate-y-1 transition-all ${m.accent} ${
-                      starting ? "opacity-60" : ""
-                    }`}
-                  >
-                    <div className="text-2xl mb-2">{m.icon}</div>
-                    <h3 className="font-semibold text-white text-sm">{m.title}</h3>
-                    <p className="text-xs text-gray-400 mt-1">{m.desc}</p>
-                  </button>
-                ))}
-
-                <div className="bg-gray-800/50 rounded-2xl border p-5 from-rose-500/20 to-rose-600/5 border-rose-500/30">
-                  <div className="text-2xl mb-2">🏋️</div>
-                  <h3 className="font-semibold text-white text-sm">By Difficulty</h3>
-                  <p className="text-xs text-gray-400 mt-1">Focus only on beginner, intermediate or advanced questions.</p>
-                  <div className="flex gap-2 mt-3">
-                    <select
-                      value={quickDifficulty}
-                      onChange={(e) => setQuickDifficulty(e.target.value)}
-                      className="flex-1 px-2 py-1.5 rounded-lg bg-gray-700/60 text-gray-200 border border-gray-600 text-xs focus:outline-none"
-                    >
-                      {DIFFICULTIES.map((d) => (
-                        <option key={d} value={d}>
-                          {d}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      onClick={() => startQuickMode("difficulty")}
-                      disabled={starting}
-                      className="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-medium hover:bg-rose-500/30 disabled:opacity-60"
-                    >
-                      Start
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Full mock tests */}
-            <section>
-              <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <span>🏁</span> Full Mock Tests
-              </h2>
-              {tests.length === 0 ? (
-                <p className="text-sm text-gray-500">No tests configured yet. Ask an admin to publish one.</p>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {tests.map((t) => (
-                    <motion.button
-                      key={t.id}
-                      whileHover={{ y: -4 }}
-                      onClick={() => startTest(t.id)}
-                      disabled={starting}
-                      className={`text-left bg-gray-800/50 rounded-2xl border border-gray-700 p-5 hover:border-emerald-500/40 transition-all ${
-                        starting ? "opacity-60" : ""
-                      }`}
-                    >
-                      <h3 className="font-semibold text-white">{t.title}</h3>
-                      <p className="text-xs text-gray-400 mt-1 line-clamp-2">{t.description}</p>
-                      <div className="flex flex-wrap gap-2 mt-4 text-[11px]">
-                        <span className="px-2 py-1 rounded-lg bg-gray-700/60 text-gray-300">
-                          {t.questionCount} questions
+            <div className="space-y-6">
+              <Panel kicker="// quick.start()" title="Quick start" description="10 questions, one click.">
+                <div className="space-y-3">
+                  {QUICK_MODES.map((m) => (
+                    <FloatingCard key={m.mode} intensity={5}>
+                      <button
+                        onClick={() => startQuickMode(m.mode)}
+                        disabled={starting}
+                        className="w-full text-left flex items-start gap-3 rounded-xl border border-line bg-surface-2/60 hover:border-accent/40 p-4 transition-colors disabled:opacity-60"
+                      >
+                        <span className="w-10 h-10 shrink-0 rounded-lg bg-accent-soft text-accent-fg font-mono text-lg flex items-center justify-center">{m.icon}</span>
+                        <span>
+                          <span className="block text-sm font-semibold text-fg">{m.title}</span>
+                          <span className="block text-xs text-muted mt-0.5">{m.desc}</span>
                         </span>
-                        <span className="px-2 py-1 rounded-lg bg-gray-700/60 text-gray-300">
-                          {t.durationMinutes} min
-                        </span>
-                        <span className="px-2 py-1 rounded-lg bg-gray-700/60 text-gray-300">
-                          +{t.marksPerQuestion} / −{t.negativeMarksPerQuestion}
-                        </span>
-                        <span className="px-2 py-1 rounded-lg bg-amber-500/15 text-amber-400">
-                          Pass {t.passingScore}%
+                      </button>
+                    </FloatingCard>
+                  ))}
+                  <FloatingCard intensity={5}>
+                    <div className="rounded-xl border border-line bg-surface-2/60 p-4">
+                      <div className="flex items-start gap-3">
+                        <span className="w-10 h-10 shrink-0 rounded-lg bg-accent-soft text-accent-fg font-mono text-lg flex items-center justify-center">▲</span>
+                        <span>
+                          <span className="block text-sm font-semibold text-fg">By difficulty</span>
+                          <span className="block text-xs text-muted mt-0.5">Only beginner, intermediate or advanced questions.</span>
                         </span>
                       </div>
-                    </motion.button>
-                  ))}
+                      <div className="flex gap-2 mt-3">
+                        <select value={quickDifficulty} onChange={(e) => setQuickDifficulty(e.target.value)} className={`${selectCls} !py-2 capitalize`}>
+                          {DIFFICULTIES.map((d) => (
+                            <option key={d} value={d}>
+                              {d}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          onClick={() => startQuickMode("difficulty")}
+                          disabled={starting}
+                          className="px-4 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold disabled:opacity-60"
+                        >
+                          Start
+                        </button>
+                      </div>
+                    </div>
+                  </FloatingCard>
                 </div>
-              )}
-            </section>
-          </>
-        )}
-      </motion.div>
-    </div>
-  );
-}
+              </Panel>
+            </div>
+          </div>
 
-function TopicCard({
-  label,
-  active,
-  disabled,
-  onClick,
-}: {
-  label: string;
-  active: boolean;
-  disabled?: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`text-left rounded-xl border px-4 py-3 transition-all disabled:opacity-40 ${
-        active
-          ? "bg-emerald-500/20 border-emerald-500/50"
-          : "bg-gray-700/40 border-gray-600 hover:border-gray-500"
-      }`}
-    >
-      <p className={`text-sm font-medium ${active ? "text-emerald-400" : "text-gray-200"}`}>{label}</p>
-    </button>
+          <Panel className="mt-6" kicker="// mock.tests[]" title="Full mock tests" description="Timed papers published by your placement cell.">
+            {tests.length === 0 ? (
+              <p className="text-sm text-subtle">No tests configured yet. Ask an admin to publish one.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {tests.map((t) => (
+                  <FloatingCard key={t.id} intensity={6}>
+                    <button
+                      onClick={() => startTest(t.id)}
+                      disabled={starting}
+                      className="w-full h-full text-left rounded-xl border border-line bg-surface-2/60 hover:border-accent/40 p-5 transition-colors disabled:opacity-60"
+                    >
+                      <h3 className="font-semibold text-fg">{t.title}</h3>
+                      <p className="text-xs text-muted mt-1 line-clamp-2">{t.description}</p>
+                      <div className="flex flex-wrap gap-1.5 mt-4 font-mono text-[11px]">
+                        <span className="px-2 py-1 rounded-md bg-surface border border-line text-fg-2">{t.questionCount} q</span>
+                        <span className="px-2 py-1 rounded-md bg-surface border border-line text-fg-2">{t.durationMinutes} min</span>
+                        <span className="px-2 py-1 rounded-md bg-surface border border-line text-fg-2">
+                          +{t.marksPerQuestion}/−{t.negativeMarksPerQuestion}
+                        </span>
+                        <span className="px-2 py-1 rounded-md bg-amber-500/15 text-amber-700 dark:text-amber-400">pass {t.passingScore}%</span>
+                      </div>
+                    </button>
+                  </FloatingCard>
+                ))}
+              </div>
+            )}
+          </Panel>
+        </>
+      )}
+    </div>
   );
 }

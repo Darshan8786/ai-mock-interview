@@ -140,42 +140,42 @@ export function CollegeInterviewList() {
             renderRow={(i) => (
               <>
                 <td className="py-3 px-4">
-                  <p className="text-slate-900 font-medium">{i.name}</p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-fg font-medium">{i.name}</p>
+                  <p className="text-xs text-muted">
                     {i.difficulty} · {i.timeLimit} min{i.programmingLanguage !== "None" ? ` · ${i.programmingLanguage}` : ""}
                   </p>
                 </td>
-                <td className="py-3 px-4 text-slate-700">{i.jobRole}</td>
-                <td className="py-3 px-4 text-slate-700">{i.interviewType}</td>
+                <td className="py-3 px-4 text-fg-2">{i.jobRole}</td>
+                <td className="py-3 px-4 text-fg-2">{i.interviewType}</td>
                 <td className="py-3 px-4">
-                  <span className={i.questionsAuthored === i.questionCount ? "text-indigo-700" : "text-violet-700"}>
+                  <span className={i.questionsAuthored === i.questionCount ? "text-indigo-700 dark:text-indigo-400" : "text-violet-700 dark:text-violet-400"}>
                     {i.questionsAuthored}
                   </span>
-                  <span className="text-slate-500">/{i.questionCount}</span>
+                  <span className="text-muted">/{i.questionCount}</span>
                 </td>
                 <td className="py-3 px-4">
                   <Badge tone={statusTone(i.status)}>{i.status}</Badge>
                 </td>
                 <td className="py-3 px-4 text-right">
                   <div className="flex flex-wrap items-center justify-end gap-1">
-                    <button className={`${link} text-indigo-700 hover:bg-indigo-100`} onClick={() => navigate(`/admin/college-interviews/${i._id}`)}>View</button>
+                    <button className={`${link} text-indigo-700 dark:text-indigo-400 hover:bg-indigo-100 hover:dark:bg-indigo-500/15`} onClick={() => navigate(`/admin/college-interviews/${i._id}`)}>View</button>
                     <button
-                      className={`${link} text-slate-700 hover:bg-slate-200 disabled:opacity-40`}
+                      className={`${link} text-fg-2 hover:bg-line disabled:opacity-40`}
                       disabled={i.status === "closed"}
                       onClick={() => navigate(`/admin/college-interviews/${i._id}/edit`)}
                     >
                       Edit
                     </button>
-                    <button className={`${link} text-violet-700 hover:bg-violet-100`} onClick={() => navigate(`/admin/college-interviews/${i._id}/questions`)}>Questions</button>
+                    <button className={`${link} text-violet-700 dark:text-violet-400 hover:bg-violet-100 hover:dark:bg-violet-500/15`} onClick={() => navigate(`/admin/college-interviews/${i._id}/questions`)}>Questions</button>
                     {i.status !== "published" && (
-                      <button className={`${link} text-indigo-700 hover:bg-indigo-100 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "published")}>
+                      <button className={`${link} text-indigo-700 dark:text-indigo-400 hover:bg-indigo-100 hover:dark:bg-indigo-500/15 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "published")}>
                         {i.status === "closed" ? "Reopen" : "Publish"}
                       </button>
                     )}
                     {i.status === "published" && (
-                      <button className={`${link} text-violet-700 hover:bg-violet-100 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "closed")}>Close</button>
+                      <button className={`${link} text-violet-700 dark:text-violet-400 hover:bg-violet-100 hover:dark:bg-violet-500/15 disabled:opacity-40`} disabled={busyId === i._id} onClick={() => changeStatus(i, "closed")}>Close</button>
                     )}
-                    <button className={`${link} text-red-700 hover:bg-red-100`} onClick={() => setDeleting(i)}>Delete</button>
+                    <button className={`${link} text-red-700 dark:text-red-400 hover:bg-red-100 hover:dark:bg-red-500/15`} onClick={() => setDeleting(i)}>Delete</button>
                   </div>
                 </td>
               </>
@@ -196,8 +196,8 @@ export function CollegeInterviewList() {
           </>
         }
       >
-        <p className="text-slate-700 text-sm">
-          Delete <span className="text-slate-900 font-semibold">{deleting?.name}</span> and all of its questions? This cannot be undone.
+        <p className="text-fg-2 text-sm">
+          Delete <span className="text-fg font-semibold">{deleting?.name}</span> and all of its questions? This cannot be undone.
         </p>
       </Modal>
 
@@ -208,10 +208,10 @@ export function CollegeInterviewList() {
         size="md"
         footer={<Button variant="ghost" onClick={() => setProblems(null)}>OK</Button>}
       >
-        <p className="text-slate-700 text-sm mb-3">
-          <span className="text-slate-900 font-semibold">{problems?.name}</span> needs these fixes before students can see it:
+        <p className="text-fg-2 text-sm mb-3">
+          <span className="text-fg font-semibold">{problems?.name}</span> needs these fixes before students can see it:
         </p>
-        <ul className="list-disc pl-5 space-y-1 text-sm text-violet-700">
+        <ul className="list-disc pl-5 space-y-1 text-sm text-violet-700 dark:text-violet-400">
           {problems?.list.map((p) => (
             <li key={p}>{p}</li>
           ))}

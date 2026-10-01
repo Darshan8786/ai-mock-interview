@@ -21,9 +21,9 @@ function SectionCard({ title, children }: { title: string; children: React.React
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6"
+      className="bg-surface rounded-2xl border border-line p-6"
     >
-      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4">{title}</h3>
+      <h3 className="text-sm font-semibold text-fg-2 uppercase tracking-wider mb-4">{title}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{children}</div>
     </motion.div>
   );
@@ -32,14 +32,14 @@ function SectionCard({ title, children }: { title: string; children: React.React
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs text-gray-400 mb-1">{label}</label>
+      <label className="block text-xs text-muted mb-1">{label}</label>
       {children}
     </div>
   );
 }
 
 const inputCls =
-  "w-full bg-gray-900/70 border border-gray-600 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all";
+  "w-full bg-surface border border-line-strong rounded-xl px-4 py-2.5 text-sm text-fg placeholder-subtle focus:outline-none focus:border-blue-500 transition-all";
 
 function TextInput({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder?: string }) {
   return (
@@ -117,28 +117,28 @@ export function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center">
-        <p className="text-gray-400">Loading profile...</p>
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+        <p className="text-muted">Loading profile...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-8 px-4">
+    <div className="min-h-[calc(100vh-4rem)] py-8 px-4">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">My Profile</h1>
-            <p className="text-sm text-gray-400">Your details are shared with the Training & Placement Office.</p>
+            <h1 className="text-2xl font-bold text-fg">My Profile</h1>
+            <p className="text-sm text-muted">Your details are shared with the Training & Placement Office.</p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-gray-400 mb-1">Profile Completion</p>
-            <p className="text-2xl font-bold text-blue-400">{completion}%</p>
+            <p className="text-xs text-muted mb-1">Profile Completion</p>
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{completion}%</p>
           </div>
         </div>
 
         {/* Completion bar */}
-        <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+        <div className="h-2 bg-surface rounded-full overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${completion}%` }}
@@ -249,7 +249,7 @@ export function Profile() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 transition-all"
+            className="px-8 py-3 bg-accent hover:bg-accent-hover text-white rounded-xl font-bold hover:shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 transition-all"
           >
             {saving ? "Saving..." : "Save Profile"}
           </button>

@@ -46,11 +46,11 @@ export function Jobs() {
   }, [filtered, sort]);
 
   return (
-    <div className="min-h-screen bg-black px-4 py-10 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100vh-4rem)] px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Job Opportunities</h1>
-          <p className="text-gray-300 text-lg">
+          <h1 className="text-4xl font-bold text-fg mb-2">Job Opportunities</h1>
+          <p className="text-fg-2 text-lg">
             Explore placement drives and apply to the ones you're eligible for.
           </p>
         </div>
@@ -61,12 +61,12 @@ export function Jobs() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search company, role or location..."
             spellCheck={false}
-            className="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+            className="flex-1 bg-surface border border-line rounded-xl px-4 py-2.5 text-sm text-fg placeholder-subtle focus:outline-none focus:border-blue-500"
           />
           <select
             value={jobType}
             onChange={(e) => setJobType(e.target.value)}
-            className="bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+            className="bg-surface border border-line rounded-xl px-4 py-2.5 text-sm text-fg focus:outline-none focus:border-blue-500"
           >
             {jobTypes.map((t) => (
               <option key={t} value={t}>{t}</option>
@@ -75,7 +75,7 @@ export function Jobs() {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as "latest" | "deadline")}
-            className="bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+            className="bg-surface border border-line rounded-xl px-4 py-2.5 text-sm text-fg focus:outline-none focus:border-blue-500"
           >
             <option value="latest">Newest first</option>
             <option value="deadline">Deadline soonest</option>
@@ -83,12 +83,12 @@ export function Jobs() {
         </div>
 
         {loading ? (
-          <div className="text-center py-24 text-gray-400">Loading jobs...</div>
+          <div className="text-center py-24 text-muted">Loading jobs...</div>
         ) : sorted.length === 0 ? (
-          <div className="text-center py-24 text-gray-400">
+          <div className="text-center py-24 text-muted">
             <p className="text-5xl mb-4">💼</p>
             <p className="text-lg">No jobs available right now.</p>
-            <p className="text-sm text-gray-500 mt-1">Check back later for new opportunities.</p>
+            <p className="text-sm text-subtle mt-1">Check back later for new opportunities.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -98,10 +98,10 @@ export function Jobs() {
                 <FloatingCard
                   key={job.id}
                   intensity={4}
-                  className="group rounded-2xl bg-gray-900 border border-gray-700 p-6 transition-all hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col"
+                  className="group rounded-2xl bg-surface border border-line p-6 transition-all hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col"
                 >
                   <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="w-11 h-11 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center text-sm font-bold text-white">
+                    <div className="w-11 h-11 rounded-xl bg-surface border border-line flex items-center justify-center text-sm font-bold text-fg">
                       {job.companyName.slice(0, 2).toUpperCase()}
                     </div>
                     <div className="flex items-center gap-2">
@@ -109,26 +109,26 @@ export function Jobs() {
                         <span
                           className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                             job.eligibilityDetails.eligible
-                              ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
-                              : "bg-yellow-600/15 text-yellow-400 border border-yellow-500/30"
+                              ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30"
+                              : "bg-yellow-600/15 text-yellow-700 dark:text-yellow-400 border border-yellow-500/30"
                           }`}
                         >
                           {job.eligibilityDetails.eligible ? "✓ Eligible" : "Not Eligible"}
                         </span>
                       )}
-                      <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-blue-500/30 text-blue-400">
+                      <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-blue-500/30 text-blue-600 dark:text-blue-400">
                         {job.jobType}
                       </span>
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-bold text-white leading-snug">{job.jobTitle}</h3>
-                  <p className="text-sm text-gray-400 mb-1">{job.companyName}</p>
-                  <p className="text-sm text-gray-400 mb-4">📍 {job.location}</p>
+                  <h3 className="text-lg font-bold text-fg leading-snug">{job.jobTitle}</h3>
+                  <p className="text-sm text-muted mb-1">{job.companyName}</p>
+                  <p className="text-sm text-muted mb-4">📍 {job.location}</p>
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {job.requiredSkills?.slice(0, 4).map((s) => (
-                      <span key={s} className="text-xs px-2 py-1 rounded-md bg-gray-800 text-gray-300">
+                      <span key={s} className="text-xs px-2 py-1 rounded-md bg-surface text-fg-2">
                         {s}
                       </span>
                     ))}
@@ -136,8 +136,8 @@ export function Jobs() {
 
                   <div className="mt-auto space-y-3">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-emerald-400 font-semibold">{job.package || "—"}</span>
-                      <span className={`text-xs ${deadlinePassed ? "text-red-400" : "text-gray-500"}`}>
+                      <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{job.package || "—"}</span>
+                      <span className={`text-xs ${deadlinePassed ? "text-red-600 dark:text-red-400" : "text-subtle"}`}>
                         Deadline: {new Date(job.lastDateToApply).toLocaleDateString()}
                       </span>
                     </div>
@@ -145,7 +145,7 @@ export function Jobs() {
                     {job.hasApplied ? (
                       <button
                         disabled
-                        className="w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-gray-800 text-gray-500 cursor-not-allowed"
+                        className="w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-surface text-subtle cursor-not-allowed"
                       >
                         ✓ Applied
                       </button>
@@ -159,7 +159,7 @@ export function Jobs() {
                     ) : (
                       <button
                         onClick={() => navigate(`/jobs/${job.id}`)}
-                        className="w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-yellow-600/15 text-yellow-400 border border-yellow-500/30 hover:bg-yellow-600/25 transition-all"
+                        className="w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-yellow-600/15 text-yellow-700 dark:text-yellow-400 border border-yellow-500/30 hover:bg-yellow-600/25 transition-all"
                       >
                         View &amp; Eligibility
                       </button>

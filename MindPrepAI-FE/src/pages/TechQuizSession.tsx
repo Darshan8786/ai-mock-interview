@@ -33,12 +33,12 @@ export function TechQuizSession() {
 
   if (!result || questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-400 mb-4">No active quiz session found.</p>
+          <p className="text-muted mb-4">No active quiz session found.</p>
           <button
             onClick={() => navigate("/tech-practice")}
-            className="px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium"
+            className="px-6 py-3 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl font-medium"
           >
             Back to Technical Practice
           </button>
@@ -92,19 +92,19 @@ export function TechQuizSession() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-8 px-4">
+    <div className="min-h-[calc(100vh-4rem)] py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-xl font-bold text-white">{result.technology} Practice</h1>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <h1 className="text-xl font-bold text-fg">{result.technology} Practice</h1>
+            <p className="text-xs text-muted mt-0.5">
               {current.topic} · {current.difficulty} · {current.question_type}
             </p>
           </div>
         </div>
 
         {result.repeatedCount > 0 && (
-          <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-amber-300 text-xs mb-6">
+          <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-amber-700 dark:text-amber-300 text-xs mb-6">
             You've seen most/all of the {result.technology} question bank at this difficulty - {result.repeatedCount}{" "}
             question{result.repeatedCount > 1 ? "s" : ""} in this set repeat from an earlier session.
           </div>
@@ -116,27 +116,27 @@ export function TechQuizSession() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-gray-800/50 rounded-2xl p-6 border border-gray-700"
+            className="bg-surface rounded-2xl p-6 border border-line"
           >
-            <p className="text-lg text-white font-medium mb-5 whitespace-pre-wrap">{current.question}</p>
+            <p className="text-lg text-fg font-medium mb-5 whitespace-pre-wrap">{current.question}</p>
 
             {current.code_snippet && (
-              <pre className="bg-black/40 rounded-xl p-4 text-sm text-emerald-300 overflow-x-auto mb-5 font-mono">
+              <pre className="bg-surface-2 border border-line rounded-xl p-4 text-sm text-emerald-700 dark:text-emerald-300 overflow-x-auto mb-5 font-mono">
                 {current.code_snippet}
               </pre>
             )}
             {current.buggy_code && (
-              <pre className="bg-black/40 rounded-xl p-4 text-sm text-red-300 overflow-x-auto mb-5 font-mono">
+              <pre className="bg-surface-2 border border-line rounded-xl p-4 text-sm text-red-700 dark:text-red-300 overflow-x-auto mb-5 font-mono">
                 {current.buggy_code}
               </pre>
             )}
             {current.schema_context && (
-              <pre className="bg-black/40 rounded-xl p-4 text-sm text-blue-300 overflow-x-auto mb-5 font-mono">
+              <pre className="bg-surface-2 border border-line rounded-xl p-4 text-sm text-blue-700 dark:text-blue-300 overflow-x-auto mb-5 font-mono">
                 {current.schema_context}
               </pre>
             )}
             {current.starter_code && (
-              <pre className="bg-black/40 rounded-xl p-4 text-sm text-gray-300 overflow-x-auto mb-5 font-mono">
+              <pre className="bg-surface-2 border border-line rounded-xl p-4 text-sm text-fg-2 overflow-x-auto mb-5 font-mono">
                 {current.starter_code}
               </pre>
             )}
@@ -155,13 +155,13 @@ export function TechQuizSession() {
                       className={`w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium transition-all border-2 ${
                         showCorrectness
                           ? isTheCorrectOne
-                            ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/50"
+                            ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border-emerald-500/50"
                             : isSelected
-                            ? "bg-red-500/20 text-red-400 border-red-500/50"
-                            : "bg-gray-700/30 text-gray-400 border-gray-700"
+                            ? "bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/50"
+                            : "bg-surface-2 text-muted border-line"
                           : isSelected
-                          ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/50"
-                          : "bg-gray-700/50 text-gray-300 border-gray-600 hover:border-gray-500"
+                          ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border-emerald-500/50"
+                          : "bg-surface-2 text-fg-2 border-line-strong hover:border-line-strong"
                       }`}
                     >
                       <span className="mr-3 font-mono text-xs opacity-60">{String.fromCharCode(65 + idx)}.</span>
@@ -179,7 +179,7 @@ export function TechQuizSession() {
                 disabled={!!feedback}
                 rows={8}
                 placeholder="Write your solution / query / fix here…"
-                className="w-full bg-black/30 border border-gray-600 rounded-xl p-4 text-sm text-white font-mono resize-none focus:outline-none focus:border-emerald-500/50 disabled:opacity-70"
+                className="w-full bg-surface-2 border border-line-strong rounded-xl p-4 text-sm text-fg placeholder:text-subtle font-mono resize-none focus:outline-none focus:border-emerald-500/50 disabled:opacity-70"
               />
             )}
 
@@ -190,7 +190,7 @@ export function TechQuizSession() {
                 disabled={!!feedback}
                 rows={4}
                 placeholder="Type your answer…"
-                className="w-full bg-black/30 border border-gray-600 rounded-xl p-4 text-sm text-white resize-none focus:outline-none focus:border-emerald-500/50 disabled:opacity-70"
+                className="w-full bg-surface-2 border border-line-strong rounded-xl p-4 text-sm text-fg placeholder:text-subtle resize-none focus:outline-none focus:border-emerald-500/50 disabled:opacity-70"
               />
             )}
 
@@ -202,16 +202,16 @@ export function TechQuizSession() {
                   feedback.isCorrect ? "bg-emerald-500/10 border-emerald-500/30" : "bg-red-500/10 border-red-500/30"
                 }`}
               >
-                <p className={`text-sm font-semibold mb-1 ${feedback.isCorrect ? "text-emerald-400" : "text-red-400"}`}>
+                <p className={`text-sm font-semibold mb-1 ${feedback.isCorrect ? "text-emerald-700 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}>
                   {feedback.isCorrect ? "Correct" : "Not quite"} {typeof feedback.score === "number" && `(${feedback.score}%)`}
                 </p>
                 {feedback.correctAnswer && kind !== "mcq" && (
-                  <p className="text-sm text-white mb-2">
-                    <span className="text-gray-400">Correct answer: </span>
+                  <p className="text-sm text-fg mb-2">
+                    <span className="text-muted">Correct answer: </span>
                     <span className="whitespace-pre-wrap font-mono">{feedback.correctAnswer}</span>
                   </p>
                 )}
-                {feedback.explanation && <p className="text-sm text-gray-300">{feedback.explanation}</p>}
+                {feedback.explanation && <p className="text-sm text-fg-2">{feedback.explanation}</p>}
               </motion.div>
             )}
 
@@ -221,14 +221,14 @@ export function TechQuizSession() {
                   <button
                     onClick={handleNext}
                     disabled={submitting || finishing}
-                    className="px-6 py-2.5 bg-gray-700/50 text-gray-300 rounded-xl border border-gray-600 hover:border-gray-500 transition-all disabled:opacity-50 font-medium"
+                    className="px-6 py-2.5 bg-surface-2 text-fg-2 rounded-xl border border-line-strong hover:border-line-strong transition-all disabled:opacity-50 font-medium"
                   >
                     {finishing ? "Scoring…" : isLast ? "Skip & Finish →" : "Next Question →"}
                   </button>
                   <button
                     onClick={handleSubmitAnswer}
                     disabled={!canSubmit || submitting}
-                    className="px-6 py-2.5 bg-emerald-500/20 text-emerald-400 rounded-xl border border-emerald-500/30 hover:bg-emerald-500/30 transition-all disabled:opacity-50 font-medium"
+                    className="px-6 py-2.5 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl border border-emerald-500/30 hover:bg-emerald-500/30 transition-all disabled:opacity-50 font-medium"
                   >
                     {submitting ? "Checking…" : "Submit Answer"}
                   </button>
@@ -237,7 +237,7 @@ export function TechQuizSession() {
                 <button
                   onClick={handleNext}
                   disabled={finishing}
-                  className="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-60"
+                  className="px-6 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-xl font-bold transition-all disabled:opacity-60"
                 >
                   {finishing ? "Scoring…" : isLast ? "Finish & See Results" : "Next Question →"}
                 </button>

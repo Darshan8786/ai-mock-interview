@@ -98,31 +98,31 @@ export function CollegeInterviewsSection() {
       },
     });
 
-  const box = "bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 mb-8";
+  const box = "bg-surface backdrop-blur-sm rounded-2xl p-6 border border-line mb-8";
 
   if (!data && !error) {
-    return <div className={`${box} text-gray-400 text-sm`}>Loading college interviews…</div>;
+    return <div className={`${box} text-muted text-sm`}>Loading college interviews…</div>;
   }
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className={box}>
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
-        <h2 className="text-lg font-semibold text-white">College Interviews</h2>
-        {data?.college && <span className="text-xs text-gray-400">{data.college.name}</span>}
+        <h2 className="text-lg font-semibold text-fg">College Interviews</h2>
+        {data?.college && <span className="text-xs text-muted">{data.college.name}</span>}
       </div>
 
-      {error && <p className="mb-3 text-sm text-red-400">{error}</p>}
+      {error && <p className="mb-3 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
       {data && !data.college && (
         <div className="space-y-3">
-          <p className="text-sm text-gray-300">
+          <p className="text-sm text-fg-2">
             Choose your college to see the interviews it has prepared for you. You can only do this once — pick carefully.
           </p>
           <div className="flex flex-col sm:flex-row gap-2">
             <select
               value={chosen}
               onChange={(e) => setChosen(e.target.value)}
-              className="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+              className="flex-1 bg-surface border border-line rounded-xl px-4 py-2.5 text-sm text-fg focus:outline-none focus:border-emerald-500"
             >
               <option value="">Select your college…</option>
               {colleges.map((c) => (
@@ -132,17 +132,17 @@ export function CollegeInterviewsSection() {
             <button
               onClick={join}
               disabled={!chosen || joining}
-              className="px-5 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium hover:bg-emerald-500/30 transition-all disabled:opacity-50"
+              className="px-5 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 font-medium hover:bg-emerald-500/30 transition-all disabled:opacity-50"
             >
               {joining ? "Saving…" : "Confirm college"}
             </button>
           </div>
-          {colleges.length === 0 && <p className="text-xs text-gray-500">No colleges are available yet.</p>}
+          {colleges.length === 0 && <p className="text-xs text-subtle">No colleges are available yet.</p>}
         </div>
       )}
 
       {data?.college && data.interviews.length === 0 && (
-        <p className="text-sm text-gray-400">No interviews have been published for your college yet. Check back later.</p>
+        <p className="text-sm text-muted">No interviews have been published for your college yet. Check back later.</p>
       )}
 
       {data?.interviews.length ? (
@@ -151,21 +151,21 @@ export function CollegeInterviewsSection() {
             const st = i.attempt?.status;
             const finished = st === "completed" || st === "terminated";
             return (
-              <div key={i.id} className="rounded-xl border border-gray-700 bg-gray-900/60 p-5 flex flex-col">
-                <h3 className="text-white font-semibold text-lg leading-snug">{i.name}</h3>
-                <p className="text-sm text-gray-400 mb-3">{i.collegeName}</p>
+              <div key={i.id} className="rounded-xl border border-line bg-surface p-5 flex flex-col">
+                <h3 className="text-fg font-semibold text-lg leading-snug">{i.name}</h3>
+                <p className="text-sm text-muted mb-3">{i.collegeName}</p>
                 <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm mb-4">
-                  <dt className="text-gray-500">Role</dt><dd className="text-gray-200">{i.jobRole}</dd>
-                  <dt className="text-gray-500">Type</dt><dd className="text-gray-200">{i.interviewType}</dd>
-                  {i.programmingLanguage !== "None" && (<><dt className="text-gray-500">Language</dt><dd className="text-gray-200">{i.programmingLanguage}</dd></>)}
-                  <dt className="text-gray-500">Questions</dt><dd className="text-gray-200">{i.questionCount}</dd>
-                  <dt className="text-gray-500">Duration</dt><dd className="text-gray-200">{i.timeLimit} minutes</dd>
+                  <dt className="text-subtle">Role</dt><dd className="text-fg">{i.jobRole}</dd>
+                  <dt className="text-subtle">Type</dt><dd className="text-fg">{i.interviewType}</dd>
+                  {i.programmingLanguage !== "None" && (<><dt className="text-subtle">Language</dt><dd className="text-fg">{i.programmingLanguage}</dd></>)}
+                  <dt className="text-subtle">Questions</dt><dd className="text-fg">{i.questionCount}</dd>
+                  <dt className="text-subtle">Duration</dt><dd className="text-fg">{i.timeLimit} minutes</dd>
                 </dl>
                 <div className="mt-auto">
                   {finished ? (
                     <button
                       onClick={() => navigate(`/mock-interview/result/${i.attempt!.sessionId}`)}
-                      className="w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-gray-800 text-gray-300 border border-gray-600 hover:border-gray-500 transition-all"
+                      className="w-full px-4 py-2.5 rounded-xl text-sm font-semibold bg-surface text-fg-2 border border-line-strong hover:border-line-strong transition-all"
                     >
                       {st === "terminated" ? "Terminated — View result" : "Completed — View result"}
                     </button>

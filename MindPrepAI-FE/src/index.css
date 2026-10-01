@@ -1,97 +1,223 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
-@theme {
-  --font-poppins: "Poppins", sans-serif;
-  --font-roboto: "Roboto", sans-serif;
+/* Theme is a class on <html> (set before first paint in index.html and
+   toggled by ThemeProvider), not the OS media query, so the user's choice
+   wins. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Design tokens ───────────────────────────────────────────
+   Student app colours are semantic tokens, never raw grays, so every
+   page renders correctly in both themes:
+     page      app background          surface / surface-2  cards / insets
+     line      hairline borders        line-strong          input borders
+     fg        primary text            fg-2                 secondary text
+     muted     tertiary text           subtle               placeholder/meta
+     accent    brand (solid)           accent-fg            brand text/icons
+     accent-soft  brand tint background */
+:root {
+  --page: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #f1f3f8;
+  --line: #e4e7ef;
+  --line-strong: #cfd5e1;
+  --fg: #0f172a;
+  --fg-2: #334155;
+  --muted: #5b6577;
+  --subtle: #6f788b;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-fg: #4338ca;
+  --accent-soft: #eef0ff;
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-pop: 0 12px 32px -8px rgba(15, 23, 42, 0.18);
+  color-scheme: light;
+}
+
+.dark {
+  --page: #0b0d12;
+  --surface: #13161d;
+  --surface-2: #1b1f28;
+  --line: #262b36;
+  --line-strong: #353b48;
+  --fg: #f1f4f9;
+  --fg-2: #cdd3de;
+  --muted: #98a1b2;
+  --subtle: #7d8597;
+  --accent: #6366f1;
+  --accent-hover: #7c7ff5;
+  --accent-fg: #a5b0fc;
+  --accent-soft: rgba(99, 102, 241, 0.14);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 16px 40px -8px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+/* Admin panel: the same design system with a violet accent. Applied by
+   AdminLayout; the tokens resolve per element, so everything inside the
+   admin shell picks these up. */
+.admin-scope {
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-fg: #6d28d9;
+  --accent-soft: #f3efff;
+}
+.dark .admin-scope {
+  --accent: #8b5cf6;
+  --accent-hover: #9d74f8;
+  --accent-fg: #c4b5fd;
+  --accent-soft: rgba(139, 92, 246, 0.16);
+}
+
+@theme inline {
+  --font-poppins: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-roboto: "Inter", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
 }
 
 body {
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  background: var(--page);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Dark glassmorphic design system ─────────────────────────
-   Shared across the app: frosted-glass surfaces, gradient accents,
-   glow effects. Apply `.glass` to cards/panels, `.glass-strong` to
-   nav/modals/dropdowns that need to sit above content, `.gradient-text`
-   to headings, `.btn-gradient` to primary CTAs. */
+/* ── Legacy class names, restyled ────────────────────────────
+   Older pages still use these names; they now render as plain themed
+   surfaces instead of dark glass/gradients. */
 
 .glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
 }
 
 .glass-strong {
-  background: rgba(8, 8, 14, 0.78);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-pop);
 }
 
 .glass-hover {
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 .glass-hover:hover {
-  border-color: rgba(167, 139, 250, 0.4);
-  box-shadow: 0 8px 32px -8px rgba(139, 92, 246, 0.35);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-pop);
 }
 
 .gradient-text {
-  background-image: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-fg);
 }
 
 .gradient-border {
   position: relative;
-  isolation: isolate;
-}
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(96, 165, 250, 0.7), rgba(167, 139, 250, 0.7), rgba(244, 114, 182, 0.7));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: -1;
 }
 
 .btn-gradient {
-  background-image: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
-  background-size: 160% 160%;
-  background-position: 0% 50%;
+  background: var(--accent);
   color: #fff;
-  transition: background-position 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 8px 24px -8px rgba(168, 85, 247, 0.55);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 .btn-gradient:hover {
-  background-position: 100% 50%;
-  box-shadow: 0 10px 32px -6px rgba(168, 85, 247, 0.7);
+  background: var(--accent-hover);
 }
 
-.glow-orb {
-  border-radius: 9999px;
-  filter: blur(80px);
-  pointer-events: none;
+/* ── CSE theme ───────────────────────────────────────────────
+   Site-wide computer-science motif: a faint circuit-board grid and slowly
+   drifting code tokens behind every app page (see components/common/
+   CodeBackdrop.tsx), plus small terminal touches. Pure CSS - no WebGL - so it
+   costs next to nothing and never competes with the webcam/proctoring. */
+.cse-circuit {
+  color: var(--accent);
+  opacity: 0.07;
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 70% 15%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 85% 75% at 70% 15%, #000 20%, transparent 75%);
+}
+.dark .cse-circuit {
+  opacity: 0.12;
 }
 
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-18px) translateX(10px); }
+.cse-token {
+  position: absolute;
+  font-family: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--accent-fg);
+  opacity: 0.09;
+  animation: cse-drift var(--dur, 22s) ease-in-out var(--delay, 0s) infinite alternate;
+  will-change: transform;
 }
-.animate-float-slow {
-  animation: float-slow 8s ease-in-out infinite;
+.dark .cse-token {
+  opacity: 0.12;
+}
+@keyframes cse-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(var(--dx, 12px), var(--dy, -28px), 0); }
 }
 
+/* Blinking terminal cursor. */
+.cse-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: cse-blink 1.1s steps(1) infinite;
+}
+@keyframes cse-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cse-token,
+  .cse-caret {
+    animation: none;
+  }
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* Browser autofill paints inputs pale blue with dark text, which breaks the
+   frosted-glass auth card. Keep autofilled fields translucent with the theme's text colour
+   (the long transition stops Chrome repainting its own background). */
+.auth-glass input:-webkit-autofill,
+.auth-glass input:-webkit-autofill:hover,
+.auth-glass input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0f172a;
+  caret-color: #0f172a;
+  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.55) inset;
+  transition: background-color 9999s ease-out 0s;
+}
+.dark .auth-glass input:-webkit-autofill,
+.dark .auth-glass input:-webkit-autofill:hover,
+.dark .auth-glass input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.12) inset;
+}
 
 /* Swiper navigation: responsive, rounded, modern */
 .swiper-button-prev,

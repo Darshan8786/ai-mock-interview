@@ -27,20 +27,20 @@ export function AnswerTimeline({ events, durationSeconds, durationIsRecording }:
   const hasClock = durationIsRecording && durationSeconds !== null;
 
   return (
-    <div className="rounded-xl bg-gray-900/50 border border-gray-700 p-4">
-      <h5 className="text-sm font-semibold text-white mb-3">Answer Quality Timeline</h5>
+    <div className="rounded-xl bg-surface border border-line p-4">
+      <h5 className="text-sm font-semibold text-fg mb-3">Answer Quality Timeline</h5>
 
-      <div className="flex justify-between text-[11px] text-gray-500 mb-1 tabular-nums">
+      <div className="flex justify-between text-[11px] text-subtle mb-1 tabular-nums">
         <span>{hasClock ? "00:00" : "Start of answer"}</span>
         <span>{hasClock ? fmtClock(durationSeconds!) : "End of answer"}</span>
       </div>
       <div className="relative h-6 mb-4" role="img" aria-label="Positions of feedback markers along your answer">
-        <div className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 bg-gray-700 rounded" />
+        <div className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 bg-surface-2 rounded" />
         {placed.map((e, i) => (
           <span
             key={i}
             title={`${e.label} (${Math.round((e.position ?? 0) * 100)}% into the answer)`}
-            className={`absolute top-1/2 w-3 h-3 -translate-y-1/2 -translate-x-1/2 rounded-full ring-2 ring-gray-900 ${DOT[e.kind].cls}`}
+            className={`absolute top-1/2 w-3 h-3 -translate-y-1/2 -translate-x-1/2 rounded-full ring-2 ring-line ${DOT[e.kind].cls}`}
             style={{ left: `${Math.min(98, Math.max(2, (e.position ?? 0) * 100))}%` }}
           />
         ))}
@@ -54,7 +54,7 @@ export function AnswerTimeline({ events, durationSeconds, durationIsRecording }:
           <Row key={`u${i}`} e={e} where="not found in the answer" />
         ))}
       </ul>
-      <p className="mt-3 text-[11px] text-gray-500">
+      <p className="mt-3 text-[11px] text-subtle">
         {hasClock
           ? "Pause times are measured from the recording; other markers are positioned by where they occur in your transcript."
           : "Markers are positioned by where they occur in your answer text. Exact timestamps need a voice recording, so none are shown."}
@@ -68,8 +68,8 @@ function Row({ e, where }: { e: TimelineEvent; where: string }) {
     <li className="flex items-start gap-2 text-sm">
       <span aria-hidden>{DOT[e.kind].icon}</span>
       <span className="sr-only">{DOT[e.kind].sr}:</span>
-      <span className="text-gray-200">{e.label}</span>
-      <span className="ml-auto shrink-0 text-[11px] text-gray-500 pt-0.5">{where}</span>
+      <span className="text-fg">{e.label}</span>
+      <span className="ml-auto shrink-0 text-[11px] text-subtle pt-0.5">{where}</span>
     </li>
   );
 }

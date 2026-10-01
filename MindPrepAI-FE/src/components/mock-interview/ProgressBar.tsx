@@ -13,13 +13,13 @@ export function ProgressBar({ current, total, label }: ProgressBarProps) {
     <div className="w-full">
       {label && (
         <div className="flex justify-between items-center mb-2">
-          <span className="text-xs text-gray-400">{label}</span>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-muted">{label}</span>
+          <span className="text-xs text-muted">
             {current}/{total}
           </span>
         </div>
       )}
-      <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+      <div className="h-2 bg-surface-2 rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}

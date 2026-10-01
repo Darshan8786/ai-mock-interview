@@ -1,80 +1,105 @@
-import { useRef } from "react";
-import axios from "axios";
+import { useState } from "react";
+import axios, { isAxiosError } from "axios";
 import { BACKEND_URL } from "../config/config";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { AuthField, AuthShell, AuthSubmit, PasswordField, type AuthMood } from "../components/common/AuthShell";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
+import { isValidEmail } from "../utils/validation";
+
+type Field = "email" | "username" | "password";
 
 export function Signup() {
-
-    const emailRef = useRef<HTMLInputElement>(null);
-    const usernameRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
+    const [focused, setFocused] = useState<Field | null>(null);
+    const [failed, setFailed] = useState(false);
+    const [pulse, setPulse] = useState(0);
+    const [shake, setShake] = useState(0);
     const navigate = useNavigate();
+    const reduced = usePrefersReducedMotion();
 
-    async function signup() {
-        const email = emailRef.current?.value;
-        const username = usernameRef.current?.value;
-        const password = passwordRef.current?.value;
+    const mood: AuthMood = success ? "success" : loading ? "loading" : failed ? "error"
+        : focused === "password" ? "password" : focused ? "email" : "idle";
 
-        if (!email || !username || !password) {
-            toast.error("Please fill in all fields before signing up.");
+    function validate(): Partial<Record<Field, string>> {
+        const e: Partial<Record<Field, string>> = {};
+        if (!isValidEmail(email) || email.length > 50) e.email = "Enter a valid email (up to 50 characters).";
+        if (username.trim().length < 3 || username.trim().length > 20) e.username = "Username must be 3–20 characters.";
+        if (password.length < 3 || password.length > 20) e.password = "Password must be 3–20 characters.";
+        return e;
+    }
+
+    async function signup(ev: React.FormEvent) {
+        ev.preventDefault();
+        const e = validate();
+        setErrors(e);
+        if (Object.keys(e).length) {
+            setFailed(true);
+            setShake((n) => n + 1);
             return;
         }
 
-        if (email.length < 3 || email.length > 50) {
-            toast.error("Email must be between 3 and 50 characters.");
-            return;
-        }
-        if (username.length < 3 || username.length > 20) {
-            toast.error("Username must be between 3 and 20 characters.");
-            return;
-        }
-        if (password.length < 3 || password.length > 20) {
-            toast.error("Password must be between 3 and 20 characters.");
-            return;
-        }
-
+        setFailed(false);
+        setLoading(true);
         try {
             const res = await axios.post(`${BACKEND_URL}/api/v1/auth/register`, {
-                name: username,
-                email,
+                name: username.trim(),
+                email: email.trim(),
                 password,
             });
 
             if (res.data.status !== "success") {
-                toast.error(res.data.message || "This email is already registered. Try logging in.");
+                setLoading(false);
+                setErrors({ email: res.data.message || "This email is already registered. Try signing in." });
+                setFailed(true);
+                setShake((n) => n + 1);
                 return;
             }
 
-            toast.success("You have signed up successfully!");
-            navigate("/signin");
+            setLoading(false);
+            setSuccess(true);
+            toast.success("Account created - sign in to continue.");
+            setTimeout(() => navigate("/signin"), reduced ? 0 : 750);
         } catch (err) {
-            toast.error("Something went wrong. Try again.");
+            const response = isAxiosError(err) ? err.response : undefined;
+            setLoading(false);
+            setFailed(true);
+            setShake((n) => n + 1);
+            const message = response?.data?.message;
+            if (response) setErrors({ email: message || "This email is already registered. Try signing in." });
+            else toast.error("Couldn't reach the server. Check your connection and try again.");
         }
     }
 
+    const onType = (field: Field, setter: (v: string) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setter(e.target.value);
+        setErrors((prev) => ({ ...prev, [field]: undefined }));
+        setFailed(false);
+        setPulse((n) => n + 1);
+    };
+    const focusProps = (field: Field) => ({ onFocus: () => setFocused(field), onBlur: () => setFocused(null) });
+
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
-            <div className="bg-black border border-white w-95 h-90 rounded-4xl text-white p-6 ring-4 ring-white/90">
-                <h1 className="text-center font-poppins font-bold text-2xl">MindPrep AI</h1>
-                <h1 className="mt-2 text-center font-poppins font-bold ">An AI Based Placement Preparation Tool </h1>
-                <div className="flex flex-col">
-                    <input className="flex font-poppins p-2 mt-5 border rounded-lg" placeholder="Enter your Email"
-                        ref={emailRef} />
-                    <input className="font-poppins p-2 mt-5 border rounded-lg" placeholder="Username"
-                        ref={usernameRef} />
-                    <input type="password" className="font-poppins p-2 mt-5 border rounded-lg type" placeholder="Password"
-                        ref={passwordRef} />
+        <AuthShell title="Create your account" subtitle="Start preparing for placements in minutes." mood={mood} pulse={pulse} shake={shake}
+            switchPrompt={{ text: "Already a member?", label: "Sign in", to: "/signin" }}>
+            <form onSubmit={signup} className="space-y-4" noValidate>
+                <AuthField label="Email" type="email" placeholder="you@college.edu" autoComplete="email" autoFocus
+                    value={email} error={errors.email} onChange={onType("email", setEmail)} {...focusProps("email")} />
+                <AuthField label="Username" placeholder="3–20 characters" autoComplete="username"
+                    value={username} error={errors.username} onChange={onType("username", setUsername)} {...focusProps("username")} />
+                <PasswordField placeholder="3–20 characters" autoComplete="new-password"
+                    value={password} error={errors.password} onChange={onType("password", setPassword)} {...focusProps("password")} />
+                <div className="pt-1">
+                    <AuthSubmit loading={loading} success={success} loadingLabel="Creating account…" successLabel="Account created">
+                        Create account
+                    </AuthSubmit>
                 </div>
-                <div className="flex flex-col">
-                    <button className="mt-5 bg-white text-black text-md font-poppins font-bold p-2 cursor-pointer border rounded-lg
-            transistion duration-200 ease-in-out
-            hover:bg-gray-300 active:scale-95"
-                        onClick={signup}>
-                        Create an account
-                    </button>
-                </div>
-            </div>
-        </div>
+            </form>
+        </AuthShell>
     );
 }

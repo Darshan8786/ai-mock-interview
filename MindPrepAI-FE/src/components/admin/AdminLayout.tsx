@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import "./admin.css";
+import { ThemeToggle } from "../../theme/ThemeProvider";
+import { CodeBackdrop } from "../common/CodeBackdrop";
+import { Ambient3D } from "../common/Ambient3D";
+import { TerminalPath } from "../common/TerminalPath";
 
 interface NavItem {
   label: string;
   path: string;
   icon: React.ReactNode;
-  /** Icon-chip colour for this item. */
-  chip: string;
 }
 
 const icons = {
@@ -27,7 +27,7 @@ const icons = {
 
 function NavIcon({ children }: { children: React.ReactNode }) {
   return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       {children}
     </svg>
   );
@@ -37,35 +37,35 @@ const navGroups: { title: string; items: NavItem[] }[] = [
   {
     title: "Overview",
     items: [
-      { label: "Dashboard", path: "/admin", icon: <NavIcon>{icons.dashboard}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
-      { label: "Reports & Analytics", path: "/admin/reports", icon: <NavIcon>{icons.reports}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Dashboard", path: "/admin", icon: <NavIcon>{icons.dashboard}</NavIcon> },
+      { label: "Reports & Analytics", path: "/admin/reports", icon: <NavIcon>{icons.reports}</NavIcon> },
     ],
   },
   {
     title: "Students",
     items: [
-      { label: "Students", path: "/admin/students", icon: <NavIcon>{icons.students}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
-      { label: "Resumes", path: "/admin/resumes", icon: <NavIcon>{icons.resumes}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Students", path: "/admin/students", icon: <NavIcon>{icons.students}</NavIcon> },
+      { label: "Resumes", path: "/admin/resumes", icon: <NavIcon>{icons.resumes}</NavIcon> },
     ],
   },
   {
     title: "Assessments",
     items: [
-      { label: "Interviews", path: "/admin/interviews", icon: <NavIcon>{icons.interviews}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
-      { label: "Aptitude", path: "/admin/aptitude", icon: <NavIcon>{icons.aptitude}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Interviews", path: "/admin/interviews", icon: <NavIcon>{icons.interviews}</NavIcon> },
+      { label: "Aptitude", path: "/admin/aptitude", icon: <NavIcon>{icons.aptitude}</NavIcon> },
     ],
   },
   {
     title: "Placements",
     items: [
-      { label: "Jobs", path: "/admin/jobs", icon: <NavIcon>{icons.jobs}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
-      { label: "Alumni", path: "/admin/alumni", icon: <NavIcon>{icons.alumni}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
-      { label: "Announcements", path: "/admin/announcements", icon: <NavIcon>{icons.announcements}</NavIcon>, chip: "from-indigo-400 to-violet-500" },
+      { label: "Jobs", path: "/admin/jobs", icon: <NavIcon>{icons.jobs}</NavIcon> },
+      { label: "Alumni", path: "/admin/alumni", icon: <NavIcon>{icons.alumni}</NavIcon> },
+      { label: "Announcements", path: "/admin/announcements", icon: <NavIcon>{icons.announcements}</NavIcon> },
     ],
   },
   {
     title: "System",
-    items: [{ label: "Settings", path: "/admin/settings", icon: <NavIcon>{icons.settings}</NavIcon>, chip: "from-indigo-400 to-violet-500" }],
+    items: [{ label: "Settings", path: "/admin/settings", icon: <NavIcon>{icons.settings}</NavIcon> }],
   },
 ];
 const allItems = navGroups.flatMap((g) => g.items);
@@ -73,60 +73,46 @@ const allItems = navGroups.flatMap((g) => g.items);
 const isActive = (path: string, pathname: string) =>
   path === "/admin" ? pathname === "/admin" : pathname.startsWith(path);
 
-function Logo() {
+function Brand({ onClick }: { onClick: () => void }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <div className="w-9 h-9 rounded-xl gloss-sm bg-gradient-to-br from-indigo-400 to-violet-500 flex items-center justify-center">
-        <span className="text-white font-bold text-sm">M</span>
-      </div>
-      <div className="leading-tight">
-        <p className="text-sm font-bold text-white">MindPrep AI</p>
-        <p className="text-[11px] text-white/70">Placement Admin</p>
-      </div>
-    </div>
+    <button onClick={onClick} className="flex items-center gap-2.5">
+      <span className="w-8 h-8 rounded-lg bg-accent text-white flex items-center justify-center font-mono text-[12px] font-bold tracking-tighter">&lt;/&gt;</span>
+      <span className="font-poppins font-bold text-fg tracking-tight">
+        MindPrep <span className="text-accent-fg">AI</span>
+      </span>
+      <span className="px-1.5 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide bg-accent-soft text-accent-fg">
+        Admin
+      </span>
+    </button>
   );
 }
 
-function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
-  const navigate = useNavigate();
+function SidebarNav({ onNavigate, onSignOut }: { onNavigate: (path: string) => void; onSignOut: () => void }) {
   const location = useLocation();
-
   const adminName = localStorage.getItem("user_name") || "Administrator";
   const adminEmail = localStorage.getItem("user_email") || "Placement cell";
 
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("adminRole");
-    navigate("/signin");
-  };
-
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center px-5 h-16 border-b border-white/10">
-        <Logo />
+      <div className="h-16 flex items-center px-5 border-b border-line shrink-0">
+        <Brand onClick={() => onNavigate("/admin")} />
       </div>
-
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
         {navGroups.map((group) => (
           <div key={group.title}>
-            <p className="px-3 mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">{group.title}</p>
+            <p className="px-3 mb-1.5 font-mono text-[11px] text-subtle">// {group.title.toLowerCase()}</p>
             <div className="space-y-0.5">
               {group.items.map((item) => {
                 const active = isActive(item.path, location.pathname);
                 return (
                   <button
                     key={item.path}
-                    onClick={() => {
-                      navigate(item.path);
-                      onNavigate?.();
-                    }}
-                    className={`w-full flex items-center gap-3 px-2.5 py-2 rounded-xl text-sm font-medium transition-all ${
-                      active
-                        ? "bg-white/95 text-indigo-800 shadow-[inset_0_1px_0_#fff,0_8px_20px_-6px_rgba(0,0,0,0.45)]"
-                        : "text-white/80 hover:text-white hover:bg-white/10"
+                    onClick={() => onNavigate(item.path)}
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      active ? "bg-accent-soft text-accent-fg" : "text-muted hover:text-fg hover:bg-surface-2"
                     }`}
                   >
-                    <span className={`w-8 h-8 shrink-0 rounded-lg gloss-sm flex items-center justify-center text-white bg-gradient-to-br ${item.chip} [&_svg]:w-[18px] [&_svg]:h-[18px]`}>{item.icon}</span>
+                    {item.icon}
                     <span className="truncate">{item.label}</span>
                   </button>
                 );
@@ -135,24 +121,23 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           </div>
         ))}
       </nav>
-
-      <div className="p-3 border-t border-white/10">
-        <div className="flex items-center gap-3 px-2 py-2 rounded-xl bg-white/10 ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
-          <div className="w-8 h-8 rounded-full gloss-sm bg-gradient-to-br from-indigo-400 to-violet-500 text-white flex items-center justify-center text-sm font-semibold">
+      <div className="p-3 border-t border-line shrink-0">
+        <div className="flex items-center gap-3 px-2 py-2">
+          <span className="w-8 h-8 rounded-full bg-accent-soft text-accent-fg flex items-center justify-center text-sm font-semibold shrink-0">
             {adminName.charAt(0).toUpperCase()}
-          </div>
+          </span>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-white truncate">{adminName}</p>
-            <p className="text-xs text-white/60 truncate">{adminEmail}</p>
+            <p className="text-sm font-medium text-fg truncate">{adminName}</p>
+            <p className="text-xs text-subtle truncate">{adminEmail}</p>
           </div>
-          <button
-            onClick={handleLogout}
-            title="Log out"
-            className="p-1.5 rounded-md text-white/70 hover:text-white hover:bg-white/20 transition-colors"
-          >
-            <NavIcon>{icons.logout}</NavIcon>
-          </button>
         </div>
+        <button
+          onClick={onSignOut}
+          className="mt-1 w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-muted hover:text-fg hover:bg-surface-2 transition-colors"
+        >
+          <NavIcon>{icons.logout}</NavIcon>
+          Sign out
+        </button>
       </div>
     </div>
   );
@@ -160,62 +145,59 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
 export function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
   const current = allItems.find((i) => isActive(i.path, location.pathname));
 
+  useEffect(() => setMobileOpen(false), [location.pathname]);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminRole");
+    navigate("/admin/signin");
+  };
+
   return (
-    <div className="min-h-screen admin-backdrop text-slate-900">
+    <div className="admin-scope min-h-screen bg-page text-fg">
+      <CodeBackdrop variant="admin" />
+      <Ambient3D variant="admin" />
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 glass-dark z-30">
-        <SidebarContent />
+      <aside className="hidden lg:block fixed inset-y-0 left-0 w-64 bg-surface border-r border-line z-30">
+        <SidebarNav onNavigate={navigate} onSignOut={handleSignOut} />
       </aside>
 
-      {/* Mobile sidebar */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-slate-900/40 z-40 lg:hidden"
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.aside
-              initial={{ x: -280 }}
-              animate={{ x: 0 }}
-              exit={{ x: -280 }}
-              transition={{ type: "spring", damping: 26, stiffness: 260 }}
-              className="fixed inset-y-0 left-0 w-64 glass-dark z-50 lg:hidden"
-            >
-              <SidebarContent onNavigate={() => setMobileOpen(false)} />
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-40">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
+          <aside className="absolute inset-y-0 left-0 w-72 max-w-[85vw] bg-surface border-r border-line shadow-pop">
+            <SidebarNav onNavigate={navigate} onSignOut={handleSignOut} />
+          </aside>
+        </div>
+      )}
 
-      <div className="lg:pl-64">
-        {/* Top bar */}
-        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 px-4 sm:px-6 lg:px-8 h-14 glass-strong border-b border-white/70 shadow-[0_1px_0_rgba(255,255,255,0.9),0_6px_20px_-12px_rgba(49,46,129,0.25)]">
-          <div className="flex items-center gap-3">
+      <div className="relative z-10 lg:pl-64">
+        <header className="sticky top-0 z-20 h-16 bg-surface/85 backdrop-blur border-b border-line">
+          <div className="h-full px-4 sm:px-6 lg:px-8 flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-1.5 -ml-1.5 rounded-md text-slate-500 hover:bg-slate-100"
+              className="lg:hidden p-2 -ml-2 rounded-lg text-muted hover:text-fg hover:bg-surface-2"
               aria-label="Open menu"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <nav className="flex items-center gap-1.5 text-sm">
-              <span className="text-slate-400">Admin</span>
-              <span className="text-slate-300">/</span>
-              <span className="font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">{current?.label || "Dashboard"}</span>
+            <nav className="flex items-center gap-2 text-sm min-w-0" aria-label="Breadcrumb">
+              <span className="font-semibold text-fg truncate">{current?.label || "Dashboard"}</span>
+              <TerminalPath className="hidden md:block" />
             </nav>
+            <div className="flex-1" />
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-muted px-2.5 py-1 rounded-full border border-line">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Live data
+            </span>
+            <ThemeToggle />
           </div>
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-indigo-700 glass px-2.5 py-1 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" /> Live data
-          </span>
         </header>
 
         <main className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1400px]">

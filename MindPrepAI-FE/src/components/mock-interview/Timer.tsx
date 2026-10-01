@@ -61,22 +61,22 @@ export const Timer = forwardRef<TimerHandle, TimerProps>(
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gray-800/80 backdrop-blur-sm rounded-xl px-4 py-3 border border-gray-700"
+        className="bg-surface backdrop-blur-sm rounded-xl px-4 py-3 border border-line"
       >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-gray-400 font-medium">{label}</span>
+          <span className="text-xs text-muted font-medium">{label}</span>
           <motion.span
             key={remaining}
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
             className={`font-mono text-xl font-bold tabular-nums ${
-              isCritical ? "text-red-400" : isWarning ? "text-yellow-400" : "text-white"
+              isCritical ? "text-red-600 dark:text-red-400" : isWarning ? "text-yellow-700 dark:text-yellow-400" : "text-fg"
             }`}
           >
             {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
           </motion.span>
         </div>
-        <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-surface-2 rounded-full overflow-hidden">
           <motion.div
             className={`h-full rounded-full transition-colors duration-300 ${
               isCritical ? "bg-red-500" : isWarning ? "bg-yellow-500" : "bg-emerald-500"

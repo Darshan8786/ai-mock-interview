@@ -1,34 +1,54 @@
-import axios from "axios";
-import { useRef } from "react";
+import axios, { isAxiosError } from "axios";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../config/config";
+import { AuthField, AuthShell, AuthSubmit, PasswordField, type AuthMood } from "../components/common/AuthShell";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
+import { isValidEmail } from "../utils/validation";
 
 export function Signin() {
-
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [focused, setFocused] = useState<"email" | "password" | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [pulse, setPulse] = useState(0);
+  const [shake, setShake] = useState(0);
   const navigate = useNavigate();
+  const reduced = usePrefersReducedMotion();
 
-  async function signin() {
+  const mood: AuthMood = success ? "success" : loading ? "loading" : failed ? "error" : focused ?? "idle";
 
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+  const fail = (field: "email" | "password", message: string) => {
+    if (field === "email") setEmailError(message);
+    else setPasswordError(message);
+    setFailed(true);
+    setShake((n) => n + 1);
+  };
 
-    if (!email || !password) {
-      toast.error("Please enter Email and Password");
-      return;
-    }
-    
+  async function signin(e: React.FormEvent) {
+    e.preventDefault();
+    setEmailError(null);
+    setPasswordError(null);
+    if (!email.trim()) return fail("email", "Enter your email address.");
+    if (!isValidEmail(email)) return fail("email", "That doesn't look like a valid email.");
+    if (!password) return fail("password", "Enter your password.");
+
+    setFailed(false);
+    setLoading(true);
     try {
       const response = await axios.post(`${BACKEND_URL}/api/v1/auth/login`, {
-        email,
+        email: email.trim(),
         password,
       });
 
       if (response.data.status !== "success") {
-        toast.error(response.data.message || "Incorrect email or password. Try again.");
-        return;
+        setLoading(false);
+        return fail("password", response.data.message || "Incorrect email or password.");
       }
 
       const jwt = response.data.token;
@@ -39,33 +59,65 @@ export function Signin() {
         localStorage.setItem("adminToken", jwt);
         localStorage.setItem("adminRole", role);
       }
-      toast.success("Signed in Successfully");
-      navigate(role === "admin" ? "/admin" : "/dashboard");
-    } catch (err: any) {
-      const message = err?.response?.data?.message || "Something went wrong. Try again.";
-      toast.error(message);
+      setLoading(false);
+      setSuccess(true);
+      // Let the success animation play before leaving the page.
+      setTimeout(() => navigate(role === "admin" ? "/admin" : "/dashboard"), reduced ? 0 : 750);
+    } catch (err) {
+      const response = isAxiosError(err) ? err.response : undefined;
+      setLoading(false);
+      const status = response?.status;
+      const message = response?.data?.message;
+      // 401 = wrong credentials, 403 = deactivated account: show the reason under the field.
+      if (status === 400 || status === 401 || status === 403 || status === 404) {
+        fail("password", message || "Incorrect email or password.");
+      } else {
+        setFailed(true);
+        setShake((n) => n + 1);
+        toast.error(message || "Couldn't reach the server. Check your connection and try again.");
+      }
     }
   }
 
+  const onType = (setter: (v: string) => void, clear: () => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setter(e.target.value);
+    clear();
+    setFailed(false);
+    setPulse((n) => n + 1);
+  };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
-      <div className="bg-black border border-white w-90 h-65 rounded-4xl text-white p-6 ring-4 ring-white/90">
-        <h1 className="flex justify-center font-poppins font-bold text-xl">Sign in to your Account</h1>
-        <div className="flex flex-col">
-          <input className="flex font-poppins p-2 mt-5 border rounded-lg" placeholder="Enter your Email"
-            ref={emailRef} />
-          <input type="password" className="font-poppins p-2 mt-5 border rounded-lg type" placeholder="Password"
-            ref={passwordRef} />
+    <AuthShell title="Welcome back" subtitle="Sign in to continue your preparation." mood={mood} pulse={pulse} shake={shake}
+      switchPrompt={{ text: "New here?", label: "Create an account", to: "/signup" }}>
+      <form onSubmit={signin} className="space-y-4" noValidate>
+        <AuthField
+          label="Email"
+          type="email"
+          placeholder="you@college.edu"
+          autoComplete="username"
+          autoFocus
+          value={email}
+          error={emailError}
+          onChange={onType(setEmail, () => setEmailError(null))}
+          onFocus={() => setFocused("email")}
+          onBlur={() => {
+            setFocused(null);
+            if (email && !isValidEmail(email)) setEmailError("That doesn't look like a valid email.");
+          }}
+        />
+        <PasswordField
+          placeholder="••••••••"
+          autoComplete="current-password"
+          value={password}
+          error={passwordError}
+          onChange={onType(setPassword, () => setPasswordError(null))}
+          onFocus={() => setFocused("password")}
+          onBlur={() => setFocused(null)}
+        />
+        <div className="pt-1">
+          <AuthSubmit loading={loading} success={success}>Sign in</AuthSubmit>
         </div>
-        <div className="flex flex-col">
-          <button className="mt-5 bg-white text-black text-md font-poppins font-bold p-2 cursor-pointer border rounded-lg
-            transistion duration-200 ease-in-out
-            hover:bg-gray-300 active:scale-95"
-            onClick={signin}>
-            Sign in
-          </button>
-        </div>
-      </div>
-    </div>
+      </form>
+    </AuthShell>
   );
 }

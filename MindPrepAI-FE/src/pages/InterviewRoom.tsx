@@ -638,30 +638,30 @@ export function InterviewRoom() {
 
   if (showInstructions) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 flex items-center justify-center p-4">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="max-w-2xl w-full"
         >
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-3xl p-8 border border-gray-700">
-            <h1 className="text-3xl font-bold text-white mb-6 text-center">
+          <div className="bg-surface backdrop-blur-sm rounded-3xl p-8 border border-line">
+            <h1 className="text-3xl font-bold text-fg mb-6 text-center">
               {resume ? "Resume Interview" : isCollege ? config.name || "College Interview" : "Interview Setup"}
             </h1>
 
             {isCollege && (
-              <div className="mb-6 rounded-xl border border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-100 space-y-1">
+              <div className="mb-6 rounded-xl border border-blue-500/30 bg-blue-500/10 p-4 text-sm text-blue-700 dark:text-blue-100 space-y-1">
                 {config.collegeName && (
                   <p>
-                    <span className="text-blue-300">College:</span> {config.collegeName}
+                    <span className="text-blue-600 dark:text-blue-300">College:</span> {config.collegeName}
                   </p>
                 )}
                 <p>
-                  <span className="text-blue-300">Questions:</span> {config.totalQuestions}
+                  <span className="text-blue-600 dark:text-blue-300">Questions:</span> {config.totalQuestions}
                   {config.programmingLanguage && config.programmingLanguage !== "None" && (
                     <>
                       {" "}
-                      · <span className="text-blue-300">Language:</span> {config.programmingLanguage}
+                      · <span className="text-blue-600 dark:text-blue-300">Language:</span> {config.programmingLanguage}
                     </>
                   )}
                 </p>
@@ -670,46 +670,46 @@ export function InterviewRoom() {
             )}
 
             {resume && (
-              <div className="mb-6 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4 text-sm text-yellow-100">
+              <div className="mb-6 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4 text-sm text-yellow-700 dark:text-yellow-100">
                 Your interview is still in progress. Your violation counts were kept: full-screen exits{" "}
                 <b>{resume.fullScreenExitCount}/3</b>. Return to full-screen to continue.
               </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-gray-700/30 rounded-xl p-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">Role</h3>
-                <p className="text-white font-semibold">{config.jobRole}</p>
+              <div className="bg-surface-2 rounded-xl p-4">
+                <h3 className="text-sm font-medium text-muted mb-2">Role</h3>
+                <p className="text-fg font-semibold">{config.jobRole}</p>
               </div>
               {isCollege ? (
-                <div className="bg-gray-700/30 rounded-xl p-4">
-                  <h3 className="text-sm font-medium text-gray-400 mb-2">Time limit</h3>
-                  <p className="text-white font-semibold">{config.timeLimitMinutes} minutes</p>
+                <div className="bg-surface-2 rounded-xl p-4">
+                  <h3 className="text-sm font-medium text-muted mb-2">Time limit</h3>
+                  <p className="text-fg font-semibold">{config.timeLimitMinutes} minutes</p>
                 </div>
               ) : (
-                <div className="bg-gray-700/30 rounded-xl p-4">
-                  <h3 className="text-sm font-medium text-gray-400 mb-2">Experience</h3>
-                  <p className="text-white font-semibold capitalize">{config.experienceLevel}</p>
+                <div className="bg-surface-2 rounded-xl p-4">
+                  <h3 className="text-sm font-medium text-muted mb-2">Experience</h3>
+                  <p className="text-fg font-semibold capitalize">{config.experienceLevel}</p>
                 </div>
               )}
-              <div className="bg-gray-700/30 rounded-xl p-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">Type</h3>
-                <p className="text-white font-semibold">{config.interviewType}</p>
+              <div className="bg-surface-2 rounded-xl p-4">
+                <h3 className="text-sm font-medium text-muted mb-2">Type</h3>
+                <p className="text-fg font-semibold">{config.interviewType}</p>
               </div>
-              <div className="bg-gray-700/30 rounded-xl p-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">Difficulty</h3>
-                <p className="text-white font-semibold">{config.difficulty}</p>
+              <div className="bg-surface-2 rounded-xl p-4">
+                <h3 className="text-sm font-medium text-muted mb-2">Difficulty</h3>
+                <p className="text-fg font-semibold">{config.difficulty}</p>
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="bg-gray-700/30 rounded-xl p-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">Camera & Microphone</h3>
+              <div className="bg-surface-2 rounded-xl p-4">
+                <h3 className="text-sm font-medium text-muted mb-2">Camera & Microphone</h3>
                 {webcamPhase !== "ready" ? (
                   <button
                     onClick={handlePermission}
                     disabled={webcamPhase === "initializing"}
-                    className="w-full px-4 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium hover:bg-emerald-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-4 py-3 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl font-medium hover:bg-emerald-500/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {webcamPhase === "initializing"
                       ? "Starting camera…"
@@ -728,24 +728,24 @@ export function InterviewRoom() {
                 )}
               </div>
 
-              <div className="bg-gray-700/30 rounded-xl p-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">Full Screen</h3>
+              <div className="bg-surface-2 rounded-xl p-4">
+                <h3 className="text-sm font-medium text-muted mb-2">Full Screen</h3>
                 {fs.isFullscreen ? (
-                  <p className="text-emerald-400 text-sm font-medium">✓ Full-screen mode is active</p>
+                  <p className="text-emerald-700 dark:text-emerald-400 text-sm font-medium">✓ Full-screen mode is active</p>
                 ) : (
                   <div className="space-y-2">
                     <button
                       onClick={async () => setFsBlocked(!(await fs.enter()))}
-                      className="w-full px-4 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium hover:bg-emerald-500/30 transition-colors"
+                      className="w-full px-4 py-3 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl font-medium hover:bg-emerald-500/30 transition-colors"
                     >
                       Enter Full Screen
                     </button>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted">
                       The interview runs in full-screen mode and starts once it is active. Leaving full-screen 3 times
                       terminates the interview.
                     </p>
                     {fsBlocked && (
-                      <p className="text-xs text-red-300">
+                      <p className="text-xs text-red-600 dark:text-red-300">
                         Your browser blocked full-screen. Click "Enter Full Screen" again — it must come from a click —
                         or allow full-screen for this site.
                       </p>
@@ -768,7 +768,7 @@ export function InterviewRoom() {
               )}
 
               {webcamError && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm space-y-2">
+                <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-600 dark:text-red-400 text-sm space-y-2">
                   <p className="font-semibold">
                     {webcamErrorKind === "permission-denied"
                       ? "Camera / microphone permission blocked"
@@ -793,7 +793,7 @@ export function InterviewRoom() {
                       href="/webcam-diagnostic.html"
                       target="_blank"
                       rel="noreferrer"
-                      className="underline hover:text-red-200"
+                      className="underline hover:text-red-700 hover:dark:text-red-200"
                     >
                       /webcam-diagnostic.html
                     </a>{" "}
@@ -802,7 +802,7 @@ export function InterviewRoom() {
                   {webcamErrorKind !== "insecure-context" && webcamErrorKind !== "unsupported" && (
                     <button
                       onClick={() => retryWebcam()}
-                      className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-300 text-xs font-medium transition-colors"
+                      className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-600 dark:text-red-300 text-xs font-medium transition-colors"
                     >
                       Retry camera
                     </button>
@@ -811,7 +811,7 @@ export function InterviewRoom() {
               )}
 
               {webcamPhase === "ready" && status.camera && !status.microphone && (
-                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-yellow-300 text-sm">
+                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-yellow-700 dark:text-yellow-300 text-sm">
                   Camera is working but no microphone was detected. You can still start —
                   answer questions using text mode.
                 </div>
@@ -819,8 +819,8 @@ export function InterviewRoom() {
 
               {webcamPhase === "ready" && status.camera && (
                 <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
-                  <h3 className="font-semibold text-emerald-400 mb-2">Interview Rules</h3>
-                  <ul className="text-sm text-gray-300 space-y-1">
+                  <h3 className="font-semibold text-emerald-700 dark:text-emerald-400 mb-2">Interview Rules</h3>
+                  <ul className="text-sm text-fg-2 space-y-1">
                     <li>• Stay visible in the camera frame</li>
                     <li>• Do not switch tabs or minimize window</li>
                     <li>• Stay in full-screen mode: leaving it 3 times terminates the interview</li>
@@ -836,7 +836,7 @@ export function InterviewRoom() {
                 <button
                   onClick={handleStartInterview}
                   disabled={loading || !resumeChecked}
-                  className="w-full px-6 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-2xl font-bold text-lg hover:shadow-lg hover:shadow-emerald-500/25 transition-all disabled:opacity-50"
+                  className="w-full px-6 py-4 bg-accent hover:bg-accent-hover text-white rounded-2xl font-bold text-lg transition-all disabled:opacity-50"
                 >
                   {loading ? "Starting..." : resume ? "Resume Interview →" : "Start Interview →"}
                 </button>
@@ -849,14 +849,12 @@ export function InterviewRoom() {
   }
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 p-4">
+    <div className="min-h-[calc(100vh-4rem)] relative p-4">
       {/* Purely decorative ambient background - CSS only (no WebGL canvas
           here deliberately, given webcam capture + proctoring frame analysis
           already run on this page). pointer-events-none and z-0 so it can
           never intercept a click or sit above the webcam/warning UI. */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="glow-orb absolute -top-24 -left-16 w-72 h-72 bg-violet-600/10" />
-        <div className="glow-orb absolute bottom-0 right-0 w-72 h-72 bg-cyan-500/10" />
       </div>
       <div className="relative z-10">
       <WarningOverlay
@@ -950,28 +948,28 @@ export function InterviewRoom() {
               label="Progress"
             />
 
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
-              <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+            <div className="bg-surface backdrop-blur-sm rounded-xl p-4 border border-line">
+              <h4 className="text-xs font-medium text-muted uppercase tracking-wider mb-2">
                 Interview Status
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Questions</span>
-                  <span className="text-white">{questionIndex}/{totalQuestions}</span>
+                  <span className="text-muted">Questions</span>
+                  <span className="text-fg">{questionIndex}/{totalQuestions}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Mode</span>
-                  <span className="text-white capitalize">{answerMode}</span>
+                  <span className="text-muted">Mode</span>
+                  <span className="text-fg capitalize">{answerMode}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Tab Switches</span>
-                  <span className={tabSwitchCount > 0 ? "text-red-400 font-semibold" : "text-white"}>
+                  <span className="text-muted">Tab Switches</span>
+                  <span className={tabSwitchCount > 0 ? "text-red-600 dark:text-red-400 font-semibold" : "text-fg"}>
                     {tabSwitchCount}/3
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Full-screen exits</span>
-                  <span className={fs.exitCount > 0 ? "text-red-400 font-semibold" : "text-white"}>
+                  <span className="text-muted">Full-screen exits</span>
+                  <span className={fs.exitCount > 0 ? "text-red-600 dark:text-red-400 font-semibold" : "text-fg"}>
                     {fs.exitCount}/3
                   </span>
                 </div>
@@ -980,7 +978,7 @@ export function InterviewRoom() {
 
             <button
               onClick={() => handleEndInterview("manual")}
-              className="w-full px-4 py-3 bg-red-500/10 text-red-400 rounded-xl font-medium border border-red-500/20 hover:bg-red-500/20 transition-all text-sm"
+              className="w-full px-4 py-3 bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl font-medium border border-red-500/20 hover:bg-red-500/20 transition-all text-sm"
             >
               End Interview Early
             </button>

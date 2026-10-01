@@ -1,34 +1,109 @@
 import { useNavigate } from "react-router-dom";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useEffect, useState, lazy, Suspense } from "react";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { getMyNotifications, type StudentNotification } from "../services/notificationsApi";
+import { Icon } from "../Layout";
 
-// Code-split: three.js + @react-three/fiber only load on pages that render 3D.
-const DashboardOrbScene = lazy(() => import("../components/3d/DashboardOrbScene"));
+// three.js only loads for the dashboard's 3D panel, after the page renders.
+const DashboardCseScene = lazy(() => import("../components/3d/DashboardCseScene"));
 
-// Dashboard component with 3D visualizations and animations
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0.2,
-        },
+const PRACTICE = [
+    {
+        icon: "aptitude",
+        title: "Aptitude",
+        fn: "aptitude.start()",
+        description: "Quant, logical and verbal tests, or an adaptive session that tunes difficulty as you go.",
+        path: "/aptitude",
+        cta: "Start aptitude",
+        tint: "bg-sky-500/10 text-sky-700 dark:text-sky-400",
     },
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.6,
-        },
+    {
+        icon: "tech",
+        title: "Tech Practice",
+        fn: "tech.practice()",
+        description: "Topic-wise MCQs and short answers for languages, DSA, DBMS, OS and more.",
+        path: "/tech-practice",
+        cta: "Practice tech",
+        tint: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
     },
-};
+    {
+        icon: "interview",
+        title: "Mock Interview",
+        fn: "interview.run()",
+        description: "A proctored AI interview with spoken answers and a detailed feedback report.",
+        path: "/mock-interview/dashboard",
+        cta: "Start interview",
+        tint: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
+    },
+];
+
+const TOOLS = [
+    { icon: "jobs", title: "Job Opportunities", description: "Placement drives you can apply to", path: "/jobs" },
+    { icon: "applications", title: "My Applications", description: "Track your application status", path: "/my-applications" },
+    { icon: "resume", title: "Resume Analyzer", description: "AI feedback on your resume", path: "/resume-analyzer" },
+    { icon: "builder", title: "Resume Builder", description: "Build an ATS-friendly resume", path: "/resume-builder" },
+    { icon: "analytics", title: "Performance Analytics", description: "Progress and weak areas", path: "/personalizedreport" },
+    { icon: "profile", title: "Profile", description: "Academic details and skills", path: "/profile" },
+];
+
+function greeting(): string {
+    const h = new Date().getHours();
+    if (h < 12) return "Good morning";
+    if (h < 17) return "Good afternoon";
+    return "Good evening";
+}
+
+/** Lines "typed" into the dashboard terminal, one after another. */
+function terminalLines(): { prompt?: boolean; text: string; tone?: string }[] {
+    return [
+        { prompt: true, text: "mindprep status --me" },
+        { text: `${greeting()}! Your prep environment is ready.`, tone: "text-fg" },
+        { text: "✓ aptitude    adaptive · quant · logical · verbal", tone: "text-emerald-700 dark:text-emerald-400" },
+        { text: "✓ tech        DSA · DBMS · OS · CN · languages", tone: "text-emerald-700 dark:text-emerald-400" },
+        { text: "✓ interview   AI mock interview with live proctoring", tone: "text-emerald-700 dark:text-emerald-400" },
+        { prompt: true, text: "next --suggest" },
+        { text: "→ one adaptive session a day keeps the weak topics away", tone: "text-accent-fg" },
+    ];
+}
+
+function Terminal() {
+    const reduced = usePrefersReducedMotion();
+    const lines = terminalLines();
+    return (
+        <div className="flex flex-col h-full">
+            <div className="flex items-center gap-2 px-4 h-10 border-b border-line bg-surface-2/70">
+                <span className="w-3 h-3 rounded-full bg-rose-400" />
+                <span className="w-3 h-3 rounded-full bg-amber-400" />
+                <span className="w-3 h-3 rounded-full bg-emerald-400" />
+                <span className="ml-3 font-mono text-xs text-subtle">student@mindprep: ~</span>
+            </div>
+            <div className="flex-1 p-5 font-mono text-[13px] leading-relaxed space-y-1 whitespace-pre-wrap" aria-label="Status summary">
+                {lines.map((l, i) => (
+                    <motion.p
+                        key={i}
+                        initial={reduced ? false : { opacity: 0, x: -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: reduced ? 0 : 0.25 + i * 0.35, duration: 0.25 }}
+                        className={l.prompt ? "text-fg-2" : `${l.tone ?? "text-muted"} pl-4`}
+                    >
+                        {l.prompt && <span className="text-accent-fg">$ </span>}
+                        {l.text}
+                    </motion.p>
+                ))}
+                <motion.p
+                    initial={reduced ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: reduced ? 0 : 0.25 + lines.length * 0.35 }}
+                    className="text-fg-2"
+                >
+                    <span className="text-accent-fg">$ </span>
+                    <span className="cse-caret text-accent-fg" aria-hidden />
+                </motion.p>
+            </div>
+        </div>
+    );
+}
 
 export function Dashboard() {
     const navigate = useNavigate();
@@ -40,322 +115,118 @@ export function Dashboard() {
             .catch(() => {});
     }, []);
 
-    const features = [
-        {
-            icon: "📊",
-            title: "Performance Analytics",
-            description: "Track your progress and identify weak areas",
-            path: "/personalizedreport",
-            color: "from-blue-500 to-cyan-500",
-        },
-        {
-            icon: "📄",
-            title: "Resume Analyzer",
-            description: "Get AI-powered feedback on your resume",
-            path: "/resume-analyzer",
-            color: "from-orange-500 to-rose-500",
-        },
-        {
-            icon: "✨",
-            title: "Resume Builder",
-            description: "Build an ATS-friendly resume with AI assistance",
-            path: "/resume-builder",
-            color: "from-emerald-500 to-teal-500",
-        },
-        {
-            icon: "💼",
-            title: "Job Opportunities",
-            description: "Browse placement drives and apply for jobs",
-            path: "/jobs",
-            color: "from-indigo-500 to-violet-500",
-        },
-        {
-            icon: "📋",
-            title: "My Applications",
-            description: "Track the status of your job applications",
-            path: "/my-applications",
-            color: "from-fuchsia-500 to-pink-500",
-        },
-    ];
-
     return (
-        <div className="min-h-screen">
-            {/* Hero Section */}
-            <section className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
-                <div className="relative mx-auto max-w-6xl">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                        {/* Left Content */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="text-center lg:text-left"
-                        >
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.6, delay: 0.1 }}
-                                className="inline-block mb-6"
-                            >
-                                <span className="inline-flex items-center rounded-full glass px-4 py-2 text-sm font-medium text-violet-300">
-                                    🚀 Your Path to Success
-                                </span>
-                            </motion.div>
-
-                            <motion.h1
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.2 }}
-                                className="text-5xl sm:text-6xl font-bold font-poppins mb-6 leading-tight"
-                            >
-                                <span className="text-white">Master Your </span>
-                                <span className="gradient-text">Placement Interview</span>
-                            </motion.h1>
-
-                            <motion.p
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.3 }}
-                                className="mx-auto lg:mx-0 max-w-2xl text-lg text-gray-300 mb-8"
-                            >
-                                Prepare with our comprehensive platform featuring AI-powered mock interviews, performance analytics, and industry-curated questions to land your dream job.
-                            </motion.p>
-
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.4 }}
-                                className="flex flex-col sm:flex-row gap-4"
-                            >
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => navigate("/aptitude")}
-                                    className="px-8 py-3 rounded-full btn-gradient font-semibold"
-                                >
-                                    Start Preparing Now
-                                </motion.button>
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => navigate("/personalizedreport")}
-                                    className="px-8 py-3 rounded-full glass glass-hover text-white font-semibold"
-                                >
-                                    View Your Progress
-                                </motion.button>
-                            </motion.div>
-                        </motion.div>
-
-                        {/* Right 3D Content */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="hidden lg:block"
-                        >
-                            <div className="rounded-3xl overflow-hidden glass gradient-border h-96 shadow-2xl">
-                                <Suspense fallback={<div className="w-full h-full bg-gradient-to-br from-violet-600/10 via-fuchsia-600/5 to-cyan-500/5 animate-pulse" />}>
-                                    <DashboardOrbScene />
-                                </Suspense>
-                            </div>
-                        </motion.div>
-                    </div>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+            <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+                <div>
+                    <p className="font-mono text-xs text-accent-fg">// dashboard</p>
+                    <h1 className="font-poppins text-2xl sm:text-3xl font-bold text-fg tracking-tight mt-1">
+                        What are you practising today?
+                    </h1>
                 </div>
-            </section>
-
-            {/* Notifications Section */}
-            {notifications.length > 0 && (
-                <motion.section
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className="px-4 py-10 sm:px-6 lg:px-8"
+                <button
+                    onClick={() => navigate("/personalizedreport")}
+                    className="self-start sm:self-auto px-4 py-2 rounded-lg border border-line-strong bg-surface text-sm font-medium text-fg-2 hover:bg-surface-2 transition-colors"
                 >
-                    <div className="mx-auto max-w-6xl">
-                        <div className="rounded-3xl glass p-6">
-                            <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-xl font-bold text-white font-poppins">🔔 Notifications</h2>
-                                <button
-                                    onClick={() => navigate("/jobs")}
-                                    className="text-sm text-violet-300 hover:text-violet-200 hover:underline font-medium"
-                                >
-                                    View all →
-                                </button>
-                            </div>
-                            <div className="space-y-3">
-                                {notifications.map((n) => (
-                                    <button
-                                        key={n.id}
-                                        onClick={() => n.job?.id && navigate(`/jobs/${n.job.id}`)}
-                                        className="w-full text-left flex items-start gap-3 rounded-2xl glass glass-hover p-4"
-                                    >
-                                        <span className="mt-1.5 w-2 h-2 rounded-full bg-fuchsia-400 shrink-0" />
-                                        <div className="min-w-0">
-                                            <p className="text-white font-medium text-sm">{n.title}</p>
-                                            <p className="text-gray-400 text-sm mt-0.5 line-clamp-2">{n.body}</p>
-                                            {n.job && (
-                                                <p className="text-xs text-violet-300 mt-1.5 font-medium">
-                                                    {n.job.companyName} • {n.job.jobTitle} • View details →
-                                                </p>
-                                            )}
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                    View my progress
+                </button>
+            </header>
+
+            {/* Terminal + 3D data structures */}
+            <section className="mb-8 grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] rounded-xl bg-surface border border-line shadow-card overflow-hidden">
+                <Terminal />
+                <div className="relative hidden sm:block h-64 lg:h-auto lg:min-h-[17rem] border-t lg:border-t-0 lg:border-l border-line bg-surface-2/40">
+                    <Suspense fallback={null}>
+                        <DashboardCseScene />
+                    </Suspense>
+                    <p className="absolute top-3 left-4 font-mono text-[11px] text-subtle">// data structures you'll be asked about</p>
+                </div>
+            </section>
+
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {PRACTICE.map((p) => (
+                    <div key={p.title} className="flex flex-col rounded-xl bg-surface border border-line shadow-card p-6">
+                        <span className={`w-11 h-11 rounded-lg flex items-center justify-center ${p.tint}`}>
+                            <Icon name={p.icon} className="w-5 h-5" />
+                        </span>
+                        <p className="mt-4 font-mono text-xs text-accent-fg">{p.fn}</p>
+                        <h2 className="mt-0.5 font-poppins text-lg font-semibold text-fg">{p.title}</h2>
+                        <p className="mt-1.5 text-sm text-muted flex-1">{p.description}</p>
+                        <button
+                            onClick={() => navigate(p.path)}
+                            className="mt-6 w-full py-2.5 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors"
+                        >
+                            {p.cta}
+                        </button>
                     </div>
-                </motion.section>
-            )}
+                ))}
+            </section>
 
-            {/* Features Section */}
-            <section className="px-4 py-16 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-6xl">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-12"
-                    >
-                        <h2 className="text-4xl font-bold font-poppins mb-4">
-                            <span className="gradient-text">Powerful Tools</span> <span className="text-white">for Success</span>
-                        </h2>
-                        <p className="text-gray-400 text-lg">Everything you need to ace your placement interviews</p>
-                    </motion.div>
-
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                    >
-                        {features.map((feature, idx) => (
-                            <motion.button
-                                key={idx}
-                                variants={itemVariants}
-                                whileHover={{ y: -6, scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => navigate(feature.path)}
-                                className="group relative overflow-hidden rounded-2xl glass glass-hover p-8 text-left"
+            <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <section className="lg:col-span-2 rounded-xl bg-surface border border-line shadow-card">
+                    <div className="px-6 py-4 border-b border-line">
+                        <h2 className="font-semibold text-fg">Career tools</h2>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-line rounded-b-xl overflow-hidden">
+                        {TOOLS.map((t) => (
+                            <button
+                                key={t.title}
+                                onClick={() => navigate(t.path)}
+                                className="group flex items-center gap-4 px-6 py-4 text-left bg-surface hover:bg-surface-2 transition-colors"
                             >
-                                <div
-                                    className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                                ></div>
-
-                                <div className="relative">
-                                    <motion.div
-                                        animate={{ y: [0, -5, 0] }}
-                                        transition={{ duration: 2, repeat: Infinity }}
-                                        className={`w-14 h-14 mb-4 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-2xl shadow-lg`}
-                                    >
-                                        {feature.icon}
-                                    </motion.div>
-                                    <h3 className="text-xl font-bold text-white mb-3 font-poppins group-hover:text-violet-300 transition-all">
-                                        {feature.title}
-                                    </h3>
-                                    <p className="text-gray-400 mb-6 text-sm">{feature.description}</p>
-                                    <div className="flex items-center gap-2 text-violet-300 group-hover:gap-3 transition-all">
-                                        <span className="font-semibold text-sm">Explore</span>
-                                        <motion.span
-                                            animate={{ x: [0, 5, 0] }}
-                                            transition={{ duration: 1.5, repeat: Infinity }}
-                                        >
-                                            →
-                                        </motion.span>
-                                    </div>
-                                </div>
-                            </motion.button>
+                                <span className="w-9 h-9 rounded-lg bg-surface-2 text-muted group-hover:text-accent-fg flex items-center justify-center shrink-0 transition-colors">
+                                    <Icon name={t.icon} />
+                                </span>
+                                <span className="min-w-0">
+                                    <span className="block text-sm font-medium text-fg">{t.title}</span>
+                                    <span className="block text-xs text-muted mt-0.5">{t.description}</span>
+                                </span>
+                            </button>
                         ))}
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="relative px-4 py-16 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-4xl">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="relative overflow-hidden rounded-3xl p-12 text-center"
-                        style={{
-                            backgroundImage: "linear-gradient(135deg, #4f46e5, #9333ea, #db2777)",
-                        }}
-                    >
-                        {/* Animated background */}
-                        <div className="absolute inset-0 overflow-hidden">
-                            <motion.div
-                                animate={{ x: [-100, 100], y: [-100, 100] }}
-                                transition={{ duration: 8, repeat: Infinity, repeatType: 'mirror' }}
-                                className="absolute -top-20 -right-20 w-40 h-40 bg-white rounded-full mix-blend-screen opacity-10"
-                            ></motion.div>
-                            <motion.div
-                                animate={{ x: [100, -100], y: [100, -100] }}
-                                transition={{ duration: 10, repeat: Infinity, repeatType: 'mirror' }}
-                                className="absolute -bottom-20 -left-20 w-40 h-40 bg-white rounded-full mix-blend-screen opacity-10"
-                            ></motion.div>
-                        </div>
-
-                        <div className="relative">
-                            <h2 className="text-4xl font-bold text-white mb-4 font-poppins">Ready to Transform Your Career?</h2>
-                            <p className="text-white/80 text-lg mb-8">
-                                Join thousands of successful candidates who prepared with MindPrep AI and landed their dream jobs.
-                            </p>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => navigate("/aptitude")}
-                                className="px-8 py-3 rounded-full bg-white text-violet-700 font-semibold hover:bg-violet-50 transition-all shadow-lg"
-                            >
-                                Start Your Journey Today
-                            </motion.button>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Footer */}
-            <section className="border-t border-white/10 px-4 py-12 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-6xl">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                        <div>
-                            <h3 className="text-white font-bold mb-4 font-poppins">MindPrep AI</h3>
-                            <p className="text-gray-400 text-sm">Your complete placement preparation platform</p>
-                        </div>
-                        <div>
-                            <h4 className="text-white font-semibold mb-4">Resources</h4>
-                            <ul className="space-y-2 text-gray-400 text-sm">
-                                <li><button onClick={() => navigate("/aptitude")} className="hover:text-violet-300 transition">Aptitude</button></li>
-                                <li><button onClick={() => navigate("/personalizedreport")} className="hover:text-violet-300 transition">Analytics</button></li>
-                                <li><button onClick={() => navigate("/resume-analyzer")} className="hover:text-violet-300 transition">Resume Help</button></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="text-white font-semibold mb-4">Features</h4>
-                            <ul className="space-y-2 text-gray-400 text-sm">
-                                <li className="hover:text-violet-300 transition cursor-pointer">AI Mock Interviews</li>
-                                <li className="hover:text-violet-300 transition cursor-pointer">Performance Tracking</li>
-                                <li className="hover:text-violet-300 transition cursor-pointer">Expert Guidance</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="text-white font-semibold mb-4">Company</h4>
-                            <ul className="space-y-2 text-gray-400 text-sm">
-                                <li className="hover:text-violet-300 transition cursor-pointer">About Us</li>
-                                <li className="hover:text-violet-300 transition cursor-pointer">Contact</li>
-                                <li className="hover:text-violet-300 transition cursor-pointer">Privacy Policy</li>
-                            </ul>
-                        </div>
                     </div>
+                </section>
 
-                    <div className="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
-                        <p>&copy; 2025 MindPrep AI. All rights reserved. Your journey to success starts here.</p>
+                <section className="rounded-xl bg-surface border border-line shadow-card flex flex-col">
+                    <div className="px-6 py-4 border-b border-line flex items-center justify-between">
+                        <h2 className="font-semibold text-fg">Notifications</h2>
+                        <button onClick={() => navigate("/jobs")} className="text-xs font-medium text-accent-fg hover:underline">
+                            View jobs →
+                        </button>
                     </div>
-                </div>
-            </section>
+                    {notifications.length === 0 ? (
+                        <div className="flex-1 flex flex-col items-center justify-center text-center px-6 py-10">
+                            <span className="w-10 h-10 rounded-full bg-surface-2 text-subtle flex items-center justify-center">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </span>
+                            <p className="mt-3 text-sm font-medium text-fg">You're all caught up</p>
+                            <p className="text-xs text-muted mt-1">New placement drives will show up here.</p>
+                        </div>
+                    ) : (
+                        <div className="divide-y divide-line">
+                            {notifications.map((n) => (
+                                <button
+                                    key={n.id}
+                                    onClick={() => n.job?.id && navigate(`/jobs/${n.job.id}`)}
+                                    className="w-full text-left flex items-start gap-3 px-6 py-4 hover:bg-surface-2 transition-colors"
+                                >
+                                    <span className="mt-1.5 w-2 h-2 rounded-full bg-accent shrink-0" />
+                                    <span className="min-w-0">
+                                        <span className="block text-sm font-medium text-fg">{n.title}</span>
+                                        <span className="block text-xs text-muted mt-0.5 line-clamp-2">{n.body}</span>
+                                        {n.job && (
+                                            <span className="block text-xs text-accent-fg mt-1.5 font-medium">
+                                                {n.job.companyName} · {n.job.jobTitle}
+                                            </span>
+                                        )}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </section>
+            </div>
         </div>
     );
 }

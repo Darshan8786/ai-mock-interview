@@ -21,12 +21,12 @@ import { ErrorState } from "../../components/admin/ErrorState";
 type Tab = "eligible" | "ineligible";
 
 const statCards = [
-  { key: "total", label: "Total Students", color: "text-slate-800" },
-  { key: "eligible", label: "Eligible", color: "text-indigo-700" },
-  { key: "ineligible", label: "Not Eligible", color: "text-red-700" },
-  { key: "applications", label: "Applications", color: "text-indigo-700" },
-  { key: "shortlisted", label: "Shortlisted", color: "text-violet-700" },
-  { key: "selected", label: "Selected", color: "text-violet-700" },
+  { key: "total", label: "Total Students", color: "text-fg" },
+  { key: "eligible", label: "Eligible", color: "text-indigo-700 dark:text-indigo-400" },
+  { key: "ineligible", label: "Not Eligible", color: "text-red-700 dark:text-red-400" },
+  { key: "applications", label: "Applications", color: "text-indigo-700 dark:text-indigo-400" },
+  { key: "shortlisted", label: "Shortlisted", color: "text-violet-700 dark:text-violet-400" },
+  { key: "selected", label: "Selected", color: "text-violet-700 dark:text-violet-400" },
 ];
 
 export function JobEligibility() {
@@ -228,7 +228,7 @@ export function JobEligibility() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
             {statCards.map((s) => (
               <div key={s.key} className="rounded-xl glass p-4">
-                <p className="text-2xl font-bold text-slate-900">{stats[s.key as keyof typeof stats]}</p>
+                <p className="text-2xl font-bold text-fg">{stats[s.key as keyof typeof stats]}</p>
                 <p className={`text-xs font-medium uppercase tracking-wider mt-1 ${s.color}`}>{s.label}</p>
               </div>
             ))}
@@ -236,15 +236,15 @@ export function JobEligibility() {
 
           {/* Eligibility criteria summary */}
           <div className="rounded-xl glass p-4 mb-6 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-            <span className="text-slate-500">
-              CGPA ≥ <span className="text-slate-900 font-semibold">{job?.eligibility?.minimumCGPA ?? "Any"}</span>
+            <span className="text-muted">
+              CGPA ≥ <span className="text-fg font-semibold">{job?.eligibility?.minimumCGPA ?? "Any"}</span>
             </span>
-            <span className="text-slate-500">
-              Backlogs ≤ <span className="text-slate-900 font-semibold">{job?.eligibility?.maximumBacklogs ?? "Any"}</span>
+            <span className="text-muted">
+              Backlogs ≤ <span className="text-fg font-semibold">{job?.eligibility?.maximumBacklogs ?? "Any"}</span>
             </span>
-            <span className="text-slate-500">
+            <span className="text-muted">
               Departments:{" "}
-              <span className="text-slate-900 font-semibold">
+              <span className="text-fg font-semibold">
                 {job?.eligibility?.allowedDepartments?.length
                   ? job.eligibility.allowedDepartments.join(", ")
                   : "All"}
@@ -258,7 +258,7 @@ export function JobEligibility() {
               <button
                 onClick={() => setTab("eligible")}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  tab === "eligible" ? "bg-indigo-50 text-indigo-700" : "text-slate-500 hover:text-slate-900"
+                  tab === "eligible" ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400" : "text-muted hover:text-fg"
                 }`}
               >
                 Eligible ({eligible.length})
@@ -266,7 +266,7 @@ export function JobEligibility() {
               <button
                 onClick={() => setTab("ineligible")}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  tab === "ineligible" ? "bg-red-50 text-red-700" : "text-slate-500 hover:text-slate-900"
+                  tab === "ineligible" ? "bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400" : "text-muted hover:text-fg"
                 }`}
               >
                 Not Eligible ({ineligible.length})
@@ -300,7 +300,7 @@ export function JobEligibility() {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search USN, name, dept..."
                 spellCheck={false}
-                className="w-full sm:w-56 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-300"
+                className="w-full sm:w-56 bg-surface-2 border border-line rounded-xl px-3.5 py-2 text-sm text-fg placeholder-subtle focus:outline-none focus:border-indigo-300 focus:dark:border-indigo-500/30"
               />
             }
           >
@@ -327,15 +327,15 @@ export function JobEligibility() {
                 renderRow={(s) => (
                   <>
                     <td className="py-3 px-4">
-                      <p className="text-slate-900 font-medium">{s.name}</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-fg font-medium">{s.name}</p>
+                      <p className="text-xs text-muted">
                         {s.usn || "—"} {s.email && `• ${s.email}`}
                       </p>
                     </td>
-                    <td className="py-3 px-4 text-slate-700">{s.department || "—"}</td>
-                    <td className="py-3 px-4 text-slate-700">{s.cgpa != null ? s.cgpa.toFixed(2) : "—"}</td>
+                    <td className="py-3 px-4 text-fg-2">{s.department || "—"}</td>
+                    <td className="py-3 px-4 text-fg-2">{s.cgpa != null ? s.cgpa.toFixed(2) : "—"}</td>
                     <td className="py-3 px-4">
-                      <span className={s.backlogs > 0 ? "text-red-700 font-medium" : "text-slate-700"}>
+                      <span className={s.backlogs > 0 ? "text-red-700 dark:text-red-400 font-medium" : "text-fg-2"}>
                         {s.backlogs}
                       </span>
                     </td>
@@ -371,9 +371,9 @@ export function JobEligibility() {
           </>
         }
       >
-        <p className="text-slate-700 text-sm">
-          Send the <span className="text-slate-900 font-semibold">"New Placement Opportunity"</span>{" "}
-          notification to all <span className="text-indigo-700 font-semibold">{eligible.length} eligible student(s)</span>?
+        <p className="text-fg-2 text-sm">
+          Send the <span className="text-fg font-semibold">"New Placement Opportunity"</span>{" "}
+          notification to all <span className="text-indigo-700 dark:text-indigo-400 font-semibold">{eligible.length} eligible student(s)</span>?
           Students already notified for this job will not be notified again.
         </p>
       </Modal>

@@ -197,15 +197,18 @@ const resolveStartMeta = async (body: any) => {
   }
 
   if (mode === "company") {
-    if (!body.tag) throw new AppError("tag is required for company practice", 400);
+    // Without a tag the student gets a mixed set of questions asked by any
+    // company; the UI no longer reveals which company a question came from.
     return {
       testType: "company",
-      title: `${body.tag} Practice`,
+      title: body.tag ? `${body.tag} Practice` : "Company Practice",
       durationMinutes: Math.max(5, Math.ceil(cap(body.count || 10) / 1.5)),
       marksPerQuestion: 1,
       negativeMarksPerQuestion: 0.25,
       passingScore: 50,
-      filter: { isActive: true, "companyTags.name": body.tag },
+      filter: body.tag
+        ? { isActive: true, "companyTags.name": body.tag }
+        : { isActive: true, "companyTags.0": { $exists: true } },
       count: cap(body.count || 10),
       difficulty: "",
       curatedIds: null,

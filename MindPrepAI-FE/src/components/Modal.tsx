@@ -12,12 +12,12 @@ export function Modal({ isOpen, onClose, onStart, subjectTitle, instructions }: 
     return (
         <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 cursor-pointer"
         onClick={onClose}>
-            <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 border-4 border-red-800"
+            <div className="bg-surface rounded-2xl p-6 max-w-md w-full mx-4 border-4 border-red-500/30"
             onClick={(e) => e.stopPropagation()}>
                 <h2 className="text-xl font-bold mb-4 text-center">{subjectTitle}</h2>
 
                 <div className="mb-6">
-                    <p className="text-gray-700 text-center">{instructions}</p>
+                    <p className="text-subtle text-center">{instructions}</p>
                 </div>
 
                 <div className="flex gap-4 justify-center">

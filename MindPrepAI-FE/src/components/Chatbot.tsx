@@ -20,7 +20,7 @@ const DEFAULT_SUGGESTIONS: ChatSuggestion[] = [
   { label: "Deadlock", prompt: "What is deadlock and how to prevent it?" },
 ];
 
-const accuracyColor = (pct: number) => (pct < 60 ? "text-red-300" : pct < 75 ? "text-amber-300" : "text-emerald-300");
+const accuracyColor = (pct: number) => (pct < 60 ? "text-red-600 dark:text-red-300" : pct < 75 ? "text-amber-700 dark:text-amber-300" : "text-emerald-700 dark:text-emerald-300");
 
 export function Chatbot() {
   const navigate = useNavigate();
@@ -67,28 +67,28 @@ export function Chatbot() {
   const time = (t: number) => new Date(t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
-    <section className="mt-2 rounded-2xl border-2 border-white bg-slate-900 p-6 text-white shadow-lg">
+    <section className="mt-2 rounded-2xl border-2 border-white bg-surface p-6 text-fg shadow-lg">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-2">
         <div>
-          <p className="text-sm text-white/60">Study Assistant</p>
+          <p className="text-sm text-muted">Study Assistant</p>
           <h2 className="text-2xl font-bold">Ask Your Study Questions</h2>
-          <p className="mt-1 text-sm text-white/50">
+          <p className="mt-1 text-sm text-muted">
             Answers come from MindPrep's own placement knowledge base and your results — no external AI service.
           </p>
         </div>
         {messages.length > 0 && (
           <button
             onClick={() => setMessages([])}
-            className="rounded-lg border border-white/20 px-3 py-1 text-xs text-white/70 transition hover:bg-white/10"
+            className="rounded-lg border border-line px-3 py-1 text-xs text-muted transition hover:bg-surface-2"
           >
             Clear chat
           </button>
         )}
       </div>
 
-      <div ref={scrollRef} className="flex h-96 flex-col gap-3 overflow-y-auto rounded-xl bg-slate-800/50 p-4">
+      <div ref={scrollRef} className="flex h-96 flex-col gap-3 overflow-y-auto rounded-xl bg-surface p-4">
         {messages.length === 0 && !loading ? (
-          <div className="flex h-full flex-col items-center justify-center gap-4 text-center text-white/60">
+          <div className="flex h-full flex-col items-center justify-center gap-4 text-center text-muted">
             <div>
               <p className="mb-1 text-lg font-semibold">👋 Hi, I'm your prep assistant</p>
               <p className="text-sm">Ask about aptitude formulas, CS concepts, interview answers — or how you're doing.</p>
@@ -98,7 +98,7 @@ export function Chatbot() {
                 <button
                   key={s.label}
                   onClick={() => send(s.prompt)}
-                  className="rounded-full border border-indigo-400/40 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-200 transition hover:bg-indigo-500/25"
+                  className="rounded-full border border-indigo-400/40 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-700 dark:text-indigo-200 transition hover:bg-indigo-500/25"
                 >
                   {s.label}
                 </button>
@@ -120,7 +120,7 @@ export function Chatbot() {
             if (m.role === "error") {
               return (
                 <div key={idx} className="flex justify-start">
-                  <div className="max-w-[85%] rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2 text-red-200">
+                  <div className="max-w-[85%] rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2 text-red-700 dark:text-red-200">
                     <p className="text-sm">{m.content}</p>
                   </div>
                 </div>
@@ -129,9 +129,9 @@ export function Chatbot() {
             const r = m.reply;
             return (
               <div key={idx} className="flex justify-start">
-                <div className="max-w-[92%] rounded-lg bg-white/10 px-4 py-3 text-white/90">
+                <div className="max-w-[92%] rounded-lg bg-surface-2 px-4 py-3 text-fg-2">
                   {r.topic && (
-                    <span className="mb-2 inline-block rounded-full bg-indigo-500/20 px-2 py-0.5 text-[11px] font-medium text-indigo-200">
+                    <span className="mb-2 inline-block rounded-full bg-indigo-500/20 px-2 py-0.5 text-[11px] font-medium text-indigo-700 dark:text-indigo-200">
                       {r.topic}
                     </span>
                   )}
@@ -144,10 +144,10 @@ export function Chatbot() {
                   {r.sources.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {r.sources.map((s) => (
-                        <span key={`${s.group}-${s.name}`} className="rounded bg-slate-900/60 px-2 py-1 text-xs text-white/70">
+                        <span key={`${s.group}-${s.name}`} className="rounded bg-surface px-2 py-1 text-xs text-muted">
                           {s.name}{" "}
                           <span className={`font-semibold ${accuracyColor(s.accuracy)}`}>{s.accuracy}%</span>{" "}
-                          <span className="text-white/40">
+                          <span className="text-subtle">
                             ({s.correct}/{s.total})
                           </span>
                         </span>
@@ -165,7 +165,7 @@ export function Chatbot() {
                           rel="noopener noreferrer"
                           className="block rounded bg-blue-500/10 px-2 py-1.5 transition hover:bg-blue-500/20"
                         >
-                          <p className="text-xs font-semibold text-blue-200">{res.name}</p>
+                          <p className="text-xs font-semibold text-blue-700 dark:text-blue-200">{res.name}</p>
                           <p className="text-xs text-blue-300/70">{res.description}</p>
                         </a>
                       ))}
@@ -188,7 +188,7 @@ export function Chatbot() {
                           key={s.label}
                           onClick={() => send(s.prompt)}
                           disabled={loading}
-                          className="rounded-full border border-indigo-400/40 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-200 transition hover:bg-indigo-500/25 disabled:opacity-50"
+                          className="rounded-full border border-indigo-400/40 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-700 dark:text-indigo-200 transition hover:bg-indigo-500/25 disabled:opacity-50"
                         >
                           {s.label}
                         </button>
@@ -203,7 +203,7 @@ export function Chatbot() {
         )}
         {loading && (
           <div className="flex justify-start">
-            <div className="flex items-center gap-2 rounded-lg bg-white/10 px-4 py-3" aria-label="Assistant is typing">
+            <div className="flex items-center gap-2 rounded-lg bg-surface-2 px-4 py-3" aria-label="Assistant is typing">
               <span className="h-2 w-2 animate-bounce rounded-full bg-indigo-400" />
               <span className="h-2 w-2 animate-bounce rounded-full bg-indigo-400 [animation-delay:120ms]" />
               <span className="h-2 w-2 animate-bounce rounded-full bg-indigo-400 [animation-delay:240ms]" />
@@ -225,7 +225,7 @@ export function Chatbot() {
           maxLength={500}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about a topic, an interview answer, or your progress..."
-          className="flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white placeholder-white/50 transition-all focus:border-indigo-500 focus:bg-white/20 focus:outline-none"
+          className="flex-1 rounded-lg border border-line bg-surface-2 px-4 py-2 text-fg placeholder-white/50 transition-all focus:border-indigo-500 focus:bg-line focus:outline-none"
           disabled={loading}
         />
         <button

@@ -194,7 +194,7 @@ export function JobForm() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24 text-slate-500">
+      <div className="flex items-center justify-center py-24 text-muted">
         Loading job...
       </div>
     );
@@ -213,7 +213,7 @@ export function JobForm() {
       />
 
       {error && (
-        <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+        <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-sm text-red-700 dark:text-red-400">
           {error}
         </div>
       )}
@@ -283,7 +283,7 @@ export function JobForm() {
             </Field>
           </div>
           <div className="mt-4">
-            <p className="text-xs font-medium text-slate-500 mb-2 uppercase tracking-wider">Allowed Departments</p>
+            <p className="text-xs font-medium text-muted mb-2 uppercase tracking-wider">Allowed Departments</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {DEPT_OPTIONS.map((d) => {
                 const checked = form.deptChecks.includes(d.code);
@@ -292,8 +292,8 @@ export function JobForm() {
                     key={d.code}
                     className={`flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-sm cursor-pointer transition-all ${
                       checked
-                        ? "bg-indigo-50 border-indigo-200 text-slate-900"
-                        : "bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300"
+                        ? "bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/30 text-fg"
+                        : "bg-surface-2 border-line text-fg-2 hover:border-line-strong"
                     }`}
                   >
                     <input
@@ -314,10 +314,10 @@ export function JobForm() {
                 );
               })}
             </div>
-            <p className="text-xs text-slate-500 mt-3 mb-1.5">Additional departments (comma separated, optional)</p>
+            <p className="text-xs text-muted mt-3 mb-1.5">Additional departments (comma separated, optional)</p>
             <TextInput value={form.allowedDepartments} onChange={(e) => set("allowedDepartments")(e.target.value)} placeholder="e.g. Biotechnology, AIML (blank = only selected)" />
             {form.deptChecks.length === 0 && !form.allowedDepartments.trim() && (
-              <p className="text-xs text-slate-500 mt-2">No departments selected — all departments will be eligible.</p>
+              <p className="text-xs text-muted mt-2">No departments selected — all departments will be eligible.</p>
             )}
           </div>
         </Card>

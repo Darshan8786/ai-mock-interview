@@ -9,7 +9,7 @@ import { useLoad } from "../../admin/useLoad";
 import type { TopicAccuracy } from "../../admin/types";
 import { PageHeader } from "../../components/admin/PageHeader";
 import { ChartCard } from "../../components/admin/Charts";
-import { atsColors, chartColors, chartTooltipStyle, readinessColors } from "../../components/admin/chartTheme";
+import { atsColors, chartColors, chartTooltipStyle, legendLabel, readinessColors } from "../../components/admin/chartTheme";
 import { Button } from "../../components/admin/Button";
 import { Select } from "../../components/admin/Inputs";
 import { ErrorState } from "../../components/admin/ErrorState";
@@ -156,7 +156,7 @@ export function ReportsAnalytics() {
 
       {report.loading && !d ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {[0, 1, 2, 3].map((i) => <div key={i} className="bg-slate-50 rounded-xl h-72 animate-pulse" />)}
+          {[0, 1, 2, 3].map((i) => <div key={i} className="bg-surface-2 rounded-xl h-72 animate-pulse" />)}
         </div>
       ) : d && k ? (
         <div className={report.loading ? "opacity-60 transition-opacity" : ""}>
@@ -187,7 +187,7 @@ export function ReportsAnalytics() {
                   <XAxis dataKey="label" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 11 }} />
                   <YAxis allowDecimals={false} stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                   <Tooltip contentStyle={chartTooltipStyle} />
-                  <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
+                  <Legend wrapperStyle={{ fontSize: 12 }} formatter={legendLabel} />
                   <Bar dataKey="interviews" name="Interviews" fill="url(#gInterviews)" radius={[6, 6, 0, 0]} />
                   <Bar dataKey="avgScore" name="Avg score %" fill="url(#gScore)" radius={[6, 6, 0, 0]} />
                 </BarChart>
@@ -219,7 +219,7 @@ export function ReportsAnalytics() {
                     {d.placementReadiness.map((entry, i) => ({ entry, fill: readinessColors[i % readinessColors.length] })).filter(({ entry }) => entry.value > 0).map(({ entry, fill }) => <Cell key={entry.name} fill={fill} />)}
                   </Pie>
                   <Tooltip contentStyle={chartTooltipStyle} />
-                  <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
+                  <Legend wrapperStyle={{ fontSize: 12 }} formatter={legendLabel} />
                 </PieChart>
               </ResponsiveContainer>
             </ChartCard>
@@ -231,7 +231,7 @@ export function ReportsAnalytics() {
                   <XAxis dataKey="label" stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 11 }} />
                   <YAxis allowDecimals={false} stroke={chartColors.axis} tick={{ fill: chartColors.axis, fontSize: 12 }} />
                   <Tooltip contentStyle={chartTooltipStyle} />
-                  <Legend wrapperStyle={{ fontSize: 12, color: chartColors.axis }} />
+                  <Legend wrapperStyle={{ fontSize: 12 }} formatter={legendLabel} />
                   <Line type="monotone" dataKey="interviews" name="Interviews" stroke={chartColors.indigo} strokeWidth={3} dot={false} />
                   <Line type="monotone" dataKey="aptitude" name="Aptitude" stroke={chartColors.pink} strokeWidth={3} dot={false} />
                   <Line type="monotone" dataKey="tech" name="Tech practice" stroke={chartColors.amber} strokeWidth={3} dot={false} />
@@ -250,44 +250,42 @@ export function ReportsAnalytics() {
   );
 }
 
-const KPI_TONES = [
-  "from-indigo-500 to-violet-600",
-  "from-violet-500 to-indigo-600",
-];
+// Accent bar colour per KPI, alternating so a row of tiles stays readable.
+const KPI_TONES = ["bg-accent", "bg-sky-500"];
 function Kpi({ label, value, sub, tone }: { label: string; value: string | number; sub?: string; tone?: number }) {
-  const g = KPI_TONES[(tone ?? 0) % KPI_TONES.length];
+  const bar = KPI_TONES[(tone ?? 0) % KPI_TONES.length];
   return (
-    <div className={`gloss rounded-2xl p-4 text-white bg-gradient-to-br ${g}`}>
-      <div className="absolute -right-5 -top-5 w-16 h-16 rounded-full bg-white/15" />
-      <p className="relative text-2xl font-bold tracking-tight">{value}</p>
-      <p className="relative text-xs font-medium text-white/90 mt-1">{label}</p>
-      {sub && <p className="relative text-[11px] text-white/75 mt-0.5">{sub}</p>}
+    <div className="relative overflow-hidden rounded-xl bg-surface border border-line shadow-card p-4 pl-5">
+      <span className={`absolute inset-y-0 left-0 w-1 ${bar}`} aria-hidden />
+      <p className="text-2xl font-bold tracking-tight text-fg">{value}</p>
+      <p className="text-xs font-medium text-muted mt-1">{label}</p>
+      {sub && <p className="text-[11px] text-subtle mt-0.5">{sub}</p>}
     </div>
   );
 }
 
 function Empty({ text }: { text: string }) {
-  return <div className="h-full flex items-center justify-center text-center text-sm text-slate-500 px-6">{text}</div>;
+  return <div className="h-full flex items-center justify-center text-center text-sm text-muted px-6">{text}</div>;
 }
 
 function TopicTable({ title, rows }: { title: string; rows: TopicAccuracy[] }) {
   return (
     <div className="glass rounded-xl p-5">
-      <h3 className="text-slate-900 font-semibold">{title}</h3>
-      <p className="text-xs text-slate-500 mb-3">Lowest accuracy across all students in range (topics with 5+ answers)</p>
+      <h3 className="text-fg font-semibold">{title}</h3>
+      <p className="text-xs text-muted mb-3">Lowest accuracy across all students in range (topics with 5+ answers)</p>
       {rows.length === 0 ? (
-        <p className="text-sm text-slate-500">Not enough answers in this range yet.</p>
+        <p className="text-sm text-muted">Not enough answers in this range yet.</p>
       ) : (
         <div className="space-y-2.5">
           {rows.map((r) => (
             <div key={r.topic}>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-slate-700">{r.topic}</span>
-                <span className={r.accuracy >= 70 ? "text-indigo-700" : r.accuracy >= 50 ? "text-violet-700" : "text-red-700"}>
-                  {r.accuracy}% <span className="text-slate-500 text-xs">({r.correct}/{r.answered})</span>
+                <span className="text-fg-2">{r.topic}</span>
+                <span className={r.accuracy >= 70 ? "text-indigo-700 dark:text-indigo-400" : r.accuracy >= 50 ? "text-violet-700 dark:text-violet-400" : "text-red-700 dark:text-red-400"}>
+                  {r.accuracy}% <span className="text-muted text-xs">({r.correct}/{r.answered})</span>
                 </span>
               </div>
-              <div className="h-1.5 bg-slate-50 rounded-full overflow-hidden">
+              <div className="h-1.5 bg-surface-2 rounded-full overflow-hidden">
                 <div className={`h-full rounded-full ${r.accuracy >= 70 ? "bg-indigo-500" : r.accuracy >= 50 ? "bg-violet-500" : "bg-red-500"}`} style={{ width: `${r.accuracy}%` }} />
               </div>
             </div>
