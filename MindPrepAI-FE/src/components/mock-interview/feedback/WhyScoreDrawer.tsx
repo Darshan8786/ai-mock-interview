@@ -43,7 +43,7 @@ export function WhyScoreDrawer({ open, label, score, explanation, onClose }: Pro
             role="dialog"
             aria-modal="true"
             aria-label={`Why this score: ${label}`}
-            className="relative w-full sm:w-[28rem] max-h-[85vh] sm:max-h-none overflow-y-auto bg-gray-900 border border-gray-700 sm:border-y-0 sm:border-r-0 rounded-t-3xl sm:rounded-none p-6"
+            className="relative w-full sm:w-[28rem] max-h-[85vh] sm:max-h-none overflow-y-auto bg-surface border border-line sm:border-y-0 sm:border-r-0 rounded-t-3xl sm:rounded-none p-6"
             initial={{ y: 60, x: 0, opacity: 0 }}
             animate={{ y: 0, x: 0, opacity: 1 }}
             exit={{ y: 60, opacity: 0 }}
@@ -51,8 +51,8 @@ export function WhyScoreDrawer({ open, label, score, explanation, onClose }: Pro
           >
             <div className="flex items-start justify-between gap-4 mb-5">
               <div>
-                <p className="text-xs uppercase tracking-wider text-gray-500">Why this score?</p>
-                <h3 className="text-xl font-bold text-white mt-1">
+                <p className="text-xs uppercase tracking-wider text-subtle">Why this score?</p>
+                <h3 className="text-xl font-bold text-fg mt-1">
                   {label} — <span className={scoreText(score)}>{score}%</span>
                 </h3>
               </div>
@@ -60,32 +60,32 @@ export function WhyScoreDrawer({ open, label, score, explanation, onClose }: Pro
                 ref={closeRef}
                 onClick={onClose}
                 aria-label="Close"
-                className="shrink-0 w-9 h-9 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700"
+                className="shrink-0 w-9 h-9 rounded-lg bg-surface text-fg-2 hover:bg-surface-2"
               >
                 ✕
               </button>
             </div>
 
             {nothing ? (
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-muted">
                 No specific reasons were recorded for this score. Detailed reasons are only generated for answers
                 evaluated after this feature was added.
               </p>
             ) : (
               <div className="space-y-5">
-                <Section title="What was good" icon="✓" tone="text-emerald-400" items={explanation!.good} empty="Nothing notable for this metric." />
-                <Section title="What was missing" icon="✗" tone="text-red-400" items={explanation!.missing} empty="No gaps found for this metric." />
-                <Section title="How to improve" icon="→" tone="text-blue-400" items={explanation!.improve} empty="No specific action needed." />
+                <Section title="What was good" icon="✓" tone="text-emerald-700 dark:text-emerald-400" items={explanation!.good} empty="Nothing notable for this metric." />
+                <Section title="What was missing" icon="✗" tone="text-red-600 dark:text-red-400" items={explanation!.missing} empty="No gaps found for this metric." />
+                <Section title="How to improve" icon="→" tone="text-blue-600 dark:text-blue-400" items={explanation!.improve} empty="No specific action needed." />
               </div>
             )}
 
             {explanation?.note && (
-              <p className="mt-5 rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-xs text-gray-400 leading-relaxed">
+              <p className="mt-5 rounded-lg bg-surface border border-line px-3 py-2 text-xs text-muted leading-relaxed">
                 ℹ {explanation.note}
               </p>
             )}
 
-            <p className="text-[11px] text-gray-500 mt-6 leading-relaxed">
+            <p className="text-[11px] text-subtle mt-6 leading-relaxed">
               Reasons come from your answer text, the question's expected concepts and (for voice answers) the audio
               measured while you spoke — nothing is guessed.
             </p>
@@ -103,12 +103,12 @@ function Section({ title, icon, tone, items, empty }: { title: string; icon: str
         {icon} {title}
       </h4>
       {items.length === 0 ? (
-        <p className="text-sm text-gray-500">{empty}</p>
+        <p className="text-sm text-subtle">{empty}</p>
       ) : (
         <ul className="space-y-1.5">
           {items.map((t, i) => (
-            <li key={i} className="text-sm text-gray-300 leading-relaxed flex gap-2">
-              <span className="text-gray-600 select-none">•</span>
+            <li key={i} className="text-sm text-fg-2 leading-relaxed flex gap-2">
+              <span className="text-subtle select-none">•</span>
               <span>{t}</span>
             </li>
           ))}

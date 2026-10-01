@@ -153,7 +153,7 @@ export function AlumniForm() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center py-24 text-slate-500">Loading alumni...</div>;
+    return <div className="flex items-center justify-center py-24 text-muted">Loading alumni...</div>;
   }
 
   return (
@@ -169,7 +169,7 @@ export function AlumniForm() {
       />
 
       {error && (
-        <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">{error}</div>
+        <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-sm text-red-700 dark:text-red-400">{error}</div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -209,8 +209,8 @@ export function AlumniForm() {
           <label
             className={`flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-sm cursor-pointer transition-all ${
               form.hasOpening
-                ? "bg-indigo-50 border-indigo-200 text-slate-900"
-                : "bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300"
+                ? "bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/30 text-fg"
+                : "bg-surface-2 border-line text-fg-2 hover:border-line-strong"
             }`}
           >
             <input

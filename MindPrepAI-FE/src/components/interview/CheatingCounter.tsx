@@ -11,21 +11,21 @@ export function CheatingCounter({ count, maxCount }: CheatingCounterProps) {
   return (
     <div className={`rounded-xl p-4 border transition-all ${
       count === 0 
-        ? "bg-gray-800/50 border-gray-700" 
+        ? "bg-surface border-line" 
         : isDanger 
           ? "bg-red-500/10 border-red-500/50" 
           : "bg-yellow-500/10 border-yellow-500/50"
     }`}>
       <div className="flex justify-between items-center mb-2">
-        <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+        <h4 className="text-xs font-medium text-muted uppercase tracking-wider">
           Violations
         </h4>
         <span className={`text-xs font-bold px-2 py-1 rounded-md ${
           count === 0 
-            ? "bg-gray-700 text-gray-300" 
+            ? "bg-surface-2 text-fg-2" 
             : isDanger
-              ? "bg-red-500/20 text-red-400"
-              : "bg-yellow-500/20 text-yellow-400"
+              ? "bg-red-500/20 text-red-600 dark:text-red-400"
+              : "bg-yellow-500/20 text-yellow-700 dark:text-yellow-400"
         }`}>
           {count} / {maxCount}
         </span>
@@ -39,7 +39,7 @@ export function CheatingCounter({ count, maxCount }: CheatingCounterProps) {
             animate={{
               backgroundColor: i < count 
                 ? (isDanger ? "#ef4444" : "#eab308") 
-                : "#374151"
+                : "var(--line-strong)"
             }}
             className="flex-1 rounded-full"
           />
@@ -47,7 +47,7 @@ export function CheatingCounter({ count, maxCount }: CheatingCounterProps) {
       </div>
       
       {count > 0 && (
-        <p className={`text-xs mt-2 ${isDanger ? "text-red-400" : "text-yellow-400"}`}>
+        <p className={`text-xs mt-2 ${isDanger ? "text-red-600 dark:text-red-400" : "text-yellow-700 dark:text-yellow-400"}`}>
           {isDanger ? "Warning: Interview will be terminated on next violation!" : "Please follow interview rules."}
         </p>
       )}

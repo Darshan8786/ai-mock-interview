@@ -380,16 +380,16 @@ export function ResumeBuilder() {
 
   /* ── input style ── */
   const inputClass =
-    "w-full bg-gray-800/70 border border-gray-600/50 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all text-sm";
-  const labelClass = "block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider";
+    "w-full bg-surface border border-line-strong rounded-xl px-4 py-3 text-fg placeholder-subtle focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all text-sm";
+  const labelClass = "block text-xs font-medium text-muted mb-1.5 uppercase tracking-wider";
   const btnPrimary =
     "px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-all";
   const btnSecondary =
-    "px-4 py-2 rounded-xl bg-gray-700/50 text-gray-300 text-sm font-medium hover:bg-gray-700 border border-gray-600/50 transition-all";
+    "px-4 py-2 rounded-xl bg-surface-2 text-fg-2 text-sm font-medium hover:bg-surface-2 border border-line-strong transition-all";
   const btnDanger =
-    "p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-all";
+    "p-1.5 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-all";
   const cardClass =
-    "bg-gray-800/40 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-5";
+    "bg-surface backdrop-blur-sm border border-line rounded-2xl p-5";
 
   /* ───────────────────── render steps ───────────────────── */
   const renderStep = () => {
@@ -436,7 +436,7 @@ export function ResumeBuilder() {
                 className={cardClass}
               >
                 <div className="flex justify-between items-start mb-3">
-                  <h4 className="text-sm font-semibold text-white">
+                  <h4 className="text-sm font-semibold text-fg">
                     {edu.institution || "New Education"}
                   </h4>
                   <button onClick={() => removeEducation(edu.id)} className={btnDanger}>
@@ -490,7 +490,7 @@ export function ResumeBuilder() {
                 className={cardClass}
               >
                 <div className="flex justify-between items-start mb-3">
-                  <h4 className="text-sm font-semibold text-white">
+                  <h4 className="text-sm font-semibold text-fg">
                     {exp.role || "New Experience"}
                   </h4>
                   <button onClick={() => removeExperience(exp.id)} className={btnDanger}>
@@ -521,12 +521,12 @@ export function ResumeBuilder() {
                     />
                   </div>
                 </div>
-                <label className="flex items-center gap-2 text-sm text-gray-400 mb-4 cursor-pointer">
+                <label className="flex items-center gap-2 text-sm text-muted mb-4 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={exp.current}
                     onChange={(e) => updateExperience(exp.id, "current", e.target.checked)}
-                    className="rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500/30"
+                    className="rounded bg-surface-2 border-line-strong text-blue-500 focus:ring-blue-500/30"
                   />
                   Currently working here
                 </label>
@@ -534,7 +534,7 @@ export function ResumeBuilder() {
                   <label className={labelClass}>Bullet Points</label>
                   {exp.bullets.map((b, idx) => (
                     <div key={idx} className="flex gap-2 items-start">
-                      <span className="text-gray-500 mt-3 text-sm">•</span>
+                      <span className="text-subtle mt-3 text-sm">•</span>
                       <textarea
                         className={`${inputClass} min-h-[42px] resize-none`}
                         rows={1}
@@ -545,7 +545,7 @@ export function ResumeBuilder() {
                       <button
                         onClick={() => enhanceBullet(exp.id, idx)}
                         disabled={!b.trim() || aiLoading === "bullet"}
-                        className="mt-1 p-2 rounded-lg text-purple-400 hover:bg-purple-500/10 transition-all disabled:opacity-30 flex-shrink-0"
+                        className="mt-1 p-2 rounded-lg text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 transition-all disabled:opacity-30 flex-shrink-0"
                         title="AI Enhance"
                       >
                         {aiLoading === "bullet" ? (
@@ -561,7 +561,7 @@ export function ResumeBuilder() {
                       )}
                     </div>
                   ))}
-                  <button onClick={() => addBullet(exp.id)} className="text-xs text-blue-400 hover:text-blue-300 transition-all mt-1">
+                  <button onClick={() => addBullet(exp.id)} className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-600 hover:dark:text-blue-300 transition-all mt-1">
                     + Add bullet point
                   </button>
                 </div>
@@ -602,10 +602,10 @@ export function ResumeBuilder() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/15 text-blue-400 rounded-full text-sm border border-blue-500/20"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/15 text-blue-600 dark:text-blue-400 rounded-full text-sm border border-blue-500/20"
                   >
                     {s}
-                    <button onClick={() => removeSkill(s)} className="hover:text-red-400 transition-colors">
+                    <button onClick={() => removeSkill(s)} className="hover:text-red-600 hover:dark:text-red-400 transition-colors">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                   </motion.span>
@@ -613,11 +613,11 @@ export function ResumeBuilder() {
               </AnimatePresence>
             </div>
             {data.skills.length === 0 && (
-              <p className="text-gray-500 text-sm text-center py-6">No skills added yet. Start typing above.</p>
+              <p className="text-subtle text-sm text-center py-6">No skills added yet. Start typing above.</p>
             )}
-            <div className="bg-gray-800/30 rounded-xl p-3 border border-gray-700/40">
-              <p className="text-xs text-gray-500">
-                💡 <span className="text-gray-400">Tip:</span> Add skills relevant to your target role. Include both technical skills (React, Python) and soft skills (Leadership, Communication).
+            <div className="bg-surface rounded-xl p-3 border border-line">
+              <p className="text-xs text-subtle">
+                💡 <span className="text-muted">Tip:</span> Add skills relevant to your target role. Include both technical skills (React, Python) and soft skills (Leadership, Communication).
               </p>
             </div>
           </div>
@@ -636,7 +636,7 @@ export function ResumeBuilder() {
                 className={cardClass}
               >
                 <div className="flex justify-between items-start mb-3">
-                  <h4 className="text-sm font-semibold text-white">
+                  <h4 className="text-sm font-semibold text-fg">
                     {proj.name || "New Project"}
                   </h4>
                   <button onClick={() => removeProject(proj.id)} className={btnDanger}>
@@ -696,7 +696,7 @@ export function ResumeBuilder() {
                 <button
                   onClick={generateSummary}
                   disabled={aiLoading === "summary"}
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-500/15 text-purple-400 text-xs font-medium border border-purple-500/20 hover:bg-purple-500/25 transition-all disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-purple-500/15 text-purple-600 dark:text-purple-400 text-xs font-medium border border-purple-500/20 hover:bg-purple-500/25 transition-all disabled:opacity-50"
                 >
                   {aiLoading === "summary" ? (
                     <>
@@ -719,9 +719,9 @@ export function ResumeBuilder() {
                 onChange={(e) => setData((d) => ({ ...d, summary: e.target.value }))}
               />
             </div>
-            <div className="bg-gray-800/30 rounded-xl p-3 border border-gray-700/40">
-              <p className="text-xs text-gray-500">
-                💡 <span className="text-gray-400">Tip:</span> Click "AI Generate" to auto-create a summary from the info you've provided. You can edit it afterwards.
+            <div className="bg-surface rounded-xl p-3 border border-line">
+              <p className="text-xs text-subtle">
+                💡 <span className="text-muted">Tip:</span> Click "AI Generate" to auto-create a summary from the info you've provided. You can edit it afterwards.
               </p>
             </div>
           </div>
@@ -734,38 +734,38 @@ export function ResumeBuilder() {
 
   /* ───────────────────────── main JSX ───────────────────────── */
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800">
+    <div className="min-h-[calc(100vh-4rem)]">
       {/* ─── Top Bar ─── */}
-      <div className="border-b border-gray-700/50 bg-gray-900/80 backdrop-blur-sm print:hidden">
+      <div className="border-b border-line bg-surface backdrop-blur-sm print:hidden">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 className="text-xl font-bold text-fg">
               Resume Builder
             </h1>
-            <p className="text-xs text-gray-500 mt-0.5">Build your professional resume with AI assistance</p>
+            <p className="text-xs text-subtle mt-0.5">Build your professional resume with AI assistance</p>
           </div>
           <div className="flex items-center gap-3">
             <input type="file" accept=".pdf" className="hidden" ref={importRef} onChange={handleImport} />
             <button
               onClick={() => importRef.current?.click()}
               disabled={importing}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 text-xs font-medium border border-gray-700 hover:bg-gray-700 transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface text-fg-2 text-xs font-medium border border-line hover:bg-surface-2 transition-all disabled:opacity-50"
             >
               {importing ? (
                 <>
-                  <span className="w-3 h-3 border-2 border-gray-400/30 border-t-gray-300 rounded-full animate-spin" />
+                  <span className="w-3 h-3 border-2 border-line-strong border-t-line-strong rounded-full animate-spin" />
                   Importing...
                 </>
               ) : "📥 Import PDF"}
             </button>
             <button
               onClick={checkAtsScore}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-xs font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
             >
               🎯 Check ATS Score
             </button>
             {/* Template Selector */}
-            <div className="hidden sm:flex items-center gap-1 bg-gray-800/60 rounded-xl p-1 border border-gray-700/50">
+            <div className="hidden sm:flex items-center gap-1 bg-surface rounded-xl p-1 border border-line">
               {(["modern", "classic", "minimal"] as const).map((t) => (
                 <button
                   key={t}
@@ -773,7 +773,7 @@ export function ResumeBuilder() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize ${
                     template === t
                       ? "bg-blue-600 text-white shadow-sm"
-                      : "text-gray-400 hover:text-white"
+                      : "text-muted hover:text-fg"
                   }`}
                 >
                   {t}
@@ -783,7 +783,7 @@ export function ResumeBuilder() {
             {/* Mobile preview toggle */}
             <button
               onClick={() => setShowPreviewMobile(!showPreviewMobile)}
-              className="lg:hidden px-3 py-2 rounded-xl bg-gray-800/60 text-gray-300 text-xs font-medium border border-gray-700/50 hover:bg-gray-700/60 transition-all"
+              className="lg:hidden px-3 py-2 rounded-xl bg-surface text-fg-2 text-xs font-medium border border-line hover:bg-surface-2 transition-all"
             >
               {showPreviewMobile ? "✏️ Edit" : "👁️ Preview"}
             </button>
@@ -794,7 +794,7 @@ export function ResumeBuilder() {
             >
               {downloading ? (
                 <>
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span className="w-4 h-4 border-2 border-line border-t-white rounded-full animate-spin" />
                   Generating...
                 </>
               ) : (
@@ -813,7 +813,7 @@ export function ResumeBuilder() {
       {/* ─── Main Content ─── */}
       <div className="max-w-[1600px] mx-auto flex print:block">
         {/* ── Left: Form Panel ── */}
-        <div className={`w-full lg:w-[480px] xl:w-[520px] flex-shrink-0 border-r border-gray-700/30 print:hidden ${showPreviewMobile ? "hidden lg:block" : ""}`}>
+        <div className={`w-full lg:w-[480px] xl:w-[520px] flex-shrink-0 border-r border-line print:hidden ${showPreviewMobile ? "hidden lg:block" : ""}`}>
           <div className="p-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 130px)" }}>
             {/* Step indicator */}
             <div className="flex gap-1 mb-6 overflow-x-auto pb-2">
@@ -823,8 +823,8 @@ export function ResumeBuilder() {
                   onClick={() => setStep(idx)}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${
                     step === idx
-                      ? "bg-blue-600/20 text-blue-400 border border-blue-500/30"
-                      : "text-gray-500 hover:text-gray-300 hover:bg-gray-800/50 border border-transparent"
+                      ? "bg-blue-600/20 text-blue-600 dark:text-blue-400 border border-blue-500/30"
+                      : "text-subtle hover:text-fg-2 hover:bg-surface border border-transparent"
                   }`}
                 >
                   <span>{s.icon}</span>
@@ -835,11 +835,11 @@ export function ResumeBuilder() {
 
             {/* Step title */}
             <div className="mb-5">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+              <h2 className="text-lg font-bold text-fg flex items-center gap-2">
                 <span className="text-xl">{STEPS[step].icon}</span>
                 {STEPS[step].label}
               </h2>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-subtle mt-1">
                 {step === 0 && "Add your contact details and personal information"}
                 {step === 1 && "List your educational qualifications"}
                 {step === 2 && "Describe your work experience and achievements"}
@@ -863,7 +863,7 @@ export function ResumeBuilder() {
             </AnimatePresence>
 
             {/* Navigation */}
-            <div className="flex justify-between mt-6 pt-4 border-t border-gray-700/30">
+            <div className="flex justify-between mt-6 pt-4 border-t border-line">
               <button
                 onClick={() => setStep((s) => Math.max(0, s - 1))}
                 disabled={step === 0}
@@ -883,7 +883,7 @@ export function ResumeBuilder() {
             {/* Mobile Template Selector */}
             <div className="sm:hidden mt-4">
               <label className={labelClass}>Template</label>
-              <div className="flex items-center gap-1 bg-gray-800/60 rounded-xl p-1 border border-gray-700/50">
+              <div className="flex items-center gap-1 bg-surface rounded-xl p-1 border border-line">
                 {(["modern", "classic", "minimal"] as const).map((t) => (
                   <button
                     key={t}
@@ -891,7 +891,7 @@ export function ResumeBuilder() {
                     className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize ${
                       template === t
                         ? "bg-blue-600 text-white shadow-sm"
-                        : "text-gray-400 hover:text-white"
+                        : "text-muted hover:text-fg"
                     }`}
                   >
                     {t}
@@ -903,7 +903,7 @@ export function ResumeBuilder() {
         </div>
 
         {/* ── Right: Live Preview ── */}
-        <div className={`flex-1 bg-gray-800/20 print:bg-white ${!showPreviewMobile && "hidden lg:block"} print:block`}>
+        <div className={`flex-1 bg-surface print:bg-white ${!showPreviewMobile && "hidden lg:block"} print:block`}>
           <div className="p-6 print:p-0 overflow-y-auto" style={{ maxHeight: "calc(100vh - 130px)" }}>
             <div className="mx-auto print:mx-0 print:shadow-none" style={{ maxWidth: "800px" }}>
               <div
@@ -932,79 +932,79 @@ export function ResumeBuilder() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl"
+              className="bg-surface border border-line rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl"
             >
-              <div className="flex justify-between items-center p-5 border-b border-gray-800">
-                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+              <div className="flex justify-between items-center p-5 border-b border-line">
+                <h3 className="text-xl font-bold text-fg flex items-center gap-2">
                   <span>🎯</span> ATS Evaluation
                 </h3>
-                <button onClick={() => setShowEvaluation(false)} className="text-gray-500 hover:text-white">
+                <button onClick={() => setShowEvaluation(false)} className="text-subtle hover:text-fg">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
               <div className="p-6 overflow-y-auto">
                 {evaluating ? (
-                  <div className="flex flex-col items-center justify-center py-12 text-gray-400">
+                  <div className="flex flex-col items-center justify-center py-12 text-muted">
                     <div className="w-8 h-8 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mb-4" />
                     <p>Evaluating resume for ATS compliance...</p>
                   </div>
                 ) : evaluation?.error ? (
-                  <div className="text-red-400 text-center py-8">{evaluation.error}</div>
+                  <div className="text-red-600 dark:text-red-400 text-center py-8">{evaluation.error}</div>
                 ) : evaluation ? (
                   <div className="space-y-6">
-                    <div className="flex items-center gap-4 bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+                    <div className="flex items-center gap-4 bg-surface p-4 rounded-xl border border-line">
                       <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold ${
-                        evaluation.ats_score >= 80 ? "bg-emerald-500/20 text-emerald-400" :
-                        evaluation.ats_score >= 60 ? "bg-yellow-500/20 text-yellow-400" :
-                        "bg-red-500/20 text-red-400"
+                        evaluation.ats_score >= 80 ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400" :
+                        evaluation.ats_score >= 60 ? "bg-yellow-500/20 text-yellow-700 dark:text-yellow-400" :
+                        "bg-red-500/20 text-red-600 dark:text-red-400"
                       }`}>
                         {evaluation.ats_score}
                       </div>
                       <div>
-                        <h4 className="text-lg font-bold text-white">
+                        <h4 className="text-lg font-bold text-fg">
                           {evaluation.ats_friendly ? "ATS Friendly ✅" : "Needs Improvement ⚠️"}
                         </h4>
-                        <p className="text-sm text-gray-400">Score based on standard ATS parsing rules.</p>
+                        <p className="text-sm text-muted">Score based on standard ATS parsing rules.</p>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <h5 className="text-sm font-semibold text-gray-300 uppercase mb-3">Failed Checks</h5>
+                        <h5 className="text-sm font-semibold text-fg-2 uppercase mb-3">Failed Checks</h5>
                         {evaluation.ats_issues?.length > 0 ? (
                           <ul className="space-y-2">
                             {evaluation.ats_issues.map((issue: string, i: number) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-red-400">
+                              <li key={i} className="flex items-start gap-2 text-sm text-red-600 dark:text-red-400">
                                 <span className="mt-0.5">✗</span><span>{issue}</span>
                               </li>
                             ))}
                           </ul>
                         ) : (
-                          <p className="text-sm text-emerald-400">Perfect! No issues found.</p>
+                          <p className="text-sm text-emerald-700 dark:text-emerald-400">Perfect! No issues found.</p>
                         )}
                       </div>
                       <div>
-                        <h5 className="text-sm font-semibold text-gray-300 uppercase mb-3">Passed Checks</h5>
+                        <h5 className="text-sm font-semibold text-fg-2 uppercase mb-3">Passed Checks</h5>
                         {evaluation.ats_passed_checks?.length > 0 ? (
                           <ul className="space-y-2">
                             {evaluation.ats_passed_checks.map((check: string, i: number) => (
-                              <li key={i} className="flex items-start gap-2 text-sm text-emerald-400">
+                              <li key={i} className="flex items-start gap-2 text-sm text-emerald-700 dark:text-emerald-400">
                                 <span className="mt-0.5">✓</span><span>{check}</span>
                               </li>
                             ))}
                           </ul>
                         ) : (
-                          <p className="text-sm text-gray-500">None</p>
+                          <p className="text-sm text-subtle">None</p>
                         )}
                       </div>
                     </div>
 
                     {evaluation.missing_keywords?.length > 0 && (
                       <div>
-                        <h5 className="text-sm font-semibold text-gray-300 uppercase mb-2">Missing Keywords</h5>
+                        <h5 className="text-sm font-semibold text-fg-2 uppercase mb-2">Missing Keywords</h5>
                         <div className="flex flex-wrap gap-2">
                           {evaluation.missing_keywords.map((kw: string, i: number) => (
-                            <span key={i} className="px-2 py-1 bg-yellow-500/10 text-yellow-400 text-xs rounded border border-yellow-500/20">
+                            <span key={i} className="px-2 py-1 bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 text-xs rounded border border-yellow-500/20">
                               {kw}
                             </span>
                           ))}
@@ -1014,9 +1014,9 @@ export function ResumeBuilder() {
 
                     {evaluation.summary && (
                       <div>
-                        <h5 className="text-sm font-semibold text-gray-300 uppercase mb-2">Detailed Summary</h5>
+                        <h5 className="text-sm font-semibold text-fg-2 uppercase mb-2">Detailed Summary</h5>
                         <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
-                          <p className="text-sm text-gray-300 leading-relaxed">{evaluation.summary}</p>
+                          <p className="text-sm text-fg-2 leading-relaxed">{evaluation.summary}</p>
                         </div>
                       </div>
                     )}
@@ -1024,11 +1024,11 @@ export function ResumeBuilder() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {evaluation.strengths?.length > 0 && (
                         <div>
-                          <h5 className="text-sm font-semibold text-emerald-400 uppercase mb-2">Strengths</h5>
+                          <h5 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 uppercase mb-2">Strengths</h5>
                           <ul className="space-y-1.5">
                             {evaluation.strengths.map((s: string, i: number) => (
-                              <li key={i} className="flex items-start gap-2 text-xs text-gray-300">
-                                <span className="mt-0.5 text-emerald-400">✓</span><span>{s}</span>
+                              <li key={i} className="flex items-start gap-2 text-xs text-fg-2">
+                                <span className="mt-0.5 text-emerald-700 dark:text-emerald-400">✓</span><span>{s}</span>
                               </li>
                             ))}
                           </ul>
@@ -1036,11 +1036,11 @@ export function ResumeBuilder() {
                       )}
                       {evaluation.weaknesses?.length > 0 && (
                         <div>
-                          <h5 className="text-sm font-semibold text-red-400 uppercase mb-2">Weaknesses</h5>
+                          <h5 className="text-sm font-semibold text-red-600 dark:text-red-400 uppercase mb-2">Weaknesses</h5>
                           <ul className="space-y-1.5">
                             {evaluation.weaknesses.map((w: string, i: number) => (
-                              <li key={i} className="flex items-start gap-2 text-xs text-gray-300">
-                                <span className="mt-0.5 text-red-400">✗</span><span>{w}</span>
+                              <li key={i} className="flex items-start gap-2 text-xs text-fg-2">
+                                <span className="mt-0.5 text-red-600 dark:text-red-400">✗</span><span>{w}</span>
                               </li>
                             ))}
                           </ul>
@@ -1050,20 +1050,20 @@ export function ResumeBuilder() {
 
                     {evaluation.improvements?.length > 0 && (
                       <div>
-                        <h5 className="text-sm font-semibold text-gray-300 uppercase mb-2">Recommended Improvements</h5>
+                        <h5 className="text-sm font-semibold text-fg-2 uppercase mb-2">Recommended Improvements</h5>
                         <div className="space-y-2">
                           {evaluation.improvements.map((imp: any, i: number) => (
-                            <div key={i} className="flex items-start gap-3 bg-gray-800/40 border border-gray-700 rounded-xl p-3">
+                            <div key={i} className="flex items-start gap-3 bg-surface border border-line rounded-xl p-3">
                               <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded mt-0.5 flex-shrink-0 ${
-                                imp.priority === "high" ? "bg-red-500/20 text-red-400" :
-                                imp.priority === "medium" ? "bg-yellow-500/20 text-yellow-400" :
-                                "bg-emerald-500/20 text-emerald-400"
+                                imp.priority === "high" ? "bg-red-500/20 text-red-600 dark:text-red-400" :
+                                imp.priority === "medium" ? "bg-yellow-500/20 text-yellow-700 dark:text-yellow-400" :
+                                "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
                               }`}>
                                 {imp.priority}
                               </span>
                               <div>
-                                <p className="text-xs font-semibold text-white">{imp.area}</p>
-                                <p className="text-xs text-gray-400 mt-0.5">{imp.suggestion}</p>
+                                <p className="text-xs font-semibold text-fg">{imp.area}</p>
+                                <p className="text-xs text-muted mt-0.5">{imp.suggestion}</p>
                               </div>
                             </div>
                           ))}
@@ -1073,7 +1073,7 @@ export function ResumeBuilder() {
 
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <h5 className="text-sm font-semibold text-gray-300 uppercase">
+                        <h5 className="text-sm font-semibold text-fg-2 uppercase">
                           Live Jobs in Bengaluru
                         </h5>
                         {evaluation.top_roles?.length > 1 && (
@@ -1084,8 +1084,8 @@ export function ResumeBuilder() {
                                 onClick={() => fetchJobs(role)}
                                 className={`px-2 py-1 text-[10px] font-medium rounded border transition-colors ${
                                   activeJobRole === role
-                                    ? "bg-blue-500/20 text-blue-400 border-blue-500/40"
-                                    : "bg-gray-700/40 text-gray-400 border-gray-600 hover:border-gray-500"
+                                    ? "bg-blue-500/20 text-blue-600 dark:text-blue-400 border-blue-500/40"
+                                    : "bg-surface-2 text-muted border-line-strong hover:border-line-strong"
                                 }`}
                               >
                                 {role}
@@ -1096,19 +1096,19 @@ export function ResumeBuilder() {
                       </div>
 
                       {jobsLoading ? (
-                        <div className="flex items-center gap-3 text-gray-400 py-6 justify-center">
+                        <div className="flex items-center gap-3 text-muted py-6 justify-center">
                           <div className="w-5 h-5 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
                           <p className="text-sm">Fetching live vacancies for "{activeJobRole}"...</p>
                         </div>
                       ) : jobsError ? (
                         <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
-                          <p className="text-xs text-yellow-400">{jobsError}</p>
-                          <p className="text-[10px] text-gray-500 mt-1">
+                          <p className="text-xs text-yellow-700 dark:text-yellow-400">{jobsError}</p>
+                          <p className="text-[10px] text-subtle mt-1">
                             Get a free Adzuna key at developer.adzuna.com and add it to backend .env (ADZUNA_APP_ID / ADZUNA_APP_KEY).
                           </p>
                         </div>
                       ) : jobs.length === 0 ? (
-                        <div className="bg-gray-800/40 border border-gray-700 rounded-xl p-4 text-sm text-gray-400">
+                        <div className="bg-surface border border-line rounded-xl p-4 text-sm text-muted">
                           No live vacancies found right now for "{activeJobRole}" in Bengaluru.
                         </div>
                       ) : (
@@ -1119,20 +1119,20 @@ export function ResumeBuilder() {
                               href={job.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="block bg-gray-800/40 border border-gray-700 hover:border-blue-500/40 rounded-xl p-3 transition-colors"
+                              className="block bg-surface border border-line hover:border-blue-500/40 rounded-xl p-3 transition-colors"
                             >
                               <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0">
-                                  <p className="text-sm font-semibold text-white truncate">{job.title}</p>
-                                  <p className="text-xs text-gray-400 mt-0.5">{job.company} · {job.location}</p>
+                                  <p className="text-sm font-semibold text-fg truncate">{job.title}</p>
+                                  <p className="text-xs text-muted mt-0.5">{job.company} · {job.location}</p>
                                 </div>
-                                <span className="text-xs font-bold text-emerald-400 flex-shrink-0">
+                                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex-shrink-0">
                                   {job.salary_min}
                                 </span>
                               </div>
                               <div className="flex items-center gap-2 mt-2">
-                                <span className="text-[10px] text-gray-500">{job.category}</span>
-                                <span className="text-[10px] text-blue-400 ml-auto">Apply →</span>
+                                <span className="text-[10px] text-subtle">{job.category}</span>
+                                <span className="text-[10px] text-blue-600 dark:text-blue-400 ml-auto">Apply →</span>
                               </div>
                             </a>
                           ))}

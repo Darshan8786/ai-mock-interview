@@ -84,7 +84,7 @@ export function CollegeInterviewForm() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center py-24 text-slate-500">Loading interview...</div>;
+  if (loading) return <div className="flex items-center justify-center py-24 text-muted">Loading interview...</div>;
 
   return (
     <div>
@@ -98,7 +98,7 @@ export function CollegeInterviewForm() {
         }
       />
 
-      {error && <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">{error}</div>}
+      {error && <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 text-sm text-red-700 dark:text-red-400">{error}</div>}
 
       <form noValidate onSubmit={(e) => submit(e, "questions")} className="space-y-6">
         <Card title="Interview Configuration">
@@ -145,7 +145,7 @@ export function CollegeInterviewForm() {
             <Field label="Description">
               <TextArea rows={3} value={form.description} onChange={(e) => set("description", e.target.value)} placeholder="What students should expect..." />
             </Field>
-            <p className="text-xs text-slate-500">New interviews start as a draft; students can't see them until you publish.</p>
+            <p className="text-xs text-muted">New interviews start as a draft; students can't see them until you publish.</p>
           </div>
         </Card>
 

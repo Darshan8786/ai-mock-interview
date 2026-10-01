@@ -1,129 +1,131 @@
 import { useState } from "react";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import { BACKEND_URL } from "../../config/config";
-import { TextInput, Field } from "../../components/admin/Inputs";
-import { Button } from "../../components/admin/Button";
+import { AuthField, AuthShell, AuthSubmit, PasswordField, type AuthMood } from "../../components/common/AuthShell";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
+import { isValidEmail } from "../../utils/validation";
 
 export function AdminSignin() {
   const navigate = useNavigate();
+  const reduced = usePrefersReducedMotion();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [focused, setFocused] = useState<"email" | "password" | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [pulse, setPulse] = useState(0);
+  const [shake, setShake] = useState(0);
+
+  const mood: AuthMood = success ? "success" : loading ? "loading" : failed ? "error" : focused ?? "idle";
+
+  const fail = (field: "email" | "password", message: string) => {
+    if (field === "email") setEmailError(message);
+    else setPasswordError(message);
+    setFailed(true);
+    setShake((n) => n + 1);
+  };
 
   async function signin(e: React.FormEvent) {
     e.preventDefault();
-    if (!email || !password) {
-      toast.error("Please enter your email and password");
-      return;
-    }
+    setEmailError(null);
+    setPasswordError(null);
+    if (!email.trim()) return fail("email", "Enter your admin email address.");
+    if (!isValidEmail(email)) return fail("email", "That doesn't look like a valid email.");
+    if (!password) return fail("password", "Enter your password.");
+
+    setFailed(false);
     setLoading(true);
     try {
       const response = await axios.post(`${BACKEND_URL}/api/v1/auth/login`, {
-        email,
+        email: email.trim(),
         password,
       });
 
       if (response.data.status !== "success") {
-        toast.error(response.data.message || "Incorrect email or password.");
-        return;
+        setLoading(false);
+        return fail("password", response.data.message || "Incorrect email or password.");
       }
 
       const role = response.data?.data?.user?.role || "user";
       if (role !== "admin") {
-        toast.error("This account does not have admin access.");
-        return;
+        setLoading(false);
+        return fail("email", "This account does not have admin access.");
       }
 
       localStorage.setItem("adminToken", response.data.token);
       localStorage.setItem("adminRole", role);
-      toast.success("Admin signed in successfully");
-      navigate("/admin");
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || "Something went wrong. Try again.");
-    } finally {
       setLoading(false);
+      setSuccess(true);
+      setTimeout(() => navigate("/admin"), reduced ? 0 : 750);
+    } catch (err) {
+      setLoading(false);
+      const res = isAxiosError(err) ? err.response : undefined;
+      const message = res?.data?.message;
+      // 401 = wrong credentials, 403 = deactivated account: show the reason under the field.
+      if (res && [400, 401, 403, 404].includes(res.status)) {
+        fail("password", message || "Incorrect email or password.");
+      } else {
+        setFailed(true);
+        setShake((n) => n + 1);
+        toast.error(message || "Couldn't reach the server. Check your connection and try again.");
+      }
     }
   }
 
+  const onType = (setter: (v: string) => void, clear: () => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setter(e.target.value);
+    clear();
+    setFailed(false);
+    setPulse((n) => n + 1);
+  };
+
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 bg-white">
-      {/* Brand panel */}
-      <div className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-700 text-white relative overflow-hidden">
-        <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-white/10" />
-        <div className="absolute -left-16 bottom-10 w-72 h-72 rounded-full bg-white/5" />
-        <div className="relative flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-white/15 ring-1 ring-white/25 flex items-center justify-center">
-            <span className="font-bold text-lg">M</span>
-          </div>
-          <span className="font-semibold text-lg">MindPrep AI</span>
+    <AuthShell
+      variant="admin"
+      title="Admin sign in"
+      subtitle="Use your placement-cell admin account."
+      mood={mood}
+      pulse={pulse}
+      shake={shake}
+      switchPrompt={{ text: "Not an admin?", label: "Student sign in", to: "/signin" }}
+      footerLink={{ text: "New student?", label: "Create a student account →", to: "/signup" }}
+    >
+      <form onSubmit={signin} className="space-y-4" noValidate>
+        <AuthField
+          label="Email"
+          type="email"
+          placeholder="admin@college.edu"
+          autoComplete="username"
+          autoFocus
+          value={email}
+          error={emailError}
+          onChange={onType(setEmail, () => setEmailError(null))}
+          onFocus={() => setFocused("email")}
+          onBlur={() => {
+            setFocused(null);
+            if (email && !isValidEmail(email)) setEmailError("That doesn't look like a valid email.");
+          }}
+        />
+        <PasswordField
+          placeholder="••••••••"
+          autoComplete="current-password"
+          value={password}
+          error={passwordError}
+          onChange={onType(setPassword, () => setPasswordError(null))}
+          onFocus={() => setFocused("password")}
+          onBlur={() => setFocused(null)}
+        />
+        <div className="pt-1">
+          <AuthSubmit loading={loading} success={success} loadingLabel="Verifying…" successLabel="Access granted">
+            Sign in to admin
+          </AuthSubmit>
         </div>
-        <div className="relative">
-          <h2 className="text-4xl font-semibold leading-tight tracking-tight">Placement admin,<br />all in one place.</h2>
-          <p className="mt-4 text-indigo-100 max-w-md">
-            Track student readiness, run drives, manage jobs and alumni openings, and export placement reports.
-          </p>
-          <div className="mt-10 grid grid-cols-3 gap-4 max-w-md">
-            {["Students", "Jobs & drives", "Reports"].map((t) => (
-              <div key={t} className="rounded-xl bg-white/10 ring-1 ring-white/15 px-3 py-3 text-sm text-indigo-50">{t}</div>
-            ))}
-          </div>
-        </div>
-        <p className="relative text-xs text-indigo-200">© {new Date().getFullYear()} MindPrep AI</p>
-      </div>
-
-      {/* Form */}
-      <div className="flex items-center justify-center p-6 sm:p-12 bg-slate-50 lg:bg-white">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25 }}
-          className="w-full max-w-sm"
-        >
-          <div className="lg:hidden flex items-center gap-2.5 mb-8">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-              <span className="text-white font-bold">M</span>
-            </div>
-            <span className="font-semibold text-slate-900">MindPrep AI</span>
-          </div>
-          <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">Sign in to Admin</h1>
-          <p className="text-sm text-slate-500 mt-1.5 mb-8">Use your placement-cell admin account.</p>
-
-          <form onSubmit={signin} className="space-y-4">
-            <Field label="Email">
-              <TextInput
-                type="email"
-                placeholder="admin@college.edu"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="username"
-              />
-            </Field>
-            <Field label="Password">
-              <TextInput
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-            </Field>
-
-            <Button type="submit" loading={loading} className="w-full !py-2.5">
-              Sign in
-            </Button>
-          </form>
-
-          <button
-            onClick={() => navigate("/signin")}
-            className="mt-8 text-sm text-slate-500 hover:text-indigo-600 transition-colors"
-          >
-            ← Student sign in
-          </button>
-        </motion.div>
-      </div>
-    </div>
+      </form>
+    </AuthShell>
   );
 }

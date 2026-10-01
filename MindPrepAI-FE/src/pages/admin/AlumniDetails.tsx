@@ -9,14 +9,14 @@ import { ErrorState } from "../../components/admin/ErrorState";
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-3 gap-3 py-2.5 border-b border-slate-200 last:border-0">
-      <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider pt-0.5">{label}</dt>
-      <dd className="col-span-2 text-sm text-slate-800 break-words">{children}</dd>
+    <div className="grid grid-cols-3 gap-3 py-2.5 border-b border-line last:border-0">
+      <dt className="text-xs font-medium text-muted uppercase tracking-wider pt-0.5">{label}</dt>
+      <dd className="col-span-2 text-sm text-fg break-words">{children}</dd>
     </div>
   );
 }
 
-const link = "text-indigo-700 hover:underline";
+const link = "text-indigo-700 dark:text-indigo-400 hover:underline";
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 
 export function AlumniDetails() {
@@ -39,7 +39,7 @@ export function AlumniDetails() {
 
   useEffect(load, [id]);
 
-  if (loading) return <div className="flex items-center justify-center py-24 text-slate-500">Loading alumni...</div>;
+  if (loading) return <div className="flex items-center justify-center py-24 text-muted">Loading alumni...</div>;
 
   const o = alumni?.opening;
   const expired = o ? new Date(o.lastDateToApply).getTime() < Date.now() : false;
@@ -78,7 +78,7 @@ export function AlumniDetails() {
                 {alumni.linkedin ? (
                   <a href={alumni.linkedin} target="_blank" rel="noopener noreferrer" className={link}>{alumni.linkedin}</a>
                 ) : (
-                  <span className="text-slate-500">—</span>
+                  <span className="text-muted">—</span>
                 )}
               </Row>
             </dl>
@@ -97,7 +97,7 @@ export function AlumniDetails() {
                       ))}
                     </div>
                   ) : (
-                    <span className="text-slate-500">—</span>
+                    <span className="text-muted">—</span>
                   )}
                 </Row>
                 <Row label="Job Description"><span className="whitespace-pre-line">{o.jobDescription}</span></Row>
@@ -105,7 +105,7 @@ export function AlumniDetails() {
                   <a href={o.applicationLink} target="_blank" rel="noopener noreferrer" className={link}>{o.applicationLink}</a>
                 </Row>
                 <Row label="Last Date to Apply">
-                  <span className={expired ? "text-red-700" : ""}>{formatDate(o.lastDateToApply)}</span>
+                  <span className={expired ? "text-red-700 dark:text-red-400" : ""}>{formatDate(o.lastDateToApply)}</span>
                 </Row>
               </dl>
             </Card>

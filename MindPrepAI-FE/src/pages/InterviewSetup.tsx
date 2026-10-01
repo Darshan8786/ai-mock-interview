@@ -6,6 +6,9 @@ import type { ResumeProfile } from "../hooks/useInterview";
 import { getPersonalization } from "../services/mockInterviewApi";
 import type { Personalization } from "../types/mockFeedback";
 import { NextInterviewPlan } from "../components/mock-interview/feedback/NextInterviewPlan";
+import { Chip, Panel, Segmented } from "../components/module/ModuleKit";
+import { selectCls } from "../components/module/styles";
+import { FloatingCard } from "../components/3d/FloatingCard";
 
 const jobRoles = [
   "Software Engineer",
@@ -31,18 +34,18 @@ const experienceLevels = [
 ];
 
 const interviewTypes = [
-  { value: "Technical", label: "Technical", icon: "⚙️", desc: "Focus on technical skills and problem-solving" },
-  { value: "HR", label: "HR", icon: "👥", desc: "Behavioral and cultural fit assessment" },
-  { value: "Behavioral", label: "Behavioral", icon: "🧠", desc: "Soft skills and situational responses" },
-  { value: "Resume", label: "Resume-Based", icon: "📄", desc: "Questions on your own projects and skills, from your resume" },
+  { value: "Technical", label: "Technical", glyph: "</>", desc: "Focus on technical skills and problem-solving" },
+  { value: "HR", label: "HR", glyph: "@hr", desc: "Behavioral and cultural fit assessment" },
+  { value: "Behavioral", label: "Behavioral", glyph: "STAR", desc: "Soft skills and situational responses" },
+  { value: "Resume", label: "Resume-Based", glyph: "cv.pdf", desc: "Questions on your own projects and skills, from your resume" },
 ];
 
 const MAX_RESUME_BYTES = 5 * 1024 * 1024;
 
 const difficulties = [
-  { value: "Easy", label: "Easy", color: "emerald" },
-  { value: "Medium", label: "Medium", color: "amber" },
-  { value: "Hard", label: "Hard", color: "red" },
+  { value: "Easy", label: "Easy", hint: "Fundamentals" },
+  { value: "Medium", label: "Medium", hint: "Typical campus round" },
+  { value: "Hard", label: "Hard", hint: "Deep follow-ups" },
 ];
 
 const INTERN_ROLE = /intern|trainee/i;
@@ -199,55 +202,49 @@ export function InterviewSetup() {
     });
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-8 px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-4xl mx-auto"
-      >
-        <div className="text-center mb-10">
-          <motion.h1
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent"
-          >
-            AI Mock Interview
-          </motion.h1>
-          <p className="text-gray-400 mt-3 text-lg">
-            Practice with AI-powered interviews. Get real-time feedback and detailed reports.
-          </p>
-        </div>
+  // Numbered steps; a resume interview skips role/level/difficulty.
+  let step = 0;
+  const nextStep = () => String(++step).padStart(2, "0");
+  const config: Record<string, string | number> = isResumeInterview
+    ? { type: interviewType, resume: resume ? resumeFileName : "(not uploaded)", questions: totalQuestions }
+    : {
+        type: interviewType || "?",
+        role: jobRole || "?",
+        level: experienceLevel || "?",
+        difficulty: difficulty || "?",
+        questions: totalQuestions,
+      };
 
-        <div className="grid gap-6">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-          >
-            <label className="block text-sm font-medium text-gray-300 mb-3">
-              Interview Type
-            </label>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-              {interviewTypes.map((type) => (
-                <button
-                  key={type.value}
-                  onClick={() => setInterviewType(type.value)}
-                  className={`p-4 rounded-xl text-left transition-all ${
-                    interviewType === type.value
-                      ? "bg-violet-500/20 border border-violet-500/50"
-                      : "bg-gray-700/50 border border-gray-600 hover:border-gray-500"
-                  }`}
-                >
-                  <span className="text-2xl">{type.icon}</span>
-                  <p className={`font-semibold mt-1 ${
-                    interviewType === type.value ? "text-violet-400" : "text-gray-200"
-                  }`}>
-                    {type.label}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">{type.desc}</p>
-                </button>
-              ))}
+  return (
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+      <motion.header initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+        <p className="font-mono text-xs text-accent-fg">// interview.configure()</p>
+        <h1 className="mt-1 font-poppins text-3xl font-bold text-fg tracking-tight">Set up your mock interview</h1>
+        <p className="text-muted mt-1.5 text-sm">Pick the format and we&apos;ll tailor the questions. You&apos;ll answer out loud while proctoring runs on your webcam.</p>
+      </motion.header>
+
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_20rem] gap-6 items-start">
+        <div className="space-y-5">
+          <Panel kicker={`${nextStep()} // interview.type`} title="Interview type">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {interviewTypes.map((type) => {
+                const active = interviewType === type.value;
+                return (
+                  <FloatingCard key={type.value} intensity={5}>
+                    <button
+                      onClick={() => setInterviewType(type.value)}
+                      aria-pressed={active}
+                      className={`w-full h-full p-4 rounded-xl text-left border transition-colors ${
+                        active ? "bg-accent-soft border-accent/40" : "bg-surface-2/60 border-line hover:border-accent/40"
+                      }`}
+                    >
+                      <span className={`font-mono text-sm font-semibold ${active ? "text-accent-fg" : "text-subtle"}`}>{type.glyph}</span>
+                      <span className={`block font-semibold mt-1 ${active ? "text-accent-fg" : "text-fg"}`}>{type.label}</span>
+                      <span className="block text-xs text-muted mt-1">{type.desc}</span>
+                    </button>
+                  </FloatingCard>
+                );
+              })}
             </div>
 
             {plan && (plan.message || plan.suggestions.length > 0) && (
@@ -257,216 +254,168 @@ export function InterviewSetup() {
             )}
 
             {isResumeInterview && (
-              <div className="mt-5 rounded-xl border border-violet-500/30 bg-violet-500/5 p-4">
-                <p className="text-sm font-medium text-gray-200 mb-1">Upload your resume</p>
-                <p className="text-xs text-gray-400 mb-3">
-                  We read your projects and skills, then ask about them: why you chose your stack, the hardest problem you
-                  solved, how it would scale, and more. The PDF itself is not stored; only the skills and projects found in it are
-                  saved with this interview.
+              <div className="mt-5 rounded-xl border border-accent/30 bg-accent-soft/40 p-4">
+                <p className="text-sm font-medium text-fg mb-1">Upload your resume</p>
+                <p className="text-xs text-muted mb-3">
+                  We read your projects and skills, then ask about them: why you chose your stack, the hardest problem you solved, how it
+                  would scale, and more. The PDF itself is not stored; only the skills and projects found in it are saved with this
+                  interview.
                 </p>
 
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="application/pdf"
-                  className="hidden"
-                  onChange={(e) => handleResumeFile(e.target.files?.[0])}
-                />
+                <input ref={fileInputRef} type="file" accept="application/pdf" className="hidden" onChange={(e) => handleResumeFile(e.target.files?.[0])} />
 
                 {!resume && (
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={parsingResume}
-                    className="w-full rounded-xl border-2 border-dashed border-gray-600 hover:border-violet-500/60 px-4 py-6 text-sm text-gray-300 transition-colors disabled:opacity-60"
+                    className="w-full rounded-xl border-2 border-dashed border-line-strong hover:border-accent/60 px-4 py-6 text-sm text-fg-2 transition-colors disabled:opacity-60"
                   >
                     {parsingResume ? `Reading ${resumeFileName}…` : "Click to choose a PDF resume (max 5 MB)"}
                   </button>
                 )}
 
                 {resume && (
-                  <div className="rounded-xl bg-gray-700/40 border border-gray-600 p-4">
+                  <div className="rounded-xl bg-surface border border-line p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-emerald-400 truncate">✓ {resumeFileName}</p>
-                        <p className="text-xs text-gray-400 mt-1">
-                          Found {resume.skills.length} skill{resume.skills.length === 1 ? "" : "s"} and{" "}
-                          {resume.projects.filter((p) => p.name).length} project
+                        <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400 truncate">✓ {resumeFileName}</p>
+                        <p className="text-xs text-muted mt-1">
+                          Found {resume.skills.length} skill{resume.skills.length === 1 ? "" : "s"} and {resume.projects.filter((p) => p.name).length} project
                           {resume.projects.filter((p) => p.name).length === 1 ? "" : "s"}
                         </p>
                       </div>
-                      <button
-                        type="button"
-                        onClick={clearResume}
-                        className="text-xs text-gray-400 hover:text-white underline shrink-0"
-                      >
+                      <button type="button" onClick={clearResume} className="text-xs text-muted hover:text-fg underline shrink-0">
                         Change
                       </button>
                     </div>
-
                     {resume.projects.some((p) => p.name) && (
                       <div className="mt-3 flex flex-wrap gap-1.5">
                         {resume.projects
                           .filter((p) => p.name)
                           .slice(0, 5)
                           .map((p) => (
-                            <span key={p.name} className="text-[11px] px-2 py-1 rounded-full bg-violet-500/15 text-violet-300">
+                            <span key={p.name} className="text-[11px] px-2 py-1 rounded-md bg-accent-soft text-accent-fg">
                               {p.name}
                             </span>
                           ))}
                       </div>
                     )}
                     {resume.projects.every((p) => !p.name) && (
-                      <p className="mt-3 text-xs text-amber-300">
-                        No projects were detected, so all questions will be about your listed skills.
-                      </p>
+                      <p className="mt-3 text-xs text-amber-700 dark:text-amber-300">No projects were detected, so all questions will be about your listed skills.</p>
                     )}
                   </div>
                 )}
 
-                {resumeError && <p className="mt-3 text-xs text-red-400">{resumeError}</p>}
+                {resumeError && <p className="mt-3 text-xs text-red-600 dark:text-red-400">{resumeError}</p>}
               </div>
             )}
-          </motion.div>
+          </Panel>
 
           {/* A resume-based interview works out role, level and difficulty from the
               resume itself, so these are only asked for the other interview types. */}
           {!isResumeInterview && (
             <>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-                className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-              >
-                <label className="block text-sm font-medium text-gray-300 mb-3">
-                  Job Role
-                </label>
+              <Panel kicker={`${nextStep()} // job.role`} title="Job role">
                 <input
                   type="text"
-                  placeholder="Search or type a role..."
+                  placeholder="Search or type a role…"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors mb-3"
+                  className={`${selectCls} mb-3`}
                 />
-                <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto">
                   {filteredRoles.map((role) => (
-                    <button
+                    <Chip
                       key={role}
-                      onClick={() => { setJobRole(role); setSearchTerm(""); }}
-                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                        jobRole === role
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/50"
-                          : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:border-gray-500"
-                      }`}
+                      active={jobRole === role}
+                      onClick={() => {
+                        setJobRole(role);
+                        setSearchTerm("");
+                      }}
                     >
                       {role}
-                    </button>
+                    </Chip>
                   ))}
                 </div>
-              </motion.div>
+              </Panel>
 
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-                className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-              >
-                <label className="block text-sm font-medium text-gray-300 mb-3">
-                  Experience Level
-                </label>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+              <Panel kicker={`${nextStep()} // experience.level`} title="Experience level">
+                <div className="flex flex-wrap gap-2">
                   {experienceLevels.map((level) => (
-                    <button
-                      key={level.value}
-                      onClick={() => setExperienceLevel(level.value)}
-                      className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                        experienceLevel === level.value
-                          ? "bg-blue-500/20 text-blue-400 border border-blue-500/50"
-                          : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:border-gray-500"
-                      }`}
-                    >
+                    <Chip key={level.value} active={experienceLevel === level.value} onClick={() => setExperienceLevel(level.value)}>
                       {level.label}
-                    </button>
+                    </Chip>
                   ))}
                 </div>
-              </motion.div>
+              </Panel>
 
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-                className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-              >
-                <label className="block text-sm font-medium text-gray-300 mb-3">
-                  Difficulty Level
-                </label>
-                <div className="flex gap-3">
-                  {difficulties.map((d) => (
-                    <button
-                      key={d.value}
-                      onClick={() => setDifficulty(d.value)}
-                      className={`flex-1 px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                        difficulty === d.value
-                          ? `bg-${d.color}-500/20 text-${d.color}-400 border border-${d.color}-500/50`
-                          : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:border-gray-500"
-                      }`}
-                    >
-                      {d.label}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
+              <Panel kicker={`${nextStep()} // difficulty`} title="Difficulty">
+                <Segmented
+                  value={difficulty as "Easy" | "Medium" | "Hard"}
+                  onChange={setDifficulty}
+                  options={difficulties.map((d) => ({ value: d.value as "Easy" | "Medium" | "Hard", label: d.label, hint: d.hint }))}
+                />
+              </Panel>
             </>
           )}
 
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-          >
-            <label className="block text-sm font-medium text-gray-300 mb-3">
-              Number of Questions: <span className="text-emerald-400 font-bold">{totalQuestions}</span>
-            </label>
-            <input
-              type="range"
-              min={3}
-              max={15}
-              value={totalQuestions}
-              onChange={(e) => setTotalQuestions(Number(e.target.value))}
-              className="w-full h-2 bg-gray-700 rounded-full appearance-none cursor-pointer accent-emerald-500"
-            />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>3</span>
-              <span>15</span>
+          <Panel kicker={`${nextStep()} // questions.count`} title="Number of questions">
+            <div className="flex items-center gap-4">
+              <input
+                type="range"
+                min={3}
+                max={15}
+                value={totalQuestions}
+                onChange={(e) => setTotalQuestions(Number(e.target.value))}
+                className="flex-1 h-2 rounded-full appearance-none cursor-pointer bg-surface-2 accent-[var(--accent)]"
+                aria-label="Number of questions"
+              />
+              <span className="w-12 text-center font-mono text-lg font-semibold text-accent-fg tabular-nums">{totalQuestions}</span>
             </div>
-          </motion.div>
+            <p className="font-mono text-[11px] text-subtle mt-2">// about {Math.round(totalQuestions * 2.5)} minutes</p>
+          </Panel>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="text-center"
-          >
+        {/* Live summary of the session, as a config object, with the start button. */}
+        <aside className="lg:sticky lg:top-24 rounded-2xl bg-surface border border-line shadow-card overflow-hidden">
+          <div className="flex items-center gap-2 px-4 h-10 border-b border-line bg-surface-2/70">
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-400" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+            <span className="ml-2 font-mono text-xs text-subtle">interview.config.json</span>
+          </div>
+          <pre className="px-5 py-4 font-mono text-[13px] leading-relaxed text-fg-2 overflow-x-auto">
+            <span className="text-subtle">{"{"}</span>
+            {"\n"}
+            {Object.entries(config).map(([k, v], i, arr) => (
+              <span key={k}>
+                {"  "}
+                <span className="text-accent-fg">&quot;{k}&quot;</span>
+                <span className="text-subtle">: </span>
+                <span className={v === "?" || v === "(not uploaded)" ? "text-amber-700 dark:text-amber-400" : typeof v === "number" ? "text-sky-700 dark:text-sky-400" : "text-emerald-700 dark:text-emerald-400"}>
+                  {typeof v === "number" ? v : `"${v}"`}
+                </span>
+                {i < arr.length - 1 ? <span className="text-subtle">,</span> : null}
+                {"\n"}
+              </span>
+            ))}
+            <span className="text-subtle">{"}"}</span>
+          </pre>
+          <div className="px-5 pb-5">
             <button
               onClick={handleStart}
               disabled={!canStart}
-              className={`px-10 py-4 rounded-2xl text-lg font-bold transition-all ${
-                canStart
-                  ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:shadow-lg hover:shadow-emerald-500/25 active:scale-95"
-                  : "bg-gray-700 text-gray-500 cursor-not-allowed"
+              className={`w-full py-3 rounded-xl font-semibold transition-colors ${
+                canStart ? "bg-accent hover:bg-accent-hover text-white" : "bg-surface-2 text-subtle border border-line cursor-not-allowed"
               }`}
             >
-              {canStart
-                ? "Start Interview →"
-                : isResumeInterview
-                ? "Upload Your Resume"
-                : "Complete All Fields"}
+              {canStart ? "Start interview →" : isResumeInterview ? "Upload your resume" : "Fill in the highlighted fields"}
             </button>
-          </motion.div>
-        </div>
-      </motion.div>
+            <p className="mt-3 text-[11px] text-muted leading-relaxed">You&apos;ll be asked to allow camera and microphone, and the interview runs in full screen.</p>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

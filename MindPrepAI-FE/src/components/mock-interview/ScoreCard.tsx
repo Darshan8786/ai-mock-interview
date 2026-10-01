@@ -13,9 +13,9 @@ interface ScoreCardProps {
 
 export function ScoreCard({ title, items }: ScoreCardProps) {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-emerald-400";
-    if (score >= 60) return "text-yellow-400";
-    return "text-red-400";
+    if (score >= 80) return "text-emerald-700 dark:text-emerald-400";
+    if (score >= 60) return "text-yellow-700 dark:text-yellow-400";
+    return "text-red-600 dark:text-red-400";
   };
 
   const getBarColor = (score: number) => {
@@ -28,14 +28,14 @@ export function ScoreCard({ title, items }: ScoreCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
+      className="bg-surface backdrop-blur-sm rounded-2xl p-6 border border-line"
     >
-      <h3 className="text-lg font-semibold text-white mb-5">{title}</h3>
+      <h3 className="text-lg font-semibold text-fg mb-5">{title}</h3>
       <div className="space-y-4">
         {items.map((item, index) => (
           <div key={item.label}>
             <div className="flex justify-between items-center mb-1.5">
-              <span className="text-sm text-gray-400">{item.label}</span>
+              <span className="text-sm text-muted">{item.label}</span>
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -44,7 +44,7 @@ export function ScoreCard({ title, items }: ScoreCardProps) {
                 {item.score}%
               </motion.span>
             </div>
-            <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div className="h-2 bg-surface-2 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${item.score}%` }}

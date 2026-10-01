@@ -292,7 +292,7 @@ export function AptitudeManagement() {
               renderRow={(q) => (
                 <>
                   <td className="py-3 px-4 max-w-xs">
-                    <p className="text-slate-900 font-medium truncate">{q.question}</p>
+                    <p className="text-fg font-medium truncate">{q.question}</p>
                   </td>
                   <td className="py-3 px-4">
                     <Badge tone="blue">{q.category}</Badge>
@@ -300,16 +300,16 @@ export function AptitudeManagement() {
                   <td className="py-3 px-4">
                     <Badge tone={diffTone(q.difficulty) as any}>{q.difficulty}</Badge>
                   </td>
-                  <td className="py-3 px-4 text-slate-700">{q.topic}</td>
+                  <td className="py-3 px-4 text-fg-2">{q.topic}</td>
                   <td className="py-3 px-4">
                     <div className="flex flex-wrap gap-1">
                       {(q.companyTags || []).slice(0, 2).map((t) => (
-                        <span key={t.name} className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">
+                        <span key={t.name} className="text-[10px] px-1.5 py-0.5 rounded bg-surface-2 text-fg-2">
                           {t.name}
                         </span>
                       ))}
                       {(q.companyTags || []).length > 2 && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-2 text-muted">
                           +{(q.companyTags || []).length - 2}
                         </span>
                       )}
@@ -325,7 +325,7 @@ export function AptitudeManagement() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                       </IconButton>
-                      <IconButton title="Delete" onClick={() => setDeletingQ(q)} className="hover:text-red-700 hover:bg-red-100">
+                      <IconButton title="Delete" onClick={() => setDeletingQ(q)} className="hover:text-red-700 hover:dark:text-red-400 hover:bg-red-100 hover:dark:bg-red-500/15">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -358,14 +358,14 @@ export function AptitudeManagement() {
               renderRow={(t) => (
                 <>
                   <td className="py-3 px-4">
-                    <p className="text-slate-900 font-medium">{t.title}</p>
-                    <p className="text-xs text-slate-500 line-clamp-1 max-w-xs">{t.description}</p>
+                    <p className="text-fg font-medium">{t.title}</p>
+                    <p className="text-xs text-muted line-clamp-1 max-w-xs">{t.description}</p>
                   </td>
-                  <td className="py-3 px-4 text-slate-700">
+                  <td className="py-3 px-4 text-fg-2">
                     {t.questionCount} Q · {t.durationMinutes} min
-                    <span className="block text-xs text-slate-500">{t.category || "All categories"}</span>
+                    <span className="block text-xs text-muted">{t.category || "All categories"}</span>
                   </td>
-                  <td className="py-3 px-4 text-slate-700">
+                  <td className="py-3 px-4 text-fg-2">
                     +{t.marksPerQuestion}/−{t.negativeMarksPerQuestion} · pass {t.passingScore}%
                   </td>
                   <td className="py-3 px-4">
@@ -378,7 +378,7 @@ export function AptitudeManagement() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                       </IconButton>
-                      <IconButton title="Delete" onClick={() => setDeletingT(t)} className="hover:text-red-700 hover:bg-red-100">
+                      <IconButton title="Delete" onClick={() => setDeletingT(t)} className="hover:text-red-700 hover:dark:text-red-400 hover:bg-red-100 hover:dark:bg-red-500/15">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -463,8 +463,8 @@ export function AptitudeManagement() {
                       onClick={() => setQForm((p) => p && { ...p, correctAnswer: idx })}
                       className={`shrink-0 w-7 h-7 rounded-full border text-xs font-bold ${
                         qForm.correctAnswer === idx
-                          ? "bg-indigo-500 border-indigo-200 text-white"
-                          : "bg-slate-50 border-slate-300 text-slate-500"
+                          ? "bg-indigo-500 border-indigo-200 dark:border-indigo-500/30 text-white"
+                          : "bg-surface-2 border-line-strong text-slate-500"
                       }`}
                       title={qForm.correctAnswer === idx ? "Correct answer" : "Set as correct"}
                     >
@@ -480,7 +480,7 @@ export function AptitudeManagement() {
                   </div>
                 ))}
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Green highlighted letter = correct answer. Click a letter to change it.</p>
+              <p className="text-[11px] text-muted mt-1">Green highlighted letter = correct answer. Click a letter to change it.</p>
             </Field>
             <Field label="Explanation">
               <TextArea
@@ -596,7 +596,7 @@ export function AptitudeManagement() {
                 />
               </Field>
             </div>
-            <label className="flex items-center gap-2 text-sm text-slate-700">
+            <label className="flex items-center gap-2 text-sm text-fg-2">
               <input
                 type="checkbox"
                 checked={tForm.isActive}
@@ -622,7 +622,7 @@ export function AptitudeManagement() {
           </>
         }
       >
-        <p className="text-slate-700 text-sm">
+        <p className="text-fg-2 text-sm">
           Delete this question permanently? Students will no longer see it in tests.
         </p>
       </Modal>
@@ -639,8 +639,8 @@ export function AptitudeManagement() {
           </>
         }
       >
-        <p className="text-slate-700 text-sm">
-          Delete test <span className="text-slate-900 font-semibold">{deletingT?.title}</span>? Students will no longer see it.
+        <p className="text-fg-2 text-sm">
+          Delete test <span className="text-fg font-semibold">{deletingT?.title}</span>? Students will no longer see it.
         </p>
       </Modal>
     </div>
@@ -652,7 +652,7 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
     <button
       onClick={onClick}
       className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-        active ? "bg-indigo-50 text-indigo-700 border border-indigo-200" : "text-slate-500 hover:text-slate-900"
+        active ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30" : "text-muted hover:text-fg"
       }`}
     >
       {children}

@@ -3055,5 +3055,225 @@
     ],
     "id": "html_182",
     "technology": "HTML"
+  },
+  {
+    "topic": "Forms & Input Types",
+    "difficulty": "Easy",
+    "question_type": "Debugging",
+    "question": "Clicking the 'Email' label doesn't focus the input, and screen readers don't announce the label. Fix the markup.",
+    "buggy_code": "<label>Email</label>\n<input type=\"email\" id=\"email\" name=\"email\">",
+    "fixed_code": "<label for=\"email\">Email</label>\n<input type=\"email\" id=\"email\" name=\"email\">",
+    "answer": "The label isn't associated with the input; add `for=\"email\"` matching the input's id (or wrap the input inside the label)",
+    "explanation": "An associated label gives the input its accessible name and enlarges the click target, since clicking the label focuses or toggles the control.",
+    "keywords": [
+      "label",
+      "for attribute",
+      "accessibility",
+      "forms"
+    ],
+    "id": "html_183",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Semantic HTML5",
+    "difficulty": "Easy",
+    "question_type": "MCQ",
+    "question": "Which element best represents a self-contained piece of content, such as a blog post, that would make sense on its own?",
+    "options": [
+      "<section>",
+      "<div>",
+      "<article>",
+      "<aside>"
+    ],
+    "correct_option": 2,
+    "answer": "<article>",
+    "explanation": "<article> is for independently distributable content. <section> groups thematically related content within a page, <aside> is tangential content, and <div> has no semantic meaning.",
+    "keywords": [
+      "article",
+      "semantic html",
+      "section"
+    ],
+    "id": "html_184",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Accessibility (ARIA)",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "question": "Keyboard users cannot activate this 'Submit' control. What is wrong, and what is the best fix?",
+    "buggy_code": "<div class=\"btn\" onclick=\"submitForm()\">Submit</div>",
+    "fixed_code": "<button type=\"submit\" class=\"btn\">Submit</button>",
+    "answer": "A div is not focusable and does not respond to Enter/Space or expose a button role; use a native <button>",
+    "explanation": "A native button provides focus, keyboard activation and the correct role for free. Patching the div would need role=\"button\", tabindex=\"0\" and key handlers, and still wouldn't submit the form natively; the first rule of ARIA is to prefer native elements.",
+    "keywords": [
+      "button",
+      "keyboard accessibility",
+      "aria",
+      "role"
+    ],
+    "id": "html_185",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Form Validation",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Which built-in HTML attributes can validate a form field without JavaScript, and why is server-side validation still required?",
+    "answer": "Attributes such as `required`, `type=\"email\"`/`\"url\"`/`\"number\"`, `min`/`max`, `minlength`/`maxlength` and `pattern` let the browser block invalid submissions; the server must still validate because client-side checks can be bypassed",
+    "explanation": "Anyone can disable validation, edit the DOM, or send HTTP requests directly, so browser validation is only a usability feature. The server remains the security boundary.",
+    "keywords": [
+      "form validation",
+      "required",
+      "pattern",
+      "server-side validation"
+    ],
+    "id": "html_186",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Form Validation",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "A signup form needs a 'Confirm password' field that shows the browser's native error bubble when it doesn't match. How would you implement this?",
+    "answer": "On input, compare the two fields and call `confirm.setCustomValidity('Passwords do not match')` when they differ or `setCustomValidity('')` when they match; the browser then blocks submission and shows the message",
+    "explanation": "A non-empty custom validity message marks the field invalid (matching the :invalid pseudo-class) and plugs into the native Constraint Validation API, so no custom error UI is needed. The message must be cleared with an empty string, otherwise the field stays invalid.",
+    "keywords": [
+      "setcustomvalidity",
+      "constraint validation api",
+      "form validation"
+    ],
+    "id": "html_187",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Best Practices",
+    "difficulty": "Medium",
+    "question_type": "MCQ",
+    "question": "What is the difference between `<script defer>` and `<script async>` for external scripts?",
+    "options": [
+      "defer runs scripts as soon as they download in any order; async runs them in document order after parsing",
+      "defer runs scripts in document order after HTML parsing finishes; async runs each script as soon as it downloads, in any order",
+      "Both block HTML parsing until the script runs",
+      "async only works for inline scripts"
+    ],
+    "correct_option": 1,
+    "answer": "defer runs scripts in document order after HTML parsing finishes; async runs each script as soon as it downloads, in any order",
+    "explanation": "Both download without blocking the parser. defer suits scripts that depend on the DOM or on each other; async suits independent scripts such as analytics.",
+    "keywords": [
+      "defer",
+      "async",
+      "script loading"
+    ],
+    "id": "html_188",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Meta Tags & SEO",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "question": "A responsive site looks tiny and zoomed-out on phones even though its media queries are correct. What is missing?",
+    "buggy_code": "<head>\n  <meta charset=\"UTF-8\">\n  <title>Shop</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>",
+    "fixed_code": "<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Shop</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>",
+    "answer": "The viewport meta tag is missing, so mobile browsers render at a desktop width (about 980px) and scale the page down",
+    "explanation": "`width=device-width` makes the layout viewport match the device width, so media queries see the real screen size; `initial-scale=1` sets the initial zoom level.",
+    "keywords": [
+      "viewport",
+      "meta tag",
+      "responsive design",
+      "mobile"
+    ],
+    "id": "html_189",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Multimedia",
+    "difficulty": "Hard",
+    "question_type": "Technical",
+    "question": "Why might `<video autoplay src=\"intro.mp4\">` not start playing, and how can you make an autoplaying background video work?",
+    "answer": "Browsers block autoplay with sound unless the user has interacted with the site; add `muted` (and `playsinline` for iOS), e.g. `<video autoplay muted loop playsinline>`",
+    "explanation": "Autoplay policies in Chrome, Safari and Firefox allow muted autoplay but restrict audible autoplay. Without playsinline, iOS may try to play the video fullscreen instead of inline.",
+    "keywords": [
+      "video",
+      "autoplay",
+      "muted",
+      "playsinline"
+    ],
+    "id": "html_190",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Tables",
+    "difficulty": "Medium",
+    "question_type": "Coding",
+    "question": "Write an accessible HTML table with a caption, a header row for Name/Subject/Marks, and a footer row whose 'Total' cell spans the first two columns.",
+    "starter_code": "<table>\n  <!-- your markup here -->\n</table>",
+    "expected_solution": "<table>\n  <caption>Exam results</caption>\n  <thead>\n    <tr><th scope=\"col\">Name</th><th scope=\"col\">Subject</th><th scope=\"col\">Marks</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Asha</td><td>Math</td><td>90</td></tr>\n    <tr><td>Ravi</td><td>Math</td><td>85</td></tr>\n  </tbody>\n  <tfoot>\n    <tr><th scope=\"row\" colspan=\"2\">Total</th><td>175</td></tr>\n  </tfoot>\n</table>",
+    "test_cases": [
+      {
+        "input": "Render the table in a browser",
+        "expected_output": "Caption 'Exam results' above a 3-column table; 'Total' spans the Name and Subject columns"
+      },
+      {
+        "input": "Inspect with a screen reader",
+        "expected_output": "Each data cell is announced with its column header (Name, Subject, Marks)"
+      }
+    ],
+    "answer": "Use <caption>, <thead> with <th scope=\"col\">, <tbody>, and a <tfoot> row with colspan=\"2\" on the Total cell",
+    "explanation": "caption gives the table an accessible name, th with scope links data cells to headers, and colspan merges cells horizontally. thead/tbody/tfoot give the table semantic structure.",
+    "keywords": [
+      "table",
+      "colspan",
+      "caption",
+      "scope"
+    ],
+    "id": "html_191",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Links & Navigation",
+    "difficulty": "Medium",
+    "question_type": "Technical",
+    "question": "Why is `rel=\"noopener noreferrer\"` recommended on links with `target=\"_blank\"`?",
+    "answer": "Without noopener, the opened page can access `window.opener` and redirect the original tab to a phishing page (reverse tabnabbing); noreferrer additionally stops the Referer header from being sent",
+    "explanation": "Modern browsers now treat target=\"_blank\" as implying noopener by default, but adding it explicitly protects older browsers and documents the intent. Use noreferrer only when you don't want the destination to see where the visitor came from.",
+    "keywords": [
+      "target blank",
+      "noopener",
+      "noreferrer",
+      "tabnabbing"
+    ],
+    "id": "html_192",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Web Storage",
+    "difficulty": "Medium",
+    "question_type": "Output Prediction",
+    "question": "What does this print, and why?",
+    "code_snippet": "localStorage.setItem('count', 1);\nconsole.log(typeof localStorage.getItem('count'));",
+    "answer": "string",
+    "explanation": "Web Storage stores only strings; non-string values are converted with String() when stored. Use JSON.stringify / JSON.parse (or Number()) to store and restore other types.",
+    "keywords": [
+      "localstorage",
+      "web storage",
+      "string"
+    ],
+    "id": "html_193",
+    "technology": "HTML"
+  },
+  {
+    "topic": "Best Practices",
+    "difficulty": "Easy",
+    "question_type": "Conceptual",
+    "question": "Why should every meaningful <img> have an `alt` attribute, and when should it be empty?",
+    "answer": "alt provides a text alternative for screen readers and for when the image fails to load; use `alt=\"\"` for purely decorative images so assistive technology skips them",
+    "explanation": "If alt is missing entirely, screen readers may read the file name instead. Good alt text describes the image's purpose in context, not just what it looks like.",
+    "keywords": [
+      "alt",
+      "img",
+      "accessibility"
+    ],
+    "id": "html_194",
+    "technology": "HTML"
   }
 ]

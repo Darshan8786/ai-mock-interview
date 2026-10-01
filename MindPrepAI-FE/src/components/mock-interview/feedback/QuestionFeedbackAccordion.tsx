@@ -12,11 +12,11 @@ import { StrengthWeaknessCards } from "./StrengthWeaknessCards";
 import { cardClass, fmtDateTime, scoreText } from "./format";
 
 const BADGE: Record<VerdictLevel, { icon: string; cls: string }> = {
-  strong: { icon: "✓", cls: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30" },
-  improve: { icon: "⚠", cls: "bg-yellow-500/15 text-yellow-300 border-yellow-500/30" },
-  weak: { icon: "🔴", cls: "bg-red-500/15 text-red-300 border-red-500/30" },
-  skipped: { icon: "–", cls: "bg-gray-700/60 text-gray-400 border-gray-600" },
-  pending: { icon: "…", cls: "bg-gray-700/60 text-gray-400 border-gray-600" },
+  strong: { icon: "✓", cls: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30" },
+  improve: { icon: "⚠", cls: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-300 border-yellow-500/30" },
+  weak: { icon: "🔴", cls: "bg-red-500/15 text-red-600 dark:text-red-300 border-red-500/30" },
+  skipped: { icon: "–", cls: "bg-surface-2 text-muted border-line-strong" },
+  pending: { icon: "…", cls: "bg-surface-2 text-muted border-line-strong" },
 };
 
 interface Props {
@@ -106,22 +106,22 @@ export function QuestionFeedbackAccordion({ interview, feedback }: Props) {
               onClick={() => toggle(s)}
               aria-expanded={isOpen}
               aria-controls={`q-panel-${s.questionId}`}
-              className="w-full flex items-center gap-3 text-left p-4 hover:bg-gray-700/20 transition-colors"
+              className="w-full flex items-center gap-3 text-left p-4 hover:bg-surface-2 transition-colors"
             >
-              <span className="shrink-0 text-xs font-mono text-gray-400 bg-gray-700 px-2 py-0.5 rounded">Q{i + 1}</span>
+              <span className="shrink-0 text-xs font-mono text-muted bg-surface-2 px-2 py-0.5 rounded">Q{i + 1}</span>
               <span className="flex-1 min-w-0">
-                <span className="block text-sm text-white font-medium truncate sm:whitespace-normal">{q.question}</span>
+                <span className="block text-sm text-fg font-medium truncate sm:whitespace-normal">{q.question}</span>
                 <span className="mt-1 flex flex-wrap items-center gap-2">
                   <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] border ${badge.cls}`}>
                     <span aria-hidden>{badge.icon}</span> {s.verdict.label}
                   </span>
                   {s.focusArea && (
-                    <span className="px-2 py-0.5 rounded-full text-[11px] bg-purple-500/10 text-purple-300 border border-purple-500/20" title="Chosen because of your earlier interviews">
+                    <span className="px-2 py-0.5 rounded-full text-[11px] bg-purple-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/20" title="Chosen because of your earlier interviews">
                       Targeted: {s.focusArea}
                     </span>
                   )}
                   {s.attemptCount > 1 && (
-                    <span className="px-2 py-0.5 rounded-full text-[11px] bg-blue-500/10 text-blue-300 border border-blue-500/20">
+                    <span className="px-2 py-0.5 rounded-full text-[11px] bg-blue-500/10 text-blue-600 dark:text-blue-300 border border-blue-500/20">
                       {s.attemptCount} attempts
                     </span>
                   )}
@@ -130,7 +130,7 @@ export function QuestionFeedbackAccordion({ interview, feedback }: Props) {
               {(s.verdict.level === "strong" || s.verdict.level === "improve" || s.verdict.level === "weak") && (
                 <span className={`shrink-0 text-lg font-bold tabular-nums ${scoreText(s.verdict.score)}`}>{s.verdict.score}%</span>
               )}
-              <span className={`shrink-0 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`} aria-hidden>▾</span>
+              <span className={`shrink-0 text-subtle transition-transform ${isOpen ? "rotate-180" : ""}`} aria-hidden>▾</span>
             </button>
 
             <AnimatePresence initial={false}>
@@ -142,11 +142,11 @@ export function QuestionFeedbackAccordion({ interview, feedback }: Props) {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-4 pt-0 space-y-4 border-t border-gray-700/60">
-                    {loadError && <p className="text-sm text-red-400 pt-3">{loadError}</p>}
+                  <div className="p-4 pt-0 space-y-4 border-t border-line">
+                    {loadError && <p className="text-sm text-red-600 dark:text-red-400 pt-3">{loadError}</p>}
 
                     {s.verdict.level === "skipped" ? (
-                      <p className="text-sm text-gray-400 pt-3">This question was skipped, so there is nothing to score.</p>
+                      <p className="text-sm text-muted pt-3">This question was skipped, so there is nothing to score.</p>
                     ) : (
                       <>
                         {attempts.length > 1 && (
@@ -159,8 +159,8 @@ export function QuestionFeedbackAccordion({ interview, feedback }: Props) {
                                 onClick={() => setSelected((p) => ({ ...p, [s.questionId]: a.attemptNumber }))}
                                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border ${
                                   a.attemptNumber === attempt.attemptNumber
-                                    ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
-                                    : "bg-gray-700/40 text-gray-300 border-gray-600 hover:border-gray-500"
+                                    ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/40"
+                                    : "bg-surface-2 text-fg-2 border-line-strong hover:border-line-strong"
                                 }`}
                               >
                                 Attempt {a.attemptNumber}
@@ -172,24 +172,24 @@ export function QuestionFeedbackAccordion({ interview, feedback }: Props) {
                         {st.comparison && attempts.length > 1 && <AttemptComparison comparison={st.comparison} />}
 
                         {/* Candidate answer + transcript */}
-                        <div className={`rounded-xl bg-gray-900/50 border border-gray-700 p-4 ${attempts.length > 1 ? "" : "mt-3"}`}>
+                        <div className={`rounded-xl bg-surface border border-line p-4 ${attempts.length > 1 ? "" : "mt-3"}`}>
                           <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                            <h5 className="text-sm font-semibold text-white">
+                            <h5 className="text-sm font-semibold text-fg">
                               {attempt.answerType === "voice" ? "Your answer (transcript)" : "Your answer"}
                             </h5>
-                            <span className="text-[11px] text-gray-500">
+                            <span className="text-[11px] text-subtle">
                               Attempt {attempt.attemptNumber} · {attempt.answerType === "voice" ? "🎤 spoken" : "⌨️ typed"} ·{" "}
                               {fmtDateTime(attempt.createdAt)}
                               {attempt.timestampApproximate ? " (approx.)" : ""}
                             </span>
                           </div>
-                          <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
-                            {attempt.answer || <span className="text-gray-500">No answer recorded.</span>}
+                          <p className="text-sm text-fg-2 leading-relaxed whitespace-pre-wrap break-words">
+                            {attempt.answer || <span className="text-subtle">No answer recorded.</span>}
                           </p>
                         </div>
 
                         {!ev ? null : !evaluated ? (
-                          <div className="rounded-xl bg-yellow-500/10 border border-yellow-500/20 p-4 text-sm text-yellow-100">
+                          <div className="rounded-xl bg-yellow-500/10 border border-yellow-500/20 p-4 text-sm text-yellow-700 dark:text-yellow-100">
                             Automatic evaluation was unavailable for this answer, so it has no scores or explanation yet. Your
                             answer was saved — reopening this report retries the evaluation.
                           </div>
@@ -198,9 +198,9 @@ export function QuestionFeedbackAccordion({ interview, feedback }: Props) {
                             <MetricScoreGrid evaluation={ev} />
                             {!analysis && ev.feedback && (
                               <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg px-4 py-3">
-                                <p className="text-xs text-gray-400 mb-1">AI Feedback</p>
-                                <p className="text-sm text-blue-200 leading-relaxed">{ev.feedback}</p>
-                                <p className="text-[11px] text-gray-500 mt-2">
+                                <p className="text-xs text-muted mb-1">AI Feedback</p>
+                                <p className="text-sm text-blue-700 dark:text-blue-200 leading-relaxed">{ev.feedback}</p>
+                                <p className="text-[11px] text-subtle mt-2">
                                   Detailed reasons, structure and speaking analysis are not available for answers recorded before
                                   this feature existed.
                                 </p>
@@ -235,7 +235,7 @@ export function QuestionFeedbackAccordion({ interview, feedback }: Props) {
                           s.canPractice && (
                             <button
                               onClick={() => setPracticing(s.questionId)}
-                              className="px-5 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-300 font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
+                              className="px-5 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
                             >
                               ↻ Practice Again
                             </button>

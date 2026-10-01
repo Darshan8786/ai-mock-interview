@@ -21,10 +21,10 @@ function ScoreBar({ label, value }: { label: string; value: number }) {
   return (
     <div>
       <div className="flex justify-between text-xs mb-1">
-        <span className="text-slate-500">{label}</span>
-        <span className="text-slate-800 font-medium">{value}%</span>
+        <span className="text-muted">{label}</span>
+        <span className="text-fg font-medium">{value}%</span>
       </div>
-      <div className="h-1.5 bg-slate-50 rounded-full overflow-hidden">
+      <div className="h-1.5 bg-surface-2 rounded-full overflow-hidden">
         <div className={`h-full ${color} rounded-full`} style={{ width: `${value}%` }} />
       </div>
     </div>
@@ -72,7 +72,7 @@ function StudentInterviews() {
               placeholder="Search student or role..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-300 sm:w-56"
+              className="bg-surface-2 border border-line rounded-xl px-3.5 py-2.5 text-sm text-fg placeholder-subtle focus:outline-none focus:border-indigo-300 focus:dark:border-indigo-500/30 sm:w-56"
             />
             <Select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
               <option value="all">All Types</option>
@@ -111,12 +111,12 @@ function StudentInterviews() {
             renderRow={(i) => (
               <>
                 <td className="py-3 px-4">
-                  <p className="text-slate-900 font-medium">{i.studentName}</p>
-                  <p className="text-xs text-slate-500">{i.studentEmail}</p>
+                  <p className="text-fg font-medium">{i.studentName}</p>
+                  <p className="text-xs text-muted">{i.studentEmail}</p>
                 </td>
                 <td className="py-3 px-4">
-                  <p className="text-slate-700">{i.jobRole}</p>
-                  <p className="text-xs text-slate-500">{i.difficulty}</p>
+                  <p className="text-fg-2">{i.jobRole}</p>
+                  <p className="text-xs text-muted">{i.difficulty}</p>
                 </td>
                 <td className="py-3 px-4">
                   <Badge tone={i.interviewType === "Technical" ? "blue" : i.interviewType === "HR" ? "purple" : "yellow"}>
@@ -125,18 +125,18 @@ function StudentInterviews() {
                 </td>
                 <td className="py-3 px-4">
                   {i.status === "pending" ? (
-                    <span className="text-slate-500">—</span>
+                    <span className="text-muted">—</span>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <span className={`text-sm font-bold ${i.overallScore >= 75 ? "text-indigo-700" : i.overallScore >= 50 ? "text-violet-700" : "text-red-700"}`}>
+                      <span className={`text-sm font-bold ${i.overallScore >= 75 ? "text-indigo-700 dark:text-indigo-400" : i.overallScore >= 50 ? "text-violet-700 dark:text-violet-400" : "text-red-700 dark:text-red-400"}`}>
                         {i.overallScore}
                       </span>
-                      <span className="text-xs text-slate-500">/100</span>
+                      <span className="text-xs text-muted">/100</span>
                     </div>
                   )}
                 </td>
-                <td className="py-3 px-4 text-slate-700">{i.durationMin} min</td>
-                <td className="py-3 px-4 text-slate-700">{new Date(i.date).toLocaleDateString()}</td>
+                <td className="py-3 px-4 text-fg-2">{i.durationMin} min</td>
+                <td className="py-3 px-4 text-fg-2">{new Date(i.date).toLocaleDateString()}</td>
                 <td className="py-3 px-4">
                   <Badge tone={statusTone(i.status)}>{i.status}</Badge>
                 </td>
@@ -159,8 +159,8 @@ function StudentInterviews() {
           <div className="space-y-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-900 font-semibold text-lg">{selected.studentName}</p>
-                <p className="text-slate-500 text-sm">
+                <p className="text-fg font-semibold text-lg">{selected.studentName}</p>
+                <p className="text-muted text-sm">
                   {selected.jobRole} · {selected.interviewType} Interview · {new Date(selected.date).toLocaleDateString()}
                 </p>
               </div>
@@ -189,15 +189,15 @@ function StudentInterviews() {
             </div>
 
             {selected.finalFeedback && (
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-2 font-medium">AI Feedback</p>
-                <p className="text-slate-700 text-sm leading-relaxed">{selected.finalFeedback}</p>
+              <div className="bg-surface-2 border border-line rounded-xl p-4">
+                <p className="text-xs text-muted uppercase tracking-wider mb-2 font-medium">AI Feedback</p>
+                <p className="text-fg-2 text-sm leading-relaxed">{selected.finalFeedback}</p>
               </div>
             )}
 
             {selected.autoTerminated && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                <p className="text-red-700 text-sm font-medium">
+              <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-xl p-4">
+                <p className="text-red-700 dark:text-red-400 text-sm font-medium">
                   This interview was automatically terminated due to repeated proctoring violations.
                 </p>
               </div>
@@ -210,11 +210,11 @@ function StudentInterviews() {
 }
 
 function Metric({ label, value }: { label: string; value: number }) {
-  const color = value >= 75 ? "text-indigo-700" : value >= 50 ? "text-violet-700" : "text-red-700";
+  const color = value >= 75 ? "text-indigo-700 dark:text-indigo-400" : value >= 50 ? "text-violet-700 dark:text-violet-400" : "text-red-700 dark:text-red-400";
   return (
-    <div className="bg-slate-50 rounded-xl p-3 text-center">
+    <div className="bg-surface-2 rounded-xl p-3 text-center">
       <p className={`text-xl font-bold ${color}`}>{value}</p>
-      <p className="text-xs text-slate-500 mt-0.5">{label}</p>
+      <p className="text-xs text-muted mt-0.5">{label}</p>
     </div>
   );
 }
@@ -230,8 +230,8 @@ export function InterviewManagement() {
   const tabClass = (active: boolean) =>
     `px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${
       active
-        ? "bg-indigo-50 border-indigo-200 text-slate-900"
-        : "bg-slate-50 border-slate-200 text-slate-500 hover:text-slate-800 hover:border-slate-300"
+        ? "bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/30 text-fg"
+        : "bg-surface-2 border-line text-muted hover:text-fg hover:border-line-strong"
     }`;
 
   return (

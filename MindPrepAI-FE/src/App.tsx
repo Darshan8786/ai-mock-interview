@@ -111,7 +111,19 @@ function App() {
           </Route>
         </Routes>
       </Layout>
-      <Toaster position="bottom-right" reverseOrder={false} />
+      <Toaster
+        position="bottom-right"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            background: "var(--surface)",
+            color: "var(--fg)",
+            border: "1px solid var(--line)",
+            boxShadow: "var(--shadow-pop)",
+            fontSize: "14px",
+          },
+        }}
+      />
     </BrowserRouter>
   )
 }

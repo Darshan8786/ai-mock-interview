@@ -44,9 +44,9 @@ function placeholderFor(
     };
   }
   if (status === "terminated") {
-    return { label: "Proctoring ended", dotClass: "bg-gray-500", pingClass: "bg-gray-400" };
+    return { label: "Proctoring ended", dotClass: "bg-subtle", pingClass: "bg-line-strong" };
   }
-  return { label: "Proctoring idle", dotClass: "bg-gray-500", pingClass: "bg-gray-400" };
+  return { label: "Proctoring idle", dotClass: "bg-subtle", pingClass: "bg-line-strong" };
 }
 
 export function InterviewMonitor({ status, stalled = false, result }: InterviewMonitorProps) {
@@ -55,11 +55,11 @@ export function InterviewMonitor({ status, stalled = false, result }: InterviewM
   if (!showLive) {
     const ph = placeholderFor(status, stalled);
     return (
-      <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
-        <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+      <div className="bg-surface backdrop-blur-sm rounded-xl p-4 border border-line">
+        <h4 className="text-xs font-medium text-muted uppercase tracking-wider mb-2">
           AI Proctoring
         </h4>
-        <div className="flex items-center gap-2 text-sm text-gray-300">
+        <div className="flex items-center gap-2 text-sm text-fg-2">
           <span className="relative flex h-2.5 w-2.5">
             <span
               className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${ph.pingClass}`}
@@ -80,10 +80,10 @@ export function InterviewMonitor({ status, stalled = false, result }: InterviewM
   const degraded: boolean = !!result?.analysisDegraded;
 
   return (
-    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700 space-y-3">
-      <h4 className="text-xs font-medium text-gray-400 uppercase tracking-wider flex justify-between">
+    <div className="bg-surface backdrop-blur-sm rounded-xl p-4 border border-line space-y-3">
+      <h4 className="text-xs font-medium text-muted uppercase tracking-wider flex justify-between">
         <span>AI Proctoring</span>
-        <span className="text-emerald-400 flex items-center gap-1">
+        <span className="text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -94,12 +94,12 @@ export function InterviewMonitor({ status, stalled = false, result }: InterviewM
 
       <div className="space-y-2 text-sm">
         <div className="flex justify-between items-center">
-          <span className="text-gray-400">Face Status</span>
+          <span className="text-muted">Face Status</span>
           <span
             className={`px-2 py-0.5 rounded text-xs font-medium ${
               faceStatus === "normal"
-                ? "bg-emerald-500/10 text-emerald-400"
-                : "bg-red-500/10 text-red-400"
+                ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+                : "bg-red-500/10 text-red-600 dark:text-red-400"
             }`}
           >
             {faceStatus.toUpperCase()}
@@ -107,12 +107,12 @@ export function InterviewMonitor({ status, stalled = false, result }: InterviewM
         </div>
 
         <div className="flex justify-between items-center">
-          <span className="text-gray-400">Looking Direction</span>
+          <span className="text-muted">Looking Direction</span>
           <span
             className={`px-2 py-0.5 rounded text-xs font-medium ${
               !lookingAway
-                ? "bg-emerald-500/10 text-emerald-400"
-                : "bg-yellow-500/10 text-yellow-400"
+                ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+                : "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400"
             }`}
           >
             {lookingDirection.toUpperCase()}
@@ -120,9 +120,9 @@ export function InterviewMonitor({ status, stalled = false, result }: InterviewM
         </div>
 
         {(result?.mobilePhone || result?.headset) && (
-          <div className="flex justify-between items-center border-t border-gray-700 pt-2 mt-2">
-            <span className="text-gray-400">Objects Detected</span>
-            <span className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs font-medium flex gap-1">
+          <div className="flex justify-between items-center border-t border-line pt-2 mt-2">
+            <span className="text-muted">Objects Detected</span>
+            <span className="bg-red-500/10 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-xs font-medium flex gap-1">
               {result?.mobilePhone && <span>📱 Phone</span>}
               {result?.headset && <span>🎧 Headset</span>}
             </span>
@@ -130,16 +130,16 @@ export function InterviewMonitor({ status, stalled = false, result }: InterviewM
         )}
 
         {result?.cameraObstructed && (
-          <div className="flex justify-between items-center border-t border-gray-700 pt-2 mt-2">
-            <span className="text-gray-400">Camera</span>
-            <span className="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs font-medium">
+          <div className="flex justify-between items-center border-t border-line pt-2 mt-2">
+            <span className="text-muted">Camera</span>
+            <span className="bg-red-500/10 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-xs font-medium">
               🚫 Obstructed
             </span>
           </div>
         )}
 
         {degraded && (
-          <p className="text-[11px] text-amber-400/80 border-t border-gray-700 pt-2 mt-2">
+          <p className="text-[11px] text-amber-400/80 border-t border-line pt-2 mt-2">
             Some analysis passes are degraded — monitoring is still active.
           </p>
         )}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ModuleHero, Panel } from "../components/module/ModuleKit";
 import { CollegeInterviewsSection } from "../components/CollegeInterviewsSection";
 import { FloatingCard } from "../components/3d/FloatingCard";
 import { BACKEND_URL } from "../config/config";
@@ -55,8 +56,8 @@ export function MockDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-accent/30 border-t-accent rounded-full animate-spin" />
       </div>
     );
   }
@@ -64,211 +65,118 @@ export function MockDashboard() {
   const stats = data?.stats;
   const interviews = data?.interviews || [];
   const reports = data?.reports || [];
+  const scoreTone = (s: number) =>
+    s >= 70 ? "text-emerald-700 dark:text-emerald-400 bg-emerald-500/10" : s >= 40 ? "text-amber-700 dark:text-amber-400 bg-amber-500/10" : "text-red-700 dark:text-red-400 bg-red-500/10";
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-8 px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-6xl mx-auto"
-      >
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white">
-              Mock Interview Dashboard
-            </h1>
-            <p className="text-gray-400 mt-1">Track your interview performance and progress</p>
-          </div>
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+      <ModuleHero
+        kind="interview"
+        kicker="// practice/interview"
+        title="Mock Interview"
+        description="A proctored AI interview: questions tailored to your role and resume, spoken answers, live webcam monitoring and a detailed feedback report with what to fix next."
+        stats={[
+          { label: "interviews", value: stats?.totalInterviews || 0 },
+          { label: "completed", value: stats?.completedInterviews || 0 },
+          { label: "avg score", value: `${stats?.averageScore || 0}%` },
+          { label: "best score", value: `${stats?.bestScore || 0}%` },
+        ]}
+        actions={
           <button
             onClick={() => navigate("/mock-interview/setup")}
-            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
+            className="px-5 py-2.5 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold transition-colors"
           >
-            New Interview
+            Start a new interview →
           </button>
-        </div>
+        }
+      />
 
-        <CollegeInterviewsSection />
+      <CollegeInterviewsSection />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <StatCard
-            label="Total Interviews"
-            value={stats?.totalInterviews || 0}
-            icon="🎯"
-            delay={0}
-          />
-          <StatCard
-            label="Completed"
-            value={stats?.completedInterviews || 0}
-            icon="✅"
-            delay={0.1}
-          />
-          <StatCard
-            label="Avg Score"
-            value={`${stats?.averageScore || 0}%`}
-            icon="📊"
-            delay={0.2}
-            scoreColor
-          />
-          <StatCard
-            label="Best Score"
-            value={`${stats?.bestScore || 0}%`}
-            icon="🏆"
-            delay={0.3}
-            scoreColor
-          />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-            >
-              <h2 className="text-lg font-semibold text-white mb-4">Interview History</h2>
-              {interviews.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-500 mb-4">No interviews yet</p>
-                  <button
-                    onClick={() => navigate("/mock-interview/setup")}
-                    className="px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium"
-                  >
-                    Start Your First Interview
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {interviews.slice(0, 10).map((interview: any) => (
-                    <div
-                      key={interview._id}
-                      onClick={() => navigate(`/mock-interview/result/${interview._id}`)}
-                      className="flex items-center justify-between bg-gray-700/30 rounded-xl px-4 py-3 hover:bg-gray-700/50 transition-colors cursor-pointer"
-                    >
-                      <div>
-                        <p className="text-white font-medium text-sm">{interview.jobRole}</p>
-                        <div className="flex gap-2 mt-1">
-                          <span className="text-[10px] px-2 py-0.5 bg-gray-600/50 rounded-full text-gray-400">
-                            {interview.interviewType}
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 bg-gray-600/50 rounded-full text-gray-400">
-                            {interview.difficulty}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className={`text-sm font-bold ${
-                          interview.overallScore >= 70 ? "text-emerald-400" : "text-yellow-400"
-                        }`}>
-                          {interview.overallScore || "—"}%
-                        </p>
-                        <p className="text-[10px] text-gray-500">
-                          {new Date(interview.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          </div>
-
-          <div>
-            <ScoreDistribution reports={reports} />
-          </div>
-        </div>
-
-        {progress && progress.points.length > 0 && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <div className="lg:col-span-2">
-              <ProgressCharts progress={progress} />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <Panel className="lg:col-span-2" kicker="// history[]" title="Interview history">
+          {interviews.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-subtle mb-4">No interviews yet.</p>
+              <button onClick={() => navigate("/mock-interview/setup")} className="px-5 py-2.5 rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-semibold">
+                Start your first interview
+              </button>
             </div>
-            {progress.weaknessMap && (
-              <WeaknessMapCard
-                map={progress.weaknessMap}
-                title="Recurring Weaknesses"
-                scope={`Across your last ${Math.min(10, progress.points.length)} interviews`}
-              />
-            )}
+          ) : (
+            <ul className="divide-y divide-line -my-2">
+              {interviews.slice(0, 10).map((interview: any) => (
+                <li key={interview._id}>
+                  <button
+                    onClick={() => navigate(`/mock-interview/result/${interview._id}`)}
+                    className="w-full flex items-center justify-between gap-4 py-3 px-2 -mx-2 rounded-lg text-left hover:bg-surface-2 transition-colors"
+                  >
+                    <span className="min-w-0">
+                      <span className="block text-sm font-medium text-fg truncate">{interview.jobRole}</span>
+                      <span className="mt-1 flex gap-1.5 font-mono text-[10px]">
+                        <span className="px-1.5 py-0.5 rounded bg-surface-2 border border-line text-muted">{interview.interviewType}</span>
+                        <span className="px-1.5 py-0.5 rounded bg-surface-2 border border-line text-muted">{interview.difficulty}</span>
+                      </span>
+                    </span>
+                    <span className="text-right shrink-0">
+                      <span className={`inline-block px-2 py-0.5 rounded-md text-sm font-bold tabular-nums ${scoreTone(interview.overallScore || 0)}`}>
+                        {interview.overallScore || "—"}%
+                      </span>
+                      <span className="block text-[10px] text-subtle mt-1">{new Date(interview.createdAt).toLocaleDateString()}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Panel>
+
+        <ScoreDistribution reports={reports} />
+      </div>
+
+      {progress && progress.points.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div className="lg:col-span-2">
+            <ProgressCharts progress={progress} />
+          </div>
+          {progress.weaknessMap && (
+            <WeaknessMapCard
+              map={progress.weaknessMap}
+              title="Recurring Weaknesses"
+              scope={`Across your last ${Math.min(10, progress.points.length)} interviews`}
+            />
+          )}
+        </div>
+      )}
+
+      <Panel kicker="// reports[]" title="Recent reports">
+        {reports.length === 0 ? (
+          <p className="text-subtle text-center py-4">No reports available yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {reports.slice(0, 6).map((report: any) => (
+              <FloatingCard key={report._id} intensity={6}>
+                <button
+                  onClick={() => navigate(`/mock-interview/result/${report._id}`)}
+                  className="w-full text-left rounded-xl p-4 bg-surface-2/60 border border-line hover:border-accent/40 transition-colors"
+                >
+                  <span className="flex items-center justify-between gap-2 mb-2">
+                    <span className="text-sm font-medium text-fg truncate">{report.jobRole}</span>
+                    <span className={`px-2 py-0.5 rounded-md text-sm font-bold tabular-nums ${scoreTone(report.overallScore || 0)}`}>{report.overallScore}%</span>
+                  </span>
+                  <span className="flex gap-1.5 font-mono text-[10px]">
+                    <span className="px-1.5 py-0.5 rounded bg-surface border border-line text-muted">{report.interviewType}</span>
+                    <span className="px-1.5 py-0.5 rounded bg-surface border border-line text-muted">{report.difficulty}</span>
+                  </span>
+                  <span className="block text-[10px] text-subtle mt-2">
+                    {new Date(report.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  </span>
+                </button>
+              </FloatingCard>
+            ))}
           </div>
         )}
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-        >
-          <h2 className="text-lg font-semibold text-white mb-4">Recent Reports</h2>
-          {reports.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No reports available yet</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {reports.slice(0, 6).map((report: any) => (
-                <motion.div
-                  key={report._id}
-                  whileHover={{ scale: 1.02 }}
-                  onClick={() => navigate(`/mock-interview/result/${report._id}`)}
-                  className="bg-gray-700/30 rounded-xl p-4 border border-gray-600/50 cursor-pointer hover:border-emerald-500/30 transition-all"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-white">{report.jobRole}</span>
-                    <span className={`text-sm font-bold ${
-                      report.overallScore >= 70 ? "text-emerald-400" : "text-yellow-400"
-                    }`}>
-                      {report.overallScore}%
-                    </span>
-                  </div>
-                  <div className="flex gap-1.5">
-                    <span className="text-[10px] px-2 py-0.5 bg-gray-600/50 rounded-full text-gray-400">
-                      {report.interviewType}
-                    </span>
-                    <span className="text-[10px] px-2 py-0.5 bg-gray-600/50 rounded-full text-gray-400">
-                      {report.difficulty}
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-gray-500 mt-2">
-                    {new Date(report.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </motion.div>
-      </motion.div>
+      </Panel>
     </div>
-  );
-}
-
-function StatCard({
-  label,
-  value,
-  icon,
-  delay,
-  scoreColor,
-}: {
-  label: string;
-  value: string | number;
-  icon: string;
-  delay: number;
-  scoreColor?: boolean;
-}) {
-  return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}>
-      <FloatingCard intensity={5} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-700">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-2xl">{icon}</span>
-        </div>
-        <p className={`text-2xl font-bold ${scoreColor ? "text-emerald-400" : "text-white"}`}>
-          {value}
-        </p>
-        <p className="text-xs text-gray-400 mt-0.5">{label}</p>
-      </FloatingCard>
-    </motion.div>
   );
 }
 
@@ -302,21 +210,15 @@ function ScoreDistribution({ reports }: { reports: any[] }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.4 }}
-      className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
-    >
-      <h2 className="text-lg font-semibold text-white mb-4">Score Distribution</h2>
+    <Panel kicker="// scores.histogram()" title="Score distribution">
       <div className="space-y-3">
         {Object.entries(colors).map(([key, color]) => (
           <div key={key}>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-gray-400 capitalize">{key.replace(/_/g, " ")}</span>
-              <span className="text-gray-500">{distribution[key]}</span>
+              <span className="text-muted capitalize">{key.replace(/_/g, " ")}</span>
+              <span className="text-subtle">{distribution[key]}</span>
             </div>
-            <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div className="h-2 bg-surface-2 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${(distribution[key] / total) * 100}%` }}
@@ -327,6 +229,6 @@ function ScoreDistribution({ reports }: { reports: any[] }) {
           </div>
         ))}
       </div>
-    </motion.div>
+    </Panel>
   );
 }

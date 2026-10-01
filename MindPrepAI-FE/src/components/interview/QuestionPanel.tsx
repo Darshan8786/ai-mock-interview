@@ -71,34 +71,34 @@ export function QuestionPanel({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 space-y-4"
+          className="bg-surface backdrop-blur-sm rounded-2xl p-8 border border-line space-y-4"
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="w-3 h-3 rounded-full bg-emerald-400 animate-bounce [animation-delay:-0.3s]" />
             <div className="w-3 h-3 rounded-full bg-emerald-400 animate-bounce [animation-delay:-0.15s]" />
             <div className="w-3 h-3 rounded-full bg-emerald-400 animate-bounce" />
-            <span className="text-gray-300 text-sm font-medium ml-1">
+            <span className="text-fg-2 text-sm font-medium ml-1">
               Generating your interview questions…
             </span>
           </div>
           <div className="space-y-3 animate-pulse">
-            <div className="h-4 bg-gray-700 rounded-full w-3/4" />
-            <div className="h-4 bg-gray-700 rounded-full w-full" />
-            <div className="h-4 bg-gray-700 rounded-full w-5/6" />
-            <div className="h-4 bg-gray-700 rounded-full w-2/3" />
+            <div className="h-4 bg-surface-2 rounded-full w-3/4" />
+            <div className="h-4 bg-surface-2 rounded-full w-full" />
+            <div className="h-4 bg-surface-2 rounded-full w-5/6" />
+            <div className="h-4 bg-surface-2 rounded-full w-2/3" />
           </div>
-          <p className="text-xs text-gray-500 mt-4">
+          <p className="text-xs text-subtle mt-4">
             Video proctoring is already active — you can stay in the camera frame while
             this loads.
           </p>
           {genTakingLong && (
-            <div className="border-t border-gray-700 pt-4 space-y-3">
-              <p className="text-amber-400 text-xs">
+            <div className="border-t border-line pt-4 space-y-3">
+              <p className="text-amber-700 dark:text-amber-400 text-xs">
                 This is taking longer than usual. The AI service may be busy.
               </p>
               <button
                 onClick={onRetry}
-                className="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-xl text-sm font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
+                className="px-4 py-2 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl text-sm font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
               >
                 Restart question generation
               </button>
@@ -114,7 +114,7 @@ export function QuestionPanel({
           className="bg-red-500/10 border border-red-500/30 rounded-2xl p-8 text-center space-y-4"
         >
           <div className="w-14 h-14 mx-auto rounded-full bg-red-500/20 flex items-center justify-center">
-            <svg className="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-7 h-7 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -124,15 +124,15 @@ export function QuestionPanel({
             </svg>
           </div>
           <div>
-            <h3 className="text-red-400 font-semibold text-lg">
+            <h3 className="text-red-600 dark:text-red-400 font-semibold text-lg">
               {errorKind === "auth"
                 ? "AI service authentication error"
                 : "Unable to generate the next question"}
             </h3>
-            <p className="text-gray-400 text-sm mt-1">
+            <p className="text-muted text-sm mt-1">
               {error || "Question generation did not complete."}
             </p>
-            <p className="text-gray-500 text-xs mt-2">
+            <p className="text-subtle text-xs mt-2">
               {errorKind === "auth"
                 ? "An administrator needs to check the AI provider key configured on the server."
                 : "Retry — the system falls back to a standard question set automatically. Video proctoring is unaffected."}
@@ -140,7 +140,7 @@ export function QuestionPanel({
           </div>
           <button
             onClick={onRetry}
-            className="px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
+            className="px-6 py-3 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all"
           >
             Retry
           </button>
@@ -160,16 +160,16 @@ export function QuestionPanel({
 
       {currentQuestion?.type && (
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">
+          <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-300 border border-blue-500/20">
             {currentQuestion.type}
           </span>
           {currentQuestion.marks != null && (
-            <span className="px-2.5 py-1 rounded-full bg-gray-700/60 text-gray-300 border border-gray-600">
+            <span className="px-2.5 py-1 rounded-full bg-surface-2 text-fg-2 border border-line-strong">
               {currentQuestion.marks} {currentQuestion.marks === 1 ? "mark" : "marks"}
             </span>
           )}
           {isCoding && currentQuestion.language && (
-            <span className="px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">
+            <span className="px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-300 border border-purple-500/20">
               {currentQuestion.language}
             </span>
           )}
@@ -177,7 +177,7 @@ export function QuestionPanel({
       )}
 
       {error && currentQuestion && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-600 dark:text-red-400 text-sm">
           {error}
         </div>
       )}
@@ -187,7 +187,7 @@ export function QuestionPanel({
           key={`answer-${questionIndex}`}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700"
+          className="bg-surface backdrop-blur-sm rounded-2xl p-6 border border-line"
         >
           {!isMcq && !isCoding && (
           <div className="flex gap-2 mb-4">
@@ -195,8 +195,8 @@ export function QuestionPanel({
               onClick={onVoiceToggle}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                 isRecording
-                  ? "bg-red-500/20 text-red-400 border border-red-500/50 animate-pulse"
-                  : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:border-gray-500"
+                  ? "bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/50 animate-pulse"
+                  : "bg-surface-2 text-fg-2 border border-line-strong hover:border-line-strong"
               }`}
             >
               {isRecording ? "🔴 Recording..." : "🎤 Voice"}
@@ -205,8 +205,8 @@ export function QuestionPanel({
               onClick={onSelectTextMode}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                 answerMode === "text" && !isRecording
-                  ? "bg-blue-500/20 text-blue-400 border border-blue-500/50"
-                  : "bg-gray-700/50 text-gray-300 border border-gray-600 hover:border-gray-500"
+                  ? "bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/50"
+                  : "bg-surface-2 text-fg-2 border border-line-strong hover:border-line-strong"
               }`}
             >
               ⌨️ Text
@@ -229,13 +229,13 @@ export function QuestionPanel({
                     onClick={() => onTextAnswerChange(letter)}
                     className={`w-full flex items-start gap-3 text-left px-4 py-3 rounded-xl border transition-all disabled:opacity-60 ${
                       selected
-                        ? "bg-emerald-500/15 border-emerald-500/60 text-white"
-                        : "bg-gray-700/40 border-gray-600 text-gray-200 hover:border-gray-500"
+                        ? "bg-emerald-500/15 border-emerald-500/60 text-fg"
+                        : "bg-surface-2 border-line-strong text-fg hover:border-line-strong"
                     }`}
                   >
                     <span
                       className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                        selected ? "bg-emerald-500 text-black" : "bg-gray-600 text-gray-200"
+                        selected ? "bg-emerald-500 text-black" : "bg-surface-2 text-fg-2"
                       }`}
                     >
                       {letter}
@@ -254,7 +254,7 @@ export function QuestionPanel({
               disabled={locked}
               spellCheck={!isCoding}
               placeholder={isCoding ? "Write your code here..." : "Type your answer here..."}
-              className={`w-full bg-gray-700/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors resize-none disabled:opacity-60 ${
+              className={`w-full bg-surface-2 border border-line-strong rounded-xl px-4 py-3 text-fg placeholder-subtle focus:outline-none focus:border-emerald-500 transition-colors resize-none disabled:opacity-60 ${
                 isCoding ? "h-64 font-mono text-sm" : "h-32"
               }`}
             />
@@ -263,14 +263,14 @@ export function QuestionPanel({
           {answerMode === "voice" && !isMcq && !isCoding && (
             <>
               {isRecording ? (
-                <div className="bg-gray-700/30 rounded-xl border border-gray-600 overflow-hidden">
-                  <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-600">
+                <div className="bg-surface-2 rounded-xl border border-line-strong overflow-hidden">
+                  <div className="flex items-center gap-3 px-4 py-2 border-b border-line-strong">
                     <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-                    <span className="text-gray-300 text-sm">
+                    <span className="text-fg-2 text-sm">
                       Recording... {recordingDuration}s
                     </span>
                     {isTranscribing && (
-                      <span className="text-emerald-400 text-sm ml-auto animate-pulse">
+                      <span className="text-emerald-700 dark:text-emerald-400 text-sm ml-auto animate-pulse">
                         Transcribing...
                       </span>
                     )}
@@ -280,12 +280,12 @@ export function QuestionPanel({
                     onChange={(e) => onTextAnswerChange(e.target.value)}
                     readOnly={isTranscribing}
                     placeholder="Your speech will appear here..."
-                    className="w-full h-32 bg-transparent px-4 py-3 text-white placeholder-gray-500 focus:outline-none resize-none"
+                    className="w-full h-32 bg-transparent px-4 py-3 text-fg placeholder-subtle focus:outline-none resize-none"
                   />
                 </div>
               ) : (
-                <div className="flex items-center gap-3 bg-gray-700/30 rounded-xl px-4 py-3">
-                  <span className="text-gray-300 text-sm">
+                <div className="flex items-center gap-3 bg-surface-2 rounded-xl px-4 py-3">
+                  <span className="text-fg-2 text-sm">
                     Click "Voice" to start, then speak your answer. It will be
                     transcribed into text.
                   </span>
@@ -298,14 +298,14 @@ export function QuestionPanel({
             <button
               onClick={onSubmit}
               disabled={loading || locked || (!textAnswer && !isRecording && answerMode === "text")}
-              className="flex-1 px-6 py-3 bg-emerald-500/20 text-emerald-400 rounded-xl font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all disabled:opacity-50"
+              className="flex-1 px-6 py-3 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl font-medium border border-emerald-500/30 hover:bg-emerald-500/30 transition-all disabled:opacity-50"
             >
               {loading ? "Submitting..." : "Submit Answer"}
             </button>
             <button
               onClick={onSkip}
               disabled={loading || locked}
-              className="px-6 py-3 bg-gray-700/50 text-gray-300 rounded-xl font-medium border border-gray-600 hover:border-gray-500 transition-all"
+              className="px-6 py-3 bg-surface-2 text-fg-2 rounded-xl font-medium border border-line-strong hover:border-line-strong transition-all"
             >
               Skip
             </button>

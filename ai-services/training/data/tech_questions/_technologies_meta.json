@@ -110,7 +110,7 @@
   },
   "SQL": {
     "file_key": "sql",
-    "total": 182,
+    "total": 194,
     "topics": [
       "Aggregate Functions",
       "Constraints",
@@ -136,17 +136,18 @@
       "Window Functions"
     ],
     "by_difficulty": {
-      "Easy": 39,
-      "Medium": 106,
-      "Hard": 37
+      "Easy": 41,
+      "Medium": 111,
+      "Hard": 42
     },
     "by_question_type": {
-      "Conceptual": 30,
+      "Conceptual": 31,
       "MCQ": 40,
       "Technical": 54,
-      "SQL Query": 47,
-      "Scenario Based": 10,
-      "Output Prediction": 1
+      "SQL Query": 51,
+      "Scenario Based": 11,
+      "Output Prediction": 3,
+      "Debugging": 4
     }
   },
   "C++": {
@@ -241,7 +242,7 @@
   },
   "HTML": {
     "file_key": "html",
-    "total": 182,
+    "total": 194,
     "topics": [
       "Accessibility (ARIA)",
       "Attributes",
@@ -261,18 +262,18 @@
       "Web Storage"
     ],
     "by_difficulty": {
-      "Easy": 55,
-      "Medium": 89,
-      "Hard": 38
+      "Easy": 58,
+      "Medium": 96,
+      "Hard": 40
     },
     "by_question_type": {
-      "MCQ": 53,
-      "Technical": 61,
-      "Conceptual": 36,
-      "Debugging": 9,
-      "Scenario Based": 20,
-      "Output Prediction": 2,
-      "Coding": 1
+      "MCQ": 55,
+      "Technical": 64,
+      "Conceptual": 37,
+      "Debugging": 12,
+      "Scenario Based": 21,
+      "Output Prediction": 3,
+      "Coding": 2
     }
   },
   "CSS": {
@@ -313,7 +314,7 @@
   },
   "JavaScript": {
     "file_key": "javascript",
-    "total": 167,
+    "total": 192,
     "topics": [
       "Arrays & Array Methods",
       "Arrow Functions",
@@ -344,17 +345,17 @@
       "this Keyword"
     ],
     "by_difficulty": {
-      "Easy": 28,
-      "Medium": 112,
-      "Hard": 27
+      "Easy": 33,
+      "Medium": 123,
+      "Hard": 36
     },
     "by_question_type": {
-      "MCQ": 37,
-      "Conceptual": 18,
-      "Technical": 53,
-      "Debugging": 8,
-      "Output Prediction": 19,
-      "Coding": 26,
+      "MCQ": 41,
+      "Conceptual": 19,
+      "Technical": 55,
+      "Debugging": 15,
+      "Output Prediction": 28,
+      "Coding": 28,
       "Scenario Based": 3,
       "Programming Problem": 3
     }

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-19T03:49:41Z",
-  "total": 2079,
+  "generated_at": "2026-09-29T14:28:30Z",
+  "total": 2128,
   "questions": [
     {
       "id": "python_001",
@@ -11064,6 +11064,204 @@
       "technology": "SQL"
     },
     {
+      "topic": "Window Functions",
+      "difficulty": "Medium",
+      "question_type": "SQL Query",
+      "question": "Write a query that ranks employees by salary within each department, giving tied salaries the same rank with no gaps.",
+      "schema_context": "CREATE TABLE employees (\n  id INT PRIMARY KEY,\n  name VARCHAR(100),\n  department_id INT,\n  salary DECIMAL(10,2)\n);",
+      "answer": "SELECT name, department_id, salary,\n       DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS salary_rank\nFROM employees;",
+      "explanation": "PARTITION BY restarts the ranking per department and ORDER BY salary DESC ranks the highest first. DENSE_RANK gives ties the same rank without skipping numbers (RANK would leave gaps, ROW_NUMBER would break ties arbitrarily).",
+      "keywords": [
+        "dense_rank",
+        "window function",
+        "partition by"
+      ],
+      "id": "sql_183",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Query-Writing Problems",
+      "difficulty": "Easy",
+      "question_type": "SQL Query",
+      "question": "Write a query to find email addresses that appear more than once in the users table.",
+      "schema_context": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  email VARCHAR(255)\n);",
+      "answer": "SELECT email, COUNT(*) AS occurrences\nFROM users\nGROUP BY email\nHAVING COUNT(*) > 1;",
+      "explanation": "GROUP BY collapses rows per email, and HAVING filters groups after aggregation (WHERE cannot reference COUNT).",
+      "keywords": [
+        "duplicates",
+        "group by",
+        "having"
+      ],
+      "id": "sql_184",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Query-Writing Problems",
+      "difficulty": "Medium",
+      "question_type": "SQL Query",
+      "question": "Write a query that returns the top 3 products by total revenue.",
+      "schema_context": "CREATE TABLE products (\n  id INT PRIMARY KEY,\n  name VARCHAR(100)\n);\nCREATE TABLE order_items (\n  order_id INT,\n  product_id INT REFERENCES products(id),\n  quantity INT,\n  unit_price DECIMAL(10,2)\n);",
+      "answer": "SELECT p.name, SUM(oi.quantity * oi.unit_price) AS revenue\nFROM order_items oi\nJOIN products p ON p.id = oi.product_id\nGROUP BY p.id, p.name\nORDER BY revenue DESC\nLIMIT 3;",
+      "explanation": "Revenue per line is quantity * unit_price; summing per product and sorting descending puts the best sellers first. Grouping by p.id as well as name avoids merging two products that share a name. (SQL Server uses TOP 3; standard SQL uses FETCH FIRST 3 ROWS ONLY.)",
+      "keywords": [
+        "sum",
+        "join",
+        "order by",
+        "limit"
+      ],
+      "id": "sql_185",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Joins",
+      "difficulty": "Hard",
+      "question_type": "Output Prediction",
+      "question": "Customer Asha has 2 orders and Ravi has none. What count does this query return for Ravi, and why?",
+      "code_snippet": "SELECT c.name, COUNT(*) AS order_count\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name;",
+      "answer": "Asha 2, Ravi 1",
+      "explanation": "The LEFT JOIN keeps Ravi as one row with NULLs in the order columns, and COUNT(*) counts rows, so Ravi gets 1. Use COUNT(o.id), which skips NULLs, to get the correct 0.",
+      "keywords": [
+        "left join",
+        "count",
+        "null"
+      ],
+      "id": "sql_186",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Filtering (WHERE)",
+      "difficulty": "Easy",
+      "question_type": "Debugging",
+      "question": "This query should list employees without a manager but always returns zero rows. Fix it.",
+      "buggy_code": "SELECT name FROM employees WHERE manager_id = NULL;",
+      "fixed_code": "SELECT name FROM employees WHERE manager_id IS NULL;",
+      "answer": "Comparing with `= NULL` never evaluates to true; use `IS NULL`",
+      "explanation": "In SQL's three-valued logic any comparison with NULL yields UNKNOWN, and WHERE keeps only rows where the condition is TRUE. IS NULL / IS NOT NULL are the correct NULL tests.",
+      "keywords": [
+        "null",
+        "is null",
+        "three-valued logic"
+      ],
+      "id": "sql_187",
+      "technology": "SQL"
+    },
+    {
+      "topic": "GROUP BY & HAVING",
+      "difficulty": "Medium",
+      "question_type": "Debugging",
+      "question": "This query fails in standard SQL (e.g. PostgreSQL) with a 'must appear in the GROUP BY clause' error. Why, and how do you fix it?",
+      "buggy_code": "SELECT department_id, name, AVG(salary)\nFROM employees\nGROUP BY department_id;",
+      "fixed_code": "SELECT department_id, AVG(salary) AS avg_salary\nFROM employees\nGROUP BY department_id;",
+      "answer": "`name` is neither grouped nor aggregated, so there is no single value to return for each department",
+      "explanation": "Each output row represents a whole department, which contains many names. Either remove `name`, aggregate it (e.g. STRING_AGG), or use a window function `AVG(salary) OVER (PARTITION BY department_id)` if per-employee rows are needed.",
+      "keywords": [
+        "group by",
+        "aggregate",
+        "error"
+      ],
+      "id": "sql_188",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Aggregate Functions",
+      "difficulty": "Medium",
+      "question_type": "Output Prediction",
+      "question": "The bonus column holds the values 100, NULL and 200. What does this query return?",
+      "code_snippet": "SELECT COUNT(*), COUNT(bonus), AVG(bonus) FROM employees;",
+      "answer": "3, 2, 150",
+      "explanation": "COUNT(*) counts all rows; COUNT(column) and AVG ignore NULLs, so the average is (100 + 200) / 2 = 150, not 300 / 3.",
+      "keywords": [
+        "count",
+        "avg",
+        "null"
+      ],
+      "id": "sql_189",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Subqueries",
+      "difficulty": "Hard",
+      "question_type": "Debugging",
+      "question": "This query should find customers with no orders, but it returns no rows once any order has a NULL customer_id. Fix it.",
+      "buggy_code": "SELECT name FROM customers\nWHERE id NOT IN (SELECT customer_id FROM orders);",
+      "fixed_code": "SELECT c.name FROM customers c\nWHERE NOT EXISTS (\n  SELECT 1 FROM orders o WHERE o.customer_id = c.id\n);",
+      "answer": "If the subquery returns a NULL, `id NOT IN (...)` evaluates to UNKNOWN for every row, so nothing is returned",
+      "explanation": "`x NOT IN (a, NULL)` means `x <> a AND x <> NULL`, and `x <> NULL` is UNKNOWN. NOT EXISTS is NULL-safe; alternatively filter `WHERE customer_id IS NOT NULL` inside the subquery.",
+      "keywords": [
+        "not in",
+        "not exists",
+        "null",
+        "subquery"
+      ],
+      "id": "sql_190",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Transactions & ACID",
+      "difficulty": "Hard",
+      "question_type": "Scenario Based",
+      "question": "Two users try to book the last available seat at the same moment. How would you make sure only one booking succeeds?",
+      "answer": "Make the claim atomic, e.g. `UPDATE seats SET booked_by = :user WHERE id = :seat AND booked_by IS NULL` and treat 0 affected rows as 'already taken', or lock the row with SELECT ... FOR UPDATE inside a transaction before checking and updating",
+      "explanation": "A separate 'check then update' lets both users read the seat as free before either writes (a race condition). A conditional UPDATE is checked and applied atomically by the database, and row locking serializes the competing transactions; a unique constraint on the booking is a further safeguard.",
+      "keywords": [
+        "race condition",
+        "row locking",
+        "for update",
+        "atomic update"
+      ],
+      "id": "sql_191",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Indexes",
+      "difficulty": "Hard",
+      "question_type": "Conceptual",
+      "question": "Why can a B-tree index on `name` help `WHERE name LIKE 'abc%'` but not `WHERE name LIKE '%abc'`?",
+      "answer": "A B-tree is ordered by the value's leading characters, so a known prefix maps to one contiguous range of the index; a leading wildcard gives no prefix to seek to, forcing a full scan",
+      "explanation": "'abc%' becomes a range scan from 'abc' up to the next prefix. For suffix or substring searches, options include a reverse-string index, trigram indexes (e.g. PostgreSQL pg_trgm), or full-text search.",
+      "keywords": [
+        "b-tree",
+        "like",
+        "index",
+        "wildcard"
+      ],
+      "id": "sql_192",
+      "technology": "SQL"
+    },
+    {
+      "topic": "SQL Injection & Security",
+      "difficulty": "Medium",
+      "question_type": "Debugging",
+      "question": "This Python login query is vulnerable to SQL injection. Fix it.",
+      "buggy_code": "query = \"SELECT * FROM users WHERE username = '\" + username + \"' AND password_hash = '\" + pw_hash + \"'\"\ncursor.execute(query)",
+      "fixed_code": "query = \"SELECT * FROM users WHERE username = %s AND password_hash = %s\"\ncursor.execute(query, (username, pw_hash))",
+      "answer": "User input is concatenated into the SQL string, so input like `' OR '1'='1' --` changes the query's logic; use a parameterized query",
+      "explanation": "With parameters the driver sends the values separately from the SQL text, so they are always treated as data, never as SQL syntax. The placeholder style (%s, ?, :name) depends on the database driver.",
+      "keywords": [
+        "sql injection",
+        "parameterized query",
+        "security"
+      ],
+      "id": "sql_193",
+      "technology": "SQL"
+    },
+    {
+      "topic": "Window Functions",
+      "difficulty": "Hard",
+      "question_type": "SQL Query",
+      "question": "Write a query that shows each day's sales along with a running total across all days.",
+      "schema_context": "CREATE TABLE daily_sales (\n  sale_date DATE PRIMARY KEY,\n  amount DECIMAL(10,2)\n);",
+      "answer": "SELECT sale_date, amount,\n       SUM(amount) OVER (ORDER BY sale_date\n                         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total\nFROM daily_sales\nORDER BY sale_date;",
+      "explanation": "SUM as a window function adds up every row from the first one to the current row in date order. Specifying the ROWS frame explicitly avoids the default RANGE frame, which would treat rows with equal ORDER BY values as peers.",
+      "keywords": [
+        "running total",
+        "window function",
+        "sum over"
+      ],
+      "id": "sql_194",
+      "technology": "SQL"
+    },
+    {
       "id": "cpp_001",
       "technology": "C++",
       "topic": "C++ Basics",
@@ -21909,6 +22107,226 @@
       "technology": "HTML"
     },
     {
+      "topic": "Forms & Input Types",
+      "difficulty": "Easy",
+      "question_type": "Debugging",
+      "question": "Clicking the 'Email' label doesn't focus the input, and screen readers don't announce the label. Fix the markup.",
+      "buggy_code": "<label>Email</label>\n<input type=\"email\" id=\"email\" name=\"email\">",
+      "fixed_code": "<label for=\"email\">Email</label>\n<input type=\"email\" id=\"email\" name=\"email\">",
+      "answer": "The label isn't associated with the input; add `for=\"email\"` matching the input's id (or wrap the input inside the label)",
+      "explanation": "An associated label gives the input its accessible name and enlarges the click target, since clicking the label focuses or toggles the control.",
+      "keywords": [
+        "label",
+        "for attribute",
+        "accessibility",
+        "forms"
+      ],
+      "id": "html_183",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Semantic HTML5",
+      "difficulty": "Easy",
+      "question_type": "MCQ",
+      "question": "Which element best represents a self-contained piece of content, such as a blog post, that would make sense on its own?",
+      "options": [
+        "<section>",
+        "<div>",
+        "<article>",
+        "<aside>"
+      ],
+      "correct_option": 2,
+      "answer": "<article>",
+      "explanation": "<article> is for independently distributable content. <section> groups thematically related content within a page, <aside> is tangential content, and <div> has no semantic meaning.",
+      "keywords": [
+        "article",
+        "semantic html",
+        "section"
+      ],
+      "id": "html_184",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Accessibility (ARIA)",
+      "difficulty": "Medium",
+      "question_type": "Debugging",
+      "question": "Keyboard users cannot activate this 'Submit' control. What is wrong, and what is the best fix?",
+      "buggy_code": "<div class=\"btn\" onclick=\"submitForm()\">Submit</div>",
+      "fixed_code": "<button type=\"submit\" class=\"btn\">Submit</button>",
+      "answer": "A div is not focusable and does not respond to Enter/Space or expose a button role; use a native <button>",
+      "explanation": "A native button provides focus, keyboard activation and the correct role for free. Patching the div would need role=\"button\", tabindex=\"0\" and key handlers, and still wouldn't submit the form natively; the first rule of ARIA is to prefer native elements.",
+      "keywords": [
+        "button",
+        "keyboard accessibility",
+        "aria",
+        "role"
+      ],
+      "id": "html_185",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Form Validation",
+      "difficulty": "Medium",
+      "question_type": "Technical",
+      "question": "Which built-in HTML attributes can validate a form field without JavaScript, and why is server-side validation still required?",
+      "answer": "Attributes such as `required`, `type=\"email\"`/`\"url\"`/`\"number\"`, `min`/`max`, `minlength`/`maxlength` and `pattern` let the browser block invalid submissions; the server must still validate because client-side checks can be bypassed",
+      "explanation": "Anyone can disable validation, edit the DOM, or send HTTP requests directly, so browser validation is only a usability feature. The server remains the security boundary.",
+      "keywords": [
+        "form validation",
+        "required",
+        "pattern",
+        "server-side validation"
+      ],
+      "id": "html_186",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Form Validation",
+      "difficulty": "Hard",
+      "question_type": "Scenario Based",
+      "question": "A signup form needs a 'Confirm password' field that shows the browser's native error bubble when it doesn't match. How would you implement this?",
+      "answer": "On input, compare the two fields and call `confirm.setCustomValidity('Passwords do not match')` when they differ or `setCustomValidity('')` when they match; the browser then blocks submission and shows the message",
+      "explanation": "A non-empty custom validity message marks the field invalid (matching the :invalid pseudo-class) and plugs into the native Constraint Validation API, so no custom error UI is needed. The message must be cleared with an empty string, otherwise the field stays invalid.",
+      "keywords": [
+        "setcustomvalidity",
+        "constraint validation api",
+        "form validation"
+      ],
+      "id": "html_187",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Best Practices",
+      "difficulty": "Medium",
+      "question_type": "MCQ",
+      "question": "What is the difference between `<script defer>` and `<script async>` for external scripts?",
+      "options": [
+        "defer runs scripts as soon as they download in any order; async runs them in document order after parsing",
+        "defer runs scripts in document order after HTML parsing finishes; async runs each script as soon as it downloads, in any order",
+        "Both block HTML parsing until the script runs",
+        "async only works for inline scripts"
+      ],
+      "correct_option": 1,
+      "answer": "defer runs scripts in document order after HTML parsing finishes; async runs each script as soon as it downloads, in any order",
+      "explanation": "Both download without blocking the parser. defer suits scripts that depend on the DOM or on each other; async suits independent scripts such as analytics.",
+      "keywords": [
+        "defer",
+        "async",
+        "script loading"
+      ],
+      "id": "html_188",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Meta Tags & SEO",
+      "difficulty": "Medium",
+      "question_type": "Debugging",
+      "question": "A responsive site looks tiny and zoomed-out on phones even though its media queries are correct. What is missing?",
+      "buggy_code": "<head>\n  <meta charset=\"UTF-8\">\n  <title>Shop</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>",
+      "fixed_code": "<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Shop</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>",
+      "answer": "The viewport meta tag is missing, so mobile browsers render at a desktop width (about 980px) and scale the page down",
+      "explanation": "`width=device-width` makes the layout viewport match the device width, so media queries see the real screen size; `initial-scale=1` sets the initial zoom level.",
+      "keywords": [
+        "viewport",
+        "meta tag",
+        "responsive design",
+        "mobile"
+      ],
+      "id": "html_189",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Multimedia",
+      "difficulty": "Hard",
+      "question_type": "Technical",
+      "question": "Why might `<video autoplay src=\"intro.mp4\">` not start playing, and how can you make an autoplaying background video work?",
+      "answer": "Browsers block autoplay with sound unless the user has interacted with the site; add `muted` (and `playsinline` for iOS), e.g. `<video autoplay muted loop playsinline>`",
+      "explanation": "Autoplay policies in Chrome, Safari and Firefox allow muted autoplay but restrict audible autoplay. Without playsinline, iOS may try to play the video fullscreen instead of inline.",
+      "keywords": [
+        "video",
+        "autoplay",
+        "muted",
+        "playsinline"
+      ],
+      "id": "html_190",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Tables",
+      "difficulty": "Medium",
+      "question_type": "Coding",
+      "question": "Write an accessible HTML table with a caption, a header row for Name/Subject/Marks, and a footer row whose 'Total' cell spans the first two columns.",
+      "starter_code": "<table>\n  <!-- your markup here -->\n</table>",
+      "expected_solution": "<table>\n  <caption>Exam results</caption>\n  <thead>\n    <tr><th scope=\"col\">Name</th><th scope=\"col\">Subject</th><th scope=\"col\">Marks</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Asha</td><td>Math</td><td>90</td></tr>\n    <tr><td>Ravi</td><td>Math</td><td>85</td></tr>\n  </tbody>\n  <tfoot>\n    <tr><th scope=\"row\" colspan=\"2\">Total</th><td>175</td></tr>\n  </tfoot>\n</table>",
+      "test_cases": [
+        {
+          "input": "Render the table in a browser",
+          "expected_output": "Caption 'Exam results' above a 3-column table; 'Total' spans the Name and Subject columns"
+        },
+        {
+          "input": "Inspect with a screen reader",
+          "expected_output": "Each data cell is announced with its column header (Name, Subject, Marks)"
+        }
+      ],
+      "answer": "Use <caption>, <thead> with <th scope=\"col\">, <tbody>, and a <tfoot> row with colspan=\"2\" on the Total cell",
+      "explanation": "caption gives the table an accessible name, th with scope links data cells to headers, and colspan merges cells horizontally. thead/tbody/tfoot give the table semantic structure.",
+      "keywords": [
+        "table",
+        "colspan",
+        "caption",
+        "scope"
+      ],
+      "id": "html_191",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Links & Navigation",
+      "difficulty": "Medium",
+      "question_type": "Technical",
+      "question": "Why is `rel=\"noopener noreferrer\"` recommended on links with `target=\"_blank\"`?",
+      "answer": "Without noopener, the opened page can access `window.opener` and redirect the original tab to a phishing page (reverse tabnabbing); noreferrer additionally stops the Referer header from being sent",
+      "explanation": "Modern browsers now treat target=\"_blank\" as implying noopener by default, but adding it explicitly protects older browsers and documents the intent. Use noreferrer only when you don't want the destination to see where the visitor came from.",
+      "keywords": [
+        "target blank",
+        "noopener",
+        "noreferrer",
+        "tabnabbing"
+      ],
+      "id": "html_192",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Web Storage",
+      "difficulty": "Medium",
+      "question_type": "Output Prediction",
+      "question": "What does this print, and why?",
+      "code_snippet": "localStorage.setItem('count', 1);\nconsole.log(typeof localStorage.getItem('count'));",
+      "answer": "string",
+      "explanation": "Web Storage stores only strings; non-string values are converted with String() when stored. Use JSON.stringify / JSON.parse (or Number()) to store and restore other types.",
+      "keywords": [
+        "localstorage",
+        "web storage",
+        "string"
+      ],
+      "id": "html_193",
+      "technology": "HTML"
+    },
+    {
+      "topic": "Best Practices",
+      "difficulty": "Easy",
+      "question_type": "Conceptual",
+      "question": "Why should every meaningful <img> have an `alt` attribute, and when should it be empty?",
+      "answer": "alt provides a text alternative for screen readers and for when the image fails to load; use `alt=\"\"` for purely decorative images so assistive technology skips them",
+      "explanation": "If alt is missing entirely, screen readers may read the file name instead. Good alt text describes the image's purpose in context, not just what it looks like.",
+      "keywords": [
+        "alt",
+        "img",
+        "accessibility"
+      ],
+      "id": "html_194",
+      "technology": "HTML"
+    },
+    {
       "id": "css_001",
       "technology": "CSS",
       "topic": "CSS Basics",
@@ -27975,6 +28393,467 @@
         }
       ],
       "id": "javascript_167",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Scope & Hoisting",
+      "difficulty": "Medium",
+      "question_type": "Output Prediction",
+      "question": "What does this code print, and why doesn't the first line throw an error?",
+      "code_snippet": "console.log(x);\nvar x = 5;\nconsole.log(x);",
+      "answer": "undefined\n5",
+      "explanation": "`var` declarations are hoisted to the top of their scope and initialized to `undefined`; only the assignment `x = 5` stays in place. So the first log sees the hoisted-but-unassigned variable, and the second sees 5.",
+      "keywords": [
+        "hoisting",
+        "var",
+        "undefined"
+      ],
+      "id": "javascript_168",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Scope & Hoisting",
+      "difficulty": "Hard",
+      "question_type": "Output Prediction",
+      "question": "Predict the output: how does hoisting treat a function declaration versus a function expression assigned to var?",
+      "code_snippet": "console.log(typeof hoisted);\nconsole.log(typeof notHoisted);\nfunction hoisted() {}\nvar notHoisted = function () {};",
+      "answer": "function\nundefined",
+      "explanation": "A function declaration is hoisted together with its body, so it is already a function on line 1. For `var notHoisted = function () {}` only the `var` binding is hoisted (as `undefined`); the function value is assigned when that line executes.",
+      "keywords": [
+        "hoisting",
+        "function declaration",
+        "function expression"
+      ],
+      "id": "javascript_169",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Scope & Hoisting",
+      "difficulty": "Medium",
+      "question_type": "MCQ",
+      "question": "What happens when this runs: `console.log(a); let a = 1;`?",
+      "options": [
+        "It prints undefined",
+        "It prints 1",
+        "It throws a ReferenceError",
+        "It prints null"
+      ],
+      "correct_option": 2,
+      "answer": "It throws a ReferenceError",
+      "explanation": "`let` and `const` bindings are hoisted but not initialized; accessing them before the declaration line is in the temporal dead zone (TDZ) and throws `ReferenceError: Cannot access 'a' before initialization`.",
+      "keywords": [
+        "let",
+        "temporal dead zone",
+        "referenceerror",
+        "hoisting"
+      ],
+      "id": "javascript_170",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "this Keyword",
+      "difficulty": "Medium",
+      "question_type": "Debugging",
+      "question": "This Timer never increments its own `seconds` property. Find and fix the bug.",
+      "buggy_code": "class Timer {\n  constructor() { this.seconds = 0; }\n  start() {\n    setInterval(function () {\n      this.seconds++;\n    }, 1000);\n  }\n}",
+      "fixed_code": "class Timer {\n  constructor() { this.seconds = 0; }\n  start() {\n    setInterval(() => {\n      this.seconds++;\n    }, 1000);\n  }\n}",
+      "answer": "The regular `function` callback gets its own `this` (not the Timer instance), so `this.seconds` refers to the wrong object",
+      "explanation": "A regular function's `this` is determined by how it is called, and setInterval does not call it with the Timer as receiver. An arrow function has no own `this` and captures it lexically from `start()`, where it is the Timer instance. `.bind(this)` would also work.",
+      "keywords": [
+        "this",
+        "arrow function",
+        "setinterval",
+        "callback"
+      ],
+      "id": "javascript_171",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Arrow Functions",
+      "difficulty": "Easy",
+      "question_type": "Debugging",
+      "question": "Why does `doubled` contain `[undefined, undefined, undefined]`? Fix it.",
+      "buggy_code": "const nums = [1, 2, 3];\nconst doubled = nums.map(n => { n * 2 });",
+      "fixed_code": "const nums = [1, 2, 3];\nconst doubled = nums.map(n => n * 2);",
+      "answer": "The arrow function uses a block body `{ ... }` without a `return`, so it returns undefined for every element",
+      "explanation": "Arrow functions only return implicitly with a concise (expression) body. With braces the body is a block, and `n * 2` is evaluated and discarded. Either drop the braces or write `{ return n * 2; }`.",
+      "keywords": [
+        "arrow function",
+        "implicit return",
+        "map"
+      ],
+      "id": "javascript_172",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Async/Await",
+      "difficulty": "Hard",
+      "question_type": "Debugging",
+      "question": "`total([1, 2, 3])` always resolves to 0 even though each price is positive. Find and fix the bug.",
+      "buggy_code": "async function total(ids) {\n  let sum = 0;\n  ids.forEach(async (id) => {\n    sum += await fetchPrice(id);\n  });\n  return sum;\n}",
+      "fixed_code": "async function total(ids) {\n  const prices = await Promise.all(ids.map((id) => fetchPrice(id)));\n  return prices.reduce((sum, p) => sum + p, 0);\n}",
+      "answer": "`forEach` does not await async callbacks, so `return sum` runs before any `fetchPrice` promise has resolved",
+      "explanation": "forEach ignores the promises its callback returns, so the loop finishes synchronously and `total` returns 0. Using `Promise.all` over `map` waits for all prices (in parallel); a `for...of` loop with `await` also works if sequential calls are required.",
+      "keywords": [
+        "async",
+        "await",
+        "foreach",
+        "promise.all"
+      ],
+      "id": "javascript_173",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Spread/Rest Operators",
+      "difficulty": "Hard",
+      "question_type": "Debugging",
+      "question": "After editing `copy`, the original object also changes. Explain the bug and fix it.",
+      "buggy_code": "const original = { user: { name: 'A' } };\nconst copy = { ...original };\ncopy.user.name = 'B';\nconsole.log(original.user.name); // 'B'",
+      "fixed_code": "const original = { user: { name: 'A' } };\nconst copy = structuredClone(original);\ncopy.user.name = 'B';\nconsole.log(original.user.name); // 'A'",
+      "answer": "Object spread makes a shallow copy, so `copy.user` and `original.user` are the same nested object",
+      "explanation": "Spread copies only the top-level properties; nested objects are copied by reference. `structuredClone` performs a deep copy (or you can spread each nested level you intend to modify: `{ ...original, user: { ...original.user } }`).",
+      "keywords": [
+        "spread",
+        "shallow copy",
+        "deep copy",
+        "structuredclone"
+      ],
+      "id": "javascript_174",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Spread/Rest Operators",
+      "difficulty": "Easy",
+      "question_type": "MCQ",
+      "question": "Inside `function sum(...nums) {}`, what is `nums` when called as `sum(1, 2, 3)`?",
+      "options": [
+        "The arguments object",
+        "A real Array [1, 2, 3]",
+        "The number 1",
+        "An array-like object without array methods"
+      ],
+      "correct_option": 1,
+      "answer": "A real Array [1, 2, 3]",
+      "explanation": "Rest parameters collect the remaining arguments into a genuine Array, so methods like `reduce` and `map` work directly, unlike the legacy array-like `arguments` object.",
+      "keywords": [
+        "rest parameters",
+        "arguments",
+        "array"
+      ],
+      "id": "javascript_175",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Spread/Rest Operators",
+      "difficulty": "Medium",
+      "question_type": "Output Prediction",
+      "question": "What does this destructuring with a rest element print?",
+      "code_snippet": "const [first, ...rest] = [10, 20, 30];\nconsole.log(first, rest);",
+      "answer": "10 [20, 30]",
+      "explanation": "The first element is bound to `first`, and the rest element collects all remaining elements into a new array.",
+      "keywords": [
+        "rest",
+        "destructuring",
+        "array"
+      ],
+      "id": "javascript_176",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Modules (import/export)",
+      "difficulty": "Easy",
+      "question_type": "MCQ",
+      "question": "How many default exports can a single ES module have?",
+      "options": [
+        "None",
+        "Exactly one at most",
+        "Up to two",
+        "Unlimited"
+      ],
+      "correct_option": 1,
+      "answer": "Exactly one at most",
+      "explanation": "A module can have any number of named exports but at most one `export default`; a second default export is a SyntaxError.",
+      "keywords": [
+        "export default",
+        "named export",
+        "es modules"
+      ],
+      "id": "javascript_177",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Modules (import/export)",
+      "difficulty": "Medium",
+      "question_type": "Conceptual",
+      "question": "What does it mean that ES module imports are 'live bindings'?",
+      "answer": "An imported name is a read-only view of the exporting module's variable, so if the exporting module later changes that variable, importers see the new value; importers cannot reassign it themselves",
+      "explanation": "Unlike CommonJS `require`, which copies the exported value at require time, ES module imports reference the original binding. Assigning to an imported name throws a TypeError because the binding is read-only in the importing module.",
+      "keywords": [
+        "live bindings",
+        "es modules",
+        "import",
+        "commonjs"
+      ],
+      "id": "javascript_178",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Modules (import/export)",
+      "difficulty": "Hard",
+      "question_type": "Technical",
+      "question": "What does dynamic `import()` return, and why is it useful for performance?",
+      "answer": "`import('./module.js')` returns a Promise that resolves to the module namespace object; it lets code load a module only when it is needed",
+      "explanation": "Because it is evaluated at runtime, bundlers split the imported module into a separate chunk (code splitting), so rarely used features such as a charting library or an admin page are not part of the initial bundle.",
+      "keywords": [
+        "dynamic import",
+        "code splitting",
+        "lazy loading",
+        "promise"
+      ],
+      "id": "javascript_179",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "JSON",
+      "difficulty": "Easy",
+      "question_type": "Output Prediction",
+      "question": "What does JSON.stringify output for an object containing undefined and a function?",
+      "code_snippet": "console.log(JSON.stringify({ a: undefined, b: 1, c: () => 1 }));",
+      "answer": "{\"b\":1}",
+      "explanation": "JSON has no representation for `undefined` or functions, so object properties with those values are omitted entirely during serialization.",
+      "keywords": [
+        "json.stringify",
+        "undefined",
+        "serialization"
+      ],
+      "id": "javascript_180",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "JSON",
+      "difficulty": "Medium",
+      "question_type": "Output Prediction",
+      "question": "What does JSON.stringify output for an array containing undefined, a function, and NaN?",
+      "code_snippet": "console.log(JSON.stringify([undefined, function () {}, NaN]));",
+      "answer": "[null,null,null]",
+      "explanation": "Inside arrays, unsupported values cannot simply be dropped without shifting indexes, so `undefined` and functions become `null`. `NaN` and `Infinity` are not valid JSON numbers and are also serialized as `null`.",
+      "keywords": [
+        "json.stringify",
+        "array",
+        "nan",
+        "null"
+      ],
+      "id": "javascript_181",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "JSON",
+      "difficulty": "Hard",
+      "question_type": "Debugging",
+      "question": "This deep clone crashes with 'getTime is not a function'. Why, and how do you fix it?",
+      "buggy_code": "const event = { name: 'launch', at: new Date() };\nconst clone = JSON.parse(JSON.stringify(event));\nconsole.log(clone.at.getTime());",
+      "fixed_code": "const event = { name: 'launch', at: new Date() };\nconst clone = structuredClone(event);\nconsole.log(clone.at.getTime());",
+      "answer": "The JSON round-trip turns the Date into an ISO string, so `clone.at` is a string with no `getTime` method",
+      "explanation": "`JSON.stringify` calls `Date.prototype.toJSON`, producing a string, and `JSON.parse` does not revive it. `structuredClone` preserves Date (as well as Map, Set and cyclic references); alternatively pass a reviver to `JSON.parse`.",
+      "keywords": [
+        "deep clone",
+        "json",
+        "date",
+        "structuredclone"
+      ],
+      "id": "javascript_182",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Higher-Order Functions",
+      "difficulty": "Medium",
+      "question_type": "Coding",
+      "question": "Write a higher-order function `once(fn)` that returns a function which calls `fn` only the first time and returns that first result on every later call.",
+      "starter_code": "function once(fn) {\n  // your code here\n}",
+      "expected_solution": "function once(fn) {\n  let called = false;\n  let result;\n  return function (...args) {\n    if (!called) {\n      called = true;\n      result = fn.apply(this, args);\n    }\n    return result;\n  };\n}",
+      "test_cases": [
+        {
+          "input": "const init = once(() => 42); init(); init();",
+          "expected_output": "42 both times; the inner function runs once"
+        },
+        {
+          "input": "const add = once((a, b) => a + b); add(1, 2); add(5, 5);",
+          "expected_output": "3 both times"
+        }
+      ],
+      "answer": "Keep a `called` flag and the first result in a closure; call `fn` only when the flag is false",
+      "explanation": "The returned function closes over `called` and `result`, so state persists between calls. A separate flag (instead of checking `result === undefined`) correctly handles functions that return undefined.",
+      "keywords": [
+        "higher-order function",
+        "closure",
+        "once"
+      ],
+      "id": "javascript_183",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Error Handling",
+      "difficulty": "Medium",
+      "question_type": "Output Prediction",
+      "question": "In what order are the lines printed when a try block returns and a finally block logs?",
+      "code_snippet": "function f() {\n  try {\n    return 'try';\n  } finally {\n    console.log('finally');\n  }\n}\nconsole.log(f());",
+      "answer": "finally\ntry",
+      "explanation": "The return value is computed, then the finally block runs before the function actually returns. Only after `f()` returns does the outer `console.log` print 'try'.",
+      "keywords": [
+        "try",
+        "finally",
+        "return"
+      ],
+      "id": "javascript_184",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Event Loop & Concurrency Model",
+      "difficulty": "Hard",
+      "question_type": "Output Prediction",
+      "question": "Predict the output order of synchronous code, a setTimeout callback, a promise callback, and a queueMicrotask callback.",
+      "code_snippet": "console.log('A');\nsetTimeout(() => console.log('B'), 0);\nPromise.resolve().then(() => console.log('C'));\nqueueMicrotask(() => console.log('D'));\nconsole.log('E');",
+      "answer": "A\nE\nC\nD\nB",
+      "explanation": "Synchronous code runs first (A, E). Then the microtask queue is drained in FIFO order: the `.then` callback (C) was queued before the queueMicrotask callback (D). The setTimeout callback is a macrotask and runs last (B).",
+      "keywords": [
+        "event loop",
+        "microtask",
+        "macrotask",
+        "queuemicrotask"
+      ],
+      "id": "javascript_185",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Events",
+      "difficulty": "Medium",
+      "question_type": "MCQ",
+      "question": "What is the difference between `event.preventDefault()` and `event.stopPropagation()`?",
+      "options": [
+        "They are aliases for the same method",
+        "preventDefault cancels the browser's default action; stopPropagation stops the event from reaching other elements",
+        "preventDefault stops bubbling; stopPropagation cancels form submission",
+        "Both remove the event listener"
+      ],
+      "correct_option": 1,
+      "answer": "preventDefault cancels the browser's default action; stopPropagation stops the event from reaching other elements",
+      "explanation": "For example, preventDefault on a form submit stops the page from navigating, but the event still bubbles to ancestors. stopPropagation stops bubbling/capturing but does not cancel the default action.",
+      "keywords": [
+        "preventdefault",
+        "stoppropagation",
+        "event bubbling"
+      ],
+      "id": "javascript_186",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "DOM Manipulation",
+      "difficulty": "Hard",
+      "question_type": "Technical",
+      "question": "Why should you use `textContent` instead of `innerHTML` when displaying user-provided text?",
+      "answer": "`innerHTML` parses the string as HTML, so user input containing markup such as `<img src=x onerror=...>` can run scripts (XSS); `textContent` inserts it as plain text",
+      "explanation": "With textContent the browser never interprets the string as markup, so special characters are shown literally. innerHTML should only be used with trusted or properly sanitized HTML.",
+      "keywords": [
+        "textcontent",
+        "innerhtml",
+        "xss",
+        "dom"
+      ],
+      "id": "javascript_187",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Data Types",
+      "difficulty": "Hard",
+      "question_type": "Output Prediction",
+      "question": "What does this line print?",
+      "code_snippet": "console.log(0.1 + 0.2 === 0.3, typeof NaN, [] + {});",
+      "answer": "false number [object Object]",
+      "explanation": "0.1 + 0.2 is 0.30000000000000004 in IEEE-754 floating point, so the comparison is false. NaN is a special numeric value, so typeof gives 'number'. `[] + {}` converts both to strings: '' + '[object Object]'.",
+      "keywords": [
+        "floating point",
+        "nan",
+        "type coercion"
+      ],
+      "id": "javascript_188",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Operators",
+      "difficulty": "Medium",
+      "question_type": "Output Prediction",
+      "question": "What does this comparison of null and undefined print?",
+      "code_snippet": "console.log(null == undefined, null === undefined, null == 0);",
+      "answer": "true false false",
+      "explanation": "Loose equality treats null and undefined as equal only to each other. Strict equality compares types, which differ. `null == 0` is false because null is not converted to a number in `==` comparisons (although `null >= 0` is true).",
+      "keywords": [
+        "loose equality",
+        "strict equality",
+        "null",
+        "undefined"
+      ],
+      "id": "javascript_189",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Arrays & Array Methods",
+      "difficulty": "Hard",
+      "question_type": "Coding",
+      "question": "Write a function `flatten(arr)` that fully flattens an arbitrarily nested array without using `Array.prototype.flat`.",
+      "starter_code": "function flatten(arr) {\n  // your code here\n}",
+      "expected_solution": "function flatten(arr) {\n  const result = [];\n  for (const item of arr) {\n    if (Array.isArray(item)) {\n      result.push(...flatten(item));\n    } else {\n      result.push(item);\n    }\n  }\n  return result;\n}",
+      "test_cases": [
+        {
+          "input": "flatten([1, [2, [3, [4]]], 5])",
+          "expected_output": "[1, 2, 3, 4, 5]"
+        },
+        {
+          "input": "flatten([])",
+          "expected_output": "[]"
+        }
+      ],
+      "answer": "Recurse into each element that is an array and push non-array elements directly",
+      "explanation": "Array.isArray distinguishes nested arrays from values; recursion handles any depth. For extremely deep nesting an explicit stack avoids call-stack limits.",
+      "keywords": [
+        "flatten",
+        "recursion",
+        "nested array"
+      ],
+      "id": "javascript_190",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Debugging",
+      "difficulty": "Easy",
+      "question_type": "Debugging",
+      "question": "This condition is always true no matter what `score` is. Fix it.",
+      "buggy_code": "let score = 3;\nif (score = 5) {\n  console.log('Perfect score!');\n}",
+      "fixed_code": "let score = 3;\nif (score === 5) {\n  console.log('Perfect score!');\n}",
+      "answer": "`=` is assignment, not comparison: it sets score to 5 and the condition evaluates to 5, which is truthy",
+      "explanation": "Use strict equality `===` for comparison. Linters (e.g. ESLint's no-cond-assign) catch this mistake automatically.",
+      "keywords": [
+        "assignment",
+        "comparison",
+        "strict equality"
+      ],
+      "id": "javascript_191",
+      "technology": "JavaScript"
+    },
+    {
+      "topic": "Debugging",
+      "difficulty": "Medium",
+      "question_type": "Debugging",
+      "question": "`['1', '2', '3'].map(parseInt)` returns `[1, NaN, NaN]`. Why, and how do you fix it?",
+      "buggy_code": "const nums = ['1', '2', '3'].map(parseInt);",
+      "fixed_code": "const nums = ['1', '2', '3'].map((s) => parseInt(s, 10));",
+      "answer": "`map` passes (element, index) and parseInt treats the index as the radix: parseInt('2', 1) and parseInt('3', 2) are NaN",
+      "explanation": "Radix 0 means 'auto' so the first element works, radix 1 is invalid, and '3' is not a valid base-2 digit. Wrapping parseInt so only the string (and an explicit radix) is passed fixes it; `.map(Number)` also works.",
+      "keywords": [
+        "parseint",
+        "map",
+        "radix"
+      ],
+      "id": "javascript_192",
       "technology": "JavaScript"
     },
     {

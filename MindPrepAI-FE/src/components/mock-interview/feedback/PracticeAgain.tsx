@@ -93,10 +93,10 @@ export function PracticeAgain({ interviewId, questionId, question, nextAttemptNu
       className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4"
     >
       <div className="flex items-center justify-between gap-3 mb-2">
-        <h5 className="text-sm font-semibold text-emerald-300">Practice — attempt {nextAttemptNumber}</h5>
-        <span className="text-[11px] text-gray-500">Your interview answer and score stay unchanged</span>
+        <h5 className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Practice — attempt {nextAttemptNumber}</h5>
+        <span className="text-[11px] text-subtle">Your interview answer and score stay unchanged</span>
       </div>
-      <p className="text-sm text-white mb-3 leading-relaxed">{question}</p>
+      <p className="text-sm text-fg mb-3 leading-relaxed">{question}</p>
 
       <div className="flex gap-2 mb-2">
         {micSupported && (
@@ -106,8 +106,8 @@ export function PracticeAgain({ interviewId, questionId, question, nextAttemptNu
             disabled={busy}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
               mic.isRecording
-                ? "bg-red-500/20 text-red-300 border-red-500/50 animate-pulse"
-                : "bg-gray-700/50 text-gray-300 border-gray-600 hover:border-gray-500"
+                ? "bg-red-500/20 text-red-600 dark:text-red-300 border-red-500/50 animate-pulse"
+                : "bg-surface-2 text-fg-2 border-line-strong hover:border-line-strong"
             }`}
           >
             {mic.isRecording ? `🔴 Stop (${mic.recordingDuration}s)` : "🎤 Speak your answer"}
@@ -121,8 +121,8 @@ export function PracticeAgain({ interviewId, questionId, question, nextAttemptNu
           }}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium border ${
             mode === "text" && !mic.isRecording
-              ? "bg-blue-500/20 text-blue-300 border-blue-500/50"
-              : "bg-gray-700/50 text-gray-300 border-gray-600"
+              ? "bg-blue-500/20 text-blue-600 dark:text-blue-300 border-blue-500/50"
+              : "bg-surface-2 text-fg-2 border-line-strong"
           }`}
         >
           ⌨️ Type
@@ -137,28 +137,28 @@ export function PracticeAgain({ interviewId, questionId, question, nextAttemptNu
         maxLength={20000}
         aria-label="Your answer"
         placeholder={mode === "voice" ? "Your speech will appear here…" : "Type your improved answer here…"}
-        className="w-full bg-gray-800/70 border border-gray-600 rounded-xl px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 resize-y disabled:opacity-60"
+        className="w-full bg-surface border border-line-strong rounded-xl px-3 py-2.5 text-sm text-fg placeholder-subtle focus:outline-none focus:border-emerald-500 resize-y disabled:opacity-60"
       />
       {mic.isRecording && !mic.transcript && (
-        <p className="text-[11px] text-gray-500 mt-1">
+        <p className="text-[11px] text-subtle mt-1">
           Listening… if your browser has no speech recognition the text box stays empty; you can type instead.
         </p>
       )}
 
-      {error && <p className="mt-2 text-sm text-red-400" role="alert">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">{error}</p>}
 
       <div className="flex gap-2 mt-3">
         <button
           onClick={submit}
           disabled={busy || !text.trim()}
-          className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-300 font-medium border border-emerald-500/30 hover:bg-emerald-500/30 disabled:opacity-50 transition-all"
+          className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-medium border border-emerald-500/30 hover:bg-emerald-500/30 disabled:opacity-50 transition-all"
         >
           {busy ? "Evaluating…" : "Submit attempt"}
         </button>
         <button
           onClick={onCancel}
           disabled={busy}
-          className="px-4 py-2.5 rounded-xl bg-gray-700/50 text-gray-300 border border-gray-600 hover:border-gray-500 disabled:opacity-50"
+          className="px-4 py-2.5 rounded-xl bg-surface-2 text-fg-2 border border-line-strong hover:border-line-strong disabled:opacity-50"
         >
           Cancel
         </button>

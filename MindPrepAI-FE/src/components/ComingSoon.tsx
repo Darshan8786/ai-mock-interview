@@ -10,7 +10,7 @@ export function ComingSoon ({image, text}: ComingSoonProps) {
         lg:h-60 md:w-100 
         mr-20
       ">
-        <div className="text-white flex justify-center text-2xl font-bold">{text}</div>
+        <div className="text-fg flex justify-center text-2xl font-bold">{text}</div>
         <div className="flex justify-center mt-4 "><img src={image} alt={text} className="h-38 rounded-lg w-200"/></div>
     </div>
 }

@@ -19,10 +19,10 @@ function AtsBar({ score }: { score: number }) {
     score >= 75 ? "bg-indigo-500" : score >= 50 ? "bg-violet-500" : "bg-red-500";
   return (
     <div className="flex items-center gap-2 min-w-[120px]">
-      <div className="flex-1 h-1.5 bg-slate-50 rounded-full overflow-hidden">
+      <div className="flex-1 h-1.5 bg-surface-2 rounded-full overflow-hidden">
         <div className={`h-full ${color} rounded-full`} style={{ width: `${score}%` }} />
       </div>
-      <span className="text-xs text-slate-700 w-9 text-right">{score}%</span>
+      <span className="text-xs text-fg-2 w-9 text-right">{score}%</span>
     </div>
   );
 }
@@ -106,28 +106,28 @@ export function ResumeManagement() {
             renderRow={(r) => (
               <>
                 <td className="py-3 px-4">
-                  <p className="text-slate-900 font-medium">{r.studentName}</p>
-                  <p className="text-xs text-slate-500">{r.studentEmail}</p>
+                  <p className="text-fg font-medium">{r.studentName}</p>
+                  <p className="text-xs text-muted">{r.studentEmail}</p>
                 </td>
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-2">
-                    <svg className="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <div>
-                      <p className="text-slate-700 text-xs">{r.fileName}</p>
-                      <p className="text-slate-500 text-xs">{r.fileSize} · {new Date(r.uploadedAt).toLocaleDateString()}</p>
+                      <p className="text-fg-2 text-xs">{r.fileName}</p>
+                      <p className="text-muted text-xs">{r.fileSize} · {new Date(r.uploadedAt).toLocaleDateString()}</p>
                     </div>
                   </div>
                 </td>
                 <td className="py-3 px-4">
                   <AtsBar score={r.atsScore} />
                 </td>
-                <td className="py-3 px-4 text-slate-700">{r.topRole}</td>
+                <td className="py-3 px-4 text-fg-2">{r.topRole}</td>
                 <td className="py-3 px-4">
                   <div className="flex flex-wrap gap-1">
                     {r.skills.slice(0, 3).map((s) => (
-                      <span key={s} className="text-xs bg-slate-50 text-slate-700 border border-slate-200 rounded-full px-2 py-0.5">
+                      <span key={s} className="text-xs bg-surface-2 text-fg-2 border border-line rounded-full px-2 py-0.5">
                         {s}
                       </span>
                     ))}
@@ -143,12 +143,12 @@ export function ResumeManagement() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-9 0a9 9 0 1118 0 9 9 0 01-18 0z" />
                       </svg>
                     </IconButton>
-                    <IconButton title="Download" onClick={() => {}} className="hover:text-indigo-700">
+                    <IconButton title="Download" onClick={() => {}} className="hover:text-indigo-700 hover:dark:text-indigo-400">
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                       </svg>
                     </IconButton>
-                    <IconButton title="Delete" onClick={() => setDeleting(r)} className="hover:text-red-700 hover:bg-red-100">
+                    <IconButton title="Delete" onClick={() => setDeleting(r)} className="hover:text-red-700 hover:dark:text-red-400 hover:bg-red-100 hover:dark:bg-red-500/15">
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
@@ -167,18 +167,18 @@ export function ResumeManagement() {
           <div className="space-y-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-900 font-semibold text-lg">{selected.studentName}</p>
-                <p className="text-slate-500 text-sm">{selected.fileName}</p>
+                <p className="text-fg font-semibold text-lg">{selected.studentName}</p>
+                <p className="text-muted text-sm">{selected.fileName}</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-slate-900">{selected.atsScore}%</p>
-                <p className="text-xs text-slate-500">ATS Score</p>
+                <p className="text-3xl font-bold text-fg">{selected.atsScore}%</p>
+                <p className="text-xs text-muted">ATS Score</p>
               </div>
             </div>
 
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-2 font-medium">ATS Score Breakdown</p>
-              <div className="h-3 bg-slate-50 rounded-full overflow-hidden">
+              <p className="text-xs text-muted uppercase tracking-wider mb-2 font-medium">ATS Score Breakdown</p>
+              <div className="h-3 bg-surface-2 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${
                     selected.atsScore >= 75 ? "bg-indigo-500" : selected.atsScore >= 50 ? "bg-violet-500" : "bg-red-500"
@@ -190,20 +190,20 @@ export function ResumeManagement() {
 
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-2 font-medium">Detected Skills</p>
+                <p className="text-xs text-muted uppercase tracking-wider mb-2 font-medium">Detected Skills</p>
                 <div className="flex flex-wrap gap-1.5">
                   {selected.skills.map((s) => (
-                    <span key={s} className="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full px-2.5 py-0.5">
+                    <span key={s} className="text-xs bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30 rounded-full px-2.5 py-0.5">
                       {s}
                     </span>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-2 font-medium">Missing Keywords</p>
+                <p className="text-xs text-muted uppercase tracking-wider mb-2 font-medium">Missing Keywords</p>
                 <div className="flex flex-wrap gap-1.5">
                   {selected.missingKeywords.map((s) => (
-                    <span key={s} className="text-xs bg-red-50 text-red-700 border border-red-200 rounded-full px-2.5 py-0.5">
+                    <span key={s} className="text-xs bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-500/30 rounded-full px-2.5 py-0.5">
                       {s}
                     </span>
                   ))}
@@ -211,9 +211,9 @@ export function ResumeManagement() {
               </div>
             </div>
 
-            <div className="bg-slate-50 rounded-xl p-4 text-sm">
-              <p className="text-slate-500 mb-1">Top Role Match</p>
-              <p className="text-slate-900 font-semibold">{selected.topRole}</p>
+            <div className="bg-surface-2 rounded-xl p-4 text-sm">
+              <p className="text-muted mb-1">Top Role Match</p>
+              <p className="text-fg font-semibold">{selected.topRole}</p>
             </div>
           </div>
         )}
@@ -232,9 +232,9 @@ export function ResumeManagement() {
           </>
         }
       >
-        <p className="text-slate-700 text-sm">
-          Delete resume <span className="text-slate-900 font-semibold">{deleting?.fileName}</span> for{" "}
-          <span className="text-slate-900 font-semibold">{deleting?.studentName}</span>? This cannot be undone.
+        <p className="text-fg-2 text-sm">
+          Delete resume <span className="text-fg font-semibold">{deleting?.fileName}</span> for{" "}
+          <span className="text-fg font-semibold">{deleting?.studentName}</span>? This cannot be undone.
         </p>
       </Modal>
     </div>

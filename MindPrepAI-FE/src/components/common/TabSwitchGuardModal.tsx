@@ -48,8 +48,8 @@ export function TabSwitchGuardModal({
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl ${
               terminated
-                ? "bg-red-950/95 border-red-500/60 shadow-red-500/20"
-                : "bg-gray-900/95 border-yellow-500/50 shadow-yellow-500/10"
+                ? "bg-red-500/10 border-red-500/60 shadow-red-500/20"
+                : "bg-surface border-yellow-500/50 shadow-yellow-500/10"
             }`}
           >
             <div className="flex items-center gap-3 mb-4">
@@ -59,7 +59,7 @@ export function TabSwitchGuardModal({
                 }`}
               >
                 <svg
-                  className={`w-6 h-6 ${terminated ? "text-red-400" : "text-yellow-400"}`}
+                  className={`w-6 h-6 ${terminated ? "text-red-600 dark:text-red-400" : "text-yellow-700 dark:text-yellow-400"}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -72,22 +72,22 @@ export function TabSwitchGuardModal({
                   />
                 </svg>
               </div>
-              <h2 className={`text-lg font-bold tracking-wide ${terminated ? "text-red-300" : "text-yellow-300"}`}>
+              <h2 className={`text-lg font-bold tracking-wide ${terminated ? "text-red-600 dark:text-red-300" : "text-yellow-700 dark:text-yellow-300"}`}>
                 {terminated ? "TEST TERMINATED" : "TAB SWITCH WARNING"}
               </h2>
             </div>
 
             {terminated ? (
               <div className="space-y-2 mb-6">
-                <p className="text-white font-medium">You switched tabs {maxCount} times.</p>
-                <p className="text-gray-300 text-sm">Your test has been terminated.</p>
+                <p className="text-fg font-medium">You switched tabs {maxCount} times.</p>
+                <p className="text-fg-2 text-sm">Your test has been terminated.</p>
               </div>
             ) : (
               <div className="space-y-3 mb-6">
-                <p className="text-sm font-semibold text-yellow-300">
+                <p className="text-sm font-semibold text-yellow-700 dark:text-yellow-300">
                   Warning {warningCount}/{maxCount}
                 </p>
-                <p className="text-white text-sm">
+                <p className="text-fg text-sm">
                   {WARNING_COPY[warningCount] ?? `Warning ${warningCount}/${maxCount}: Leaving the test window is not allowed.`}
                 </p>
               </div>
@@ -97,8 +97,8 @@ export function TabSwitchGuardModal({
               onClick={terminated ? onGoToResult : onReturn}
               className={`w-full px-4 py-3 rounded-xl font-semibold transition-all ${
                 terminated
-                  ? "bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500/30"
-                  : "bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 hover:bg-yellow-500/30"
+                  ? "bg-red-500/20 text-red-600 dark:text-red-300 border border-red-500/40 hover:bg-red-500/30"
+                  : "bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border border-yellow-500/40 hover:bg-yellow-500/30"
               }`}
             >
               {terminated ? "Go to Result" : "Return to Test"}

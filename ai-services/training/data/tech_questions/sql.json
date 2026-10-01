@@ -2970,5 +2970,203 @@
     "schema_context": "CREATE TABLE employees (id INT, name VARCHAR(100), salary DECIMAL(10,2));",
     "id": "sql_182",
     "technology": "SQL"
+  },
+  {
+    "topic": "Window Functions",
+    "difficulty": "Medium",
+    "question_type": "SQL Query",
+    "question": "Write a query that ranks employees by salary within each department, giving tied salaries the same rank with no gaps.",
+    "schema_context": "CREATE TABLE employees (\n  id INT PRIMARY KEY,\n  name VARCHAR(100),\n  department_id INT,\n  salary DECIMAL(10,2)\n);",
+    "answer": "SELECT name, department_id, salary,\n       DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS salary_rank\nFROM employees;",
+    "explanation": "PARTITION BY restarts the ranking per department and ORDER BY salary DESC ranks the highest first. DENSE_RANK gives ties the same rank without skipping numbers (RANK would leave gaps, ROW_NUMBER would break ties arbitrarily).",
+    "keywords": [
+      "dense_rank",
+      "window function",
+      "partition by"
+    ],
+    "id": "sql_183",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query-Writing Problems",
+    "difficulty": "Easy",
+    "question_type": "SQL Query",
+    "question": "Write a query to find email addresses that appear more than once in the users table.",
+    "schema_context": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  email VARCHAR(255)\n);",
+    "answer": "SELECT email, COUNT(*) AS occurrences\nFROM users\nGROUP BY email\nHAVING COUNT(*) > 1;",
+    "explanation": "GROUP BY collapses rows per email, and HAVING filters groups after aggregation (WHERE cannot reference COUNT).",
+    "keywords": [
+      "duplicates",
+      "group by",
+      "having"
+    ],
+    "id": "sql_184",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Query-Writing Problems",
+    "difficulty": "Medium",
+    "question_type": "SQL Query",
+    "question": "Write a query that returns the top 3 products by total revenue.",
+    "schema_context": "CREATE TABLE products (\n  id INT PRIMARY KEY,\n  name VARCHAR(100)\n);\nCREATE TABLE order_items (\n  order_id INT,\n  product_id INT REFERENCES products(id),\n  quantity INT,\n  unit_price DECIMAL(10,2)\n);",
+    "answer": "SELECT p.name, SUM(oi.quantity * oi.unit_price) AS revenue\nFROM order_items oi\nJOIN products p ON p.id = oi.product_id\nGROUP BY p.id, p.name\nORDER BY revenue DESC\nLIMIT 3;",
+    "explanation": "Revenue per line is quantity * unit_price; summing per product and sorting descending puts the best sellers first. Grouping by p.id as well as name avoids merging two products that share a name. (SQL Server uses TOP 3; standard SQL uses FETCH FIRST 3 ROWS ONLY.)",
+    "keywords": [
+      "sum",
+      "join",
+      "order by",
+      "limit"
+    ],
+    "id": "sql_185",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Joins",
+    "difficulty": "Hard",
+    "question_type": "Output Prediction",
+    "question": "Customer Asha has 2 orders and Ravi has none. What count does this query return for Ravi, and why?",
+    "code_snippet": "SELECT c.name, COUNT(*) AS order_count\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.id\nGROUP BY c.name;",
+    "answer": "Asha 2, Ravi 1",
+    "explanation": "The LEFT JOIN keeps Ravi as one row with NULLs in the order columns, and COUNT(*) counts rows, so Ravi gets 1. Use COUNT(o.id), which skips NULLs, to get the correct 0.",
+    "keywords": [
+      "left join",
+      "count",
+      "null"
+    ],
+    "id": "sql_186",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Filtering (WHERE)",
+    "difficulty": "Easy",
+    "question_type": "Debugging",
+    "question": "This query should list employees without a manager but always returns zero rows. Fix it.",
+    "buggy_code": "SELECT name FROM employees WHERE manager_id = NULL;",
+    "fixed_code": "SELECT name FROM employees WHERE manager_id IS NULL;",
+    "answer": "Comparing with `= NULL` never evaluates to true; use `IS NULL`",
+    "explanation": "In SQL's three-valued logic any comparison with NULL yields UNKNOWN, and WHERE keeps only rows where the condition is TRUE. IS NULL / IS NOT NULL are the correct NULL tests.",
+    "keywords": [
+      "null",
+      "is null",
+      "three-valued logic"
+    ],
+    "id": "sql_187",
+    "technology": "SQL"
+  },
+  {
+    "topic": "GROUP BY & HAVING",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "question": "This query fails in standard SQL (e.g. PostgreSQL) with a 'must appear in the GROUP BY clause' error. Why, and how do you fix it?",
+    "buggy_code": "SELECT department_id, name, AVG(salary)\nFROM employees\nGROUP BY department_id;",
+    "fixed_code": "SELECT department_id, AVG(salary) AS avg_salary\nFROM employees\nGROUP BY department_id;",
+    "answer": "`name` is neither grouped nor aggregated, so there is no single value to return for each department",
+    "explanation": "Each output row represents a whole department, which contains many names. Either remove `name`, aggregate it (e.g. STRING_AGG), or use a window function `AVG(salary) OVER (PARTITION BY department_id)` if per-employee rows are needed.",
+    "keywords": [
+      "group by",
+      "aggregate",
+      "error"
+    ],
+    "id": "sql_188",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Aggregate Functions",
+    "difficulty": "Medium",
+    "question_type": "Output Prediction",
+    "question": "The bonus column holds the values 100, NULL and 200. What does this query return?",
+    "code_snippet": "SELECT COUNT(*), COUNT(bonus), AVG(bonus) FROM employees;",
+    "answer": "3, 2, 150",
+    "explanation": "COUNT(*) counts all rows; COUNT(column) and AVG ignore NULLs, so the average is (100 + 200) / 2 = 150, not 300 / 3.",
+    "keywords": [
+      "count",
+      "avg",
+      "null"
+    ],
+    "id": "sql_189",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Subqueries",
+    "difficulty": "Hard",
+    "question_type": "Debugging",
+    "question": "This query should find customers with no orders, but it returns no rows once any order has a NULL customer_id. Fix it.",
+    "buggy_code": "SELECT name FROM customers\nWHERE id NOT IN (SELECT customer_id FROM orders);",
+    "fixed_code": "SELECT c.name FROM customers c\nWHERE NOT EXISTS (\n  SELECT 1 FROM orders o WHERE o.customer_id = c.id\n);",
+    "answer": "If the subquery returns a NULL, `id NOT IN (...)` evaluates to UNKNOWN for every row, so nothing is returned",
+    "explanation": "`x NOT IN (a, NULL)` means `x <> a AND x <> NULL`, and `x <> NULL` is UNKNOWN. NOT EXISTS is NULL-safe; alternatively filter `WHERE customer_id IS NOT NULL` inside the subquery.",
+    "keywords": [
+      "not in",
+      "not exists",
+      "null",
+      "subquery"
+    ],
+    "id": "sql_190",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Transactions & ACID",
+    "difficulty": "Hard",
+    "question_type": "Scenario Based",
+    "question": "Two users try to book the last available seat at the same moment. How would you make sure only one booking succeeds?",
+    "answer": "Make the claim atomic, e.g. `UPDATE seats SET booked_by = :user WHERE id = :seat AND booked_by IS NULL` and treat 0 affected rows as 'already taken', or lock the row with SELECT ... FOR UPDATE inside a transaction before checking and updating",
+    "explanation": "A separate 'check then update' lets both users read the seat as free before either writes (a race condition). A conditional UPDATE is checked and applied atomically by the database, and row locking serializes the competing transactions; a unique constraint on the booking is a further safeguard.",
+    "keywords": [
+      "race condition",
+      "row locking",
+      "for update",
+      "atomic update"
+    ],
+    "id": "sql_191",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Indexes",
+    "difficulty": "Hard",
+    "question_type": "Conceptual",
+    "question": "Why can a B-tree index on `name` help `WHERE name LIKE 'abc%'` but not `WHERE name LIKE '%abc'`?",
+    "answer": "A B-tree is ordered by the value's leading characters, so a known prefix maps to one contiguous range of the index; a leading wildcard gives no prefix to seek to, forcing a full scan",
+    "explanation": "'abc%' becomes a range scan from 'abc' up to the next prefix. For suffix or substring searches, options include a reverse-string index, trigram indexes (e.g. PostgreSQL pg_trgm), or full-text search.",
+    "keywords": [
+      "b-tree",
+      "like",
+      "index",
+      "wildcard"
+    ],
+    "id": "sql_192",
+    "technology": "SQL"
+  },
+  {
+    "topic": "SQL Injection & Security",
+    "difficulty": "Medium",
+    "question_type": "Debugging",
+    "question": "This Python login query is vulnerable to SQL injection. Fix it.",
+    "buggy_code": "query = \"SELECT * FROM users WHERE username = '\" + username + \"' AND password_hash = '\" + pw_hash + \"'\"\ncursor.execute(query)",
+    "fixed_code": "query = \"SELECT * FROM users WHERE username = %s AND password_hash = %s\"\ncursor.execute(query, (username, pw_hash))",
+    "answer": "User input is concatenated into the SQL string, so input like `' OR '1'='1' --` changes the query's logic; use a parameterized query",
+    "explanation": "With parameters the driver sends the values separately from the SQL text, so they are always treated as data, never as SQL syntax. The placeholder style (%s, ?, :name) depends on the database driver.",
+    "keywords": [
+      "sql injection",
+      "parameterized query",
+      "security"
+    ],
+    "id": "sql_193",
+    "technology": "SQL"
+  },
+  {
+    "topic": "Window Functions",
+    "difficulty": "Hard",
+    "question_type": "SQL Query",
+    "question": "Write a query that shows each day's sales along with a running total across all days.",
+    "schema_context": "CREATE TABLE daily_sales (\n  sale_date DATE PRIMARY KEY,\n  amount DECIMAL(10,2)\n);",
+    "answer": "SELECT sale_date, amount,\n       SUM(amount) OVER (ORDER BY sale_date\n                         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total\nFROM daily_sales\nORDER BY sale_date;",
+    "explanation": "SUM as a window function adds up every row from the first one to the current row in date order. Specifying the ROWS frame explicitly avoids the default RANGE frame, which would treat rows with equal ORDER BY values as peers.",
+    "keywords": [
+      "running total",
+      "window function",
+      "sum over"
+    ],
+    "id": "sql_194",
+    "technology": "SQL"
   }
 ]

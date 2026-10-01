@@ -34,30 +34,30 @@ export function AptitudeProgress() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 flex items-center justify-center">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
         <div className="animate-spin w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 py-10 px-4">
+    <div className="min-h-[calc(100vh-4rem)] py-10 px-4">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-white">📈 My Aptitude Progress</h1>
-            <p className="text-gray-400 text-sm mt-1">Your no-repeat bank walkthrough, at a glance.</p>
+            <h1 className="text-2xl font-bold text-fg">📈 My Aptitude Progress</h1>
+            <p className="text-muted text-sm mt-1">Your no-repeat bank walkthrough, at a glance.</p>
           </div>
           <button
             onClick={() => navigate("/aptitude")}
-            className="px-4 py-2 rounded-xl bg-gray-700/50 text-gray-300 border border-gray-600 text-sm hover:border-gray-500 transition-all"
+            className="px-4 py-2 rounded-xl bg-surface-2 text-fg-2 border border-line-strong text-sm hover:border-line-strong transition-all"
           >
             ← Back
           </button>
         </div>
 
         {error && (
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center mb-6">
+          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-sm text-center mb-6">
             {error}
           </div>
         )}
@@ -66,31 +66,31 @@ export function AptitudeProgress() {
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               {[
-                { label: "Questions Answered", value: progress.totalAnswered, accent: "text-emerald-400" },
-                { label: "Tests Completed", value: progress.completedTests, accent: "text-fuchsia-400" },
+                { label: "Questions Answered", value: progress.totalAnswered, accent: "text-emerald-700 dark:text-emerald-400" },
+                { label: "Tests Completed", value: progress.completedTests, accent: "text-fuchsia-600 dark:text-fuchsia-400" },
               ].map((s) => (
-                <div key={s.label} className="bg-gray-800/50 rounded-2xl border border-gray-700 p-5 text-center">
+                <div key={s.label} className="bg-surface rounded-2xl border border-line p-5 text-center">
                   <p className={`text-3xl font-bold ${s.accent}`}>{s.value}</p>
-                  <p className="text-[11px] text-gray-400 mt-1 uppercase tracking-wide">{s.label}</p>
+                  <p className="text-[11px] text-muted mt-1 uppercase tracking-wide">{s.label}</p>
                 </div>
               ))}
             </div>
 
-            <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6 mb-8">
+            <div className="bg-surface rounded-2xl border border-line p-6 mb-8">
               <div className="flex items-center gap-5">
                 <div className="w-20 h-20 shrink-0 relative">
                   <Suspense
-                    fallback={<div className="w-full h-full flex items-center justify-center text-sm font-bold text-emerald-400">{progress.accuracy}%</div>}
+                    fallback={<div className="w-full h-full flex items-center justify-center text-sm font-bold text-emerald-700 dark:text-emerald-400">{progress.accuracy}%</div>}
                   >
                     <ProgressRingScene score={progress.accuracy} color="#34d399" />
                   </Suspense>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-white">Overall Accuracy</span>
-                    <span className="text-lg font-bold text-emerald-400">{progress.accuracy}%</span>
+                    <span className="text-sm font-medium text-fg">Overall Accuracy</span>
+                    <span className="text-lg font-bold text-emerald-700 dark:text-emerald-400">{progress.accuracy}%</span>
                   </div>
-                  <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-3 bg-surface-2 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${progress.accuracy}%` }}
@@ -98,7 +98,7 @@ export function AptitudeProgress() {
                       className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-blue-500"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-subtle mt-2">
                     {progress.totalCorrect} correct · {progress.totalIncorrect} incorrect out of {progress.totalAnswered} answered
                   </p>
                 </div>
@@ -106,28 +106,28 @@ export function AptitudeProgress() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6">
-                <h2 className="text-sm font-medium text-white mb-3">Weak Topics</h2>
+              <div className="bg-surface rounded-2xl border border-line p-6">
+                <h2 className="text-sm font-medium text-fg mb-3">Weak Topics</h2>
                 {progress.weakTopics.length === 0 ? (
-                  <p className="text-xs text-gray-500">No weak topics yet — keep going!</p>
+                  <p className="text-xs text-subtle">No weak topics yet — keep going!</p>
                 ) : (
                   <div className="flex flex-wrap gap-2">
                     {progress.weakTopics.map((t) => (
-                      <span key={t} className="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 text-xs">
+                      <span key={t} className="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-xs">
                         {t}
                       </span>
                     ))}
                   </div>
                 )}
               </div>
-              <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6">
-                <h2 className="text-sm font-medium text-white mb-3">Strong Topics</h2>
+              <div className="bg-surface rounded-2xl border border-line p-6">
+                <h2 className="text-sm font-medium text-fg mb-3">Strong Topics</h2>
                 {progress.strongTopics.length === 0 ? (
-                  <p className="text-xs text-gray-500">Nothing strong yet — answer more to identify them.</p>
+                  <p className="text-xs text-subtle">Nothing strong yet — answer more to identify them.</p>
                 ) : (
                   <div className="flex flex-wrap gap-2">
                     {progress.strongTopics.map((t) => (
-                      <span key={t} className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs">
+                      <span key={t} className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 text-xs">
                         {t}
                       </span>
                     ))}
@@ -136,21 +136,21 @@ export function AptitudeProgress() {
               </div>
             </div>
 
-            <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6">
-              <h2 className="text-sm font-medium text-white mb-4">Topic-wise Accuracy</h2>
+            <div className="bg-surface rounded-2xl border border-line p-6">
+              <h2 className="text-sm font-medium text-fg mb-4">Topic-wise Accuracy</h2>
               {progress.topicWise.length === 0 ? (
-                <p className="text-xs text-gray-500">Answer a few questions to populate this chart.</p>
+                <p className="text-xs text-subtle">Answer a few questions to populate this chart.</p>
               ) : (
                 <div className="space-y-4">
                   {progress.topicWise.map((t) => (
                     <div key={t.topic}>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-gray-300">{t.topic}</span>
-                        <span className={`text-xs font-medium ${t.weak ? "text-red-400" : "text-emerald-400"}`}>
+                        <span className="text-xs text-fg-2">{t.topic}</span>
+                        <span className={`text-xs font-medium ${t.weak ? "text-red-600 dark:text-red-400" : "text-emerald-700 dark:text-emerald-400"}`}>
                           {t.correct}/{t.answered} · {t.accuracy}%
                         </span>
                       </div>
-                      <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-2 bg-surface-2 rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full ${t.weak ? "bg-red-500" : "bg-emerald-500"}`}
                           style={{ width: `${t.accuracy}%` }}

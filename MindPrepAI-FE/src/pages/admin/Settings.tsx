@@ -86,7 +86,7 @@ export function Settings() {
         </Card>
 
         <Card title="About these settings">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-muted">
             Your display name and email are saved on this browser and shown in the sidebar. Account credentials are managed
             by the placement cell's MindPrep account - use the main sign-in to change your password.
           </p>

@@ -26,24 +26,24 @@ export function MetricScoreGrid({ evaluation }: Props) {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.03 }}
-              className="rounded-xl bg-gray-900/50 border border-gray-700 p-3"
+              className="rounded-xl bg-surface border border-line p-3"
             >
               <div className="flex items-baseline justify-between gap-2">
-                <span className="text-xs text-gray-400">{d.label}</span>
+                <span className="text-xs text-muted">{d.label}</span>
                 <span className={`text-lg font-bold tabular-nums ${scoreText(score)}`}>{score}%</span>
               </div>
-              <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden mt-2">
+              <div className="h-1.5 bg-surface-2 rounded-full overflow-hidden mt-2">
                 <div className={`h-full rounded-full ${scoreBar(score)}`} style={{ width: `${score}%` }} />
               </div>
               {canExplain ? (
                 <button
                   onClick={() => setOpen(d)}
-                  className="mt-2.5 text-xs font-medium text-emerald-400 hover:text-emerald-300 underline-offset-2 hover:underline"
+                  className="mt-2.5 text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:text-emerald-600 hover:dark:text-emerald-300 underline-offset-2 hover:underline"
                 >
                   Why this score?
                 </button>
               ) : (
-                <p className="mt-2.5 text-[11px] text-gray-600">No detailed reasons for this answer</p>
+                <p className="mt-2.5 text-[11px] text-subtle">No detailed reasons for this answer</p>
               )}
             </motion.div>
           );

@@ -130,27 +130,27 @@ export function StudentManagement() {
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-slate-900 text-sm font-bold shrink-0"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0"
                       style={{ backgroundColor: s.avatarColor }}
                     >
                       {s.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-slate-900 font-medium">{s.name}</p>
-                      <p className="text-xs text-slate-500">{s.email}</p>
+                      <p className="text-fg font-medium">{s.name}</p>
+                      <p className="text-xs text-muted">{s.email}</p>
                     </div>
                   </div>
                 </td>
                 <td className="py-3 px-4">
-                  <p className="text-slate-700">{s.department}</p>
-                  <p className="text-xs text-slate-500">{s.year}</p>
+                  <p className="text-fg-2">{s.department}</p>
+                  <p className="text-xs text-muted">{s.year}</p>
                 </td>
                 <td className="py-3 px-4">
                   <StudentLinks student={s} />
                 </td>
-                <td className="py-3 px-4 text-slate-700">{s.cgpa != null ? s.cgpa : "—"}</td>
-                <td className="py-3 px-4 text-slate-700">{typeof s.atsScoreRaw === "number" ? `${s.atsScoreRaw}%` : "—"}</td>
-                <td className="py-3 px-4 text-slate-700">{s.interviewsTaken}</td>
+                <td className="py-3 px-4 text-fg-2">{s.cgpa != null ? s.cgpa : "—"}</td>
+                <td className="py-3 px-4 text-fg-2">{typeof s.atsScoreRaw === "number" ? `${s.atsScoreRaw}%` : "—"}</td>
+                <td className="py-3 px-4 text-fg-2">{s.interviewsTaken}</td>
                 <td className="py-3 px-4">
                   <Badge tone={statusTone(s.status)}>{s.status}</Badge>
                 </td>
@@ -166,7 +166,7 @@ export function StudentManagement() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
                     </IconButton>
-                    <IconButton title="Delete" onClick={() => setDeleting(s)} className="hover:text-red-700 hover:bg-red-100">
+                    <IconButton title="Delete" onClick={() => setDeleting(s)} className="hover:text-red-700 hover:dark:text-red-400 hover:bg-red-100 hover:dark:bg-red-500/15">
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
@@ -185,14 +185,14 @@ export function StudentManagement() {
           <div className="space-y-4">
             <div className="flex items-center gap-4">
               <div
-                className="w-14 h-14 rounded-full flex items-center justify-center text-slate-900 text-xl font-bold"
+                className="w-14 h-14 rounded-full flex items-center justify-center text-fg text-xl font-bold"
                 style={{ backgroundColor: selected.avatarColor }}
               >
                 {selected.name.charAt(0)}
               </div>
               <div>
-                <p className="text-slate-900 font-semibold text-lg">{selected.name}</p>
-                <p className="text-slate-500 text-sm">{selected.email}</p>
+                <p className="text-fg font-semibold text-lg">{selected.name}</p>
+                <p className="text-muted text-sm">{selected.email}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm">
@@ -221,47 +221,47 @@ export function StudentManagement() {
               <LinkField label="Portfolio" value={selected.portfolio} />
             </div>
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1.5 font-medium">Skills</p>
+              <p className="text-xs text-muted uppercase tracking-wider mb-1.5 font-medium">Skills</p>
               {selected.skills.length > 0 ? (
                 <div className="flex flex-wrap gap-1.5">
                   {selected.skills.map((t) => (
-                    <span key={t} className="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full px-2.5 py-0.5">
+                    <span key={t} className="text-xs bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30 rounded-full px-2.5 py-0.5">
                       {t}
                     </span>
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-500 text-sm">—</p>
+                <p className="text-muted text-sm">—</p>
               )}
             </div>
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1.5 font-medium">Certifications</p>
+              <p className="text-xs text-muted uppercase tracking-wider mb-1.5 font-medium">Certifications</p>
               {selected.certifications.length > 0 ? (
                 <ul className="space-y-1.5 text-sm">
                   {selected.certifications.map((c, i) => (
-                    <li key={i} className="text-slate-700">
-                      <span className="text-slate-900 font-medium">{c.name}</span>
+                    <li key={i} className="text-fg-2">
+                      <span className="text-fg font-medium">{c.name}</span>
                       {c.issuer ? ` — ${c.issuer}` : ""}
                       {c.year ? ` (${c.year})` : ""}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-slate-500 text-sm">—</p>
+                <p className="text-muted text-sm">—</p>
               )}
             </div>
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1.5 font-medium">Projects</p>
+              <p className="text-xs text-muted uppercase tracking-wider mb-1.5 font-medium">Projects</p>
               {selected.projects.length > 0 ? (
                 <ul className="space-y-2 text-sm">
                   {selected.projects.map((p, i) => (
                     <li key={i}>
-                      <p className="text-slate-900 font-medium">{p.title}</p>
-                      <p className="text-slate-500">{p.description}</p>
+                      <p className="text-fg font-medium">{p.title}</p>
+                      <p className="text-muted">{p.description}</p>
                       {p.techStack && p.techStack.length > 0 && (
                         <div className="flex flex-wrap gap-1.5 mt-1">
                           {p.techStack.map((t) => (
-                            <span key={t} className="text-xs bg-slate-200 text-slate-700 border border-slate-300 rounded-full px-2 py-0.5">
+                            <span key={t} className="text-xs bg-line text-fg-2 border border-line-strong rounded-full px-2 py-0.5">
                               {t}
                             </span>
                           ))}
@@ -271,10 +271,10 @@ export function StudentManagement() {
                   ))}
                 </ul>
               ) : (
-                <p className="text-slate-500 text-sm">—</p>
+                <p className="text-muted text-sm">—</p>
               )}
             </div>
-            <div className="grid grid-cols-3 gap-3 pt-2 border-t border-slate-200">
+            <div className="grid grid-cols-3 gap-3 pt-2 border-t border-line">
               <Metric label="ATS Score" value={typeof selected.atsScoreRaw === "number" ? `${selected.atsScoreRaw}%` : "Not analysed"} />
               <Metric label="Readiness" value={`${selected.placementReadiness}%`} />
               <Metric label="Avg Interview" value={`${selected.averageInterviewScore}%`} />
@@ -283,20 +283,20 @@ export function StudentManagement() {
             </div>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-xs text-slate-500 mb-2 font-medium">Strong Subjects</p>
+                <p className="text-xs text-muted mb-2 font-medium">Strong Subjects</p>
                 <div className="flex flex-wrap gap-1.5">
                   {selected.strongSubjects.map((t) => (
-                    <span key={t} className="text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full px-2.5 py-0.5">
+                    <span key={t} className="text-xs bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30 rounded-full px-2.5 py-0.5">
                       {t}
                     </span>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="text-xs text-slate-500 mb-2 font-medium">Weak Subjects</p>
+                <p className="text-xs text-muted mb-2 font-medium">Weak Subjects</p>
                 <div className="flex flex-wrap gap-1.5">
                   {selected.weakSubjects.map((t) => (
-                    <span key={t} className="text-xs bg-red-50 text-red-700 border border-red-200 rounded-full px-2.5 py-0.5">
+                    <span key={t} className="text-xs bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-500/30 rounded-full px-2.5 py-0.5">
                       {t}
                     </span>
                   ))}
@@ -364,8 +364,8 @@ export function StudentManagement() {
           </>
         }
       >
-        <p className="text-slate-700 text-sm">
-          Are you sure you want to permanently delete <span className="text-slate-900 font-semibold">{deleting?.name}</span>?
+        <p className="text-fg-2 text-sm">
+          Are you sure you want to permanently delete <span className="text-fg font-semibold">{deleting?.name}</span>?
           This action cannot be undone.
         </p>
       </Modal>
@@ -376,8 +376,8 @@ export function StudentManagement() {
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-slate-500 uppercase tracking-wider mb-0.5">{label}</p>
-      <p className="text-slate-800">{value}</p>
+      <p className="text-xs text-muted uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="text-fg">{value}</p>
     </div>
   );
 }
@@ -386,18 +386,18 @@ function LinkField({ label, value }: { label: string; value: string }) {
   const valid = value && /^https?:\/\//.test(value);
   return (
     <div>
-      <p className="text-xs text-slate-500 uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="text-xs text-muted uppercase tracking-wider mb-0.5">{label}</p>
       {valid ? (
         <a
           href={value}
           target="_blank"
           rel="noreferrer"
-          className="text-indigo-700 hover:text-indigo-700 hover:underline break-all"
+          className="text-indigo-700 dark:text-indigo-400 hover:text-indigo-700 hover:dark:text-indigo-400 hover:underline break-all"
         >
           {value}
         </a>
       ) : (
-        <p className="text-slate-500">—</p>
+        <p className="text-muted">—</p>
       )}
     </div>
   );
@@ -405,12 +405,12 @@ function LinkField({ label, value }: { label: string; value: string }) {
 
 function StudentLinks({ student }: { student: AdminStudent }) {
   const links: { label: string; href: string; tone: string }[] = [
-    ...(student.linkedin ? [{ label: "in", href: student.linkedin, tone: "text-indigo-700 border-indigo-200 hover:bg-indigo-100" }] : []),
-    ...(student.github ? [{ label: "gh", href: student.github, tone: "text-slate-700 border-slate-300 hover:bg-slate-200" }] : []),
-    ...(student.resumeUrl ? [{ label: "resume", href: student.resumeUrl, tone: "text-indigo-700 border-indigo-200 hover:bg-indigo-100" }] : []),
+    ...(student.linkedin ? [{ label: "in", href: student.linkedin, tone: "text-indigo-700 dark:text-indigo-400 border-indigo-200 dark:border-indigo-500/30 hover:bg-indigo-100 hover:dark:bg-indigo-500/15" }] : []),
+    ...(student.github ? [{ label: "gh", href: student.github, tone: "text-fg-2 border-line-strong hover:bg-line" }] : []),
+    ...(student.resumeUrl ? [{ label: "resume", href: student.resumeUrl, tone: "text-indigo-700 dark:text-indigo-400 border-indigo-200 dark:border-indigo-500/30 hover:bg-indigo-100 hover:dark:bg-indigo-500/15" }] : []),
   ];
   if (links.length === 0) {
-    return <p className="text-slate-400 text-xs">—</p>;
+    return <p className="text-subtle text-xs">—</p>;
   }
   return (
     <div className="flex items-center gap-1.5">
@@ -432,9 +432,9 @@ function StudentLinks({ student }: { student: AdminStudent }) {
 
 function Metric({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="bg-slate-50 rounded-xl p-3">
-      <p className="text-lg font-bold text-slate-900">{value}</p>
-      <p className="text-xs text-slate-500">{label}</p>
+    <div className="bg-surface-2 rounded-xl p-3">
+      <p className="text-lg font-bold text-fg">{value}</p>
+      <p className="text-xs text-muted">{label}</p>
     </div>
   );
 }
